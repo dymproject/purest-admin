@@ -1,0 +1,2110 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PurestAdmin.Application</name>
+    </assembly>
+    <members>
+        <member name="T:PurestAdmin.Facade.Controllers.AuthController">
+            <summary>
+            权限接口
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Facade.Controllers.AuthController._authService">
+            <summary>
+            Auth接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.AuthController.#ctor(PurestAdmin.Application.Auth.Services.IAuthService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="authService"></param>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.AuthController.LoginAsync(PurestAdmin.Application.Auth.Dtos.LoginInput)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.AuthController.GetUserInfoAsync">
+            <summary>
+            获取当前用户权限信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.AuthController.GetOrganizationTreeAsync">
+            <summary>
+            获取当前用户组织机构树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Facade.Controllers.DictCategoryController">
+            <summary>
+            字典分类接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictCategoryController.#ctor(PurestAdmin.Application.DictCategory.Services.IDictCategoryService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="dictCategoryService"></param>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictCategoryController.GetCategoryPagedListAsync(PurestAdmin.Application.DictCategory.Dtos.GetPagedListInput)">
+            <summary>
+            字典分类分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictCategoryController.GetAsync(System.Int64)">
+            <summary>
+            字典分类单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictCategoryController.AddAsync(PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput)">
+            <summary>
+            字典分类添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictCategoryController.PutAsync(System.Int64,PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput)">
+            <summary>
+            字典分类编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictCategoryController.DeleteAsync(System.Int64)">
+            <summary>
+            字典分类删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Facade.Controllers.DictDataController">
+            <summary>
+            字典数据接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictDataController.#ctor(PurestAdmin.Application.DictData.Services.IDictDataService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="dictDataService"></param>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictDataController.GetPagedListAsync(PurestAdmin.Application.DictData.Dtos.GetPagedListInput)">
+            <summary>
+            字典数据分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictDataController.GetAsync(System.Int64)">
+            <summary>
+            字典数据单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictDataController.GetByCodeAsync(System.String)">
+            <summary>
+            根据字典分类获取字典数据
+            </summary>
+            <param name="categoryCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictDataController.AddAsync(PurestAdmin.Application.DictData.Dtos.AddDictDataInput)">
+            <summary>
+            字典数据添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictDataController.PutAsync(System.Int64,PurestAdmin.Application.DictData.Dtos.AddDictDataInput)">
+            <summary>
+            字典数据编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.DictDataController.DeleteAsync(System.Int64)">
+            <summary>
+            字典数据删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Facade.Controllers.FunctionController">
+            <summary>
+            功能接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.#ctor(PurestAdmin.Application.Function.Services.IFunctionService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="functionService"></param>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.GetPagedListAsync(PurestAdmin.Application.Function.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.AddAsync(PurestAdmin.Application.Function.Dtos.AddFunctionInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.PutAsync(System.Int64,PurestAdmin.Application.Function.Dtos.AddFunctionInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.GetTreeAsync">
+            <summary>
+            树形查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.GetInterfaceAsync(System.Int64)">
+            <summary>
+            获取功能绑定的接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.AssignInterfaceAsync(System.Int64,System.Int64)">
+            <summary>
+            获取功能所属的接口
+            </summary>
+            <param name="functionId"></param>
+            <param name="interfaceId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.FunctionController.RemoveInterfaceAsync(System.Int64)">
+            <summary>
+            移除此功能的对应接口
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Facade.Controllers.InterfaceController">
+            <summary>
+            系统功能接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.InterfaceController.#ctor(PurestAdmin.Application.Interface.Services.IInterfaceService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="interfaceService"></param>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.InterfaceController.GetPagedListAsync(PurestAdmin.Application.Interface.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.InterfaceController.ImportInterfaceAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            接口导入
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Facade.Controllers.OrganizationController">
+            <summary>
+            组织机构接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.OrganizationController.#ctor(PurestAdmin.Application.Organization.Services.IOrganizationService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="organizationService"></param>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.OrganizationController.GetPagedListAsync(PurestAdmin.Application.Organization.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.OrganizationController.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.OrganizationController.AddAsync(PurestAdmin.Application.Organization.Dtos.AddOrganizationInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.OrganizationController.PutAsync(System.Int64,PurestAdmin.Application.Organization.Dtos.AddOrganizationInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.OrganizationController.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Facade.Controllers.RoleController">
+            <summary>
+            角色接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.#ctor(PurestAdmin.Application.Role.Services.IRoleService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="roleService"></param>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.GetPagedListAsync(PurestAdmin.Application.Role.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.GetAllListAsync(System.String)">
+            <summary>
+            查询所有
+            </summary>
+            <param name="roleName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.AddAsync(PurestAdmin.Application.Role.Dtos.AddRoleInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.PutAsync(System.Int64,PurestAdmin.Application.Role.Dtos.AddRoleInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.AssignFunctionAsync(System.Int64,System.Int64[])">
+            <summary>
+            赋给角色功能
+            </summary>
+            <param name="roleId">角色Id</param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.RoleController.AddAsync(System.Int64)">
+            <summary>
+            获取角色的功能
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Facade.Controllers.UserController">
+            <summary>
+            用户接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.UserController.#ctor(PurestAdmin.Application.User.Services.IUserService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="userService"></param>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.UserController.GetPagedListAsync(PurestAdmin.Application.User.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.UserController.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.UserController.AddAsync(PurestAdmin.Application.User.Dtos.AddUserInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.UserController.PutAsync(System.Int64,PurestAdmin.Application.User.Dtos.EditUserInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.UserController.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.UserController.ResetPassword(System.Int64)">
+            <summary>
+            重置密码
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.Auth.Dtos.LoginInput">
+            <summary>
+            登录模型
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginInput.Account">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginInput.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Auth.Dtos.LoginOutput">
+            <summary>
+            登录模型
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginOutput.Id">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginOutput.Account">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginOutput.Name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginOutput.Telephone">
+            <summary>
+            电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginOutput.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginOutput.OnlineId">
+            <summary>
+            在线Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.LoginOutput.Permissions">
+            <summary>
+            权限集合
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Auth.Dtos.UserInfoOutput">
+            <summary>
+            用户信息输出
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.UserInfoOutput.Permissions">
+            <summary>
+            权限集合
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Auth.Services.AuthService">
+            <summary>
+            用户授权服务
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Application.Auth.Services.AuthService._db">
+            <summary>
+            db
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Application.Auth.Services.AuthService._httpContextAccessor">
+            <summary>
+            IHttpContextAccessor
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Application.Auth.Services.AuthService._userManager">
+            <summary>
+            用户管理
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.AuthService.#ctor(SqlSugar.ISqlSugarClient,Microsoft.AspNetCore.Http.IHttpContextAccessor,PurestAdmin.Core.Multiplex.IUserManager)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+            <param name="httpContextAccessor"></param>
+            <param name="userManager"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.AuthService.LoginAsync(PurestAdmin.Application.Auth.Dtos.LoginInput)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="input"></param>
+            <returns></returns>    
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.AuthService.GetUserInfoAsync">
+            <summary>
+            获取当前用户权限信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.AuthService.GetOrganizationTreeAsync">
+            <summary>
+            获取当前用户组织机构树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.Auth.Services.IAuthService">
+            <summary>
+            用户授权服务接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.IAuthService.LoginAsync(PurestAdmin.Application.Auth.Dtos.LoginInput)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.IAuthService.GetUserInfoAsync">
+            <summary>
+            获取当前用户权限信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.IAuthService.GetOrganizationTreeAsync">
+            <summary>
+            获取当前用户组织机构树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput">
+            <summary>
+            字典分类添加
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput.Name">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput.Code">
+            <summary>
+            分类编码
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.DictCategory.Dtos.DictCategoryProfile">
+            <summary>
+            字典分类详情
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictCategory.Dtos.DictCategoryProfile.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictCategory.Dtos.DictCategoryProfile.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictCategory.Dtos.DictCategoryProfile.Name">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictCategory.Dtos.DictCategoryProfile.Code">
+            <summary>
+            分类编码
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.DictCategory.Dtos.GetPagedListInput">
+            <summary>
+            字典分类查询
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictCategory.Dtos.GetPagedListInput.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.DictCategory.Services.DictCategoryService">
+            <summary>
+            字典分类服务
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.DictCategoryService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.DictCategoryEntity})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+            <param name="dictCategoryRepository"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.DictCategoryService.GetPagedListAsync(PurestAdmin.Application.DictCategory.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.DictCategoryService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.DictCategoryService.AddAsync(PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.DictCategoryService.PutAsync(System.Int64,PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.DictCategoryService.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.DictCategory.Services.IDictCategoryService">
+            <summary>
+            字典分类接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.IDictCategoryService.GetPagedListAsync(PurestAdmin.Application.DictCategory.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.IDictCategoryService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.IDictCategoryService.AddAsync(PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput)">
+            <summary>
+            添加数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.IDictCategoryService.PutAsync(System.Int64,PurestAdmin.Application.DictCategory.Dtos.AddDictCategoryInput)">
+            <summary>
+            编辑数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictCategory.Services.IDictCategoryService.DeleteAsync(System.Int64)">
+            <summary>
+            删除数据
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.DictData.Dtos.AddDictDataInput">
+            <summary>
+            字典数据添加
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.AddDictDataInput.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.AddDictDataInput.CategoryId">
+            <summary>
+            字典分类ID
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.AddDictDataInput.Name">
+            <summary>
+            字典名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.AddDictDataInput.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.DictData.Dtos.DictDataProfile">
+            <summary>
+            字典数据详情
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.DictDataProfile.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.DictDataProfile.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.DictDataProfile.CategoryId">
+            <summary>
+            字典分类ID
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.DictDataProfile.Name">
+            <summary>
+            字典名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.DictDataProfile.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.DictData.Dtos.GetPagedListInput">
+            <summary>
+            字典数据查询
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.GetPagedListInput.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.DictData.Dtos.GetPagedListInput.CategoryId">
+            <summary>
+            字典分类Id
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.DictData.Services.DictDataService">
+            <summary>
+            字典数据服务
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.DictDataEntity})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+            <param name="dictDataRepository"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.GetPagedListAsync(PurestAdmin.Application.DictData.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.GetListAsync(System.String)">
+            <summary>
+            查询分类下的所有数据
+            </summary>
+            <param name="categoryCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.AddAsync(PurestAdmin.Application.DictData.Dtos.AddDictDataInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.PutAsync(System.Int64,PurestAdmin.Application.DictData.Dtos.AddDictDataInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.DictData.Services.IDictDataService">
+            <summary>
+            字典数据接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.IDictDataService.GetPagedListAsync(PurestAdmin.Application.DictData.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.IDictDataService.GetListAsync(System.String)">
+            <summary>
+            查询分类下的所有数据
+            </summary>
+            <param name="categoryCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.IDictDataService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.IDictDataService.AddAsync(PurestAdmin.Application.DictData.Dtos.AddDictDataInput)">
+            <summary>
+            添加数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.IDictDataService.PutAsync(System.Int64,PurestAdmin.Application.DictData.Dtos.AddDictDataInput)">
+            <summary>
+            编辑数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.DictData.Services.IDictDataService.DeleteAsync(System.Int64)">
+            <summary>
+            删除数据
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.File.Dtos.FileUploadConfig">
+            <summary>
+            文件上传配置
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.File.Dtos.FileUploadConfig.LimitFileSize">
+            <summary>
+            限制上传大小（M）
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.File.Dtos.FileUploadConfig.SavedDirectory">
+            <summary>
+            文件存放路径
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.File.Services.FileService">
+            <summary>
+            文件上传服务
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Application.File.Services.FileService._fileRecordRepository">
+            <summary>
+            文件记录仓储
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.File.Services.FileService.#ctor(PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.FileRecordEntity})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="fileRecordRepository"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.File.Services.FileService.GetFileBytesAsync(System.Int64)">
+            <summary>
+            获取文件名称和内容byte数组
+            </summary>
+            <param name="fileId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.File.Services.FileService.BatchSaveFileAsync(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>
+            批量上传文件
+            </summary>
+            <param name="files"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.File.Services.FileService.SaveFileAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            单个上传文件
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.File.Services.IFileService">
+            <summary>
+            文件上传接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.File.Services.IFileService.BatchSaveFileAsync(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>
+            文件批量保存
+            </summary>
+            <param name="files"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.File.Services.IFileService.SaveFileAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            单文件保存
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.File.Services.IFileService.GetFileBytesAsync(System.Int64)">
+            <summary>
+            获取文件名称和内容byte数组
+            </summary>
+            <param name="fileId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.FileCenter.FileController">
+            <summary>
+            文件接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.FileCenter.FileController.#ctor(PurestAdmin.Application.File.Services.IFileService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="fileService"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.FileCenter.FileController.FileDownloadAsync(System.Int64)">
+            <summary>
+            下载文件
+            </summary>
+            <param name="fileId"></param>
+            <returns>FileStreamResult</returns>
+        </member>
+        <member name="M:PurestAdmin.Application.FileCenter.FileController.BatchSaveFileAsync(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>
+            上传文件
+            </summary>
+            <param name="files"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.FileCenter.FileController.SaveFileAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            上传文件
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.FileCenter.FileController.GetUrlAsync(System.Int64)">
+            <summary>
+            将 文件输出为 Url 地址
+            </summary>
+            <param name="fileId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.Function.Dtos.AddFunctionInput">
+            <summary>
+            组织机构添加
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.AddFunctionInput.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.AddFunctionInput.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.AddFunctionInput.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.AddFunctionInput.ParentId">
+            <summary>
+            父级Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.BindedInterfaceProfile.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.BindedInterfaceProfile.Name">
+            <summary>
+            接口名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.BindedInterfaceProfile.Path">
+            <summary>
+            接口地址
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.BindedInterfaceProfile.InterfaceId">
+            <summary>
+            接口Id 
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Function.Dtos.FunctionProfile">
+            <summary>
+            组织机构详情
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.FunctionProfile.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.FunctionProfile.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.FunctionProfile.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.FunctionProfile.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.FunctionProfile.ParentId">
+            <summary>
+            父级Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.FunctionProfile.Children">
+            <summary>
+            子集
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Function.Dtos.GetPagedListInput">
+            <summary>
+            组织机构查询
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Function.Dtos.GetPagedListInput.Name">
+            <summary>
+            功能名称
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Function.Services.FunctionService">
+            <summary>
+            功能接口实现
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.FunctionEntity})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+            <param name="functionRepository"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.GetPagedListAsync(PurestAdmin.Application.Function.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.AddAsync(PurestAdmin.Application.Function.Dtos.AddFunctionInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.PutAsync(System.Int64,PurestAdmin.Application.Function.Dtos.AddFunctionInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.GetFunctionTreeAsync">
+            <summary>
+            树查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.GetInterfacesAsync(System.Int64)">
+            <summary>
+            获取功能拥有的接口
+            </summary>
+            <param name="functionId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.AssignInterfaceAsync(System.Int64,System.Int64)">
+            <summary>
+            给功能分配接口
+            </summary>
+            <param name="functionId"></param>
+            <param name="interfaceId"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.RemoveInterfaceAsync(System.Int64)">
+            <summary>
+            移除功能的接口
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="T:PurestAdmin.Application.Function.Services.IFunctionService">
+            <summary>
+            功能接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.GetPagedListAsync(PurestAdmin.Application.Function.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.AddAsync(PurestAdmin.Application.Function.Dtos.AddFunctionInput)">
+            <summary>
+            添加数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.PutAsync(System.Int64,PurestAdmin.Application.Function.Dtos.AddFunctionInput)">
+            <summary>
+            编辑数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.DeleteAsync(System.Int64)">
+            <summary>
+            删除数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.GetFunctionTreeAsync">
+            <summary>
+            树查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.GetInterfacesAsync(System.Int64)">
+            <summary>
+            获取功能拥有的接口
+            </summary>
+            <param name="functionId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.AssignInterfaceAsync(System.Int64,System.Int64)">
+            <summary>
+            给功能分配接口
+            </summary>
+            <param name="functionId"></param>
+            <param name="interfaceId"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.Function.Services.IFunctionService.RemoveInterfaceAsync(System.Int64)">
+            <summary>
+            移除功能的接口
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.GetPagedListInput.Path">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Interface.Dtos.InterfaceGroupProfile">
+            <summary>
+            接口组
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceGroupProfile.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceGroupProfile.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceGroupProfile.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceGroupProfile.Interfaces">
+            <summary>
+            接口详情
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Interface.Dtos.InterfaceProfile">
+            <summary>
+            接口详情
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceProfile.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceProfile.Name">
+            <summary>
+            接口名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceProfile.Path">
+            <summary>
+            接口地址
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceProfile.RequestMethod">
+            <summary>
+            请求方法
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Interface.Dtos.InterfaceProfile.GroupId">
+            <summary>
+            分组Id
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Interface.Services.IInterfaceService">
+            <summary>
+            接口功能接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Interface.Services.IInterfaceService.GetPagedListAsync(PurestAdmin.Application.Interface.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Interface.Services.IInterfaceService.ImportInterfaceAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            导入接口
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.Interface.Services.InterfaceService">
+            <summary>
+            接口功能实现
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Application.Interface.Services.InterfaceService._db">
+            <summary>
+            db
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Interface.Services.InterfaceService.#ctor(SqlSugar.ISqlSugarClient)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.Interface.Services.InterfaceService.GetPagedListAsync(PurestAdmin.Application.Interface.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Interface.Services.InterfaceService.ImportInterfaceAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            导入接口文件
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:PurestAdmin.Application.Organization.Dtos.AddOrganizationInput">
+            <summary>
+            组织机构添加
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.AddOrganizationInput.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.AddOrganizationInput.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.AddOrganizationInput.ParentId">
+            <summary>
+            父级Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.AddOrganizationInput.Telephone">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.AddOrganizationInput.Leader">
+            <summary>
+            负责人
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.AddOrganizationInput.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Organization.Dtos.GetPagedListInput">
+            <summary>
+            组织机构查询
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Organization.Dtos.OrganizationProfile">
+            <summary>
+            组织机构详情
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.OrganizationProfile.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.OrganizationProfile.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.OrganizationProfile.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.OrganizationProfile.ParentId">
+            <summary>
+            父级Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.OrganizationProfile.Telephone">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.OrganizationProfile.Leader">
+            <summary>
+            负责人
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.OrganizationProfile.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Organization.Dtos.OrganizationProfile.Children">
+            <summary>
+            子集
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Organization.Services.IOrganizationService">
+            <summary>
+            组织机构接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.IOrganizationService.GetPagedListAsync(PurestAdmin.Application.Organization.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.IOrganizationService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.IOrganizationService.AddAsync(PurestAdmin.Application.Organization.Dtos.AddOrganizationInput)">
+            <summary>
+            添加数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.IOrganizationService.PutAsync(System.Int64,PurestAdmin.Application.Organization.Dtos.AddOrganizationInput)">
+            <summary>
+            编辑数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.IOrganizationService.DeleteAsync(System.Int64)">
+            <summary>
+            删除数据
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Organization.Services.OrganizationService">
+            <summary>
+            组织机构服务
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.OrganizationService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.OrganizationEntity},PurestAdmin.Application.Auth.Services.IAuthService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+            <param name="organizationRepository"></param>
+            <param name="authService"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.OrganizationService.GetPagedListAsync(PurestAdmin.Application.Organization.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.OrganizationService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.OrganizationService.AddAsync(PurestAdmin.Application.Organization.Dtos.AddOrganizationInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.OrganizationService.PutAsync(System.Int64,PurestAdmin.Application.Organization.Dtos.AddOrganizationInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Organization.Services.OrganizationService.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="P:PurestAdmin.Application.PaginationParams.PageIndex">
+            <summary>
+            页码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.PaginationParams.PageSize">
+            <summary>
+            页容量
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Role.Dtos.AddRoleInput">
+            <summary>
+            角色添加
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.AddRoleInput.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.AddRoleInput.Name">
+            <summary>
+            角色名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.AddRoleInput.Description">
+            <summary>
+            角色描述
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.AddRoleInput.SecurityIds">
+            <summary>
+            权限Id集合
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Role.Dtos.GetPagedListInput">
+            <summary>
+            角色查询
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.GetPagedListInput.Name">
+            <summary>
+            角色名
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Role.Dtos.RoleProfile">
+            <summary>
+            角色详情
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.RoleProfile.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.RoleProfile.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.RoleProfile.Name">
+            <summary>
+            角色名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.RoleProfile.Description">
+            <summary>
+            角色描述
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.RoleProfile.WebsiteSecurityIds">
+            <summary>
+            website权限
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Role.Dtos.RoleProfile.InterfaceSecurityIds">
+            <summary>
+            interface权限
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Role.Services.IRoleService">
+            <summary>
+            角色接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.IRoleService.GetPagedListAsync(PurestAdmin.Application.Role.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.IRoleService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.IRoleService.AddAsync(PurestAdmin.Application.Role.Dtos.AddRoleInput)">
+            <summary>
+            添加数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.IRoleService.PutAsync(System.Int64,PurestAdmin.Application.Role.Dtos.AddRoleInput)">
+            <summary>
+            编辑数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.IRoleService.DeleteAsync(System.Int64)">
+            <summary>
+            删除数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.IRoleService.AssignFunctionAsync(System.Int64,System.Int64[])">
+            <summary>
+            赋给功能权限
+            </summary>
+            <param name="roleId">角色Id</param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.IRoleService.GetAllListAsync(System.String)">
+            <summary>
+            全量查询
+            </summary>
+            <param name="roleName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.IRoleService.GetFunctionsAsync(System.Int64)">
+            <summary>
+            获取角色的功能
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.Role.Services.RoleService">
+            <summary>
+            角色服务
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.RoleEntity})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+            <param name="roleRepository"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.GetPagedListAsync(PurestAdmin.Application.Role.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.GetAllListAsync(System.String)">
+            <summary>
+            全量查询
+            </summary>
+            <param name="roleName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.AddAsync(PurestAdmin.Application.Role.Dtos.AddRoleInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.PutAsync(System.Int64,PurestAdmin.Application.Role.Dtos.AddRoleInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.AssignFunctionAsync(System.Int64,System.Int64[])">
+            <summary>
+            赋给角色功能
+            </summary>
+            <param name="roleId">角色Id</param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.GetFunctionsAsync(System.Int64)">
+            <summary>
+            获取角色的功能
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput">
+            <summary>
+            系统配置表添加
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput.ConfigCode">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput.ConfigValue">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.SystemConfig.Dtos.GetPagedListInput">
+            <summary>
+            系统配置表查询
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.SystemConfig.Dtos.SystemConfigProfile">
+            <summary>
+            系统配置表详情
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.SystemConfigProfile.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.SystemConfigProfile.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.SystemConfigProfile.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.SystemConfigProfile.ConfigCode">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.SystemConfigProfile.ConfigValue">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.SystemConfig.Services.ISystemConfigService">
+            <summary>
+            系统配置表接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.ISystemConfigService.GetPagedListAsync(PurestAdmin.Application.SystemConfig.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.ISystemConfigService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.ISystemConfigService.AddAsync(PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput)">
+            <summary>
+            添加数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.ISystemConfigService.PutAsync(System.Int64,PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput)">
+            <summary>
+            编辑数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.ISystemConfigService.DeleteAsync(System.Int64)">
+            <summary>
+            删除数据
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.SystemConfig.Services.SystemConfigService">
+            <summary>
+            系统配置表服务
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.SystemConfigService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{FinalAdmin.Core.Entity.SystemConfigEntity})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+            <param name="systemConfigRepository"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.SystemConfigService.GetPagedListAsync(PurestAdmin.Application.SystemConfig.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.SystemConfigService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.SystemConfigService.AddAsync(PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.SystemConfigService.PutAsync(System.Int64,PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.SystemConfigService.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.SystemConfig.SystemConfigController">
+            <summary>
+            系统配置接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.SystemConfigController.#ctor(PurestAdmin.Application.SystemConfig.Services.ISystemConfigService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="systemConfigService"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.SystemConfigController.GetPagedListAsync(PurestAdmin.Application.SystemConfig.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.SystemConfigController.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.SystemConfigController.AddAsync(PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.SystemConfigController.PutAsync(System.Int64,PurestAdmin.Application.SystemConfig.Dtos.AddSystemConfigInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.SystemConfig.SystemConfigController.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.User.Dtos.AddUserInput">
+            <summary>
+            用户添加
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.Name">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.Telephone">
+            <summary>
+            电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.Avatar">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.OrganizationId">
+            <summary>
+            组织机构Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.AddUserInput.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.User.Dtos.EditUserInput">
+            <summary>
+            用户编辑
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.EditUserInput.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.EditUserInput.Name">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.EditUserInput.Telephone">
+            <summary>
+            电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.EditUserInput.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.EditUserInput.Avatar">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.EditUserInput.OrganizationId">
+            <summary>
+            组织机构Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.EditUserInput.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.User.Dtos.GetPagedListInput">
+            <summary>
+            用户查询
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.GetPagedListInput.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.GetPagedListInput.Name">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.GetPagedListInput.Telephone">
+            <summary>
+            电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.GetPagedListInput.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.User.Dtos.UserProfile">
+            <summary>
+            用户详情
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Account">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Name">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Telephone">
+            <summary>
+            电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Avatar">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.OrganizationId">
+            <summary>
+            组织机构Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.User.Dtos.UserProfile.Role">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Application.User.Mapper">
+            <summary>
+            新增用户映射
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.User.Mapper.Register(Mapster.TypeAdapterConfig)">
+            <summary>
+            
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="T:PurestAdmin.Application.User.Services.IUserService">
+            <summary>
+            用户接口
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.User.Services.IUserService.GetPagedListAsync(PurestAdmin.Application.User.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.User.Services.IUserService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.User.Services.IUserService.AddAsync(PurestAdmin.Application.User.Dtos.AddUserInput)">
+            <summary>
+            添加数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.User.Services.IUserService.PutAsync(System.Int64,PurestAdmin.Application.User.Dtos.EditUserInput)">
+            <summary>
+            编辑数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.User.Services.IUserService.DeleteAsync(System.Int64)">
+            <summary>
+            删除数据
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.User.Services.IUserService.ResetPassword(System.Int64)">
+            <summary>
+            重置密码
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Application.UserService.UserService">
+            <summary>
+            用户服务
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Application.UserService.UserService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.UserEntity})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="db"></param>
+            <param name="userRepository"></param>
+        </member>
+        <member name="M:PurestAdmin.Application.UserService.UserService.GetPagedListAsync(PurestAdmin.Application.User.Dtos.GetPagedListInput)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.UserService.UserService.GetAsync(System.Int64)">
+            <summary>
+            单条查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.UserService.UserService.AddAsync(PurestAdmin.Application.User.Dtos.AddUserInput)">
+            <summary>
+            添加
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.UserService.UserService.PutAsync(System.Int64,PurestAdmin.Application.User.Dtos.EditUserInput)">
+            <summary>
+            编辑
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.UserService.UserService.DeleteAsync(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.UserService.UserService.ResetPassword(System.Int64)">
+            <summary>
+            重置密码
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

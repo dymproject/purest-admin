@@ -1,0 +1,572 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PurestAdmin.Core</name>
+    </assembly>
+    <members>
+        <member name="F:PurestAdmin.Core.Consts.ApiGroupConst.SYSTEM">
+            <summary>
+            系统管理
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Consts.EventBusConst.LOGIN">
+            <summary>
+            登录
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Consts.EventBusConst.LOGINOUT">
+            <summary>
+            登出
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Const.ClaimConst.USERID">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Const.ClaimConst.ACCOUNT">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Const.ClaimConst.NAME">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Const.ClaimConst.ORGANIZATION_ID">
+            <summary>
+            组织机构Id
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.DictCategoryEntity">
+            <summary>
+            字典分类
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.DictCategoryEntity.Name">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.DictCategoryEntity.Code">
+            <summary>
+            分类编码
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.DictDataEntity">
+            <summary>
+            字典数据
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.DictDataEntity.CategoryId">
+            <summary>
+            字典分类ID
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.DictDataEntity.Name">
+            <summary>
+            字典名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.DictDataEntity.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.FileRecordEntity">
+             <summary>
+             文件上传记录表
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FileRecordEntity.FileName">
+             <summary>
+             文件名 
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FileRecordEntity.FileSize">
+             <summary>
+             文件大小 
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FileRecordEntity.FileExt">
+             <summary>
+             文件扩展名 
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FileRecordEntity.FullPath">
+             <summary>
+             完整路径 
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.FunctionEntity">
+            <summary>
+            功能实体
+            </summary>
+            <summary>
+            功能实体扩展
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FunctionEntity.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FunctionEntity.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FunctionEntity.ParentId">
+            <summary>
+            隶属于
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FunctionEntity.Children">
+            <summary>
+            子集
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.FunctionInterfaceEntity">
+            <summary>
+            页面接口
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FunctionInterfaceEntity.FunctionId">
+            <summary>
+            功能ID
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.FunctionInterfaceEntity.InterfaceId">
+            <summary>
+            接口ID
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.InterfaceEntity">
+            <summary>
+            接口表
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.InterfaceEntity.Name">
+            <summary>
+            接口名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.InterfaceEntity.Path">
+            <summary>
+            接口地址
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.InterfaceEntity.RequestMethod">
+            <summary>
+            请求方法
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.InterfaceEntity.GroupId">
+            <summary>
+            分组Id
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.InterfaceGroupEntity">
+            <summary>
+            接口表
+            </summary>
+            <summary>
+            接口表
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.InterfaceGroupEntity.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.InterfaceGroupEntity.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.InterfaceGroupEntity.Interfaces">
+            <summary>
+            接口列表
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.OrganizationEntity">
+            <summary>
+            组织机构
+            </summary>
+            <summary>
+            组织机构
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.OrganizationEntity.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.OrganizationEntity.ParentId">
+            <summary>
+            父级Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.OrganizationEntity.Telephone">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.OrganizationEntity.Leader">
+            <summary>
+            负责人
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.OrganizationEntity.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.OrganizationEntity.Children">
+            <summary>
+            子集
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.RoleEntity">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.RoleEntity.Name">
+            <summary>
+            角色名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.RoleEntity.Description">
+            <summary>
+            角色描述
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.RoleFunctionEntity">
+            <summary>
+            角色页面
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.RoleFunctionEntity.RoleId">
+            <summary>
+            角色ID
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.RoleFunctionEntity.FunctionId">
+            <summary>
+            功能ID
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.UserEntity">
+            <summary>
+            用户
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserEntity.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserEntity.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserEntity.Name">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserEntity.Telephone">
+            <summary>
+            电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserEntity.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserEntity.Avatar">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserEntity.OrganizationId">
+            <summary>
+            组织机构Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserEntity.Role">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Entity.UserRoleEntity">
+            <summary>
+            用户角色
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserRoleEntity.RoleId">
+            <summary>
+            角色ID
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.UserRoleEntity.UserId">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.ErrorTipsEnum">
+            <summary>
+            业务日志错误码
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.ErrorTipsEnum.NoResult">
+            <summary>
+            记录不存在
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Job.DataSeedJob">
+            <summary>
+            种子数据初始化job
+            </summary>
+            <remarks>午夜开始</remarks>
+        </member>
+        <member name="T:PurestAdmin.Core.Multiplex.IUserManager">
+            <summary>
+            用户管理接口
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Multiplex.IUserManager.UserId">
+            <summary>
+            获取用户 Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Multiplex.IUserManager.User">
+            <summary>
+            获取用户信息
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Core.Multiplex.IUserManager.GetFunctionsAsync(System.Int64)">
+            <summary>
+            查询用户功能
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Core.Multiplex.IUserManager.GetInterfacesAsync(System.Int64)">
+            <summary>
+            查询用户接口
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PurestAdmin.Core.Multiplex.UserManager">
+            <summary>
+            用户管理接口
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Multiplex.UserManager._db">
+            <summary>
+            db
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Multiplex.UserManager._userRepository">
+            <summary>
+            用户仓储
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Multiplex.UserManager._httpContextAccessor">
+            <summary>
+            HttpContext 访问器
+            </summary>
+        </member>
+        <member name="F:PurestAdmin.Core.Multiplex.UserManager._memoryCache">
+            <summary>
+            缓存
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Core.Multiplex.UserManager.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.UserEntity},Microsoft.Extensions.Caching.Memory.IMemoryCache)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="httpContextAccessor"></param>
+            <param name="userRepository"></param>
+            <param name="db"></param>
+            <param name="memoryCache"></param>
+        </member>
+        <member name="P:PurestAdmin.Core.Multiplex.UserManager.UserId">
+            <summary>
+            获取用户 Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Multiplex.UserManager.User">
+            <summary>
+            获取用户信息
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Core.Multiplex.UserManager.GetFunctionsAsync(System.Int64)">
+            <summary>
+            查询用户功能
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Core.Multiplex.UserManager.GetInterfacesAsync(System.Int64)">
+            <summary>
+            查询用户权限
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Core.SnowFlake.SnowflakeExtensions.AddSnowflakeId(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            引入雪花Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.BaseEntity.Id">
+             <summary>
+             Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.BaseEntity.CreateBy">
+             <summary>
+             创建人
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.BaseEntity.CreateTime">
+             <summary>
+             创建时间
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.BaseEntity.UpdateBy">
+             <summary>
+             修改人
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.BaseEntity.UpdateTime">
+             <summary>
+             修改时间
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.BaseEntity.Remark">
+             <summary>
+             备注 
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.PagedList`1">
+            <summary>
+            分页泛型集合
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:PurestAdmin.Core.PagedList`1.PageIndex">
+            <summary>
+            页码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.PagedList`1.PageSize">
+            <summary>
+            页容量
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.PagedList`1.Total">
+            <summary>
+            总条数
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.PagedList`1.PageCount">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.PagedList`1.Items">
+            <summary>
+            当前页集合
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Core.PagedListExtension.ToFinalPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            分页拓展
+            </summary>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Core.PagedListExtension.ToFinalPagedList``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32)">
+            <summary>
+            分页拓展
+            </summary>
+            <param name="list"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="F:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork._sqlSugarClient">
+            <summary>
+            SqlSugar 对象
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.#ctor(SqlSugar.ISqlSugarClient)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sqlSugarClient"></param>
+        </member>
+        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.BeginTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
+            <summary>
+            开启工作单元处理
+            </summary>
+            <param name="context"></param>
+            <param name="unitOfWork"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.CommitTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
+            <summary>
+            提交工作单元处理
+            </summary>
+            <param name="resultContext"></param>
+            <param name="unitOfWork"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.RollbackTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
+            <summary>
+            回滚工作单元处理
+            </summary>
+            <param name="resultContext"></param>
+            <param name="unitOfWork"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.OnCompleted(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Microsoft.AspNetCore.Mvc.Filters.FilterContext)">
+            <summary>
+            执行完毕（无论成功失败）
+            </summary>
+            <param name="context"></param>
+            <param name="resultContext"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:FinalAdmin.Core.Entity.SystemConfigEntity">
+            <summary>
+            系统配置表
+            </summary>
+        </member>
+        <member name="P:FinalAdmin.Core.Entity.SystemConfigEntity.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:FinalAdmin.Core.Entity.SystemConfigEntity.ConfigCode">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:FinalAdmin.Core.Entity.SystemConfigEntity.ConfigValue">
+            <summary>
+            值
+            </summary>
+        </member>
+    </members>
+</doc>
