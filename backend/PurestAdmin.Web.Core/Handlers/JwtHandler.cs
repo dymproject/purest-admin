@@ -1,21 +1,18 @@
-﻿// PurestAdmin
-// Author:dym
-// MIT License
-// https://gitee.com/dymproject/purest
+﻿// MIT 许可证
+// 版权 © 2023-present dym 和所有贡献者
+// 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
+// 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
 using System.Linq;
 using System.Threading.Tasks;
 
-using Furion;
 using Furion.Authorization;
-using Furion.FriendlyException;
 using Furion.UnifyResult;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 using PurestAdmin.Core.Multiplex;
 
@@ -25,7 +22,6 @@ namespace PurestAdmin.Web.Core
     {
         public override async Task<bool> PipelineAsync(AuthorizationHandlerContext context, DefaultHttpContext httpContext)
         {
-
             return await CheckAuthorzieAsync(httpContext);
         }
         /// <summary>

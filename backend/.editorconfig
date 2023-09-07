@@ -1,4 +1,4 @@
-[*.{cs,vb}]
+ï»¿[*.{cs,vb}]
 end_of_line = crlf
 dotnet_style_qualification_for_field = false:silent
 dotnet_style_qualification_for_property = false:silent
@@ -34,7 +34,7 @@ dotnet_style_namespace_match_folder = true:suggestion
 dotnet_style_predefined_type_for_locals_parameters_members = true:silent
 dotnet_style_predefined_type_for_member_access = true:silent
 #add header template
-file_header_template = PurestAdmin\nAuthor:dym\nMIT License\nhttps://gitee.com/dymproject/purest
+file_header_template = MIT è®¸å¯è¯\nç‰ˆæƒ Â© 2023-present dym å’Œæ‰€æœ‰è´¡çŒ®è€…\nä½œè€…æˆ–ç‰ˆæƒæŒæœ‰äººéƒ½ä¸å¯¹ä»»ä½•ç´¢èµ”ã€æŸå®³æˆ–å…¶ä»–è´£ä»»è´Ÿè´£ï¼Œæ— è®ºè¿™äº›è¿½è´£æ¥è‡ªåˆåŒã€ä¾µæƒæˆ–å…¶å®ƒè¡Œä¸ºä¸­ï¼Œ\nè¿˜æ˜¯äº§ç”Ÿäºã€æºäºæˆ–æœ‰å…³äºæœ¬è½¯ä»¶ä»¥åŠæœ¬è½¯ä»¶çš„ä½¿ç”¨æˆ–å…¶å®ƒå¤„ç½®ã€‚
 [*.cs]
 csharp_using_directive_placement = outside_namespace:silent
 csharp_style_expression_bodied_methods = false:silent
@@ -56,9 +56,9 @@ csharp_style_prefer_method_group_conversion = true:silent
 csharp_style_prefer_top_level_statements = true:silent
 csharp_prefer_static_local_function = true:suggestion
 [*.cs]
-#### ÃüÃûÑùÊ½ ####
+#### å‘½åæ ·å¼ ####
 
-# ÃüÃû¹æÔò
+# å‘½åè§„åˆ™
 
 dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
 dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
@@ -72,7 +72,7 @@ dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = suggestion
 dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
 dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
 
-# ·ûºÅ¹æ·¶
+# ç¬¦å·è§„èŒƒ
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
@@ -86,7 +86,7 @@ dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, meth
 dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.non_field_members.required_modifiers = 
 
-# ÃüÃûÑùÊ½
+# å‘½åæ ·å¼
 
 dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix = 
@@ -128,49 +128,49 @@ csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 csharp_style_unused_value_expression_statement_preference = discard_variable:silent
 
 [*.vb]
-#### ÃüÃûÑùÊ½ ####
+#### å‘½åæ ·å¼ ####
 
-# ÃüÃû¹æÔò
+# å‘½åè§„åˆ™
 
-dotnet_naming_rule.interface_should_be_ÒÔ_i_¿ªÊ¼.severity = suggestion
-dotnet_naming_rule.interface_should_be_ÒÔ_i_¿ªÊ¼.symbols = interface
-dotnet_naming_rule.interface_should_be_ÒÔ_i_¿ªÊ¼.style = ÒÔ_i_¿ªÊ¼
+dotnet_naming_rule.interface_should_be_ä»¥_i_å¼€å§‹.severity = suggestion
+dotnet_naming_rule.interface_should_be_ä»¥_i_å¼€å§‹.symbols = interface
+dotnet_naming_rule.interface_should_be_ä»¥_i_å¼€å§‹.style = ä»¥_i_å¼€å§‹
 
-dotnet_naming_rule.ÀàĞÍ_should_be_ÅÁË¹¿¨Æ´Ğ´·¨.severity = suggestion
-dotnet_naming_rule.ÀàĞÍ_should_be_ÅÁË¹¿¨Æ´Ğ´·¨.symbols = ÀàĞÍ
-dotnet_naming_rule.ÀàĞÍ_should_be_ÅÁË¹¿¨Æ´Ğ´·¨.style = ÅÁË¹¿¨Æ´Ğ´·¨
+dotnet_naming_rule.ç±»å‹_should_be_å¸•æ–¯å¡æ‹¼å†™æ³•.severity = suggestion
+dotnet_naming_rule.ç±»å‹_should_be_å¸•æ–¯å¡æ‹¼å†™æ³•.symbols = ç±»å‹
+dotnet_naming_rule.ç±»å‹_should_be_å¸•æ–¯å¡æ‹¼å†™æ³•.style = å¸•æ–¯å¡æ‹¼å†™æ³•
 
-dotnet_naming_rule.·Ç×Ö¶Î³ÉÔ±_should_be_ÅÁË¹¿¨Æ´Ğ´·¨.severity = suggestion
-dotnet_naming_rule.·Ç×Ö¶Î³ÉÔ±_should_be_ÅÁË¹¿¨Æ´Ğ´·¨.symbols = ·Ç×Ö¶Î³ÉÔ±
-dotnet_naming_rule.·Ç×Ö¶Î³ÉÔ±_should_be_ÅÁË¹¿¨Æ´Ğ´·¨.style = ÅÁË¹¿¨Æ´Ğ´·¨
+dotnet_naming_rule.éå­—æ®µæˆå‘˜_should_be_å¸•æ–¯å¡æ‹¼å†™æ³•.severity = suggestion
+dotnet_naming_rule.éå­—æ®µæˆå‘˜_should_be_å¸•æ–¯å¡æ‹¼å†™æ³•.symbols = éå­—æ®µæˆå‘˜
+dotnet_naming_rule.éå­—æ®µæˆå‘˜_should_be_å¸•æ–¯å¡æ‹¼å†™æ³•.style = å¸•æ–¯å¡æ‹¼å†™æ³•
 
-# ·ûºÅ¹æ·¶
+# ç¬¦å·è§„èŒƒ
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
 dotnet_naming_symbols.interface.required_modifiers = 
 
-dotnet_naming_symbols.ÀàĞÍ.applicable_kinds = class, struct, interface, enum
-dotnet_naming_symbols.ÀàĞÍ.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
-dotnet_naming_symbols.ÀàĞÍ.required_modifiers = 
+dotnet_naming_symbols.ç±»å‹.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.ç±»å‹.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
+dotnet_naming_symbols.ç±»å‹.required_modifiers = 
 
-dotnet_naming_symbols.·Ç×Ö¶Î³ÉÔ±.applicable_kinds = property, event, method
-dotnet_naming_symbols.·Ç×Ö¶Î³ÉÔ±.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
-dotnet_naming_symbols.·Ç×Ö¶Î³ÉÔ±.required_modifiers = 
+dotnet_naming_symbols.éå­—æ®µæˆå‘˜.applicable_kinds = property, event, method
+dotnet_naming_symbols.éå­—æ®µæˆå‘˜.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
+dotnet_naming_symbols.éå­—æ®µæˆå‘˜.required_modifiers = 
 
-# ÃüÃûÑùÊ½
+# å‘½åæ ·å¼
 
-dotnet_naming_style.ÒÔ_i_¿ªÊ¼.required_prefix = I
-dotnet_naming_style.ÒÔ_i_¿ªÊ¼.required_suffix = 
-dotnet_naming_style.ÒÔ_i_¿ªÊ¼.word_separator = 
-dotnet_naming_style.ÒÔ_i_¿ªÊ¼.capitalization = pascal_case
+dotnet_naming_style.ä»¥_i_å¼€å§‹.required_prefix = I
+dotnet_naming_style.ä»¥_i_å¼€å§‹.required_suffix = 
+dotnet_naming_style.ä»¥_i_å¼€å§‹.word_separator = 
+dotnet_naming_style.ä»¥_i_å¼€å§‹.capitalization = pascal_case
 
-dotnet_naming_style.ÅÁË¹¿¨Æ´Ğ´·¨.required_prefix = 
-dotnet_naming_style.ÅÁË¹¿¨Æ´Ğ´·¨.required_suffix = 
-dotnet_naming_style.ÅÁË¹¿¨Æ´Ğ´·¨.word_separator = 
-dotnet_naming_style.ÅÁË¹¿¨Æ´Ğ´·¨.capitalization = pascal_case
+dotnet_naming_style.å¸•æ–¯å¡æ‹¼å†™æ³•.required_prefix = 
+dotnet_naming_style.å¸•æ–¯å¡æ‹¼å†™æ³•.required_suffix = 
+dotnet_naming_style.å¸•æ–¯å¡æ‹¼å†™æ³•.word_separator = 
+dotnet_naming_style.å¸•æ–¯å¡æ‹¼å†™æ³•.capitalization = pascal_case
 
-dotnet_naming_style.ÅÁË¹¿¨Æ´Ğ´·¨.required_prefix = 
-dotnet_naming_style.ÅÁË¹¿¨Æ´Ğ´·¨.required_suffix = 
-dotnet_naming_style.ÅÁË¹¿¨Æ´Ğ´·¨.word_separator = 
-dotnet_naming_style.ÅÁË¹¿¨Æ´Ğ´·¨.capitalization = pascal_case
+dotnet_naming_style.å¸•æ–¯å¡æ‹¼å†™æ³•.required_prefix = 
+dotnet_naming_style.å¸•æ–¯å¡æ‹¼å†™æ³•.required_suffix = 
+dotnet_naming_style.å¸•æ–¯å¡æ‹¼å†™æ³•.word_separator = 
+dotnet_naming_style.å¸•æ–¯å¡æ‹¼å†™æ³•.capitalization = pascal_case
