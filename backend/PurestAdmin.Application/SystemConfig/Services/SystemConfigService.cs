@@ -3,7 +3,7 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
-using FinalAdmin.Core.Entity;
+using PurestAdmin.Core.Entity;
 
 using PurestAdmin.Application.SystemConfig.Dtos;
 
@@ -35,7 +35,7 @@ public class SystemConfigService : ISystemConfigService, ITransient
     {
         var pagedList = await _db.Queryable<SystemConfigEntity>()
             .OrderByDescending(x => x.CreateTime)
-            .ToFinalPagedListAsync(input.PageIndex, input.PageSize);
+            .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<SystemConfigProfile>>();
     }
 

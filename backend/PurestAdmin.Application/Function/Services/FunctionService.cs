@@ -34,7 +34,7 @@ public class FunctionService : IFunctionService, ITransient
         var tree = input.Name.IsNullOrEmpty()
             ? await _functionRepository.AsQueryable().ToTreeAsync(x => x.Children, x => x.ParentId, null)
             : await _functionRepository.AsQueryable().Where(x => x.Name.Contains(input.Name)).ToListAsync();
-        return tree.Adapt<List<FunctionProfile>>().ToFinalPagedList(input.PageIndex, input.PageSize);
+        return tree.Adapt<List<FunctionProfile>>().ToPurestPagedList(input.PageIndex, input.PageSize);
     }
 
     /// <summary>

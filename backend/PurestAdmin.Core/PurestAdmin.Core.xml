@@ -258,6 +258,26 @@
             功能ID
             </summary>
         </member>
+        <member name="T:PurestAdmin.Core.Entity.SystemConfigEntity">
+            <summary>
+            系统配置表
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.SystemConfigEntity.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.SystemConfigEntity.ConfigCode">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.SystemConfigEntity.ConfigValue">
+            <summary>
+            值
+            </summary>
+        </member>
         <member name="T:PurestAdmin.Core.Entity.UserEntity">
             <summary>
             用户
@@ -487,7 +507,7 @@
             当前页集合
             </summary>
         </member>
-        <member name="M:PurestAdmin.Core.PagedListExtension.ToFinalPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+        <member name="M:PurestAdmin.Core.PagedListExtension.ToPurestPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
             <summary>
             分页拓展
             </summary>
@@ -496,7 +516,7 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:PurestAdmin.Core.PagedListExtension.ToFinalPagedList``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32)">
+        <member name="M:PurestAdmin.Core.PagedListExtension.ToPurestPagedList``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32)">
             <summary>
             分页拓展
             </summary>
@@ -547,26 +567,6 @@
             <param name="context"></param>
             <param name="resultContext"></param>
             <exception cref="T:System.NotImplementedException"></exception>
-        </member>
-        <member name="T:FinalAdmin.Core.Entity.SystemConfigEntity">
-            <summary>
-            系统配置表
-            </summary>
-        </member>
-        <member name="P:FinalAdmin.Core.Entity.SystemConfigEntity.Name">
-            <summary>
-            名称
-            </summary>
-        </member>
-        <member name="P:FinalAdmin.Core.Entity.SystemConfigEntity.ConfigCode">
-            <summary>
-            编码
-            </summary>
-        </member>
-        <member name="P:FinalAdmin.Core.Entity.SystemConfigEntity.ConfigValue">
-            <summary>
-            值
-            </summary>
         </member>
     </members>
 </doc>

@@ -68,7 +68,7 @@ namespace PurestAdmin.Web.Core
                 options.PayloadSerializerOptions.Converters.AddTimeOnlyConverters();   // TimeOnly
             });
             //signalR自定义Userid
-            services.AddSingleton<IUserIdProvider, FinalUserIdProvider>();
+            services.AddSingleton<IUserIdProvider, PurestUserIdProvider>();
 
             services.AddCorsAccessor();
 

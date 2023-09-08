@@ -34,7 +34,7 @@ public class RoleService : IRoleService, ITransient
         var pagedList = await _db.Queryable<RoleEntity>()
             .WhereIF(!input.Name.IsNullOrEmpty(), x => x.Name.Contains(input.Name))
             .OrderByDescending(x => x.CreateTime)
-            .ToFinalPagedListAsync(input.PageIndex, input.PageSize);
+            .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<RoleProfile>>();
     }
 

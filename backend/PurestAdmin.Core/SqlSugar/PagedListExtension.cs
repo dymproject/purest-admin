@@ -46,7 +46,7 @@ public static class PagedListExtension
     /// <param name="pageIndex"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public static async Task<PagedList<TResult>> ToFinalPagedListAsync<TResult>(this ISugarQueryable<TResult> queryable, int pageIndex, int pageSize)
+    public static async Task<PagedList<TResult>> ToPurestPagedListAsync<TResult>(this ISugarQueryable<TResult> queryable, int pageIndex, int pageSize)
     {
         RefAsync<int> total = 0;
         var items = await queryable.ToPageListAsync(pageIndex, pageSize, total);
@@ -67,7 +67,7 @@ public static class PagedListExtension
     /// <param name="pageIndex"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public static PagedList<TResult> ToFinalPagedList<TResult>(this IList<TResult> list, int pageIndex, int pageSize)
+    public static PagedList<TResult> ToPurestPagedList<TResult>(this IList<TResult> list, int pageIndex, int pageSize)
     {
         if (list == null)
         {

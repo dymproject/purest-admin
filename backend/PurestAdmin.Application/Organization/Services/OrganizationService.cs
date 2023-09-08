@@ -37,7 +37,7 @@ public class OrganizationService : IOrganizationService, ITransient
     {
         var treeList = await _authService.GetOrganizationTreeAsync();
         var children = treeList.First().Children;
-        return children.ToFinalPagedList(input.PageIndex, input.PageSize);
+        return children.ToPurestPagedList(input.PageIndex, input.PageSize);
     }
 
     /// <summary>

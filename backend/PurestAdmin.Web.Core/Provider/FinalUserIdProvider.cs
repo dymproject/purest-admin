@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.SignalR;
 using PurestAdmin.Core.Const;
 
 namespace PurestAdmin.Web.Core.Provider;
-public class FinalUserIdProvider : IUserIdProvider
+public class PurestUserIdProvider : IUserIdProvider
 {
     public virtual string GetUserId(HubConnectionContext connection)
     {

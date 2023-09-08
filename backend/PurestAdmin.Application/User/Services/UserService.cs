@@ -45,7 +45,7 @@ public class UserService : IUserService, ITransient
                 Role = r
             })
             .OrderByDescending(u => u.CreateTime)
-            .ToFinalPagedListAsync(input.PageIndex, input.PageSize);
+            .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<UserProfile>>();
     }
 

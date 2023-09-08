@@ -36,7 +36,7 @@ public class DictDataService : IDictDataService, ITransient
             .WhereIF(!input.Name.IsNullOrEmpty(), x => x.Name.Contains(input.Name.Trim()))
             .OrderByDescending(x => x.Sort)
             .OrderByDescending(x => x.CreateTime)
-            .ToFinalPagedListAsync(input.PageIndex, input.PageSize);
+            .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<DictDataProfile>>();
     }
 

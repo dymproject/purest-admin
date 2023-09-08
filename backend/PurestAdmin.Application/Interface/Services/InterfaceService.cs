@@ -34,7 +34,7 @@ public class InterfaceService : IInterfaceService, ITransient
         if (!input.Path.IsNullOrEmpty())
         {
             var list = await _db.Queryable<InterfaceEntity>().Where(x => x.Path.Contains(input.Path)).ToListAsync();
-            var pagedList = await _db.Queryable<InterfaceGroupEntity>().Where(x => list.Select(o => o.GroupId).Contains(x.Id)).ToFinalPagedListAsync(input.PageIndex, input.PageSize);
+            var pagedList = await _db.Queryable<InterfaceGroupEntity>().Where(x => list.Select(o => o.GroupId).Contains(x.Id)).ToPurestPagedListAsync(input.PageIndex, input.PageSize);
             var result = pagedList.Adapt<PagedList<InterfaceGroupProfile>>();
             result.Items.ToList().ForEach(x =>
             {
@@ -44,7 +44,7 @@ public class InterfaceService : IInterfaceService, ITransient
         }
         var groups = await _db.Queryable<InterfaceGroupEntity>()
             .WhereIF(!input.GroupName.IsNullOrEmpty(), x => x.Name.Contains(input.GroupName))
-            .Includes(x => x.Interfaces).ToFinalPagedListAsync(input.PageIndex, input.PageSize);
+            .Includes(x => x.Interfaces).ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return groups.Adapt<PagedList<InterfaceGroupProfile>>();
     }
 
