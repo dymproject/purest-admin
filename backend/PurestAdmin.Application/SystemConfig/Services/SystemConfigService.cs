@@ -34,6 +34,8 @@ public class SystemConfigService : ISystemConfigService, ITransient
     public async Task<PagedList<SystemConfigProfile>> GetPagedListAsync(GetPagedListInput input)
     {
         var pagedList = await _db.Queryable<SystemConfigEntity>()
+            .WhereIF(!input.Name.IsNullOrEmpty(), x => x.Name.Contains(input.Name))
+            .WhereIF(!input.ConfigCode.IsNullOrEmpty(), x => x.ConfigCode.Contains(input.ConfigCode))
             .OrderByDescending(x => x.CreateTime)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<SystemConfigProfile>>();

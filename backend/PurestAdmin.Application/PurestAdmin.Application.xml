@@ -1673,6 +1673,16 @@
             系统配置表查询
             </summary>
         </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.GetPagedListInput.Name">
+            <summary>
+            配置名称
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.SystemConfig.Dtos.GetPagedListInput.ConfigCode">
+            <summary>
+            配置编码
+            </summary>
+        </member>
         <member name="T:PurestAdmin.Application.SystemConfig.Dtos.SystemConfigProfile">
             <summary>
             系统配置表详情
