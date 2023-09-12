@@ -6,6 +6,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using Furion;
 using Furion.Authorization;
 using Furion.UnifyResult;
 
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using PurestAdmin.Core.Multiplex;
 
@@ -31,6 +33,10 @@ namespace PurestAdmin.Web.Core
         /// <returns></returns>
         private static async Task<bool> CheckAuthorzieAsync(DefaultHttpContext httpContext)
         {
+            if (App.HostEnvironment.IsDevelopment())
+            {
+                return true;
+            }
             if (httpContext.Request.Method.ToLower() == "delete")//&& App.HostEnvironment.IsStaging())
             {
                 UnifyContext.Fill("演示环境，禁止删除！");

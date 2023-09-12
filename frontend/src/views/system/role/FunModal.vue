@@ -48,7 +48,6 @@ const selectChangeEvent: VxeTableEvents.CheckboxChange<any> = ({
   row
 }) => {
   setTableChecked(checked, row);
-  console.log(row);
   row.checked = false;
   const records = $table.getCheckboxRecords();
   checkRowKeys.value = records.map(item => item.id);

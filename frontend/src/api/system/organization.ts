@@ -1,10 +1,23 @@
 import { http } from "@/utils/http";
 
-type Result = {
-  success: boolean;
-  data: Array<any>;
+export function getPageList(params) {
+  return http.request("get", "/organization/page", { params });
+}
+
+export const submitData = (params: any) => {
+  return http.request(
+    params.id ? "put" : "post",
+    `/organization/${params.id ?? ""}`,
+    {
+      data: params
+    }
+  );
 };
 
-export const getAsyncRoutes = () => {
-  return http.request<Result>("get", "/getAsyncRoutes");
+export const getSingle = (id: number) => {
+  return http.request("get", `/organization/${id}`);
+};
+
+export const deleteData = (id: number) => {
+  return http.request("delete", `/organization/${id}`);
 };
