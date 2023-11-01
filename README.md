@@ -32,12 +32,12 @@ http://dev.purestadmin.com:8015  admin/123456
 - 3、角色管理
 - 4、功能管理
 - 5、组织机构
-- 6、字典管理（未完成）
+- 6、字典管理
 - 7、配置管理
 - 8、文件管理（未完成）
 
 
-项目的具体思路已经体现了。其他的都是基本的crud,接下来会完成，有兴趣可以pr哦
+项目的具体思路已经体现了。有兴趣可以pr哦
 
 #### 未来规划
 
@@ -49,6 +49,9 @@ http://dev.purestadmin.com:8015  admin/123456
 
 | ![用户管理](https://foruda.gitee.com/images/1694076900312622994/8793fa24_1438846.png "屏幕截图")  | ![角色管理](https://foruda.gitee.com/images/1694076921535694292/7210560b_1438846.png "屏幕截图")  | ![功能管理](https://foruda.gitee.com/images/1694076933911129502/a26b87b3_1438846.png "屏幕截图")  |
 |---|---|---|
+| ![组织机构](frontend/src/assets/organization.png) | ![字典管理](frontend/src/assets/dict.png) | ![系统配置管理](frontend/src/assets/systemconfig.png) |
+|---|---|---|
+
 
 #### 如何使用
 
