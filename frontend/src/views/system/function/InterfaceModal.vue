@@ -198,6 +198,7 @@ defineExpose({ showInterface });
             ref="reVxeGridRef"
             :max-height="580"
             :treeConfig="{ rowField: 'id', children: 'interfaces' }"
+            :customToolbarActions="[]"
             :searchParams="formData"
             :showOperateColumn="false"
             :customTableActions="customTableActions"

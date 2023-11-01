@@ -1,8 +1,7 @@
 <script lang="tsx" setup>
-import { useUserStoreHook } from "@/store/modules/user";
 import { h, onMounted, reactive, ref } from "vue";
 import { VxeButton, VxeGridPropTypes, VxePagerEvents } from "vxe-table";
-const currentUser = useUserStoreHook().getCurrentUser;
+import { hasAuth } from "@/router/utils";
 const props = defineProps<{
   rowKey?: string;
   maxHeight?: number;
@@ -23,7 +22,6 @@ const emits = defineEmits<{
   (e: "handleView", data: Recordable): void;
 }>();
 //权限控制
-const permissions = currentUser.permissions as string[];
 const actionColumns: VxeGridPropTypes.Columns<any> =
   props.customTableActions ?? [
     {
@@ -34,7 +32,7 @@ const actionColumns: VxeGridPropTypes.Columns<any> =
         props.operateColumnWidth ?? Object.keys(props.functions).length * 60,
       slots: {
         default: ({ row }) => [
-          permissions.includes(props.functions["view"])
+          hasAuth(props.functions["view"])
             ? h(VxeButton, {
                 status: "error",
                 type: "text",
@@ -45,7 +43,7 @@ const actionColumns: VxeGridPropTypes.Columns<any> =
                 }
               })
             : null,
-          permissions.includes(props.functions["edit"])
+          hasAuth(props.functions["edit"])
             ? h(VxeButton, {
                 status: "primary",
                 icon: "vxe-icon-edit",
@@ -56,7 +54,7 @@ const actionColumns: VxeGridPropTypes.Columns<any> =
                 }
               })
             : null,
-          permissions.includes(props.functions["delete"])
+          hasAuth(props.functions["delete"])
             ? h(VxeButton, {
                 status: "danger",
                 type: "text",
@@ -79,12 +77,14 @@ const pager = reactive({
   pageSize: 10
 });
 
-const toolbarConfig: VxeGridPropTypes.ToolbarConfig = props.customTableActions
+const toolbarConfig: VxeGridPropTypes.ToolbarConfig = props.customToolbarActions
+  ? null
+  : props.functions
   ? null
   : {
       slots: {
         buttons: () => [
-          permissions.includes(props.functions["add"])
+          hasAuth(props.functions["add"])
             ? h(VxeButton, {
                 icon: "vxe-icon-add",
                 status: "primary",

@@ -42,13 +42,15 @@
   position: relative;
   display: flex;
   align-items: center;
-  //width: 100%;
+
   margin: 3px;
   font-size: 14px;
   color: var(--el-text-color-primary);
-  //background: #fff;
-  //box-shadow: 0 0 1px #888;
-
+  /*
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 0 1px #888;
+  */
   .scroll-item {
     position: relative;
     display: inline-block;
