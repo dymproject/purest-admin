@@ -21,6 +21,6 @@ global using Microsoft.AspNetCore.Mvc;
 global using PurestAdmin.Core;
 global using PurestAdmin.Core.Consts;
 global using PurestAdmin.Core.Entity;
-global using PurestAdmin.Core.SqlSugar;
+global using PurestAdmin.Core.Extensions.SqlSugar;
 
 global using SqlSugar;

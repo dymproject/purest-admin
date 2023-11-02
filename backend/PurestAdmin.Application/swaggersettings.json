@@ -5,7 +5,19 @@
     "GroupOpenApiInfos": [
       {
         "Group": "system",
-        "Title": "系统管理"
+        "Title": "系统管理",
+        "Description": "系统管理模块",
+        "Version": "1.0",
+        "TermsOfService": "",
+        "Contact": {
+          "Name": "阿丁",
+          "Url": "https://gitee.com/dymproject/purest-admin",
+          "Email": "bolixinde@qq.com"
+        },
+        "License": {
+          "Name": "MIT",
+          "Url": "https://gitee.com/dymproject/purest-admin/blob/master/LICENSE"
+        }
       }
     ]
   }

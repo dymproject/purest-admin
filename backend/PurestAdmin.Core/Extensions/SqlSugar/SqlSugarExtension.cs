@@ -14,7 +14,7 @@ using PurestAdmin.Core.Entity;
 
 using Yitter.IdGenerator;
 
-namespace PurestAdmin.Core.SqlSugar;
+namespace PurestAdmin.Core.Extensions.SqlSugar;
 public static class SqlSugarExtension
 {
     public static IServiceCollection AddSqlSugarService(this IServiceCollection services)

@@ -39,6 +39,36 @@
             组织机构Id
             </summary>
         </member>
+        <member name="P:PurestAdmin.Core.Entity.BaseEntity.Id">
+             <summary>
+             Id
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.BaseEntity.CreateBy">
+             <summary>
+             创建人
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.BaseEntity.CreateTime">
+             <summary>
+             创建时间
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.BaseEntity.UpdateBy">
+             <summary>
+             修改人
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.BaseEntity.UpdateTime">
+             <summary>
+             修改时间
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Entity.BaseEntity.Remark">
+             <summary>
+             备注 
+            </summary>
+        </member>
         <member name="T:PurestAdmin.Core.Entity.DictCategoryEntity">
             <summary>
             字典分类
@@ -348,6 +378,108 @@
             记录不存在
             </summary>
         </member>
+        <member name="M:PurestAdmin.Core.Extensions.Log.LogExtensions.AddPurestAdminLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            引入内置日志组件
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Core.Extensions.SnowFlake.SnowflakeExtensions.AddSnowflakeId(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            引入雪花Id
+            </summary>
+        </member>
+        <member name="T:PurestAdmin.Core.Extensions.SqlSugar.PagedList`1">
+            <summary>
+            分页泛型集合
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:PurestAdmin.Core.Extensions.SqlSugar.PagedList`1.PageIndex">
+            <summary>
+            页码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Extensions.SqlSugar.PagedList`1.PageSize">
+            <summary>
+            页容量
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Extensions.SqlSugar.PagedList`1.Total">
+            <summary>
+            总条数
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Extensions.SqlSugar.PagedList`1.PageCount">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Core.Extensions.SqlSugar.PagedList`1.Items">
+            <summary>
+            当前页集合
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Core.Extensions.SqlSugar.PagedListExtension.ToPurestPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            分页拓展
+            </summary>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Core.Extensions.SqlSugar.PagedListExtension.ToPurestPagedList``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32)">
+            <summary>
+            分页拓展
+            </summary>
+            <param name="list"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="F:PurestAdmin.Core.Extensions.SqlSugar.SqlSugarUnitOfWork._sqlSugarClient">
+            <summary>
+            SqlSugar 对象
+            </summary>
+        </member>
+        <member name="M:PurestAdmin.Core.Extensions.SqlSugar.SqlSugarUnitOfWork.#ctor(SqlSugar.ISqlSugarClient)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sqlSugarClient"></param>
+        </member>
+        <member name="M:PurestAdmin.Core.Extensions.SqlSugar.SqlSugarUnitOfWork.BeginTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
+            <summary>
+            开启工作单元处理
+            </summary>
+            <param name="context"></param>
+            <param name="unitOfWork"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:PurestAdmin.Core.Extensions.SqlSugar.SqlSugarUnitOfWork.CommitTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
+            <summary>
+            提交工作单元处理
+            </summary>
+            <param name="resultContext"></param>
+            <param name="unitOfWork"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:PurestAdmin.Core.Extensions.SqlSugar.SqlSugarUnitOfWork.RollbackTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
+            <summary>
+            回滚工作单元处理
+            </summary>
+            <param name="resultContext"></param>
+            <param name="unitOfWork"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:PurestAdmin.Core.Extensions.SqlSugar.SqlSugarUnitOfWork.OnCompleted(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Microsoft.AspNetCore.Mvc.Filters.FilterContext)">
+            <summary>
+            执行完毕（无论成功失败）
+            </summary>
+            <param name="context"></param>
+            <param name="resultContext"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
         <member name="T:PurestAdmin.Core.Job.DataSeedJob">
             <summary>
             种子数据初始化job
@@ -408,7 +540,7 @@
             缓存
             </summary>
         </member>
-        <member name="M:PurestAdmin.Core.Multiplex.UserManager.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.UserEntity},Microsoft.Extensions.Caching.Memory.IMemoryCache)">
+        <member name="M:PurestAdmin.Core.Multiplex.UserManager.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,SqlSugar.ISqlSugarClient,PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.UserEntity},Microsoft.Extensions.Caching.Memory.IMemoryCache)">
             <summary>
             构造函数
             </summary>
@@ -440,133 +572,6 @@
             </summary>
             <param name="userId"></param>
             <returns></returns>
-        </member>
-        <member name="M:PurestAdmin.Core.SnowFlake.SnowflakeExtensions.AddSnowflakeId(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            引入雪花Id
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.BaseEntity.Id">
-             <summary>
-             Id
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.BaseEntity.CreateBy">
-             <summary>
-             创建人
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.BaseEntity.CreateTime">
-             <summary>
-             创建时间
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.BaseEntity.UpdateBy">
-             <summary>
-             修改人
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.BaseEntity.UpdateTime">
-             <summary>
-             修改时间
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.BaseEntity.Remark">
-             <summary>
-             备注 
-            </summary>
-        </member>
-        <member name="T:PurestAdmin.Core.PagedList`1">
-            <summary>
-            分页泛型集合
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:PurestAdmin.Core.PagedList`1.PageIndex">
-            <summary>
-            页码
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.PagedList`1.PageSize">
-            <summary>
-            页容量
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.PagedList`1.Total">
-            <summary>
-            总条数
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.PagedList`1.PageCount">
-            <summary>
-            总页数
-            </summary>
-        </member>
-        <member name="P:PurestAdmin.Core.PagedList`1.Items">
-            <summary>
-            当前页集合
-            </summary>
-        </member>
-        <member name="M:PurestAdmin.Core.PagedListExtension.ToPurestPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
-            <summary>
-            分页拓展
-            </summary>
-            <param name="queryable"></param>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PurestAdmin.Core.PagedListExtension.ToPurestPagedList``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32)">
-            <summary>
-            分页拓展
-            </summary>
-            <param name="list"></param>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
-            <returns></returns>
-        </member>
-        <member name="F:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork._sqlSugarClient">
-            <summary>
-            SqlSugar 对象
-            </summary>
-        </member>
-        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.#ctor(SqlSugar.ISqlSugarClient)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="sqlSugarClient"></param>
-        </member>
-        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.BeginTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
-            <summary>
-            开启工作单元处理
-            </summary>
-            <param name="context"></param>
-            <param name="unitOfWork"></param>
-            <exception cref="T:System.NotImplementedException"></exception>
-        </member>
-        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.CommitTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
-            <summary>
-            提交工作单元处理
-            </summary>
-            <param name="resultContext"></param>
-            <param name="unitOfWork"></param>
-            <exception cref="T:System.NotImplementedException"></exception>
-        </member>
-        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.RollbackTransaction(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Furion.DatabaseAccessor.UnitOfWorkAttribute)">
-            <summary>
-            回滚工作单元处理
-            </summary>
-            <param name="resultContext"></param>
-            <param name="unitOfWork"></param>
-            <exception cref="T:System.NotImplementedException"></exception>
-        </member>
-        <member name="M:PurestAdmin.Core.SqlSugar.SqlSugarUnitOfWork.OnCompleted(Microsoft.AspNetCore.Mvc.Filters.FilterContext,Microsoft.AspNetCore.Mvc.Filters.FilterContext)">
-            <summary>
-            执行完毕（无论成功失败）
-            </summary>
-            <param name="context"></param>
-            <param name="resultContext"></param>
-            <exception cref="T:System.NotImplementedException"></exception>
         </member>
     </members>
 </doc>

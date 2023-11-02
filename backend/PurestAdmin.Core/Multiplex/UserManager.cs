@@ -10,7 +10,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 using PurestAdmin.Core.Const;
 using PurestAdmin.Core.Entity;
-using PurestAdmin.Core.SqlSugar;
+using PurestAdmin.Core.Extensions.SqlSugar;
 
 namespace PurestAdmin.Core.Multiplex
 {

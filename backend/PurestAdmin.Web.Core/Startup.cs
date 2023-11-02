@@ -72,7 +72,7 @@ namespace PurestAdmin.Web.Core
 
             services.AddCorsAccessor();
 
-            services.AddControllersWithViews(options =>
+            services.AddControllers(options =>
             {
                 options.Filters.Add<RequestAsyncActionFilter>();
             }).AddNewtonsoftJson(options =>
@@ -115,7 +115,10 @@ namespace PurestAdmin.Web.Core
             app.UseUnifyResultStatusCodes();
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+
+            app.UseScheduleUI();
 
             app.UseRouting();
 
@@ -124,14 +127,12 @@ namespace PurestAdmin.Web.Core
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseInject();
+            app.UseInject(string.Empty);
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHubs();
-                endpoints.MapControllerRoute(
-                   name: "default",
-                   pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }

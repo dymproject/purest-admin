@@ -605,7 +605,7 @@
             字典分类服务
             </summary>
         </member>
-        <member name="M:PurestAdmin.Application.DictCategory.Services.DictCategoryService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.DictCategoryEntity})">
+        <member name="M:PurestAdmin.Application.DictCategory.Services.DictCategoryService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.DictCategoryEntity})">
             <summary>
             构造函数
             </summary>
@@ -753,7 +753,7 @@
             字典数据服务
             </summary>
         </member>
-        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.DictDataEntity})">
+        <member name="M:PurestAdmin.Application.DictData.Services.DictDataService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.DictDataEntity})">
             <summary>
             构造函数
             </summary>
@@ -865,7 +865,7 @@
             文件记录仓储
             </summary>
         </member>
-        <member name="M:PurestAdmin.Application.File.Services.FileService.#ctor(PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.FileRecordEntity})">
+        <member name="M:PurestAdmin.Application.File.Services.FileService.#ctor(PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.FileRecordEntity})">
             <summary>
             构造函数
             </summary>
@@ -1052,7 +1052,7 @@
             功能接口实现
             </summary>
         </member>
-        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.FunctionEntity})">
+        <member name="M:PurestAdmin.Application.Function.Services.FunctionService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.FunctionEntity})">
             <summary>
             构造函数
             </summary>
@@ -1401,7 +1401,7 @@
             组织机构服务
             </summary>
         </member>
-        <member name="M:PurestAdmin.Application.Organization.Services.OrganizationService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.OrganizationEntity},PurestAdmin.Application.Auth.Services.IAuthService)">
+        <member name="M:PurestAdmin.Application.Organization.Services.OrganizationService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.OrganizationEntity},PurestAdmin.Application.Auth.Services.IAuthService)">
             <summary>
             构造函数
             </summary>
@@ -1580,7 +1580,7 @@
             角色服务
             </summary>
         </member>
-        <member name="M:PurestAdmin.Application.Role.Services.RoleService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.RoleEntity})">
+        <member name="M:PurestAdmin.Application.Role.Services.RoleService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.RoleEntity})">
             <summary>
             构造函数
             </summary>
@@ -1748,7 +1748,7 @@
             系统配置表服务
             </summary>
         </member>
-        <member name="M:PurestAdmin.Application.SystemConfig.Services.SystemConfigService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.SystemConfigEntity})">
+        <member name="M:PurestAdmin.Application.SystemConfig.Services.SystemConfigService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.SystemConfigEntity})">
             <summary>
             构造函数
             </summary>
@@ -2066,7 +2066,7 @@
             用户服务
             </summary>
         </member>
-        <member name="M:PurestAdmin.Application.UserService.UserService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.SqlSugar.Repository{PurestAdmin.Core.Entity.UserEntity})">
+        <member name="M:PurestAdmin.Application.UserService.UserService.#ctor(SqlSugar.ISqlSugarClient,PurestAdmin.Core.Extensions.SqlSugar.Repository{PurestAdmin.Core.Entity.UserEntity})">
             <summary>
             构造函数
             </summary>

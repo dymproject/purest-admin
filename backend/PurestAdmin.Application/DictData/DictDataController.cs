@@ -6,8 +6,6 @@
 using PurestAdmin.Application.DictData.Dtos;
 using PurestAdmin.Application.DictData.Services;
 
-
-
 namespace PurestAdmin.Facade.Controllers;
 /// <summary>
 /// 字典数据接口

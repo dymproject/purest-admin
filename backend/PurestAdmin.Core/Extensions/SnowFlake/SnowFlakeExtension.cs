@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 
 using Yitter.IdGenerator;
 
-namespace PurestAdmin.Core.SnowFlake;
+namespace PurestAdmin.Core.Extensions.SnowFlake;
 public static class SnowflakeExtensions
 {
     /// <summary>

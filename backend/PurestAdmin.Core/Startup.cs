@@ -5,8 +5,9 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-using PurestAdmin.Core.SnowFlake;
-using PurestAdmin.Core.SqlSugar;
+using PurestAdmin.Core.Extensions.Log;
+using PurestAdmin.Core.Extensions.SnowFlake;
+using PurestAdmin.Core.Extensions.SqlSugar;
 
 namespace PurestAdmin.Core;
 [AppStartup(888)]
@@ -33,5 +34,7 @@ public class Startup : AppStartup
 
             //options.AddJob(typeof(DataSeedJob).ScanToBuilder());
         });
+        //日志
+        services.AddPurestAdminLogging();
     }
 }

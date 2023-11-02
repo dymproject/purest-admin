@@ -7,7 +7,7 @@ using Furion.DatabaseAccessor;
 
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace PurestAdmin.Core.SqlSugar;
+namespace PurestAdmin.Core.Extensions.SqlSugar;
 public class SqlSugarUnitOfWork : IUnitOfWork
 {
     /// <summary>

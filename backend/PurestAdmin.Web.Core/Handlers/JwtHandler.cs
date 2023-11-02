@@ -37,7 +37,7 @@ namespace PurestAdmin.Web.Core
             {
                 return true;
             }
-            if (httpContext.Request.Method.ToLower() == "delete")//&& App.HostEnvironment.IsStaging())
+            if (httpContext.Request.Method.Equals("delete", System.StringComparison.CurrentCultureIgnoreCase))//&& App.HostEnvironment.IsStaging())
             {
                 UnifyContext.Fill("演示环境，禁止删除！");
                 return false;
@@ -54,7 +54,7 @@ namespace PurestAdmin.Web.Core
             var interfaces = await userManager.GetInterfacesAsync(userManager.UserId);
 
             var pattern = ((RouteEndpoint)endPoint).RoutePattern;
-            return interfaces.Any(x => x.Path == $"/{pattern.RawText}" && x.RequestMethod.ToLower() == httpContext.Request.Method.ToLower());
+            return interfaces.Any(x => x.Path == $"/{pattern.RawText}" && x.RequestMethod.Equals(httpContext.Request.Method, System.StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

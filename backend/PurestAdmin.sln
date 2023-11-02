@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.Core", "PurestA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.Web.Core", "PurestAdmin.Web.Core\PurestAdmin.Web.Core.csproj", "{93139A70-6980-40A7-BD81-6DB70FFEB9DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.Web.Entry", "PurestAdmin.Web.Entry\PurestAdmin.Web.Entry.csproj", "{6B0D9DED-6185-4E6A-9BDD-B20A14C37588}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.Web.Entry", "PurestAdmin.Web.Entry\PurestAdmin.Web.Entry.csproj", "{F84F45E5-5EE2-4EB9-90B4-ACC98FBF8E31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{93139A70-6980-40A7-BD81-6DB70FFEB9DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93139A70-6980-40A7-BD81-6DB70FFEB9DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93139A70-6980-40A7-BD81-6DB70FFEB9DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B0D9DED-6185-4E6A-9BDD-B20A14C37588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B0D9DED-6185-4E6A-9BDD-B20A14C37588}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B0D9DED-6185-4E6A-9BDD-B20A14C37588}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B0D9DED-6185-4E6A-9BDD-B20A14C37588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F84F45E5-5EE2-4EB9-90B4-ACC98FBF8E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F84F45E5-5EE2-4EB9-90B4-ACC98FBF8E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F84F45E5-5EE2-4EB9-90B4-ACC98FBF8E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F84F45E5-5EE2-4EB9-90B4-ACC98FBF8E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
