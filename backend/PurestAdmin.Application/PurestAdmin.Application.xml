@@ -27,9 +27,15 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:PurestAdmin.Facade.Controllers.AuthController.GetUserInfoAsync">
+        <member name="M:PurestAdmin.Facade.Controllers.AuthController.GetUserInfoAsync(System.String)">
             <summary>
             获取当前用户权限信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Facade.Controllers.AuthController.PutUserInfoAsync(PurestAdmin.Application.Auth.Dtos.UserInfo)">
+            <summary>
+            修改当前用户信息
             </summary>
             <returns></returns>
         </member>
@@ -464,14 +470,29 @@
             权限集合
             </summary>
         </member>
-        <member name="T:PurestAdmin.Application.Auth.Dtos.UserInfoOutput">
+        <member name="T:PurestAdmin.Application.Auth.Dtos.UserInfo">
             <summary>
             用户信息输出
             </summary>
         </member>
-        <member name="P:PurestAdmin.Application.Auth.Dtos.UserInfoOutput.Permissions">
+        <member name="P:PurestAdmin.Application.Auth.Dtos.UserInfo.Password">
             <summary>
-            权限集合
+            密码
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.UserInfo.Name">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.UserInfo.Telephone">
+            <summary>
+            电话
+            </summary>
+        </member>
+        <member name="P:PurestAdmin.Application.Auth.Dtos.UserInfo.Email">
+            <summary>
+            邮箱
             </summary>
         </member>
         <member name="T:PurestAdmin.Application.Auth.Services.AuthService">
@@ -509,9 +530,15 @@
             <param name="input"></param>
             <returns></returns>    
         </member>
-        <member name="M:PurestAdmin.Application.Auth.Services.AuthService.GetUserInfoAsync">
+        <member name="M:PurestAdmin.Application.Auth.Services.AuthService.GetUserInfoAsync(System.String)">
             <summary>
-            获取当前用户权限信息
+            获取当前用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.AuthService.PutUserInfoAsync(PurestAdmin.Application.Auth.Dtos.UserInfo)">
+            <summary>
+            修改当前用户信息
             </summary>
             <returns></returns>
         </member>
@@ -533,9 +560,15 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:PurestAdmin.Application.Auth.Services.IAuthService.GetUserInfoAsync">
+        <member name="M:PurestAdmin.Application.Auth.Services.IAuthService.GetUserInfoAsync(System.String)">
             <summary>
-            获取当前用户权限信息
+            获取当前用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PurestAdmin.Application.Auth.Services.IAuthService.PutUserInfoAsync(PurestAdmin.Application.Auth.Dtos.UserInfo)">
+            <summary>
+            修改当前用户信息
             </summary>
             <returns></returns>
         </member>

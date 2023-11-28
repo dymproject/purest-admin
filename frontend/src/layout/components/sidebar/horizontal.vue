@@ -8,7 +8,7 @@ import { useNav } from "@/layout/hooks/useNav";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
-
+import Edit from "@iconify-icons/ri/edit-2-line";
 const menuRef = ref();
 
 const {
@@ -19,13 +19,13 @@ const {
   onPanel,
   username,
   userAvatar,
-  avatarsStyle
+  avatarsStyle,
+  changePassword
 } = useNav();
 
 const defaultActive = computed(() =>
   !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
 );
-
 nextTick(() => {
   menuRef.value?.handleResize();
 });
@@ -67,6 +67,10 @@ nextTick(() => {
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
+            <el-dropdown-item @click="changePassword">
+              <IconifyIconOffline :icon="Edit" style="margin: 5px" />
+              个人信息
+            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"

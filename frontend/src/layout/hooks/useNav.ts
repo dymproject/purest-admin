@@ -107,6 +107,10 @@ export function useNav() {
     return remainingPaths.includes(path);
   }
 
+  function changePassword() {
+    router.replace(`/userprofile`);
+  }
+
   return {
     route,
     title,
@@ -128,6 +132,7 @@ export function useNav() {
     username,
     userAvatar,
     avatarsStyle,
-    tooltipEffect
+    tooltipEffect,
+    changePassword
   };
 }

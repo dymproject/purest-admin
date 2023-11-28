@@ -28,6 +28,7 @@ const actionColumns: VxeGridPropTypes.Columns<any> =
       title: "操作",
       field: "operate",
       align: "center",
+      fixed: `right`,
       width:
         props.operateColumnWidth ?? Object.keys(props.functions).length * 60,
       slots: {
@@ -77,27 +78,24 @@ const pager = reactive({
   pageSize: 10
 });
 
-const toolbarConfig: VxeGridPropTypes.ToolbarConfig = props.customToolbarActions
-  ? null
-  : props.functions
-  ? null
-  : {
-      slots: {
-        buttons: () => [
-          hasAuth(props.functions["add"])
-            ? h(VxeButton, {
-                icon: "vxe-icon-add",
-                status: "primary",
-                content: "添加数据",
-                onClick() {
-                  emits(`handleAdd`);
-                }
-              })
-            : null
-        ]
-      },
-      custom: true
-    };
+const toolbarConfig: VxeGridPropTypes.ToolbarConfig =
+  props.customToolbarActions ?? {
+    slots: {
+      buttons: () => [
+        hasAuth(props.functions["add"])
+          ? h(VxeButton, {
+              icon: "vxe-icon-add",
+              status: "primary",
+              content: "添加数据",
+              onClick() {
+                emits(`handleAdd`);
+              }
+            })
+          : null
+      ]
+    },
+    custom: true
+  };
 
 const treeOption = props.treeConfig ?? {};
 
@@ -115,10 +113,10 @@ const loadData = async () => {
   });
 };
 const handlePageChange: VxePagerEvents.PageChange = ({
-  pageIndex,
+  currentPage,
   pageSize
 }) => {
-  pager.pageIndex = pageIndex;
+  pager.pageIndex = currentPage;
   pager.pageSize = pageSize;
   loadData();
 };

@@ -22,6 +22,15 @@ export default {
         title: "首页",
         showLink: VITE_HIDE_HOME === "true" ? false : true
       }
+    },
+    {
+      path: "/userprofile",
+      name: "UserProfile",
+      component: () => import("@/views/welcome/UserProfile.vue"),
+      meta: {
+        title: "个人信息",
+        showLink: false
+      }
     }
   ]
 } as RouteConfigsTable;

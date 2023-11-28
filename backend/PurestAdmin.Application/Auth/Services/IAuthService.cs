@@ -19,10 +19,15 @@ public interface IAuthService
     /// <returns></returns>
     Task<LoginOutput> LoginAsync([Required] LoginInput input);
     /// <summary>
-    /// 获取当前用户权限信息
+    /// 获取当前用户信息
     /// </summary>
     /// <returns></returns>
-    Task<UserInfoOutput> GetUserInfoAsync();
+    Task<UserInfo> GetUserInfoAsync(string password);
+    /// <summary>
+    /// 修改当前用户信息
+    /// </summary>
+    /// <returns></returns>
+    Task PutUserInfoAsync(UserInfo input);
     /// <summary>
     /// 获取当前用户组织机构树
     /// </summary>

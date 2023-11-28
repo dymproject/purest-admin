@@ -71,14 +71,14 @@ const formRules = ref<VxeFormPropTypes.Rules>({
 });
 
 const showAddModal = () => {
-  showModal(`添加功能`);
+  showModal(`添加字典`);
   formData.value = defaultFormData();
   nextTick(() => {
     formRef.value.clearValidate();
   });
 };
 const showEditModal = (record: Recordable) => {
-  showModal(`编辑功能->${record.name}`);
+  showModal(`编辑字典->${record.name}`);
   nextTick(() => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {
@@ -87,7 +87,7 @@ const showEditModal = (record: Recordable) => {
   });
 };
 const showViewModal = (record: Recordable) => {
-  showModal(`查看功能->${record.name}`, false);
+  showModal(`查看字典->${record.name}`, false);
   nextTick(() => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {

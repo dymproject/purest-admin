@@ -141,6 +141,7 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
     height="400"
     showFooter
     v-model="modalOptions.modalValue"
+    :destroy-on-close="true"
     :title="modalOptions.modalTitle"
   >
     <template #default>

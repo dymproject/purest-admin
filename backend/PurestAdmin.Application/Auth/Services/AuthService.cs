@@ -77,27 +77,33 @@ public class AuthService : IAuthService, ITransient
     }
 
     /// <summary>
-    /// 获取当前用户权限信息
+    /// 获取当前用户信息
     /// </summary>
     /// <returns></returns>
-    public async Task<UserInfoOutput> GetUserInfoAsync()
+    public async Task<UserInfo> GetUserInfoAsync(string password)
     {
         var claimUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimConst.USERID) ?? throw Oops.Oh("未找到有效的用户信息，请重新登录").StatusCode(401);
         var userId = long.Parse(claimUserId.Value);
 
-        _ = await _db.Queryable<UserEntity>().FirstAsync(x => x.Id == userId) ?? throw Oops.Oh("未找到有效的用户信息，请重新登录").StatusCode(401);
+        var user = await _db.Queryable<UserEntity>().FirstAsync(x => x.Id == userId) ?? throw Oops.Oh("未找到有效的用户信息，请重新登录").StatusCode(401);
 
-        //var securities = await _db.Queryable<SecurityEntity>()
-        //    .InnerJoin<RoleSecurityEntity>((s, rs) => s.Id == rs.SecurityId)
-        //    .InnerJoin<UserRoleEntity>((s, rs, ur) => rs.RoleId == ur.RoleId)
-        //    .Where((s, rs, ur) => ur.UserId == userId)
-        //    .Select(s => s).ToListAsync();
+        if (user.Password.ToAESDecrypt(AesKeyConst.Key) != password.Trim()) throw Oops.Bah("密码错误！");
 
-        var result = new UserInfoOutput
-        {
-            //Permissions = securities.Select(x => x.SecurityCode).ToList(),
-        };
-        return result;
+        return user.Adapt<UserInfo>();
+    }
+
+    /// <summary>
+    /// 修改当前用户信息
+    /// </summary>
+    /// <returns></returns>
+    public async Task PutUserInfoAsync(UserInfo input)
+    {
+        var claimUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimConst.USERID) ?? throw Oops.Oh("未找到有效的用户信息，请重新登录").StatusCode(401);
+        var userId = long.Parse(claimUserId.Value);
+        var user = await _db.Queryable<UserEntity>().FirstAsync(x => x.Id == userId) ?? throw Oops.Oh("未找到有效的用户信息，请重新登录").StatusCode(401);
+        user = input.Adapt(user);
+        user.Password = AESEncryption.Encrypt(input.Password, AesKeyConst.Key);
+        await _db.Updateable(user).ExecuteCommandAsync();
     }
 
     /// <summary>

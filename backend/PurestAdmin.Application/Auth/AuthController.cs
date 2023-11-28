@@ -43,9 +43,19 @@ public class AuthController : IDynamicApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet, ApiDescriptionSettings(Name = "userinfo")]
-    public async Task<UserInfoOutput> GetUserInfoAsync()
+    public async Task<UserInfo> GetUserInfoAsync([FromQuery, Required] string password)
     {
-        return await _authService.GetUserInfoAsync();
+        return await _authService.GetUserInfoAsync(password);
+    }
+
+    /// <summary>
+    /// 修改当前用户信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut, ApiDescriptionSettings(Name = "userinfo")]
+    public async Task PutUserInfoAsync([FromBody] UserInfo input)
+    {
+        await _authService.PutUserInfoAsync(input);
     }
 
     /// <summary>
