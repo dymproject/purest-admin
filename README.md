@@ -22,7 +22,7 @@
 
 #### 演示地址
 
-- http://dev.purestadmin.com:8015  admin/123456 
+- 暂时下线
 
 #### 基本功能
 
