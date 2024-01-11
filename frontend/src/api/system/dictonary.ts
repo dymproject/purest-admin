@@ -1,7 +1,7 @@
 import { http } from "@/utils/http";
 
 export const getCategoryPageList = (params: any) => {
-  return http.request("get", "/dict-category/category-paged-list", { params });
+  return http.request("get", "/dict-category/paged-list", { params });
 };
 
 export const getPageList = (params: any) => {

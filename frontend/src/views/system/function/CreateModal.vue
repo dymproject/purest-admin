@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, nextTick, reactive, h, onMounted } from "vue";
+import { ref, nextTick, reactive, h } from "vue";
 import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-table";
 import { getSingle, submitData, getTreeList } from "@/api/system/function";
 import { ElTreeSelect } from "element-plus";
@@ -96,14 +96,16 @@ const formRules = ref<VxeFormPropTypes.Rules>({
 const showAddModal = () => {
   showModal(`添加功能`);
   formData.value = defaultFormData();
-  nextTick(() => {
+  nextTick(async () => {
     formRef.value.clearValidate();
+    await loadTreeSelectData();
   });
 };
 const showEditModal = (record: Recordable) => {
   showModal(`编辑功能->${record.name}`);
-  nextTick(() => {
+  nextTick(async () => {
     formRef.value.clearValidate();
+    await loadTreeSelectData();
     getSingle(record.id).then((data: any) => {
       formData.value = data;
     });
@@ -111,8 +113,9 @@ const showEditModal = (record: Recordable) => {
 };
 const showViewModal = (record: Recordable) => {
   showModal(`查看功能->${record.name}`, false);
-  nextTick(() => {
+  nextTick(async () => {
     formRef.value.clearValidate();
+    await loadTreeSelectData();
     getSingle(record.id).then((data: any) => {
       formData.value = data;
     });
@@ -127,11 +130,11 @@ const handleSubmit = async () => {
     });
   }
 };
-onMounted(() => {
-  getTreeList().then((result: any[]) => {
-    treeSeelectData.value = result;
-  });
-});
+const loadTreeSelectData = async () => {
+  const data = await getTreeList();
+  treeSeelectData.value = data as any;
+};
+
 defineExpose({ showAddModal, showEditModal, showViewModal });
 </script>
 <template>

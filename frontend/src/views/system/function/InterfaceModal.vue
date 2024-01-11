@@ -63,7 +63,7 @@ const columns: VxeGridPropTypes.Columns<any> = [
     title: "名称",
     field: "name",
     treeNode: true,
-    minWidth: 200
+    minWidth: 300
   },
   {
     title: "接口地址",
@@ -84,6 +84,7 @@ const customTableActions: VxeGridPropTypes.Columns<any> = [
     width: 100,
     slots: {
       default: ({ row }) => {
+        if (!row.path) return null;
         row.isBind = myInterfaceData.value
           .map(x => x.interfaceId)
           .includes(row.id)
@@ -96,7 +97,10 @@ const customTableActions: VxeGridPropTypes.Columns<any> = [
               openLabel: "已绑定",
               closeLabel: "未绑定",
               onChange({ value }) {
-                assignInterface(functionId.value, row.id).then(async () => {
+                assignInterface({
+                  functionId: functionId.value,
+                  interfaceId: row.id
+                }).then(async () => {
                   await loadMyInterfaceData();
                   row.isBind = value;
                 });
@@ -154,7 +158,7 @@ defineExpose({ showInterface });
 <template>
   <vxe-modal
     ref="vxeModalRef"
-    width="1200"
+    width="1400"
     height="850"
     showFooter
     v-model="modalOptions.modalValue"
@@ -186,7 +190,7 @@ defineExpose({ showInterface });
             </vxe-column>
           </vxe-table>
         </ReCard>
-        <ReCard header="接口列表" body-style="width:660px">
+        <ReCard header="接口列表" body-style="width:860px">
           <vxe-form
             ref="formRef"
             :data="formData"

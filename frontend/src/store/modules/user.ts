@@ -3,7 +3,7 @@ import { store } from "@/store";
 import { routerArrays } from "@/layout/types";
 import { router, resetRouter } from "@/router";
 import { storageSession } from "@pureadmin/utils";
-import { login } from "@/api/auth";
+import { getUserPermissions, login } from "@/api/auth";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { UserInfoType } from "./types";
 
@@ -37,9 +37,11 @@ export const useUserStore = defineStore({
       storageSession().setItem(CURRENT_USER, currentUser);
     },
     /** 登入 */
-    async login(data) {
+    async login(data: any) {
       const user = await login(data);
       if (user) {
+        const permissions = await getUserPermissions();
+        user.permissions = permissions ?? [];
         this.setCurrentUser(user);
         return Promise.resolve(user);
       } else {

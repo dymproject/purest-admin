@@ -9,7 +9,7 @@ export interface SystemConfigProfile {
 }
 
 export function getPageList(params: any) {
-  return http.request("get", "/system-config/page", { params });
+  return http.request("get", "/system-config/paged-list", { params });
 }
 
 export const submitData = (params: any) => {

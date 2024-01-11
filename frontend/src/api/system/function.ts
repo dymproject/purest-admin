@@ -5,7 +5,7 @@ export const getTreeList = () => {
 };
 
 export function getPageList(params) {
-  return http.request("get", "/function/page", { params });
+  return http.request("get", "/function/paged-list", { params });
 }
 
 export const submitData = (params: any) => {
@@ -30,12 +30,12 @@ export const getFunInterface = (id: number): any => {
   return http.request("get", `/function/${id}/interfaces`);
 };
 
-export const assignInterface = (id: number, interfaceId: number) => {
-  return http.request("post", `/function/${id}/assign-interface`, {
-    data: interfaceId
+export const assignInterface = (params: any) => {
+  return http.request("post", `/function/assign-interface`, {
+    data: params
   });
 };
 
 export const removeInterface = (id: number) => {
-  return http.request("delete", `/function/${id}/interface`);
+  return http.request("delete", `/function/${id}/function-interface`);
 };
