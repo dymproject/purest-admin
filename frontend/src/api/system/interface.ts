@@ -5,7 +5,7 @@ export const getTreeList = () => {
 };
 
 export const getPageList = params => {
-  return http.request("get", "/interface/page", { params });
+  return http.request("get", "/interface/paged-list", { params });
 };
 
 export const submitData = (params: any) => {

@@ -34,7 +34,7 @@ dotnet_style_namespace_match_folder = true:suggestion
 dotnet_style_predefined_type_for_locals_parameters_members = true:silent
 dotnet_style_predefined_type_for_member_access = true:silent
 #add header template
-file_header_template = MIT 许可证\n版权 © 2023-present dym 和所有贡献者\n作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，\n还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
+file_header_template = MIT 许可证\n版权 © 2023-present https://github.com/dymproject/purest-admin作者 以及贡献者\n作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，\n还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 [*.cs]
 csharp_using_directive_placement = outside_namespace:silent
 csharp_style_expression_bodied_methods = false:silent

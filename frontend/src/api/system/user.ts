@@ -18,7 +18,7 @@ export interface UserProfile {
  * @description: 获取用户列表
  */
 export function getPageList(params) {
-  return http.request("get", "/user/page", { params });
+  return http.request("get", "/user/paged-list", { params });
 }
 
 export const submitData = (params: any) => {

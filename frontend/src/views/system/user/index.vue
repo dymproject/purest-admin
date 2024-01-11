@@ -18,14 +18,14 @@ const columns: VxeGridPropTypes.Columns<any> = [
     minWidth: 100
   },
   {
+    title: "组织机构",
+    field: "organizationName",
+    minWidth: 100
+  },
+  {
     title: "角色",
-    field: "role",
-    minWidth: 100,
-    slots: {
-      default: ({ row }) => {
-        return row.role.name;
-      }
-    }
+    field: "roleName",
+    minWidth: 100
   },
   {
     title: "手机号",

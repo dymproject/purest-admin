@@ -5,7 +5,7 @@ export const getAllList = params => {
 };
 
 export function getPageList(params) {
-  return http.request("get", "/role/page", { params });
+  return http.request("get", "/role/paged-list", { params });
 }
 
 export const submitData = (params: any) => {

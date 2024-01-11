@@ -15,14 +15,6 @@ import { stringify } from "qs";
 import { message } from "@/utils/message";
 import { useUserStoreHook } from "@/store/modules/user";
 import { ElMessage } from "element-plus";
-enum ResponseStateEnum {
-  SUCCESS = 200,
-  NOCONTENT = 204,
-  WARING = 400,
-  UNAUTHORIZED = 401,
-  FORBIDDEN = 403,
-  ERROR = 500
-}
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -73,7 +65,6 @@ class PureHttp {
       async (config: PureHttpRequestConfig): Promise<any> => {
         // 开启进度条动画
         // NProgress.start();
-        config.baseURL = "/api";
         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
         if (typeof config.beforeRequestCallback === "function") {
           config.beforeRequestCallback(config);
@@ -116,54 +107,57 @@ class PureHttp {
           PureHttp.initConfig.beforeResponseCallback(response);
           return response.data;
         }
-        if (
-          response.headers["access-token"] &&
-          response.headers["access-token"] != "invalid_token"
-        ) {
-          useUserStoreHook().setToken(response.headers["access-token"]);
+        if (response.headers.accesstoken) {
+          useUserStoreHook().setToken(response.headers.accesstoken);
         }
-        if (response.status == HttpStatusCode.Ok) {
-          const { data } = response;
-          //规范化处理后的数据
-          const { code, message: msg, result, extras } = data;
-          if (code) {
-            if (code == ResponseStateEnum.UNAUTHORIZED) {
-              ElMessage({
-                message: "登陆超时，5秒后返回登录页面",
-                type: "warning"
-              });
-              setTimeout(() => {
-                useUserStoreHook().logOut();
-              }, 5000);
-            } else if (code == ResponseStateEnum.SUCCESS) {
-              return result;
-            } else if (code == ResponseStateEnum.NOCONTENT) {
-              message("操作成功", { type: "success" });
-            } else if (code == ResponseStateEnum.WARING) {
-              message(msg, { type: "error" });
-              return Promise.reject(msg);
-            } else if (code == ResponseStateEnum.FORBIDDEN) {
-              message(extras ?? msg, { type: "error" });
-              return Promise.reject(msg);
-            } else {
-              message("接口返回异常，请反馈详细操作给管理员", {
-                type: "error"
-              });
-              return Promise.reject(msg);
-            }
-          } else {
-            return data;
-          }
+        if (response.status == HttpStatusCode.NoContent) {
+          message("操作成功", { type: "success" });
         }
+        console.log(response.data);
         return response.data;
       },
       (error: PureHttpError) => {
         const $error = error;
-        message("接口网络异常，请联系管理员", { type: "error" });
+        const { response } = error;
+        const data = response.data as any;
+        switch (response.status) {
+          case HttpStatusCode.Unauthorized:
+            ElMessage({
+              message: "登陆超时，5秒后返回登录页面",
+              type: "warning"
+            });
+            setTimeout(() => {
+              useUserStoreHook().logOut();
+            }, 5000);
+            break;
+          case HttpStatusCode.Forbidden:
+            message("未授权", {
+              type: "error"
+            });
+            break;
+          case HttpStatusCode.BadRequest:
+            if (data.error) {
+              message(data.error.message + "\r\n" + data.error.details, {
+                type: "warning"
+              });
+            }
+            break;
+          case HttpStatusCode.InternalServerError:
+            console.log(data);
+            if (data.error) {
+              message(data.error.message, {
+                type: "warning"
+              });
+            }
+            break;
+          default:
+            message("接口异常，请反馈详细浮现流程给管理员", {
+              type: "error"
+            });
+        }
         $error.isCancelRequest = Axios.isCancel($error);
         // 关闭进度条动画
         // NProgress.done();
-        // 所有的响应异常 区分来源为取消请求/非取消请求
         return Promise.reject($error);
       }
     );
@@ -182,7 +176,7 @@ class PureHttp {
       ...param,
       ...axiosConfig
     } as PureHttpRequestConfig;
-
+    config.baseURL = "/api/v1";
     // 单独处理自定义请求/响应回调
     return new Promise((resolve, reject) => {
       PureHttp.axiosInstance

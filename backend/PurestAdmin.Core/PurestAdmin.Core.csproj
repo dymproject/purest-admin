@@ -1,25 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
-
-
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<NoWarn>1701;1702;1591</NoWarn>
-		<DocumentationFile>PurestAdmin.Core.xml</DocumentationFile>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>   
+    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
+    <NoWarn>1701;1702;1591;8618;</NoWarn>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<None Remove="PurestAdmin.Core.xml" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="4.9.1.7" />
-		<PackageReference Include="Furion.Extras.ObjectMapper.Mapster" Version="4.9.1.7" />
-		<PackageReference Include="Furion.Pure" Version="4.9.1.7" />
-		<PackageReference Include="SqlSugarCore" Version="5.1.4.124" />
-		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
-	</ItemGroup>
-
+  <ItemGroup>
+    <Content Remove="C:\Users\bolix\.nuget\packages\volo.abp.aspnetcore.mvc\8.0.0\contentFiles\any\net8.0\Volo.Abp.AspNetCore.Mvc.abppkg.analyze.json" />
+    <Content Remove="C:\Users\bolix\.nuget\packages\volo.abp.aspnetcore.serilog\8.0.0\contentFiles\any\net8.0\Volo.Abp.AspNetCore.Serilog.abppkg.analyze.json" />
+    <Content Remove="C:\Users\bolix\.nuget\packages\volo.abp.aspnetcore\8.0.0\contentFiles\any\net8.0\Volo.Abp.AspNetCore.abppkg.analyze.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.128" />
+    <PackageReference Include="Volo.Abp" Version="8.0.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="8.0.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="8.0.0" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="8.0.0" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" Version="8.0.0" />
+    <PackageReference Include="Volo.Abp.Validation" Version="8.0.0" />
+    <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
+  </ItemGroup>
 </Project>

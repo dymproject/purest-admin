@@ -1,7 +1,7 @@
 import { http } from "@/utils/http";
 
 export function getPageList(params) {
-  return http.request("get", "/organization/page", { params });
+  return http.request("get", "/organization/paged-list", { params });
 }
 
 export const submitData = (params: any) => {

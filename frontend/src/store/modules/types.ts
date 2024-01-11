@@ -38,5 +38,5 @@ export type setType = {
 export type UserInfoType = {
   name?: string;
   account?: string;
-  permissions?: [];
+  permissions?: string[];
 };
