@@ -48,9 +48,9 @@
 - 7、配置管理
 
 #### 如何使用
-frontend 存放前端项目，建议使用pnpm,clone之后 install（需要node环境，版本16+）,项目自己封装了vxe-table，不一定适合所有人，可自行替换。
-backend 存放后端项目，项目结构已经重新划分，和abp已经不一样了，参照框架结构介绍
-pmd 存放数据模型以及初始化sql文件，mysql数据库，导入数据前请先创建数据库（CREATE DATABASE [IF NOT EXISTS] PUREST，如果想使用现有的数据库，请记得修改连接字符串
+* frontend 存放前端项目，建议使用pnpm,clone之后 install（需要node环境，版本16+）,项目自己封装了vxe-table，不一定适合所有人，可自行替换。
+* backend 存放后端项目，项目结构已经重新划分，和abp已经不一样了，参照框架结构介绍
+* pmd 存放数据模型以及初始化sql文件，mysql数据库，导入数据前请先创建数据库（CREATE DATABASE [IF NOT EXISTS] PUREST，如果想使用现有的数据库，请记得修改连接字符串
 
 
 * 前端文档传送门 [Pure Admin 保姆级文档](https://yiming_chang.gitee.io/pure-admin-doc/pages/introduction) 
