@@ -108,6 +108,7 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
+    [UnitOfWork]
     public async Task DeleteAsync(long id)
     {
         var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
