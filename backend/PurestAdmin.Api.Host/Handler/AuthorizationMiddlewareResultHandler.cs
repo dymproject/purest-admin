@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 
-using PurestAdmin.Core.OopsExtention;
+using PurestAdmin.Core.OopsExtension;
 using PurestAdmin.Multiplex.MultiplexUser;
 
 using Volo.Abp;

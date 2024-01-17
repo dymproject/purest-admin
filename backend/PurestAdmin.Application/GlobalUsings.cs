@@ -7,7 +7,7 @@ global using System.ComponentModel.DataAnnotations;
 
 global using Mapster;
 
-global using PurestAdmin.Core.OopsExtention;
+global using PurestAdmin.Core.OopsExtension;
 global using PurestAdmin.Multiplex.MultiplexUser;
 global using PurestAdmin.Multiplex.TipsEnum;
 global using PurestAdmin.SqlSugar;

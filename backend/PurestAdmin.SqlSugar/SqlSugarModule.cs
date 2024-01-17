@@ -19,7 +19,6 @@ namespace PurestAdmin.SqlSugar
             context.Services.AddSqlSugarService();
             context.Services.AddTransient<UnitOfWorkAttribute>();
             context.Services.ReplaceSqlSugarSnowflakeIdService();
-            //context.Services.AddDictionaryDataService();
             base.ConfigureServices(context);
         }
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

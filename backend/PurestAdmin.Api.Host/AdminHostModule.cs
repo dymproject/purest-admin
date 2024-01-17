@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -25,7 +26,6 @@ using Volo.Abp.AspNetCore.ExceptionHandling;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.AspNetCore.Mvc.ApiExploring;
 using Volo.Abp.AspNetCore.Mvc.Conventions;
-using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
@@ -35,7 +35,6 @@ namespace PurestAdmin.WebApi.Host
 {
     [DependsOn(typeof(AbpSwashbuckleModule),
         typeof(AbpAutofacModule),
-        typeof(AbpAspNetCoreSerilogModule),
         typeof(AdminCoreModule),
         typeof(SqlSugarModule),
         typeof(AdminMultiplexModule),
@@ -58,6 +57,8 @@ namespace PurestAdmin.WebApi.Host
         {
             //HTTP状态代码映射（配合oops返回400）
             context.Services.AddSingleton<IHttpExceptionStatusCodeFinder, PurestHttpExceptionStatusCodeFinder>();
+            ////异常过滤重写
+            //context.Services.AddTransient<IAsyncExceptionFilter, PurestAbpExceptionsFilter>();
             //发送异常详情到客户端true(发送)/false（不发送）
             context.Services.Configure<AbpExceptionHandlingOptions>(options =>
             {
@@ -66,7 +67,11 @@ namespace PurestAdmin.WebApi.Host
             //路由生成规则
             context.Services.AddTransient<IConventionalRouteBuilder, AdminConventionalRouteBuilder>();
             //解决string类型默认增加require的标记，详见官方文档
-            context.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
+            context.Services.AddControllers(options =>
+            {
+                options.Filters.AddService<PurestAbpExceptionsFilter>();
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            });
         }
         private void ConfigureAuthorizationServices(ServiceConfigurationContext context, IConfiguration configuration)
         {
@@ -252,7 +257,6 @@ namespace PurestAdmin.WebApi.Host
             app.UseCookiePolicy();
             app.UseStaticFiles();
             app.UseRouting();
-            //app.UseAbpSerilogEnrichers();
 
             app.UseAuthentication();
             app.UseAuthorization();
