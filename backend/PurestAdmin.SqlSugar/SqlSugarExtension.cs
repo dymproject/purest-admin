@@ -17,7 +17,6 @@ public static class SqlSugarExtension
     public static IServiceCollection AddSqlSugarService(this IServiceCollection services)
     {
         var configuration = services.GetConfiguration();
-        //List<Type> types = App.EffectiveTypes.Where(a => !a.IsAbstract && a.IsClass && a.GetCustomAttributes(typeof(SugarTable), true)?.FirstOrDefault() != null).ToList();
         SqlSugarScope sqlSugar = new(
             new ConnectionConfig()
             {
@@ -102,10 +101,7 @@ public static class SqlSugarExtension
     public static IServiceCollection ReplaceSqlSugarSnowflakeIdService(this IServiceCollection services)
     {
         //程序启动时执行一次就行
-        StaticConfig.CustomSnowFlakeFunc = () =>
-        {
-            return YitIdHelper.NextId();
-        };
+        StaticConfig.CustomSnowFlakeFunc = YitIdHelper.NextId;
         return services;
     }
 }
