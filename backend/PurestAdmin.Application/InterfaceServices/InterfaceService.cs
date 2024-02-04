@@ -50,8 +50,8 @@ public class InterfaceService(ISqlSugarClient db) : ApplicationService
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    [HttpPost, UnitOfWork, ApiDescriptionSettings(Name = "import")]
-    public async Task<int> ImportInterfaceAsync(IFormFile file)
+    [HttpPost, UnitOfWork]
+    public async Task<int> ImportAsync(IFormFile file)
     {
         using StreamReader sr = new(file.OpenReadStream());
         string json = sr.ReadToEnd();

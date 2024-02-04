@@ -4,12 +4,17 @@
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
 using PurestAdmin.Core.Attributes;
+using PurestAdmin.Multiplex;
+using PurestAdmin.Workflow;
 
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Modularity;
 
 namespace PurestAdmin.Application
 {
+    [DependsOn(typeof(SqlSugarModule),
+        typeof(AdminMultiplexModule),
+        typeof(WorkflowModule))]
     public class AdminAppModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
@@ -19,11 +24,10 @@ namespace PurestAdmin.Application
                 options.ConventionalControllers.Create(typeof(AdminAppModule).Assembly, opts =>
                 {
                     opts.RootPath = "v1";
-                    opts.UrlActionNameNormalizer = (action) =>
-                    {
-                        var attr = action.Action.Attributes.FirstOrDefault(x => x.GetType().Equals(typeof(ApiDescriptionSettingsAttribute))) as ApiDescriptionSettingsAttribute;
-                        return attr?.Name ?? action.ActionNameInUrl;
-                    };
+                    //opts.UrlActionNameNormalizer = (action) =>
+                    //{
+                    //    return action.ActionNameInUrl;
+                    //};
                 });
             });
             base.ConfigureServices(context);

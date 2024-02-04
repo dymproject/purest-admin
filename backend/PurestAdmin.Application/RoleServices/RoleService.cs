@@ -34,7 +34,6 @@ public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleReposito
     /// </summary>
     /// <param name="roleName"></param>
     /// <returns></returns>
-    [ApiDescriptionSettings(Name = "all")]
     public async Task<List<RoleOutput>> GetAllAsync(string roleName)
     {
         var list = await _db.Queryable<RoleEntity>()

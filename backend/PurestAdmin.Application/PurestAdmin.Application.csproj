@@ -13,6 +13,11 @@
     <ProjectReference Include="..\PurestAdmin.Multiplex.Contracts\PurestAdmin.Multiplex.Contracts.csproj" />
     <ProjectReference Include="..\PurestAdmin.Multiplex\PurestAdmin.Multiplex.csproj" />
     <ProjectReference Include="..\PurestAdmin.SqlSugar\PurestAdmin.SqlSugar.csproj" />
+    <ProjectReference Include="..\PurestAdmin.Workflow\PurestAdmin.Workflow.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WorkflowServices\" />
   </ItemGroup>
 
 </Project>

@@ -17,8 +17,6 @@ using PurestAdmin.Api.Host.FriendlyException;
 using PurestAdmin.Api.Host.Handler;
 using PurestAdmin.Application;
 using PurestAdmin.Core;
-using PurestAdmin.Multiplex;
-using PurestAdmin.SqlSugar;
 
 using Volo.Abp;
 using Volo.Abp.AspNetCore.ExceptionHandling;
@@ -35,8 +33,6 @@ namespace PurestAdmin.WebApi.Host
     [DependsOn(typeof(AbpSwashbuckleModule),
         typeof(AbpAutofacModule),
         typeof(AdminCoreModule),
-        typeof(SqlSugarModule),
-        typeof(AdminMultiplexModule),
         typeof(AdminAppModule))]
     public class AdminHostModule : AbpModule
     {
@@ -56,8 +52,7 @@ namespace PurestAdmin.WebApi.Host
         {
             //HTTP状态代码映射（配合oops返回400）
             context.Services.AddSingleton<IHttpExceptionStatusCodeFinder, PurestHttpExceptionStatusCodeFinder>();
-            ////异常过滤重写
-            //context.Services.AddTransient<IAsyncExceptionFilter, PurestAbpExceptionsFilter>();
+
             //发送异常详情到客户端true(发送)/false（不发送）
             context.Services.Configure<AbpExceptionHandlingOptions>(options =>
             {

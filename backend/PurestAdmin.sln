@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.Multiplex", "Pu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.SqlSugar", "PurestAdmin.SqlSugar\PurestAdmin.SqlSugar.csproj", "{4955DD52-EF05-4A55-88EB-3BC3A86EE577}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurestAdmin.Multiplex.Contracts", "PurestAdmin.Multiplex.Contracts\PurestAdmin.Multiplex.Contracts.csproj", "{F163FBE7-67FE-4791-9481-BA5E8C19701C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.Multiplex.Contracts", "PurestAdmin.Multiplex.Contracts\PurestAdmin.Multiplex.Contracts.csproj", "{F163FBE7-67FE-4791-9481-BA5E8C19701C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurestAdmin.Workflow", "PurestAdmin.Workflow\PurestAdmin.Workflow.csproj", "{39CD034E-5FD7-40DC-B51D-B5C441AB5E72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{F163FBE7-67FE-4791-9481-BA5E8C19701C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F163FBE7-67FE-4791-9481-BA5E8C19701C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F163FBE7-67FE-4791-9481-BA5E8C19701C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39CD034E-5FD7-40DC-B51D-B5C441AB5E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39CD034E-5FD7-40DC-B51D-B5C441AB5E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39CD034E-5FD7-40DC-B51D-B5C441AB5E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39CD034E-5FD7-40DC-B51D-B5C441AB5E72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
