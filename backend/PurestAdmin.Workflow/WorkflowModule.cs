@@ -24,7 +24,6 @@ public class WorkflowModule : AbpModule
         var logger = context.ServiceProvider.GetService<ILogger>();
         var host = context.ServiceProvider.GetService<IWorkflowHost>();
         var loader = context.ServiceProvider.GetService<IDefinitionLoader>();
-        loader.LoadDefinition("{\"Id\":\"HelloWorld\",\"Version\":1,\"Steps\":[{\"Id\":\"Hello\",\"StepType\":\"MyApp.HelloWorld, MyApp\",\"NextStepId\":\"Bye\"},{\"Id\":\"Bye\",\"StepType\":\"MyApp.GoodbyeWorld, MyApp\"}]}", Deserializers.Json);
         if (host != null)
         {
             host.Start();

@@ -6,7 +6,6 @@
 using Newtonsoft.Json;
 
 using PurestAdmin.Core.OopsExtension;
-using PurestAdmin.Workflow.Models;
 
 using WorkflowCore.Models;
 using WorkflowCore.Models.DefinitionStorage.v1;

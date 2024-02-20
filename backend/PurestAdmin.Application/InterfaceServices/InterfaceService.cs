@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 using PurestAdmin.Application.InterfaceServices.Dtos;
-using PurestAdmin.Core.Attributes;
 
 namespace PurestAdmin.Application.InterfaceServices;
 /// <summary>
