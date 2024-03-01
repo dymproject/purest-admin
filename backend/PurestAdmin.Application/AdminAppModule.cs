@@ -4,7 +4,6 @@
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
 using PurestAdmin.Multiplex;
-using PurestAdmin.Workflow;
 
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Modularity;
@@ -12,8 +11,7 @@ using Volo.Abp.Modularity;
 namespace PurestAdmin.Application
 {
     [DependsOn(typeof(SqlSugarModule),
-        typeof(AdminMultiplexModule),
-        typeof(WorkflowModule))]
+        typeof(AdminMultiplexModule))]
     public class AdminAppModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
