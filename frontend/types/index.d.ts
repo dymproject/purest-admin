@@ -78,7 +78,3 @@ interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
 function parseInt(s: string | number, radix?: number): number;
 
 function parseFloat(string: string | number): number;
-
-interface Pagination<T> {
-  pageSize: number; pageIndex: number, total: number, T: any
-}

@@ -1,14 +1,14 @@
 import App from "./App.vue";
 import router from "./router";
 import { setupStore } from "@/store";
-import ElementPlus from "element-plus";
-import { getServerConfig } from "./config";
-import { createApp, Directive } from "vue";
+import { getPlatformConfig } from "./config";
 import { MotionPlugin } from "@vueuse/motion";
 // import { useEcharts } from "@/plugins/echarts";
+import { createApp, type Directive } from "vue";
+import { useElementPlus } from "@/plugins/elementPlus";
 import { injectResponsiveStorage } from "@/utils/responsive";
 
-// import Table from "@pureadmin/table";
+import Table from "@pureadmin/table";
 // import PureDescriptions from "@pureadmin/descriptions";
 
 // 引入重置样式
@@ -30,7 +30,7 @@ Object.keys(directives).forEach(key => {
   app.directive(key, (directives as { [key: string]: Directive })[key]);
 });
 
-// 全局注册`@iconify/vue`图标库
+// 全局注册@iconify/vue图标库
 import {
   IconifyIconOffline,
   IconifyIconOnline,
@@ -47,18 +47,22 @@ import { ReCard } from "./components/ReCard";
 import { ReVxeGrid } from "./components/ReVxeTable";
 
 app.component("Auth", Auth);
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css"
+import VueTippy from "vue-tippy";
+app.use(VueTippy);
+
 app.component("ReCard", ReCard);
 app.component("ReVxeGrid", ReVxeGrid);
 
-getServerConfig(app).then(async config => {
+getPlatformConfig(app).then(async config => {
+  setupStore(app);
   app.use(router);
   await router.isReady();
   injectResponsiveStorage(app, config);
-  setupStore(app);
-  app.use(MotionPlugin).use(ElementPlus);
+  app.use(MotionPlugin).use(useElementPlus).use(Table);
   app.use(useTable);
+  // .use(PureDescriptions)
   // .use(useEcharts);
-  // app.use(Table);
-  // .use(PureDescriptions);
   app.mount("#app");
 });

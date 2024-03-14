@@ -113,7 +113,6 @@ class PureHttp {
         if (response.status == HttpStatusCode.NoContent) {
           message("操作成功", { type: "success" });
         }
-        console.log(response.data);
         return response.data;
       },
       (error: PureHttpError) => {

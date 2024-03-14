@@ -12,8 +12,8 @@ notices.value.map(v => (noticesNum.value += v.list.length));
 </script>
 
 <template>
-  <el-dropdown trigger="click" placement="bottom-end">
-    <span class="dropdown-badge navbar-bg-hover select-none">
+  <el-dropdown style="display: none" trigger="click" placement="bottom-end">
+    <span class="select-none dropdown-badge navbar-bg-hover">
       <el-badge :value="noticesNum" :max="99">
         <span class="header-notice-icon">
           <IconifyIconOffline :icon="Bell" />
@@ -23,8 +23,8 @@ notices.value.map(v => (noticesNum.value += v.list.length));
     <template #dropdown>
       <el-dropdown-menu>
         <el-tabs
-          :stretch="true"
           v-model="activeKey"
+          :stretch="true"
           class="dropdown-tabs"
           :style="{ width: notices.length === 0 ? '200px' : '330px' }"
         >

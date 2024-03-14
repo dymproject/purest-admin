@@ -1,6 +1,7 @@
 // 全局路由类型声明
 
-import { type RouteComponent, type RouteLocationNormalized } from "vue-router";
+import type { RouteComponent, RouteLocationNormalized } from "vue-router";
+import type { FunctionalComponent } from "vue";
 
 declare global {
   interface ToRouteType extends RouteLocationNormalized {
@@ -21,15 +22,17 @@ declare global {
     showLink?: boolean;
     /** 是否显示父级菜单 `可选` */
     showParent?: boolean;
-    /** 权限编码 */
-    permissions?: Array<string>;
+    /** 页面级别权限设置 `可选` */
+    roles?: Array<string>;
+    /** 按钮级别权限设置 `可选` */
+    auths?: Array<string>;
     /** 路由组件缓存（开启 `true`、关闭 `false`）`可选` */
     keepAlive?: boolean;
     /** 内嵌的`iframe`链接 `可选` */
     frameSrc?: string;
     /** `iframe`页是否开启首次加载动画（默认`true`）`可选` */
     frameLoading?: boolean;
-    /** 页面加载动画（有两种形式，一种直接采用vue内置的`transitions`动画，另一种是使用`animate.css`写进、离场动画）`可选` */
+    /** 页面加载动画（两种模式，第二种权重更高，第一种直接采用`vue`内置的`transitions`动画，第二种是使用`animate.css`编写进、离场动画，平台更推荐使用第二种模式，已经内置了`animate.css`，直接写对应的动画名即可）`可选` */
     transition?: {
       /**
        * @description 当前路由动画效果
@@ -99,5 +102,5 @@ declare global {
 
 // https://router.vuejs.org/zh/guide/advanced/meta.html#typescript
 declare module "vue-router" {
-  interface RouteMeta extends CustomizeRouteMeta { }
+  interface RouteMeta extends CustomizeRouteMeta {}
 }

@@ -1,7 +1,5 @@
 const { VITE_HIDE_HOME } = import.meta.env;
 const Layout = () => import("@/layout/index.vue");
-import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import House from "@iconify-icons/ep/house";
 
 export default {
   path: "/",
@@ -9,7 +7,7 @@ export default {
   component: Layout,
   redirect: "/welcome",
   meta: {
-    icon: useRenderIcon(House),
+    icon: "ep:home-filled",
     title: "首页",
     rank: 0
   },
@@ -33,4 +31,4 @@ export default {
       }
     }
   ]
-} as RouteConfigsTable;
+} satisfies RouteConfigsTable;

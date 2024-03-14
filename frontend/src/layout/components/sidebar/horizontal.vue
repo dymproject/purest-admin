@@ -8,7 +8,7 @@ import { useNav } from "@/layout/hooks/useNav";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
-import Edit from "@iconify-icons/ri/edit-2-line";
+
 const menuRef = ref();
 
 const {
@@ -17,15 +17,16 @@ const {
   logout,
   backTopMenu,
   onPanel,
+  getLogo,
   username,
   userAvatar,
-  avatarsStyle,
-  changePassword
+  avatarsStyle
 } = useNav();
 
 const defaultActive = computed(() =>
   !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
 );
+
 nextTick(() => {
   menuRef.value?.handleResize();
 });
@@ -37,13 +38,14 @@ nextTick(() => {
     class="horizontal-header"
   >
     <div class="horizontal-header-left" @click="backTopMenu">
-      <img src="/logo.svg" alt="logo" />
+      <img :src="getLogo()" alt="logo" />
       <span>{{ title }}</span>
     </div>
     <el-menu
-      router
       ref="menuRef"
+      router
       mode="horizontal"
+      popper-class="pure-scrollbar"
       class="horizontal-header-menu"
       :default-active="defaultActive"
     >
@@ -56,7 +58,7 @@ nextTick(() => {
     </el-menu>
     <div class="horizontal-header-right">
       <!-- 菜单搜索 -->
-      <Search />
+      <Search id="header-search" />
       <!-- 通知 -->
       <Notice id="header-notice" />
       <!-- 退出登录 -->
@@ -67,10 +69,6 @@ nextTick(() => {
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
-            <el-dropdown-item @click="changePassword">
-              <IconifyIconOffline :icon="Edit" style="margin: 5px" />
-              个人信息
-            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"

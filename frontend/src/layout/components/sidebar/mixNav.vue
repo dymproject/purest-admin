@@ -10,7 +10,6 @@ import { getParentPaths, findRouteByPath } from "@/router/utils";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
-import Edit from "@iconify-icons/ri/edit-2-line";
 
 const menuRef = ref();
 const defaultActive = ref(null);
@@ -24,8 +23,7 @@ const {
   username,
   userAvatar,
   getDivStyle,
-  avatarsStyle,
-  changePassword
+  avatarsStyle
 } = useNav();
 
 function getDefaultActive(routePath) {
@@ -56,13 +54,14 @@ watch(
 <template>
   <div
     v-if="device !== 'mobile'"
-    class="horizontal-header"
     v-loading="usePermissionStoreHook().wholeMenus.length === 0"
+    class="horizontal-header"
   >
     <el-menu
-      router
       ref="menuRef"
+      router
       mode="horizontal"
+      popper-class="pure-scrollbar"
       class="horizontal-header-menu"
       :default-active="defaultActive"
     >
@@ -91,21 +90,17 @@ watch(
     </el-menu>
     <div class="horizontal-header-right">
       <!-- 菜单搜索 -->
-      <Search />
+      <Search id="header-search" />
       <!-- 通知 -->
       <Notice id="header-notice" />
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
-        <span class="select-none el-dropdown-link navbar-bg-hover">
+        <span class="el-dropdown-link navbar-bg-hover select-none">
           <img :src="userAvatar" :style="avatarsStyle" />
           <p v-if="username" class="dark:text-white">{{ username }}</p>
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
-            <el-dropdown-item @click="changePassword">
-              <IconifyIconOffline :icon="Edit" style="margin: 5px" />
-              个人信息
-            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"
