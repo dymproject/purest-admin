@@ -1,7 +1,7 @@
 import { http } from "@/utils/http";
 
 export const getAllList = params => {
-  return http.request("get", "/role/all", params);
+  return http.request("get", "/role/roles", params);
 };
 
 export function getPageList(params) {
