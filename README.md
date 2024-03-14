@@ -62,15 +62,13 @@
 
 - 继续完善一些常用且不掺杂业务的基本功能
 
-- 开发一版wpf的前端(开发中)
-
+-  **开发一版wpf的前端(开发中)** 
 
 #### 截图
 
 | ![用户管理](frontend/src/assets/screenshot/userlist.png) | ![角色管理](frontend/src/assets/screenshot/rolelist.png)  | ![功能管理](frontend/src/assets/screenshot/functionlist.png) |
 |---|---|---|
 | ![组织机构](frontend/src/assets/screenshot/organizationlist.png) | ![字典管理](frontend/src/assets/screenshot/dictionarylist.png) |![配置管理](frontend/src/assets/screenshot/systemconfiglist.png) |
-|---|---|---|
 |![个人信息](frontend/src/assets/screenshot/userinfo.png)| | |
 
 #### 特别鸣谢
