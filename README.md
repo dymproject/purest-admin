@@ -67,11 +67,11 @@
 
 #### 截图
 
-| ![用户管理](https://foruda.gitee.com/images/1694076900312622994/8793fa24_1438846.png "屏幕截图")  | ![角色管理](https://foruda.gitee.com/images/1694076921535694292/7210560b_1438846.png "屏幕截图")  | ![功能管理](https://foruda.gitee.com/images/1694076933911129502/a26b87b3_1438846.png "屏幕截图")  |
+| ![用户管理](frontend/src/assets/screenshot/userlist.png) | ![角色管理](frontend/src/assets/screenshot/rolelist.png)  | ![功能管理](frontend/src/assets/screenshot/functionlist.png) |
 |---|---|---|
-| ![组织机构](frontend/src/assets/organization.png) | ![字典管理](frontend/src/assets/dict.png) | ![系统配置管理](frontend/src/assets/systemconfig.png) |
-|![修改个人信息、密码](frontend/src/assets/userinfo.png)|---|---|
+| ![组织机构](frontend/src/assets/screenshot/organizationlist.png) | ![字典管理](frontend/src/assets/screenshot/dictionarylist.png) |![配置管理](frontend/src/assets/screenshot/systemconfiglist.png) |
 |---|---|---|
+|![个人信息](frontend/src/assets/screenshot/userinfo.png)| | |
 
 #### 特别鸣谢
 - 👉 ABP：  [https://docs.abp.io/zh-Hans/abp/latest](https://docs.abp.io/zh-Hans/abp/latest)
