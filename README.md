@@ -29,13 +29,13 @@
 * PurestAdmin.Api.Host  项目入口、启动层，所有关于接口的设置都放在这里,比如请求中间件、授权策略等
 * PurestAdmin.Application 应用层，会自动根据规则生成api接口，业务层
 * PurestAdmin.Core 核心层，项目中所有层都要依赖此层，此层不参与任何业务内容，只负责外部package的引用，以及组件的封装、扩展等
-* PurestAdmin.Multiplex 复合层 就是英语的表面意思，多元化的层，作用：为application和host层提供价值，类似于Domain（说实话ddd我研究好几年都没研究明白），这里没有什么聚合和仓储，别的层不合适存放的东西都可以放在这一层（比如获取当前用户、枚举等）
+* PurestAdmin.Multiplex 复合层，多元化的层，作用：为application和host层提供价值，别的层不合适存放的东西都可以放在这一层（比如获取当前用户、枚举等）
 * PurestAdmin.Multiplex.Contracts 复合层的契约层，这里定义的接口需要在Multiplex层实现，相当于复合层方法的抽象层
 * PurestAdmin.SqlSugar ORM层，存放实体和扩展实体
 
 #### 演示地址
 
-- 暂时下线了。后面会重新部署
+- http://198.23.254.120
 
 #### 基本功能
 
@@ -50,7 +50,7 @@
 #### 如何使用
 * frontend 存放前端项目，建议使用pnpm,clone之后 install（需要node环境，版本16+）,项目自己封装了vxe-table，不一定适合所有人，可自行替换。
 * backend 存放后端项目，项目结构已经重新划分，和abp已经不一样了，参照框架结构介绍
-* pmd 存放数据模型以及初始化sql文件，mysql数据库，导入数据前请先创建数据库（CREATE DATABASE [IF NOT EXISTS] PUREST，如果想使用现有的数据库，请记得修改连接字符串
+* pmd 存放数据模型以及初始化sql文件，mysql数据库，导入数据前请先创建数据库（CREATE DATABASE PUREST)，如果想使用现有的数据库，请记得修改连接字符串
 
 
 * 前端文档传送门 [Pure Admin 保姆级文档](https://yiming_chang.gitee.io/pure-admin-doc/pages/introduction) 
