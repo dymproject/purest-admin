@@ -14,9 +14,4 @@
     <ProjectReference Include="..\PurestAdmin.Multiplex\PurestAdmin.Multiplex.csproj" />
     <ProjectReference Include="..\PurestAdmin.SqlSugar\PurestAdmin.SqlSugar.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="WorkflowServices\" />
-  </ItemGroup>
-
 </Project>

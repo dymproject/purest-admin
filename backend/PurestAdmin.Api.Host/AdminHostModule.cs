@@ -227,7 +227,7 @@ namespace PurestAdmin.WebApi.Host
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseHsts();
+
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
@@ -247,6 +247,8 @@ namespace PurestAdmin.WebApi.Host
                     options.UseRequestInterceptor(Regex.Replace(requestInterceptor, @"\s+", " "));
                 });
             }
+            //HSTS 是一种安全策略，用于强制客户端（如浏览器）通过 HTTPS 与服务器进行通信
+            //app.UseHsts();
 
             app.UseCookiePolicy();
             app.UseStaticFiles();
