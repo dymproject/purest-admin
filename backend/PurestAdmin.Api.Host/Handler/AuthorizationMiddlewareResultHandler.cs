@@ -7,34 +7,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 
-using PurestAdmin.Core.OopsExtension;
-using PurestAdmin.Multiplex.MultiplexUser;
-
-using Volo.Abp;
-
 namespace PurestAdmin.Api.Host.Handler;
 public class AuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
 {
     public async Task HandleAsync(RequestDelegate next, HttpContext context, AuthorizationPolicy policy, PolicyAuthorizationResult authorizeResult)
     {
-        if (authorizeResult.Succeeded)
-        {
-            var endpoint = context.GetEndpoint() ?? throw Oops.Bah("未找到路由端点");
-            var pattern = ((RouteEndpoint)endpoint).RoutePattern;
-            var hostEnvironment = context.RequestServices.GetService<IHostEnvironment>() ?? throw new BusinessException();
-            var currentUser = context.RequestServices.GetService<ICurrentUser>() ?? throw new BusinessException();
-            if (!hostEnvironment.IsDevelopment())
-            {
-                var interfaces = await currentUser.GetInterfacesAsync();
-                var ownInterface = interfaces.Any(x => x.Path == $"/{pattern.RawText}" && x.RequestMethod.Equals(context.Request.Method, StringComparison.CurrentCultureIgnoreCase));
-                if (!ownInterface)
-                {
-                    await context.ForbidAsync();
-                    return;
-                }
-            }
-        }
-        else if (authorizeResult.Challenged)
+        if (authorizeResult.Challenged)
         {
             await context.ChallengeAsync();
             return;

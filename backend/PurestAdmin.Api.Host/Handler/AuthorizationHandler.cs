@@ -5,11 +5,41 @@
 
 using Microsoft.AspNetCore.Authorization;
 
+using PurestAdmin.Multiplex.MultiplexUser;
+
+using Volo.Abp;
+
 namespace PurestAdmin.Api.Host.Handler;
 public class AuthorizationHandler : IAuthorizationHandler
 {
+    private readonly IHostEnvironment _hostEnvironment;
+    private readonly ICurrentUser _currentUser;
+    public AuthorizationHandler(IHostEnvironment hostEnvironment, ICurrentUser currentUser)
+    {
+        _currentUser = currentUser;
+        _hostEnvironment = hostEnvironment;
+    }
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
+        var httpContext = context.Resource as HttpContext;
+        if (httpContext != null)
+        {
+            var endpoint = httpContext.GetEndpoint() as RouteEndpoint;
+            var pattern = endpoint?.RoutePattern;
+            if (!_hostEnvironment.IsDevelopment())
+            {
+                var interfaces = await _currentUser.GetInterfacesAsync();
+                var ownInterface = interfaces.Any(x => x.Path == $"/{pattern?.RawText}" && x.RequestMethod.Equals(httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase));
+                if (!ownInterface)
+                {
+                    context.Fail();
+                    return;
+                }
+            }
+        }
+
+
+
         //如果你有其他授权策略，请修改这里
         await Task.CompletedTask;
     }

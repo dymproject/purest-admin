@@ -3,6 +3,9 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
+using System.Reflection;
+
+using PurestAdmin.Core.MapsterExtensions;
 using PurestAdmin.Multiplex;
 
 using Volo.Abp.AspNetCore.Mvc;
@@ -16,6 +19,7 @@ namespace PurestAdmin.Application
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            context.Services.AddMapsterIRegister(Assembly.GetExecutingAssembly());
             Configure<AbpAspNetCoreMvcOptions>(options =>
             {
                 options.ConventionalControllers.Create(typeof(AdminAppModule).Assembly, opts =>

@@ -7,12 +7,14 @@ using System.Reflection;
 
 using Mapster;
 
-namespace Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace PurestAdmin.Core.MapsterExtensions;
 
 /// <summary>
-/// 对象映射拓展类
+/// 实现Mapster的IRegister自动映射
 /// </summary>
-public static class ObjectMapperServiceCollectionExtensions
+public static class ImplAutoIRegisterExtensions
 {
     /// <summary>
     /// 添加对象映射
@@ -20,7 +22,7 @@ public static class ObjectMapperServiceCollectionExtensions
     /// <param name="services">服务集合</param>
     /// <param name="assemblies">扫描的程序集</param>
     /// <returns></returns>
-    public static IServiceCollection AddObjectMapper(this IServiceCollection services, params Assembly[] assemblies)
+    public static IServiceCollection AddMapsterIRegister(this IServiceCollection services, params Assembly[] assemblies)
     {
         // 获取全局映射配置
         var config = TypeAdapterConfig.GlobalSettings;
@@ -40,7 +42,6 @@ public static class ObjectMapperServiceCollectionExtensions
 
         // 配置支持依赖注入
         services.AddSingleton(config);
-        //services.AddScoped<IMapper, ServiceMapper>();
 
         return services;
     }
