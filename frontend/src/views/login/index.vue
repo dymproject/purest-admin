@@ -43,16 +43,21 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async (valid, fields) => {
     if (valid) {
       loading.value = true;
-      const user = await useUserStoreHook().login(ruleForm);
-      if (user) {
-        usePermissionStoreHook().handleWholeMenus([]);
-        addPathMatch();
-        router.push("/");
-        message("登录成功", { type: "success" });
-      } else {
-        message("登录失败");
+      try {
+        const user = await useUserStoreHook().login(ruleForm);
+        if (user) {
+          usePermissionStoreHook().handleWholeMenus([]);
+          addPathMatch();
+          router.push("/");
+          message("登录成功", { type: "success" });
+        } else {
+          message("登录失败");
+        }
+      } catch (error) {
+        message(error.message, { type: "warning" });
+      } finally {
+        loading.value = false;
       }
-      loading.value = false;
     } else {
       return fields;
     }

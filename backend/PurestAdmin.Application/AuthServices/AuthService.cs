@@ -136,4 +136,13 @@ public class AuthService(IConfiguration configuration, IHttpContextAccessor http
         var result = new List<OrganizationEntity>() { organization };
         return result.Adapt<List<GetOrganizationTreeOutput>>();
     }
+
+    /// <summary>
+    /// 获得当前平台信息
+    /// </summary>
+    /// <returns></returns>
+    public GetSystemPlatformInfoOutput GetSystemPlatformInfoAsync()
+    {
+        return new GetSystemPlatformInfoOutput();
+    }
 }

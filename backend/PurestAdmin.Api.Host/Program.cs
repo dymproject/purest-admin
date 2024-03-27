@@ -18,7 +18,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
     configuration.MinimumLevel.Override("Microsoft", LogEventLevel.Warning); // 排除Microsoft的日志
     configuration.MinimumLevel.Debug();
     configuration.WriteTo.Console();
-    configuration.WriteTo.File($"{AppContext.BaseDirectory}\\Logs\\.txt", rollingInterval: RollingInterval.Day, outputTemplate: template);
+    configuration.WriteTo.File($"{AppContext.BaseDirectory}/logs/.txt", rollingInterval: RollingInterval.Day, outputTemplate: template);
 });
 
 builder.Services.ReplaceConfiguration(builder.Configuration);

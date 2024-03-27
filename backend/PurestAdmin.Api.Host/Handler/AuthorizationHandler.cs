@@ -21,26 +21,26 @@ public class AuthorizationHandler : IAuthorizationHandler
     }
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
-        var httpContext = context.Resource as HttpContext;
-        if (httpContext != null)
+        if (context.Resource is HttpContext httpContext)
         {
-            var endpoint = httpContext.GetEndpoint() as RouteEndpoint;
-            var pattern = endpoint?.RoutePattern;
-            if (!_hostEnvironment.IsDevelopment())
-            {
-                var interfaces = await _currentUser.GetInterfacesAsync();
-                var ownInterface = interfaces.Any(x => x.Path == $"/{pattern?.RawText}" && x.RequestMethod.Equals(httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase));
-                if (!ownInterface)
-                {
-                    context.Fail();
-                    return;
-                }
-            }
+            //if (_hostEnvironment.IsProduction() && !httpContext.Request.Method.Equals("get", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    context.Fail();
+            //    return;
+            //}
+            //var endpoint = httpContext.GetEndpoint() as RouteEndpoint;
+            //var pattern = endpoint?.RoutePattern;
+            //if (!_hostEnvironment.IsDevelopment())
+            //{
+            //    var interfaces = await _currentUser.GetInterfacesAsync();
+            //    var ownInterface = interfaces.Any(x => x.Path == $"/{pattern?.RawText}" && x.RequestMethod.Equals(httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase));
+            //    if (!ownInterface)
+            //    {
+            //        context.Fail();
+            //        return;
+            //    }
+            //}
         }
-
-
-
-        //如果你有其他授权策略，请修改这里
         await Task.CompletedTask;
     }
 }

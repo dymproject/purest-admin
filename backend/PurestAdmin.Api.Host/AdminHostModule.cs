@@ -94,7 +94,7 @@ namespace PurestAdmin.WebApi.Host
                             // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
-                                (path.StartsWithSegments("/hubs")))
+                                (path.StartsWithSegments("/signalr-hubs")))
                             {
                                 // Read the token out of the query string
                                 context.Token = accessToken;
@@ -234,7 +234,6 @@ namespace PurestAdmin.WebApi.Host
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "API");
                     var responseInterceptor = @" (res) => {
                             const token = res.headers.accesstoken;
-                            console.log(token);
                             if(token){localStorage.setItem('token', token);}
                             return res;
                         }";

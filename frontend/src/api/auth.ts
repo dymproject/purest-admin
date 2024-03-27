@@ -12,7 +12,14 @@ export interface UserInfo {
   telephone: string;
   email: string;
 }
-
+export interface SystemPlatformInfo {
+  frameworkDescription: string;
+  osDescription: string;
+  osVersion: string;
+  osArchitecture: string;
+  machineName: string;
+  version: string;
+}
 /** 登录 */
 export const login = async (data?: object) => {
   return http.request<UserInfoType>("post", "/auth/login", { data });
@@ -35,5 +42,9 @@ export const getUserInfo = (password: string) => {
 export const editUserInfo = (params: any) => {
   return http.request<UserInfo>("put", "/auth/user-info", {
     data: params
+  });
+};
+export const getSystemPlatformInfo = () => {
+  return http.request<SystemPlatformInfo>("get", "/auth/system-platform-info", {
   });
 };
