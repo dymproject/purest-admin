@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <NoWarn>1701;1702;1591;8618;</NoWarn>
+    <NoWarn>1701;1702;1591;8618;8602;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

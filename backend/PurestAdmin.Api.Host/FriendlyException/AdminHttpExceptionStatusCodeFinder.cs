@@ -11,7 +11,7 @@ using Volo.Abp;
 using Volo.Abp.AspNetCore.ExceptionHandling;
 
 namespace PurestAdmin.Api.Host.FriendlyException;
-public class PurestHttpExceptionStatusCodeFinder(IOptions<AbpExceptionHttpStatusCodeOptions> options) : DefaultHttpExceptionStatusCodeFinder(options)
+public class AdminHttpExceptionStatusCodeFinder(IOptions<AbpExceptionHttpStatusCodeOptions> options) : DefaultHttpExceptionStatusCodeFinder(options)
 {
     public override HttpStatusCode GetStatusCode(HttpContext httpContext, Exception exception)
     {

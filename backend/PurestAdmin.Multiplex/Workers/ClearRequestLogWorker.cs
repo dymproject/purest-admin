@@ -10,19 +10,17 @@ using Volo.Abp.Threading;
 
 namespace PurestAdmin.Multiplex.Workers;
 
-public class ApplicationInfoWorker : AsyncPeriodicBackgroundWorkerBase
+public class ClearRequestLogWorker : AsyncPeriodicBackgroundWorkerBase
 {
-    public ApplicationInfoWorker(AbpAsyncTimer timer, IServiceScopeFactory serviceScopeFactory) : base(timer, serviceScopeFactory)
+    public ClearRequestLogWorker(AbpAsyncTimer timer, IServiceScopeFactory serviceScopeFactory) : base(timer, serviceScopeFactory)
     {
-        Timer.Period = 10000;
+        Timer.Period = 1000 * 60 * 60 * 24;
     }
 
     protected override async Task DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
     {
-        //var hubContext = workerContext.ServiceProvider.GetRequiredService<IHubContext<SystemPlatformHub, ISystemPlatformClient>>();
-        //await Task.Run(() =>
-        //{
-        //    hubContext.Clients.All.SystemPlatform(new SystemPlatformInfo());
-        //});
+        using var scope = workerContext.ServiceProvider.CreateScope();
+        var db = scope.ServiceProvider.GetService<ISqlSugarClient>();
+        _ = await db.Deleteable<RequestLogEntity>().Where(x => x.CreateTime <= DateTime.Now.AddDays(-1)).ExecuteCommandAsync();
     }
 }

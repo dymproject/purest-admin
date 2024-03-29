@@ -13,8 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using PurestAdmin.Api.Host;
+using PurestAdmin.Api.Host.AuthorizationHandler;
 using PurestAdmin.Api.Host.FriendlyException;
-using PurestAdmin.Api.Host.Handler;
 using PurestAdmin.Application;
 using PurestAdmin.Core;
 
@@ -51,7 +51,7 @@ namespace PurestAdmin.WebApi.Host
         private void CoinfigureControllers(ServiceConfigurationContext context, IWebHostEnvironment hostEnvironment)
         {
             //HTTP状态代码映射（配合oops返回400）
-            context.Services.AddSingleton<IHttpExceptionStatusCodeFinder, PurestHttpExceptionStatusCodeFinder>();
+            context.Services.AddSingleton<IHttpExceptionStatusCodeFinder, AdminHttpExceptionStatusCodeFinder>();
 
             //发送异常详情到客户端true(发送)/false（不发送）
             context.Services.Configure<AbpExceptionHandlingOptions>(options =>
@@ -63,7 +63,8 @@ namespace PurestAdmin.WebApi.Host
             //解决string类型默认增加require的标记，详见官方文档
             context.Services.AddControllers(options =>
             {
-                options.Filters.AddService<PurestAbpExceptionsFilter>();
+                options.Filters.AddService<AdminAbpExceptionsFilter>();
+                options.Filters.Add<AdminAsyncActionFilter>();
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             });
         }

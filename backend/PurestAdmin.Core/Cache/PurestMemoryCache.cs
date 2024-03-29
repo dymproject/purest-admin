@@ -5,7 +5,7 @@
 
 using Microsoft.Extensions.Caching.Memory;
 
-namespace PurestAdmin.Core.CacheExtensions;
+namespace PurestAdmin.Core;
 public class PurestMemoryCache : IPurestCache
 {
     private readonly IMemoryCache _memoryCache;

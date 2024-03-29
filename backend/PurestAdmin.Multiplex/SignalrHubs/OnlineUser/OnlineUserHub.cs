@@ -5,15 +5,30 @@
 
 using Microsoft.AspNetCore.Http.Features;
 
-using PurestAdmin.Core.CacheExtensions;
-
 using Volo.Abp.AspNetCore.SignalR;
 
-namespace PurestAdmin.Multiplex.Signalr.OnlineUser;
+namespace PurestAdmin.Multiplex.SignalrHubs.OnlineUser;
 public class OnlineUserHub(IPurestCache cache) : AbpHub<IOnlineUserClient>
 {
     private readonly IPurestCache _cache = cache;
     private const string USER_KEY = "online_user";
+
+    /// <summary>
+    /// 给客户端同步在线用户
+    /// </summary>
+    public void GetOnlineUsers()
+    {
+        var onlineUsers = _cache.Get<List<OnlineUserModel>>(USER_KEY) ?? [];
+        Clients.Caller.UpdateUser(onlineUsers);
+    }
+
+    /// <summary>
+    /// 发送Notice
+    /// </summary>
+    public void SendNotice(string connectionsIds, NoticeModel[] model)
+    {
+        Clients.Clients(connectionsIds).Notice(model.ToList());
+    }
 
     /// <summary>
     /// 强制下线某个用户
@@ -38,14 +53,15 @@ public class OnlineUserHub(IPurestCache cache) : AbpHub<IOnlineUserClient>
             var onlineUsers = _cache.Get<List<OnlineUserModel>>(USER_KEY) ?? [];
             if (!onlineUsers.Any(x => x.ConnectionId == Context.ConnectionId))
             {
-                var remoteAddress = feature.RemoteIpAddress;
+                var ip = httpContext.Request.Headers["X-Real-IP"].FirstOrDefault() ?? "未正确配置代理";
                 var userName = Context.User?.FindFirst("username")?.Value ?? "";
                 onlineUsers.Add(new OnlineUserModel
                 {
                     ConnectionId = Context.ConnectionId,
-                    Ip = remoteAddress.ToString(),
+                    Ip = ip,
                     UserId = Context.UserIdentifier,
-                    UserName = userName
+                    UserName = userName,
+                    LoginTime = DateTime.Now,
                 });
             }
             Clients.All.UpdateUser(onlineUsers);

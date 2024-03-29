@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using PurestAdmin.Multiplex.MultiplexUser;
 
-using Volo.Abp;
-
-namespace PurestAdmin.Api.Host.Handler;
+namespace PurestAdmin.Api.Host.AuthorizationHandler;
 public class AuthorizationHandler : IAuthorizationHandler
 {
     private readonly IHostEnvironment _hostEnvironment;

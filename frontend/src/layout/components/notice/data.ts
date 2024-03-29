@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export interface ListItem {
   avatar: string;
   title: string;
@@ -13,7 +15,36 @@ export interface TabItem {
   name: string;
   list: ListItem[];
 }
-
+export const noticeStarDatas: TabItem[] = [
+  {
+    key: "1",
+    name: "通知",
+    list: [
+      {
+        avatar:
+          "https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png",
+        title: "QQ群242853490",
+        datetime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+        description: "点亮星星，助力开源，感谢您的支持！您的一个 star，是对项目最大的鼓励！",
+        type: "1"
+      },
+    ]
+  },
+  {
+    key: "2",
+    name: "消息",
+    list: [
+      {
+        avatar:
+          "https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png",
+        title: "QQ群242853490",
+        datetime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+        description: "您的一个 star，是对项目最大的鼓励！",
+        type: "2"
+      },
+    ]
+  },
+];
 export const noticesData: TabItem[] = [
   {
     key: "1",

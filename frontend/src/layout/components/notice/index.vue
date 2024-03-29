@@ -1,20 +1,27 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { noticesData } from "./data";
+import { TabItem } from "./data";
 import NoticeList from "./noticeList.vue";
 import Bell from "@iconify-icons/ep/bell";
-
+import { useOnlineUserStore } from "@/store/modules/onlineUser";
+const onlineUserStore = useOnlineUserStore();
+const connection = onlineUserStore.getConnection;
+connection.on("Notice", (result: TabItem[]) => {
+  notices.value = result;
+  noticesNum.value = 0;
+  notices.value.map(v => (noticesNum.value += v.list.length));
+  activeKey.value = result[0].key;
+});
 const noticesNum = ref(0);
-const notices = ref(noticesData);
-const activeKey = ref(noticesData[0].key);
-
+const notices = ref<TabItem[]>([]);
+const activeKey = ref("");
 notices.value.map(v => (noticesNum.value += v.list.length));
 </script>
 
 <template>
-  <el-dropdown style="display: none" trigger="click" placement="bottom-end">
+  <el-dropdown trigger="click" placement="bottom-end">
     <span class="select-none dropdown-badge navbar-bg-hover">
-      <el-badge :value="noticesNum" :max="99">
+      <el-badge :show-zero="false" :value="noticesNum" :max="99">
         <span class="header-notice-icon">
           <IconifyIconOffline :icon="Bell" />
         </span>

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 
-namespace PurestAdmin.Api.Host.Handler;
+namespace PurestAdmin.Api.Host.AuthorizationHandler;
 public class AuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
 {
     public async Task HandleAsync(RequestDelegate next, HttpContext context, AuthorizationPolicy policy, PolicyAuthorizationResult authorizeResult)

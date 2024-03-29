@@ -18,7 +18,7 @@ using Volo.Abp.Json;
 
 namespace PurestAdmin.Api.Host.FriendlyException;
 
-public class PurestAbpExceptionsFilter : AbpExceptionFilter
+public class AdminAbpExceptionsFilter : AbpExceptionFilter
 {
     protected override void LogException(ExceptionContext context, out RemoteServiceErrorInfo remoteServiceErrorInfo)
     {

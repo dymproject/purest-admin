@@ -1,5 +1,5 @@
 <div align="center"><h1>Purest Admin</h1></div>
-<div align="center"><h2>努力变成一款最适合进行二开的极简框架</h2></div>
+<div align="center"><h2>打造一款最适合进行二开的极简.Net框架</h2></div>
 
 #### 介绍
 * 基于 .NET 8 + vue3 实现的极简rabc权限管理系统后端
@@ -11,7 +11,7 @@
 #### 开源初衷
 
 * 1、从业也算是很多年了，磕磕绊绊的总算立足于社会，成家立业。在这漫长的职业生涯里，一直感受到的是行业的温暖。有同事朋友们的帮助和关怀，还有大佬们对知识的无私奉献，所以希望能把行业的温暖传播给更多的人
-* 2、现有的很多优秀的开源项目，并不复合我的设计思路（重度强迫症） :smiley: ，如果你觉得项目还行，请给个star吧
+* 2、现有的很多优秀的开源项目，并不复合我的设计思路 :smiley: ，如果你觉得项目对您有帮助，请给个star吧
 
 #### 设计思路
 
@@ -36,6 +36,7 @@
 #### 演示地址
 
 - http://198.23.254.120
+- 演示环境去掉了相关权限验证
 
 #### 基本功能
 
@@ -46,6 +47,9 @@
 - 5、组织机构
 - 6、字典管理
 - 7、配置管理
+- 8、实时通讯
+- 9、后台服务
+- 10、事件总线
 
 #### 如何使用
 * frontend 存放前端项目，建议使用pnpm,clone之后 install（需要node环境，版本16+）,项目自己封装了vxe-table，不一定适合所有人，可自行替换。
@@ -66,10 +70,12 @@
 
 #### 截图
 
-| ![用户管理](frontend/src/assets/screenshot/userlist.png) | ![角色管理](frontend/src/assets/screenshot/rolelist.png)  | ![功能管理](frontend/src/assets/screenshot/functionlist.png) |
+
+| ![系统首页](frontend/src/assets/screenshot/welcome.png)|![个人信息](frontend/src/assets/screenshot/userinfo.png)|![项目配置](frontend/src/assets/screenshot/projectsetting.png) |
 |---|---|---|
+| ![用户管理](frontend/src/assets/screenshot/userlist.png) | ![角色管理](frontend/src/assets/screenshot/rolelist.png)  | ![功能管理](frontend/src/assets/screenshot/functionlist.png) |
 | ![组织机构](frontend/src/assets/screenshot/organizationlist.png) | ![字典管理](frontend/src/assets/screenshot/dictionarylist.png) |![配置管理](frontend/src/assets/screenshot/systemconfiglist.png) |
-|![个人信息](frontend/src/assets/screenshot/userinfo.png)| | |
+
 
 #### 特别鸣谢
 - 👉 ABP：  [https://docs.abp.io/zh-Hans/abp/latest](https://docs.abp.io/zh-Hans/abp/latest)
