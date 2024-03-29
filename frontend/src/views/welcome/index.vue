@@ -150,9 +150,9 @@ onMounted(() => {
           {{ systemPlatformInfo.frameworkDescription }}
         </el-descriptions-item>
         <el-descriptions-item
-          label="gitee地址"
+          label="项目地址"
           label-align="right"
-          span="2"
+          :span="2"
           align="center"
         >
           如果该项目帮助了您，希望能点个 Star 鼓励一下呦！
