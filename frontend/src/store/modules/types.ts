@@ -19,6 +19,7 @@ export type appType = {
   };
   layout: string;
   device: string;
+  viewportSize: { width: number; height: number };
 };
 
 export type multiType = {
@@ -35,8 +36,9 @@ export type setType = {
   hiddenSideBar: boolean;
 };
 
-export type UserInfoType = {
-  name?: string;
-  account?: string;
-  permissions?: string[];
+export type userType = {
+  username?: string;
+  roles?: Array<string>;
+  isRemembered?: boolean;
+  loginDay?: number;
 };

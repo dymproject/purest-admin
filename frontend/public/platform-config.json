@@ -1,6 +1,6 @@
 {
-  "Version": "5.1.0",
-  "Title": "PurestAdmin",
+  "Version": "5.3.0",
+  "Title": "purest-admin",
   "FixedHeader": true,
   "HiddenSideBar": false,
   "MultiTagsCache": false,
@@ -13,6 +13,7 @@
   "Weak": false,
   "HideTabs": false,
   "HideFooter": false,
+  "Stretch": false,
   "SidebarStatus": true,
   "EpThemeColor": "#409EFF",
   "ShowLogo": true,

@@ -3,6 +3,7 @@ import Search from "./search/index.vue";
 import Notice from "./notice/index.vue";
 import mixNav from "./sidebar/mixNav.vue";
 import { useNav } from "@/layout/hooks/useNav";
+import FullScreen from "./sidebar/fullScreen.vue";
 import Breadcrumb from "./sidebar/breadCrumb.vue";
 import topCollapse from "./sidebar/topCollapse.vue";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
@@ -23,9 +24,7 @@ const {
 </script>
 
 <template>
-  <div
-    class="navbar bg-[#fff] shadow-sm shadow-[rgba(0, 21, 41, 0.08)] dark:shadow-[#0d0d0d]"
-  >
+  <div class="navbar bg-[#fff] shadow-sm shadow-[rgba(0,21,41,0.08)]">
     <topCollapse
       v-if="device === 'mobile'"
       class="hamburger-container"
@@ -43,7 +42,9 @@ const {
     <div v-if="layout === 'vertical'" class="vertical-header-right">
       <!-- 菜单搜索 -->
       <Search id="header-search" />
-      <!-- 通知 -->
+      <!-- 全屏 -->
+      <FullScreen id="full-screen" />
+      <!-- 消息通知 -->
       <Notice id="header-notice" />
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
