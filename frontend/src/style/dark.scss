@@ -1,7 +1,22 @@
 @use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+@import 'vxe-table/lib/style.css';
 
 /* 整体暗色风格适配 */
 html.dark {
+  --vxe-font-color: hsl(240, 3%, 61%);
+  --vxe-primary-color: #2C7ECF;
+  --vxe-icon-background-color: #98989E;
+  --vxe-table-font-color: #98989E;
+  --vxe-table-resizable-color: #95969a;
+  --vxe-table-header-background-color: #28282A;
+  --vxe-table-body-background-color: #151518;
+  --vxe-table-background-color: #4a5663;
+  --vxe-table-border-width: 1px;
+  --vxe-table-border-color: #37373A;
+  --vxe-toolbar-background-color:#151518;
+  --vxe-form-background-color:#151518;
+  --vxe-pager-background-color:#151518;
+
   $border-style: #303030;
   $color-white: #fff;
 
