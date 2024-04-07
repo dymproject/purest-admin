@@ -127,7 +127,8 @@ defineExpose({ loadData });
 </script>
 <template>
   <vxe-grid
-    :max-height="props.maxHeight ?? 680"
+    :max-height="props.maxHeight ?? 650"
+    :min-height="350"
     :columns="gridColumns"
     :tree-config="treeOption"
     :data="data"

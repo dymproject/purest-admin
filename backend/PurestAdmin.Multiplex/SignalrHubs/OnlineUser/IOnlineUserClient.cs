@@ -13,11 +13,17 @@ public interface IOnlineUserClient
     /// <returns></returns>
     Task UpdateUser(List<OnlineUserModel> users);
     /// <summary>
-    /// 发送消息
+    /// 发送通知
     /// </summary>
     /// <param name="notices"></param>
     /// <returns></returns>
     Task Notice(List<NoticeModel> notices);
+    /// <summary>
+    /// 发送消息
+    /// </summary>
+    /// <param name="notices"></param>
+    /// <returns></returns>
+    Task Message(string message);
     /// <summary>
     /// 客户端退出
     /// </summary>

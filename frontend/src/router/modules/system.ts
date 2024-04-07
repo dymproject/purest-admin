@@ -67,7 +67,25 @@ export default {
         title: "配置管理",
         permissions: ["system.systemconfig"]
       },
-      component: () => import("@/views/system/systemconfig/index.vue")
+      component: () => import("@/views/system/systemConfig/index.vue")
+    },
+    {
+      path: "/online_user",
+      name: "system_onlineUser",
+      meta: {
+        title: "在线用户",
+        permissions: ["system.onlineuser"]
+      },
+      component: () => import("@/views/system/onlineUser/index.vue")
+    },
+    {
+      path: "/request_log",
+      name: "system_requestLog",
+      meta: {
+        title: "请求日志",
+        permissions: ["system.requestlog"]
+      },
+      component: () => import("@/views/system/requestLog/index.vue")
     }
   ]
 } as RouteConfigsTable;

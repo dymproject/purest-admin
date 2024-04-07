@@ -32,22 +32,6 @@ import Vertical from "./components/sidebar/vertical.vue";
 import Horizontal from "./components/sidebar/horizontal.vue";
 import backTop from "@/assets/svg/back_top.svg?component";
 
-import { useOnlineUserStore } from "@/store/modules/onlineUser";
-import { useUserStoreHook } from "@/store/modules/user";
-import { message } from "@/utils/message";
-const onlineUserStore = useOnlineUserStore();
-const connection = onlineUserStore.createConnection();
-connection.on("logout", () => {
-  message("您已被强制下线！3秒后返回登陆页面");
-  setTimeout(() => {
-    useUserStoreHook().logOut();
-  }, 3000);
-});
-//销毁
-onUnmounted(() => {
-  connection.stop();
-});
-
 const appWrapperRef = ref();
 const { isDark } = useDark();
 const { layout } = useLayout();

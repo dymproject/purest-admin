@@ -23,7 +23,11 @@ public class OnlineUserModel
     /// </summary>
     public string Ip { get; set; }
     /// <summary>
-    /// 登陆时间
+    /// ip属地
     /// </summary>
-    public DateTime LoginTime { get; set; }
+    public string IpString { get; set; }
+    /// <summary>
+    /// 链接时间
+    /// </summary>
+    public DateTime ConnectedTime { get; set; }
 }

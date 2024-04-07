@@ -1,21 +1,41 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import { TabItem } from "./data";
 import NoticeList from "./noticeList.vue";
 import Bell from "@iconify-icons/ep/bell";
 import { useOnlineUserStore } from "@/store/modules/onlineUser";
+import { ElNotification } from "element-plus";
+import { message } from "@/utils/message";
+import { useUserStoreHook } from "@/store/modules/user";
 const onlineUserStore = useOnlineUserStore();
-const connection = onlineUserStore.getConnection;
+const connection = onlineUserStore.createConnection();
 connection.on("Notice", (result: TabItem[]) => {
   notices.value = result;
   noticesNum.value = 0;
   notices.value.map(v => (noticesNum.value += v.list.length));
   activeKey.value = result[0].key;
 });
+connection.on("logout", () => {
+  message("您已被强制下线！3秒后返回登陆页面", { type: "error" });
+  setTimeout(() => {
+    useUserStoreHook().logOut();
+  }, 3000);
+});
+connection.on("Message", (result: string) => {
+  ElNotification({
+    title: "新消息",
+    message: result,
+    type: "info"
+  });
+});
 const noticesNum = ref(0);
 const notices = ref<TabItem[]>([]);
 const activeKey = ref("");
 notices.value.map(v => (noticesNum.value += v.list.length));
+//销毁
+onUnmounted(() => {
+  connection.stop();
+});
 </script>
 
 <template>

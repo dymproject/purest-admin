@@ -3,14 +3,17 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
+using IP2Region.Net.Abstractions;
+
 using Microsoft.AspNetCore.Http.Features;
 
 using Volo.Abp.AspNetCore.SignalR;
 
 namespace PurestAdmin.Multiplex.SignalrHubs.OnlineUser;
-public class OnlineUserHub(IPurestCache cache) : AbpHub<IOnlineUserClient>
+public class OnlineUserHub(IPurestCache cache, ISearcher searcher) : AbpHub<IOnlineUserClient>
 {
     private readonly IPurestCache _cache = cache;
+    private readonly ISearcher _searcher = searcher;
     private const string USER_KEY = "online_user";
 
     /// <summary>
@@ -19,7 +22,7 @@ public class OnlineUserHub(IPurestCache cache) : AbpHub<IOnlineUserClient>
     public void GetOnlineUsers()
     {
         var onlineUsers = _cache.Get<List<OnlineUserModel>>(USER_KEY) ?? [];
-        Clients.Caller.UpdateUser(onlineUsers);
+        Clients.Caller.UpdateUser([.. onlineUsers.OrderBy(x => x.UserId)]);
     }
 
     /// <summary>
@@ -27,7 +30,15 @@ public class OnlineUserHub(IPurestCache cache) : AbpHub<IOnlineUserClient>
     /// </summary>
     public void SendNotice(string connectionsIds, NoticeModel[] model)
     {
-        Clients.Clients(connectionsIds).Notice(model.ToList());
+        Clients.Clients(connectionsIds).Notice([.. model]);
+    }
+
+    /// <summary>
+    /// 给用户发送消息
+    /// </summary>
+    public void SendMessage(string connectionsIds, string message)
+    {
+        Clients.Clients(connectionsIds).Message(message);
     }
 
     /// <summary>
@@ -53,15 +64,17 @@ public class OnlineUserHub(IPurestCache cache) : AbpHub<IOnlineUserClient>
             var onlineUsers = _cache.Get<List<OnlineUserModel>>(USER_KEY) ?? [];
             if (!onlineUsers.Any(x => x.ConnectionId == Context.ConnectionId))
             {
-                var ip = httpContext.Request.Headers["X-Real-IP"].FirstOrDefault() ?? "未正确配置代理";
+                var ip = httpContext.Request.Headers["X-Real-IP"].FirstOrDefault() ?? feature.LocalIpAddress.MapToIPv4().ToString();
+                var ipString = _searcher.Search(ip)?.Replace("0", "").Replace("|", " ") ?? "暂无";
                 var userName = Context.User?.FindFirst("username")?.Value ?? "";
                 onlineUsers.Add(new OnlineUserModel
                 {
                     ConnectionId = Context.ConnectionId,
                     Ip = ip,
+                    IpString = ipString,
                     UserId = Context.UserIdentifier,
                     UserName = userName,
-                    LoginTime = DateTime.Now,
+                    ConnectedTime = DateTime.Now,
                 });
             }
             Clients.All.UpdateUser(onlineUsers);
