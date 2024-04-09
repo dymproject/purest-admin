@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <NoWarn>1701;1702;1591;8618;</NoWarn>
+    <NoWarn>1701;1702;1591;8618;8601;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

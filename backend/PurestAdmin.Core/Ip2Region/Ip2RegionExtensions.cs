@@ -8,12 +8,12 @@ using IP2Region.Net.XDB;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PurestAdmin.Core.Ip2Region;
+namespace PurestAdmin.Core.Ip2region;
 /// <summary>
 /// ip离线地址库
 /// </summary>
 /// <remarks>https://github.com/lionsoul2014/ip2region</remarks>
-public static class Ip2RegionExtensions
+public static class Ip2regionExtensions
 {
     /// <summary>
     /// 添加对象映射
@@ -21,10 +21,10 @@ public static class Ip2RegionExtensions
     /// <param name="services">服务集合</param>
     /// <param name="assemblies">扫描的程序集</param>
     /// <returns></returns>
-    public static IServiceCollection AddIp2Region(this IServiceCollection services)
+    public static IServiceCollection AddIp2region(this IServiceCollection services)
     {
         var hostingEnvironment = services.GetHostingEnvironment();
-        services.AddSingleton<ISearcher>(new Searcher(CachePolicy.Content, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ip2Region", "ip2region.xdb")));
+        services.AddSingleton<ISearcher>(new Searcher(CachePolicy.Content, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Ip2region", "ip2region.xdb")));
         return services;
     }
 }

@@ -8,7 +8,7 @@ namespace PurestAdmin.Application.DictCategoryServices.Dtos;
 /// <summary>
 /// 字典分类详情
 /// </summary>
-public class DictCategoryProfile
+public class DictCategoryOutput
 {
     /// <summary>
     /// 主键Id

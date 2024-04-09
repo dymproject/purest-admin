@@ -5,6 +5,7 @@
 
 using System.Diagnostics;
 
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -25,14 +26,14 @@ public class AdminAsyncActionFilter : IAsyncActionFilter
         // 获取 HttpContext 和 HttpRequest 对象
         var httpContext = context.HttpContext;
         var httpRequest = httpContext.Request;
+        var feature = httpContext.Features.Get<IHttpConnectionFeature>();
 
         // 获取客户端 IPv4 地址
-        var remoteIPv4 = httpContext.Request.Headers["X-Real-IP"].FirstOrDefault() ?? "未正确配置代理";
+        var remoteIPv4 = httpContext.Request.Headers["X-Real-IP"].FirstOrDefault() ?? feature?.LocalIpAddress?.MapToIPv4().ToString();
         var requestMethord = httpRequest.Method;
 
         // 服务器环境
         var environmentName = httpContext.RequestServices.GetRequiredService<IWebHostEnvironment>().EnvironmentName;
-
 
         // 获取方法参数
         var parameterValues = context.ActionArguments;

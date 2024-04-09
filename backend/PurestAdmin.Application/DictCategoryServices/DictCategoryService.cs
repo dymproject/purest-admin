@@ -20,13 +20,13 @@ public class DictCategoryService(ISqlSugarClient db, Repository<DictCategoryEnti
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<PagedList<DictCategoryProfile>> GetPagedListAsync(GetPagedListInput input)
+    public async Task<PagedList<DictCategoryOutput>> GetPagedListAsync(GetPagedListInput input)
     {
         var pagedList = await _db.Queryable<DictCategoryEntity>()
             .WhereIF(!input.Name.IsNullOrEmpty(), x => x.Name.Contains(input.Name.Trim()))
             .OrderByDescending(x => x.CreateTime)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
-        return pagedList.Adapt<PagedList<DictCategoryProfile>>();
+        return pagedList.Adapt<PagedList<DictCategoryOutput>>();
     }
 
     /// <summary>
@@ -34,10 +34,10 @@ public class DictCategoryService(ISqlSugarClient db, Repository<DictCategoryEnti
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<DictCategoryProfile> GetAsync(long id)
+    public async Task<DictCategoryOutput> GetAsync(long id)
     {
         var entity = await _dictCategoryRepository.GetByIdAsync(id);
-        return entity.Adapt<DictCategoryProfile>();
+        return entity.Adapt<DictCategoryOutput>();
     }
 
     /// <summary>

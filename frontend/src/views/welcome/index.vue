@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { onUnmounted, reactive, onMounted, ref, h } from "vue";
+import { onMounted, ref, h, computed } from "vue";
+import { useECharts, useDark } from "@pureadmin/utils";
 import { getSystemPlatformInfo, SystemPlatformInfo } from "@/api/auth";
-import { useOnlineUserStore } from "@/store/modules/onlineUser";
-import { VxeButton, VxeGridProps } from "vxe-table";
-import { noticeStarDatas } from "@/layout/components/notice/data";
+import { getLogCount } from "@/api/system/requestLog";
 const defValue = (): SystemPlatformInfo => {
   return {
     frameworkDescription: "",
@@ -15,86 +14,35 @@ const defValue = (): SystemPlatformInfo => {
   };
 };
 const systemPlatformInfo = ref<SystemPlatformInfo>(defValue());
-interface OnlineUser {
-  connectionId: string;
-  userId: string;
-  userName: string;
-  loginTime: string;
-  ip: string;
-}
-const tableData = ref<OnlineUser[]>();
-const gridOptions = reactive<VxeGridProps<OnlineUser>>({
-  border: true,
-  height: 400,
-  align: null,
-  columns: [
-    { type: "seq", width: 50 },
-    { field: "connectionId", title: "连接Id" },
-    { field: "userName", title: "用户" },
-    { field: "loginTime", title: "登陆时间" },
-    { field: "ip", title: "Ip地址" },
-    {
-      field: "operate",
-      title: "操作",
-      slots: {
-        default: ({ data, row }) => [
-          h(`p`, {}, [
-            h(
-              VxeButton,
-              {
-                style: {
-                  display:
-                    row.connectionId == connection.connectionId
-                      ? "none"
-                      : "inline"
-                },
-                type: `text`,
-                onClick() {
-                  connection.invoke("OfflineUser", row.connectionId);
-                }
-              },
-              () => "强制下线"
-            ),
-            h(
-              VxeButton,
-              {
-                style: {
-                  marginLeft: `10px`,
-                  display:
-                    row.connectionId == connection.connectionId
-                      ? "none"
-                      : "inline"
-                },
-                type: `text`,
-                onClick() {
-                  connection.invoke(
-                    "SendNotice",
-                    row.connectionId,
-                    noticeStarDatas
-                  );
-                }
-              },
-              () => "打招呼"
-            )
-          ])
-        ]
-      }
+const chartRef = ref();
+// 兼容dark主题
+const { isDark } = useDark();
+const { setOptions } = useECharts(chartRef, {
+  theme: isDark.value ? "dark" : "default"
+});
+const chartOptions = {
+  tooltip: {
+    trigger: "axis",
+    axisPointer: {
+      type: "shadow"
     }
-  ]
-});
-const onlineUserStore = useOnlineUserStore();
-const connection = onlineUserStore.getConnection;
-
-connection.on("UpdateUser", (result: OnlineUser[]) => {
-  tableData.value = result;
-});
-onMounted(() => {
-  if (connection.state == `Connected`) {
-    connection.invoke("GetOnlineUsers");
+  },
+  yAxis: {
+    type: "value"
   }
+};
+const showRequestCount = () => {
+  getLogCount({}).then((result: any) => {
+    const aa = { ...chartOptions, ...result };
+    setOptions(aa);
+  });
+};
+
+onMounted(() => {
   getSystemPlatformInfo().then((result: SystemPlatformInfo) => {
     systemPlatformInfo.value = result;
   });
+  showRequestCount();
 });
 </script>
 
@@ -172,13 +120,13 @@ onMounted(() => {
           >
             github地址
           </el-link>
-          &nbsp;&nbsp;&nbsp;&nbsp; 交流群：242853490
+          &nbsp;&nbsp;&nbsp;&nbsp;
         </el-descriptions-item>
       </el-descriptions>
     </el-card>
     <el-card :shadow="`never`" class="table-card">
-      <template #header>在线用户</template>
-      <vxe-grid :data="tableData" v-bind="gridOptions"> </vxe-grid>
+      <template #header>系统访问曲线</template>
+      <div ref="chartRef" style="width: 100%; height: 35vh" />
     </el-card>
   </div>
 </template>

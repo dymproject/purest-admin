@@ -4,7 +4,7 @@
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
 using PurestAdmin.Core.Cache;
-using PurestAdmin.Core.Ip2Region;
+using PurestAdmin.Core.Ip2region;
 using PurestAdmin.Core.Signalr;
 
 using Volo.Abp.AspNetCore.SignalR;
@@ -20,7 +20,7 @@ namespace PurestAdmin.Core
             context.Services.AddSnowflakeId();
             context.Services.AddPurestCache();
             context.Services.AddPurestSignalr();
-            context.Services.AddIp2Region();
+            context.Services.AddIp2region();
         }
     }
 }

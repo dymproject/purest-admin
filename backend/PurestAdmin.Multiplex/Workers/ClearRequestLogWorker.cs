@@ -14,7 +14,7 @@ public class ClearRequestLogWorker : AsyncPeriodicBackgroundWorkerBase
 {
     public ClearRequestLogWorker(AbpAsyncTimer timer, IServiceScopeFactory serviceScopeFactory) : base(timer, serviceScopeFactory)
     {
-        Timer.Period = 1000 * 60 * 60 * 24;
+        Timer.Period = 1000 * 60 * 60 * 24 * 14;
     }
 
     protected override async Task DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)

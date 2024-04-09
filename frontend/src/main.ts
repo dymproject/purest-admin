@@ -45,6 +45,7 @@ import { Auth } from "@/components/ReAuth";
 import { useTable } from "./plugins/vxe-table";
 import { ReCard } from "./components/ReCard";
 import { ReVxeGrid } from "./components/ReVxeTable";
+import * as echarts from "echarts";
 
 app.component("Auth", Auth);
 import "tippy.js/dist/tippy.css";
@@ -54,6 +55,7 @@ app.use(VueTippy);
 
 app.component("ReCard", ReCard);
 app.component("ReVxeGrid", ReVxeGrid);
+app.config.globalProperties.$echarts = echarts;
 
 getPlatformConfig(app).then(async config => {
   setupStore(app);
