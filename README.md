@@ -10,8 +10,9 @@
 
 #### 开源初衷
 
-* 1、从业也算是很多年了，磕磕绊绊的总算立足于社会，成家立业。在这漫长的职业生涯里，一直感受到的是行业的温暖。有同事朋友们的帮助和关怀，还有大佬们对知识的无私奉献，所以希望能把行业的温暖传播给更多的人
-* 2、现有的很多优秀的开源项目，并不复合我的设计思路 :smiley: ，如果你觉得项目对您有帮助，请给个star吧
+* 1、在这漫长的职业生涯里，一直感受到的是行业的温暖。有同事朋友们的帮助和关怀，还有大佬们对知识的无私奉献，所以希望能把行业的温暖传播给更多的人
+* 2、现有的很多优秀的开源项目，并不复合我的设计思路， 而且大多的项目太臃肿了，更有甚者需要付费解锁高级功能
+* 3、想要打造一个最适合二次开发的.Net管理模板，让用户尽快投入到业务的开发中去，如果你觉得项目对您有帮助，请给个star吧
 
 #### 设计思路
 
@@ -36,10 +37,10 @@
 #### 演示地址
 
 - http://198.23.254.120
-- 演示环境去掉了相关权限验证
+- 演示环境去掉了相关接口权限验证
 
-#### 基本功能
-
+#### 功能
+ ##### 前端可视界面
 - 1、登陆
 - 2、用户管理
 - 3、角色管理
@@ -47,9 +48,13 @@
 - 5、组织机构
 - 6、字典管理
 - 7、配置管理
-- 8、实时通讯
-- 9、后台服务
-- 10、事件总线
+- 8、在线用户
+- 9、请求日志
+- 10、个人信息
+##### 后端第三方集成
+- 1、orm（SqlSugar）
+- 2、雪花Id集成(yitter/idgenerator)
+- 3、Ip2region（lionsoul2014/ip2region）
 
 #### 如何使用
 * frontend 存放前端项目，建议使用pnpm,clone之后 install（需要node环境，版本16+）,项目自己封装了vxe-table，不一定适合所有人，可自行替换。
@@ -65,6 +70,7 @@
 #### 未来规划
 
 - 继续完善一些常用且不掺杂业务的基本功能
+- 完善一下二开的使用文档（因为关注的人不多，也没得到过什么反馈，暂时默认大家都能理解并完全上手了）
 
 -  **开发一版wpf的前端(开发中)** 
 
@@ -81,9 +87,10 @@
 - 👉 ABP：  [https://docs.abp.io/zh-Hans/abp/latest](https://docs.abp.io/zh-Hans/abp/latest)
 - 👉 SqlSugar：[https://gitee.com/dotnetchina/SqlSugar](https://gitee.com/dotnetchina/SqlSugar)
 - 👉 IdGenerator：[https://github.com/yitter/idgenerator](https://github.com/yitter/idgenerator)
+- 👉 Ip2region：[https://github.com/lionsoul2014/ip2region](https://github.com/lionsoul2014/ip2region)
 - 👉 vue-pure-admin：[https://gitee.com/yiming_chang/vue-pure-admin](https://gitee.com/yiming_chang/vue-pure-admin)
 - 👉 vxe-table：[https://gitee.com/xuliangzhan_admin/vxe-table](https://gitee.com/xuliangzhan_admin/vxe-table)
-- 👉 有幸使用过、未能一一在此列举的框架以及好朋友们
+- 👉 有幸使用、未能一一在此列举的框架以及好朋友们
 
 #### 其他
 如有其他问题、请私信或者留言
