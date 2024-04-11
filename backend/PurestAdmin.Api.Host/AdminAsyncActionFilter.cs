@@ -5,7 +5,9 @@
 
 using System.Diagnostics;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -53,6 +55,10 @@ public class AdminAsyncActionFilter : IAsyncActionFilter
             IsSuccess = resultContext.Exception == null,
             RequestMethod = requestMethord
         };
+        if (httpContext.GetEndpoint()?.Metadata?.GetMetadata<AllowAnonymousAttribute>() != null)
+        {
+            return;
+        }
         await localEventBus.PublishAsync(data);
     }
 }

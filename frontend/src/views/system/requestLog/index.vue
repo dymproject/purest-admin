@@ -9,17 +9,17 @@ const columns: VxeGridPropTypes.Columns<any> = [
   {
     title: "控制器",
     field: "controllerName",
-    minWidth: 100
+    minWidth: 150
   },
   {
     title: "方法名",
     field: "actionName",
-    minWidth: 100
+    minWidth: 150
   },
   {
     title: "请求类型",
     field: "requestMethod",
-    minWidth: 100
+    minWidth: 50
   },
   {
     title: "服务器环境",
@@ -42,6 +42,11 @@ const columns: VxeGridPropTypes.Columns<any> = [
   {
     title: "客户端IP",
     field: "clientIp",
+    minWidth: 100
+  },
+  {
+    title: "请求时间",
+    field: "createTime",
     minWidth: 100
   }
 ];

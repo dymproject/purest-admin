@@ -70,7 +70,7 @@ public class AuthService(IConfiguration configuration, IHttpContextAccessor http
         //JwtSecurityToken
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(expiredTime),
+            expires: DateTime.Now.AddMinutes(expiredTime),
             signingCredentials: signingCredentials
         );
         //生成字符串token

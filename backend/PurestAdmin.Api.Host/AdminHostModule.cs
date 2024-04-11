@@ -24,6 +24,7 @@ using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.AspNetCore.Mvc.ApiExploring;
 using Volo.Abp.AspNetCore.Mvc.Conventions;
 using Volo.Abp.Autofac;
+using Volo.Abp.Json;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
@@ -67,6 +68,8 @@ namespace PurestAdmin.WebApi.Host
                 options.Filters.Add<AdminAsyncActionFilter>();
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             });
+            //时间格式化
+            Configure<AbpJsonOptions>(options => options.OutputDateTimeFormat = "yyyy-MM-dd HH:mm:ss");
         }
         private void ConfigureAuthorizationServices(ServiceConfigurationContext context, IConfiguration configuration)
         {

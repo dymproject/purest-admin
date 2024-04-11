@@ -24,6 +24,7 @@ public class RequestLogService(ISqlSugarClient client) : ApplicationService
         var pagedList = await _client.Queryable<RequestLogEntity>()
             .Where(x => x.CreateTime.ToString("yyyy-MM-dd") == input.RequestDate.ToString("yyyy-MM-dd"))
             .WhereIF(input.IsSuccess.HasValue, x => x.IsSuccess == input.IsSuccess)
+            .OrderByDescending(x => x.CreateTime)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<RequestLogOutput>>();
     }
