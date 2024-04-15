@@ -10,6 +10,7 @@ dist-ssr
 *.local
 .eslintcache
 report.html
+FolderProfile.xml
 
 yarn.lock
 npm-debug.log*
