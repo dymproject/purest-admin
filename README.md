@@ -26,7 +26,7 @@
 
 #### 演示地址
 
-- [http://www.purestadmin.com](http://www.purestadmin.com) 
+- [http://www.purestadmin.com](http://www.purestadmin.com) 被墙了。需要自行过墙
 
 #### 完成功能
 
