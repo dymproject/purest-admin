@@ -36,9 +36,9 @@ export type setType = {
   hiddenSideBar: boolean;
 };
 
-export type userType = {
-  username?: string;
-  roles?: Array<string>;
-  isRemembered?: boolean;
-  loginDay?: number;
+export type UserInfoType = {
+  name?: string;
+  account?: string;
+  permissions?: string[];
 };
+
