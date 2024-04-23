@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { getOrganizationTreeData } from "@/api/auth";
 
 const value = ref();
 const data = ref();
 
-onMounted(async () => {
+onBeforeMount(async () => {
   const treeData = await getOrganizationTreeData();
   data.value = treeData;
 });

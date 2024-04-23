@@ -3,18 +3,24 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
+using Microsoft.AspNetCore.SignalR;
+
 using PurestAdmin.Application.UserServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
+using PurestAdmin.Multiplex.AdminUser;
+using PurestAdmin.Multiplex.Contracts.IAdminUser;
 
 namespace PurestAdmin.Application.UserServices;
 /// <summary>
 /// 用户服务
 /// </summary>
-public class UserService(ISqlSugarClient db, Repository<UserEntity> userRepository) : ApplicationService
+public class UserService(ISqlSugarClient db, Repository<UserEntity> userRepository,
+    IHubContext<OnlineUserHub, IOnlineUserClient> hubContext, ICacheOnlineUser cacheOnlineUser) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
     private readonly Repository<UserEntity> _userRepository = userRepository;
-
+    private readonly IHubContext<OnlineUserHub, IOnlineUserClient> _hubContext = hubContext;
+    private readonly ICacheOnlineUser _cacheOnlineUser = cacheOnlineUser;
     /// <summary>
     /// 分页查询
     /// </summary>
@@ -29,6 +35,7 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
             .WhereIF(!input.Account.IsNullOrEmpty(), (u) => u.Account.Contains(input.Account, StringComparison.CurrentCultureIgnoreCase))
             .WhereIF(!input.Telephone.IsNullOrEmpty(), (u) => u.Telephone.Contains(input.Telephone))
             .WhereIF(!input.Email.IsNullOrEmpty(), (u) => u.Email.Contains(input.Email))
+            .WhereIF(input.Status.HasValue, (u) => u.Status == input.Status)
             .Select((u, ur, r) => new UserEntity
             {
                 Id = u.Id.SelectAll(),
@@ -36,6 +43,7 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
                 RoleId = r.Id,
                 OrganizationName = u.OrganizationId.GetConfigValue<OrganizationEntity>()
             })
+            .OrderBy(u => u.Status)
             .OrderByDescending(u => u.CreateTime)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<UserOutput>>();
@@ -118,6 +126,37 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
         }
         await _db.Deleteable<UserRoleEntity>().Where(x => x.UserId == id).ExecuteCommandAsync();
         await _userRepository.DeleteAsync(entity);
+    }
+
+    /// <summary>
+    /// 账户停用
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task StopAsync(long id)
+    {
+        var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        if (entity.Account == "admin")
+        {
+            throw Oops.Bah("初始化账户不能停用！");
+        }
+        entity.Status = (int)UserStatusEnum.Stop;
+        await _userRepository.UpdateAsync(entity);
+        var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
+        var connectionIds = onlineUsers.Where(x => x.UserId == id.ToString()).Select(x => x.ConnectionId).ToList();
+        await _hubContext.Clients.Clients(connectionIds).Logout();
+    }
+
+    /// <summary>
+    /// 账户恢复正常
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task NormalAsync(long id)
+    {
+        var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        entity.Status = (int)UserStatusEnum.Normal;
+        await _userRepository.UpdateAsync(entity);
     }
 
     /// <summary>

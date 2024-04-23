@@ -4,6 +4,7 @@
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
 using PurestAdmin.Application.Organization.Dtos;
+using PurestAdmin.Multiplex.Contracts.IAdminUser;
 
 namespace PurestAdmin.Application.OrganizationServices;
 /// <summary>

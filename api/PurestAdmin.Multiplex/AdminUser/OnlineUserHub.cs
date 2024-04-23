@@ -6,22 +6,23 @@
 using IP2Region.Net.Abstractions;
 
 using Microsoft.AspNetCore.Http.Features;
+using PurestAdmin.Multiplex.Contracts.IAdminUser;
+using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 
 using Volo.Abp.AspNetCore.SignalR;
 
-namespace PurestAdmin.Multiplex.SignalrHubs.OnlineUser;
-public class OnlineUserHub(IPurestCache cache, ISearcher searcher) : AbpHub<IOnlineUserClient>
+namespace PurestAdmin.Multiplex.AdminUser;
+public class OnlineUserHub(ICacheOnlineUser cacheOnlineUser, ISearcher searcher) : AbpHub<IOnlineUserClient>
 {
-    private readonly IPurestCache _cache = cache;
+    private readonly ICacheOnlineUser _cacheOnlineUser = cacheOnlineUser;
     private readonly ISearcher _searcher = searcher;
-    private const string USER_KEY = "online_user";
 
     /// <summary>
     /// 给客户端同步在线用户
     /// </summary>
     public void GetOnlineUsers()
     {
-        var onlineUsers = _cache.Get<List<OnlineUserModel>>(USER_KEY) ?? [];
+        var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
         Clients.Caller.UpdateUser([.. onlineUsers.OrderBy(x => x.UserId)]);
     }
 
@@ -61,7 +62,7 @@ public class OnlineUserHub(IPurestCache cache, ISearcher searcher) : AbpHub<IOnl
             ArgumentNullException.ThrowIfNull(httpContext);
             ArgumentNullException.ThrowIfNull(Context.UserIdentifier);
 
-            var onlineUsers = _cache.Get<List<OnlineUserModel>>(USER_KEY) ?? [];
+            var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
             if (!onlineUsers.Any(x => x.ConnectionId == Context.ConnectionId))
             {
                 var ip = httpContext.Request.Headers["X-Real-IP"].FirstOrDefault() ?? feature.LocalIpAddress.MapToIPv4().ToString();
@@ -78,7 +79,7 @@ public class OnlineUserHub(IPurestCache cache, ISearcher searcher) : AbpHub<IOnl
                 });
             }
             Clients.All.UpdateUser(onlineUsers);
-            _cache.Set(USER_KEY, onlineUsers);
+            _cacheOnlineUser.SetOnlineUser(onlineUsers);
         }
         return Task.CompletedTask;
     }
@@ -88,10 +89,10 @@ public class OnlineUserHub(IPurestCache cache, ISearcher searcher) : AbpHub<IOnl
         var httpContext = Context.GetHttpContext();
         if (httpContext != null && Context.UserIdentifier != null)
         {
-            var onlineUsers = _cache.Get<List<OnlineUserModel>>(USER_KEY) ?? [];
+            var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
             var newOnlineUser = onlineUsers.Where(x => x.ConnectionId != Context.ConnectionId).ToList();
             Clients.All.UpdateUser(newOnlineUser);
-            _cache.Set(USER_KEY, newOnlineUser);
+            _cacheOnlineUser.SetOnlineUser(newOnlineUser);
         }
         return Task.CompletedTask;
     }

@@ -1,26 +1,32 @@
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
-import { getPageList, deleteData } from "@/api/system/systemconfig";
+import { reactive, ref, h } from "vue";
+import { getPageList, deleteData } from "@/api/system/notice";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
 import { VxeGridPropTypes, VXETable } from "vxe-table";
+import { ReDictionary } from "@/components/ReDictionary";
 const reVxeGridRef = ref();
 const columns: VxeGridPropTypes.Columns<any> = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
-    title: "配置名称",
-    field: "name",
+    title: "标题",
+    field: "title",
     minWidth: 100
   },
   {
-    title: "配置编码",
-    field: "configCode",
+    title: "内容",
+    field: "content",
     minWidth: 100
   },
   {
-    title: "配置值",
-    field: "configValue",
-    minWidth: 200
+    title: "类型",
+    field: "noticeTypeString",
+    minWidth: 100
+  },
+  {
+    title: "级别",
+    field: "levelString",
+    minWidth: 100
   },
   {
     title: "备注",
@@ -31,21 +37,50 @@ const columns: VxeGridPropTypes.Columns<any> = [
 const formRef = ref();
 
 const handleInitialFormParams = () => ({
-  name: "",
-  configCode: ""
+  title: "",
+  level: null,
+  noticeType: null
 });
 const formItems = [
   {
-    field: "name",
-    title: "配置名称",
+    field: "title",
+    title: "标题",
     span: 6,
-    itemRender: { name: "$input", props: { placeholder: "配置名称" } }
+    itemRender: { name: "$input", props: { placeholder: "标题" } }
   },
   {
-    field: "configCode",
-    title: "配置编码",
+    field: "noticeType",
+    title: "类型",
     span: 6,
-    itemRender: { name: "$input", props: { placeholder: "配置编码" } }
+    slots: {
+      default: ({ data }) => {
+        return h(ReDictionary, {
+          code: "dict_notice_type",
+          modelValue: data.noticeType,
+          placeholder: "请选择类型",
+          onChange({ value }) {
+            data.noticeType = value;
+          }
+        });
+      }
+    }
+  },
+  {
+    field: "level",
+    title: "级别",
+    span: 6,
+    slots: {
+      default: ({ data }) => {
+        return h(ReDictionary, {
+          code: "dict_notice_level",
+          modelValue: data.level,
+          placeholder: "请选择级别",
+          onChange({ value }) {
+            data.level = value;
+          }
+        });
+      }
+    }
   },
   {
     span: 6,
@@ -65,12 +100,18 @@ const formItems = [
     }
   }
 ];
-const formData = reactive<{ name: string; configCode: string }>(
-  handleInitialFormParams()
-);
+const formData = ref<{
+  title: string;
+  level: number | null;
+  noticeType: number | null;
+}>(handleInitialFormParams());
 
 const handleSearch = () => {
   reVxeGridRef.value.loadData();
+};
+
+const handleReset = () => {
+  formData.value = handleInitialFormParams();
 };
 
 const createModalRef = ref();
@@ -92,10 +133,10 @@ const handleView = (record: Recordable) => {
   createModalRef.value.showViewModal(record);
 };
 const functions: Record<string, string> = {
-  add: "system.systemconfig.add",
-  edit: "system.systemconfig.edit",
-  view: "system.systemconfig.view",
-  delete: "system.systemconfig.delete"
+  add: "system.notice.add",
+  edit: "system.notice.edit",
+  view: "system.notice.view",
+  delete: "system.notice.delete"
 };
 </script>
 <template>
@@ -106,7 +147,7 @@ const functions: Record<string, string> = {
         :data="formData"
         :items="formItems"
         @submit="handleSearch"
-        @reset="handleInitialFormParams"
+        @reset="handleReset"
       />
     </el-card>
     <el-card :shadow="`never`" class="table-card">

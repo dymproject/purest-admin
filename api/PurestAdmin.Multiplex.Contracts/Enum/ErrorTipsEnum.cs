@@ -5,7 +5,7 @@
 
 using System.ComponentModel;
 
-namespace PurestAdmin.Multiplex.TipsEnum;
+namespace PurestAdmin.Multiplex.Contracts.Enum;
 /// <summary>
 /// 业务日志错误码
 /// </summary>

@@ -3,20 +3,19 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
-namespace PurestAdmin.Application.RequestLogServices.Dtos;
+namespace PurestAdmin.Application.NoticeServices.Dtos;
 public class GetPagedListInput : PaginationParams
 {
     /// <summary>
-    /// 日期
+    /// 标题
     /// </summary>
-    [Required(ErrorMessage = "日期不能为空")]
-    public DateTime RequestDate { get; set; }
+    public string Title { get; set; }
     /// <summary>
-    /// 控制器名称
+    /// 类型
     /// </summary>
-    public string ControllerName { get; set; }
+    public long? NoticeType { get; set; }
     /// <summary>
-    /// 方法名
+    /// 级别
     /// </summary>
-    public string ActionName { get; set; }
+    public long? Level { get; set; }
 }

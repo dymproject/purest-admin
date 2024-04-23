@@ -1,9 +1,9 @@
-<script lang="ts" setup>
-import { ref, nextTick, reactive } from "vue";
+<script lang="tsx" setup>
+import { ref, nextTick, reactive, h } from "vue";
 import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-table";
-import { getSingle, submitData } from "@/api/system/dictionary";
+import { getSingle, submitData } from "@/api/system/notice";
+import { ReDictionary } from "@/components/ReDictionary";
 const emits = defineEmits<{ (e: "reload"): void }>();
-const props = defineProps<{ categoryId?: number }>();
 const vxeModalRef = ref<VxeModalInstance>();
 const modalOptions = reactive<{
   modalValue: boolean;
@@ -21,39 +21,77 @@ const showModal = (title: string, canSubmit?: boolean): void => {
   modalOptions.canSubmit = canSubmit ?? true;
 };
 
-interface AddDictDataInput {
-  name: string;
-  code: string;
-  categoryId: null | number;
+interface AddNoticeInput {
+  title: string;
+  content: string;
+  noticeType: number | null;
+  level: number | null;
   remark: string;
 }
 const formRef = ref<VxeFormInstance>();
 const defaultFormData = () => {
   return {
-    name: "",
-    code: "",
-    categoryId: props.categoryId,
+    title: "",
+    content: "",
+    noticeType: null,
+    level: null,
     remark: ""
   };
 };
-const formData = ref<AddDictDataInput>(defaultFormData());
+const formData = ref<AddNoticeInput>(defaultFormData());
 const formItems = ref<VxeFormPropTypes.Items>([
   {
-    field: "name",
-    title: "名称",
+    field: "title",
+    title: "标题",
     span: 24,
     itemRender: {
       name: "$input",
-      props: { placeholder: "请输入名称" }
+      props: { placeholder: "请输入标题" }
     }
   },
   {
-    field: "sort",
-    title: "排序",
+    field: "noticeType",
+    title: "类型",
+    span: 24,
+    slots: {
+      default: ({ data }) => {
+        return h(ReDictionary, {
+          code: "dict_notice_type",
+          modelValue: data.noticeType,
+          placeholder: "请选择类型",
+          onChange({ value }) {
+            data.noticeType = value;
+            formRef.value.validateField("noticeType");
+          }
+        });
+      }
+    }
+  },
+  {
+    field: "level",
+    title: "级别",
+    span: 24,
+    slots: {
+      default: ({ data }) => {
+        return h(ReDictionary, {
+          code: "dict_notice_level",
+          modelValue: data.level,
+          placeholder: "请选择级别",
+          onChange({ value }) {
+            data.level = value;
+            formRef.value.validateField("level");
+          }
+        });
+      }
+    }
+  },
+  {
+    field: "content",
+    title: "内容",
     span: 24,
     itemRender: {
-      name: "$input",
-      props: { type: "number", min: 0, placeholder: "请输入排序序号" }
+      name: "$textarea",
+      props: { rows: 4, placeholder: "请输入内容" }
     }
   },
   {
@@ -67,18 +105,21 @@ const formItems = ref<VxeFormPropTypes.Items>([
   }
 ]);
 const formRules = ref<VxeFormPropTypes.Rules>({
-  name: [{ required: true, message: "请输入功能名称" }]
+  title: [{ required: true, message: "请输入标题" }],
+  content: [{ required: true, message: "请输入内容" }],
+  noticeType: [{ required: true, message: "请选择通知类型" }],
+  level: [{ required: true, message: "请选择通知级别" }]
 });
 
 const showAddModal = () => {
-  showModal(`添加字典`);
+  showModal(`添加系统配置`);
   formData.value = defaultFormData();
   nextTick(() => {
     formRef.value.clearValidate();
   });
 };
 const showEditModal = (record: Recordable) => {
-  showModal(`编辑字典->${record.name}`);
+  showModal(`编辑系统配置->${record.name}`);
   nextTick(() => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {
@@ -87,7 +128,7 @@ const showEditModal = (record: Recordable) => {
   });
 };
 const showViewModal = (record: Recordable) => {
-  showModal(`查看字典->${record.name}`, false);
+  showModal(`查看系统配置->${record.name}`, false);
   nextTick(() => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {
@@ -104,6 +145,7 @@ const handleSubmit = async () => {
     });
   }
 };
+
 defineExpose({ showAddModal, showEditModal, showViewModal });
 </script>
 <template>
@@ -111,7 +153,7 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
     ref="vxeModalRef"
     v-model="modalOptions.modalValue"
     width="600"
-    height="400"
+    height="500"
     showFooter
     :title="modalOptions.modalTitle"
   >
@@ -137,4 +179,3 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
     </template>
   </vxe-modal>
 </template>
-@/api/system/dictionary

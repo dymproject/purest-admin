@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using PurestAdmin.Application.AuthServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
+using PurestAdmin.Multiplex.Contracts.IAdminUser;
 
 namespace PurestAdmin.Application.SystemServices;
 /// <summary>
@@ -49,6 +50,8 @@ public class AuthService(IConfiguration configuration, IHttpContextAccessor http
         // 判断用户名或密码是否正确
         var password = MD5Encryption.Encrypt(input.Password);
         var user = await _db.Queryable<UserEntity>().FirstAsync(u => u.Account.Equals(input.Account) && u.Password.Equals(password)) ?? throw Oops.Bah("用户名不存在或用户名密码错误！");
+        if (user.Status != (int)UserStatusEnum.Normal) throw Oops.Bah("帐号状态异常，请联系管理员");
+
         // 映射结果
         var output = user.Adapt<LoginOutput>();
 

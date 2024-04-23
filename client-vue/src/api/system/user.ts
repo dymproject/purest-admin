@@ -38,3 +38,11 @@ export const getPassword = (id: number) => {
 export const deleteData = (id: number) => {
   return http.request("delete", `/user/${id}`);
 };
+
+export const stop = (id: number) => {
+  return http.request("post", `/user/${id}/stop`);
+};
+
+export const normal = (id: number) => {
+  return http.request("post", `/user/${id}/normal`);
+};

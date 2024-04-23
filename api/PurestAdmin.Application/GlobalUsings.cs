@@ -8,8 +8,8 @@ global using System.ComponentModel.DataAnnotations;
 global using Mapster;
 
 global using PurestAdmin.Core;
-global using PurestAdmin.Multiplex.MultiplexUser;
-global using PurestAdmin.Multiplex.TipsEnum;
+global using PurestAdmin.Multiplex.Contracts;
+global using PurestAdmin.Multiplex.Contracts.Enum;
 global using PurestAdmin.SqlSugar;
 global using PurestAdmin.SqlSugar.Entity;
 

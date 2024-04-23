@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
-import { getPageList, deleteData } from "@/api/system/user";
+import { reactive, ref, h } from "vue";
+import { getPageList, deleteData, stop, normal } from "@/api/system/user";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
-import { VxeGridPropTypes, VXETable } from "vxe-table";
+import { VxeButton, VxeGridPropTypes, VXETable } from "vxe-table";
 const reVxeGridRef = ref();
 const columns: VxeGridPropTypes.Columns<any> = [
   { type: "checkbox", title: "", width: 60, align: "center" },
@@ -38,6 +38,37 @@ const columns: VxeGridPropTypes.Columns<any> = [
     minWidth: 150
   },
   {
+    title: "状态",
+    field: "status",
+    minWidth: 150,
+    slots: {
+      default: ({ row }) =>
+        row.status === 0
+          ? h(
+              VxeButton,
+              {
+                status: "success",
+                size: "mini",
+                onClick: () => {
+                  handleChangeStatus(row);
+                }
+              },
+              { default: () => h("span", "正常") }
+            )
+          : h(
+              VxeButton,
+              {
+                status: "danger",
+                size: "mini",
+                onClick: () => {
+                  handleChangeStatus(row);
+                }
+              },
+              { default: () => h("span", "停用") }
+            )
+    }
+  },
+  {
     title: "备注",
     field: "remark",
     minWidth: 150
@@ -47,7 +78,8 @@ const formRef = ref();
 
 const handleInitialFormParams = () => ({
   name: "",
-  account: ""
+  account: "",
+  status: null
 });
 const formItems = [
   {
@@ -61,6 +93,22 @@ const formItems = [
     title: "帐号",
     span: 6,
     itemRender: { name: "$input", props: { placeholder: "帐号" } }
+  },
+  {
+    field: "status",
+    title: "用户状态",
+    span: 6,
+    itemRender: {
+      name: "$select",
+      props: {
+        options: [
+          { label: "全部", value: null },
+          { label: "正常", value: "0" },
+          { label: "停用", value: "1" }
+        ],
+        placeholder: "用户状态"
+      }
+    }
   },
   {
     span: 6,
@@ -80,9 +128,11 @@ const formItems = [
     }
   }
 ];
-const formData = reactive<{ name: string; account: string }>(
-  handleInitialFormParams()
-);
+const formData = reactive<{
+  name: string;
+  account: string;
+  status: number | null;
+}>(handleInitialFormParams());
 
 const handleSearch = () => {
   reVxeGridRef.value.loadData();
@@ -105,6 +155,14 @@ const handleDelete = async (record: Recordable) => {
 };
 const handleView = (record: Recordable) => {
   createModalRef.value.showViewModal(record);
+};
+const handleChangeStatus = async (record: Recordable) => {
+  if (record.status == 0) {
+    await stop(record.id);
+  } else {
+    await normal(record.id);
+  }
+  handleSearch();
 };
 const functions: Record<string, string> = {
   add: "system.user.add",

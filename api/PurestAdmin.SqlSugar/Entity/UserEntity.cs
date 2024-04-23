@@ -42,6 +42,11 @@ public partial class UserEntity : BaseEntity
     [SugarColumn(ColumnName = "AVATAR")]
     public byte[] Avatar { get; set; }
     /// <summary>
+    /// 状态
+    /// </summary>
+    [SugarColumn(ColumnName = "STATUS")]
+    public int Status { get; set; }
+    /// <summary>
     /// 组织机构Id
     /// </summary>
     [SugarColumn(ColumnName = "ORGANIZATION_ID")]

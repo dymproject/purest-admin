@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, h, onMounted, nextTick, reactive } from "vue";
+import { ref, h, onBeforeMount, nextTick, reactive } from "vue";
 import {
   VxeFormPropTypes,
   VxeSelect,
@@ -172,7 +172,7 @@ const handleSubmit = async () => {
   }
 };
 
-onMounted(() => {
+onBeforeMount(() => {
   getAllList({ roleName: "" }).then((result: any) => {
     roleOptions.value = result;
   });

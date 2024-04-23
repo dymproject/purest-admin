@@ -1,33 +1,33 @@
-// MIT 许可证
+﻿// MIT 许可证
 // 版权 © 2023-present https://github.com/dymproject/purest-admin作者 以及贡献者
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
-namespace PurestAdmin.Application.UserServices.Dtos;
-
-/// <summary>
-/// 用户查询
-/// </summary>
-public class GetPagedListInput : PaginationParams
+namespace PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
+public class OnlineUserModel
 {
     /// <summary>
-    /// 账号
+    /// 连接Id
     /// </summary>
-    public string Account { get; set; }
+    public string ConnectionId { get; set; }
+    /// <summary>
+    /// 用户Id 
+    /// </summary>
+    public string UserId { get; set; }
     /// <summary>
     /// 用户名
     /// </summary>
-    public string Name { get; set; }
+    public string UserName { get; set; }
     /// <summary>
-    /// 电话
+    /// ip
     /// </summary>
-    public string Telephone { get; set; }
+    public string Ip { get; set; }
     /// <summary>
-    /// 邮箱
+    /// ip属地
     /// </summary>
-    public string Email { get; set; }
+    public string IpString { get; set; }
     /// <summary>
-    /// 账户状态
+    /// 链接时间
     /// </summary>
-    public int? Status { get; set; }
+    public DateTime ConnectedTime { get; set; }
 }

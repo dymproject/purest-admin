@@ -4,7 +4,7 @@ import {
   getCategoryPageList,
   getPageList,
   deleteData
-} from "@/api/system/dictonary";
+} from "@/api/system/dictionary";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import { VxeButton, VxeGridPropTypes, VXETable } from "vxe-table";
 import CreateModal from "./CreateModal.vue";
@@ -236,3 +236,4 @@ const functions: Record<string, string> = {
     />
   </div>
 </template>
+@/api/system/dictionary

@@ -3,20 +3,17 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
-namespace PurestAdmin.Application.RequestLogServices.Dtos;
-public class GetPagedListInput : PaginationParams
+namespace PurestAdmin.SqlSugar.Entity;
+public partial class NoticeEntity
 {
     /// <summary>
-    /// 日期
+    /// 类型string
     /// </summary>
-    [Required(ErrorMessage = "日期不能为空")]
-    public DateTime RequestDate { get; set; }
+    [SugarColumn(IsIgnore = true)]
+    public string NoticeTypeString { get; set; }
     /// <summary>
-    /// 控制器名称
+    /// 级别string
     /// </summary>
-    public string ControllerName { get; set; }
-    /// <summary>
-    /// 方法名
-    /// </summary>
-    public string ActionName { get; set; }
+    [SugarColumn(IsIgnore = true)]
+    public string LevelString { get; set; }
 }

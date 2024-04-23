@@ -22,24 +22,16 @@ const showModal = (title: string, canSubmit?: boolean): void => {
 
 interface AddSystemConfigInput {
   name: string;
-  account: string;
-  password: string;
-  roleId: number | null;
-  organizationId: number | null;
-  telephone: string;
-  email: string;
+  configCode: string;
+  configValue: string;
   remark: string;
 }
 const formRef = ref<VxeFormInstance>();
 const defaultFormData = () => {
   return {
     name: "",
-    account: "",
-    password: "",
-    roleId: null,
-    organizationId: null,
-    telephone: "",
-    email: "",
+    configCode: "",
+    configValue: "",
     remark: ""
   };
 };

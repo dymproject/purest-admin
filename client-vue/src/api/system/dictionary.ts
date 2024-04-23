@@ -25,3 +25,7 @@ export const getSingle = (id: number) => {
 export const deleteData = (id: number) => {
   return http.request("delete", `/dict-data/${id}`);
 };
+
+export const getDictionaryDataByCode = (code: string) => {
+  return http.request("get", `/dict-data`, { params: { categoryCode: code } });
+};

@@ -6,7 +6,7 @@
 using PurestAdmin.SqlSugar.Entity;
 
 
-namespace PurestAdmin.Multiplex.MultiplexUser;
+namespace PurestAdmin.Multiplex.Contracts.IAdminUser;
 /// <summary>
 /// 当前用户
 /// </summary>

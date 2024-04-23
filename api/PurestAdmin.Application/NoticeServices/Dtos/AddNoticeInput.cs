@@ -3,31 +3,29 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
-namespace PurestAdmin.Multiplex.SignalrHubs.OnlineUser;
-public class OnlineUserModel
+namespace PurestAdmin.Application.NoticeServices.Dtos;
+public class AddNoticeInput
 {
     /// <summary>
-    /// 连接Id
+    /// 标题
     /// </summary>
-    public string ConnectionId { get; set; }
+    [Required(ErrorMessage = "标题不能为空"), MaxLength(40, ErrorMessage = "不能超过40个字符或者20个汉字")]
+    public string Title { get; set; }
     /// <summary>
-    /// 用户Id 
+    /// 内容
     /// </summary>
-    public string UserId { get; set; }
+    [Required(ErrorMessage = "标题不能为空")]
+    public string Content { get; set; }
     /// <summary>
-    /// 用户名
+    /// 类型
     /// </summary>
-    public string UserName { get; set; }
+    public long NoticeType { get; set; }
     /// <summary>
-    /// ip
+    /// 级别
     /// </summary>
-    public string Ip { get; set; }
+    public long Level { get; set; }
     /// <summary>
-    /// ip属地
+    /// 备注
     /// </summary>
-    public string IpString { get; set; }
-    /// <summary>
-    /// 链接时间
-    /// </summary>
-    public DateTime ConnectedTime { get; set; }
+    public string Remark { get; set; }
 }
