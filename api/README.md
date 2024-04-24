@@ -2,6 +2,10 @@
 
 项目基于.Net8开发，并会持续跟随官方LTS的版本更新
 
+#### 完整项目地址
+
+[https://gitee.com/dymproject/purest-admin](https://gitee.com/dymproject/purest-admin)
+
 #### 项目说明
 
 该项目由abp精简而来，沿用了abp framework的大部分功能，包括依赖注入、验证、授权等。结构重新划分后，使用更方便，项目分层如下
