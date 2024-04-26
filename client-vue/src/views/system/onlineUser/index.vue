@@ -56,7 +56,7 @@ const gridOptions = reactive<VxeGridProps<OnlineUser>>({
   round: true,
   resizable: true,
   maxHeight: 650,
-  minHeight: 350,
+  minHeight: 650,
   align: null,
   columns: [
     { type: "seq", width: 100, align: "center" },
@@ -138,7 +138,7 @@ const messageOptions = reactive({
   message: ""
 });
 
-const handleSendmessage = () => {
+const handleSendMessage = () => {
   connection.invoke(
     "SendMessage",
     messageOptions.connectionId,
@@ -185,7 +185,7 @@ onMounted(() => {
         <vxe-button
           status="primary"
           content="确定"
-          @click="handleSendmessage"
+          @click="handleSendMessage"
         />
       </template>
     </vxe-modal>

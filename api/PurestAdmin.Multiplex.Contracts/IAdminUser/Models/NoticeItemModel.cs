@@ -4,24 +4,13 @@
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
 namespace PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
-public class NoticeModel
-{
-    public string Key { get; set; }
-    public string Name { get; set; }
-    public ListItemModel[] List { get; set; }
-}
 
-public class ListItemModel
+public class NoticeItemModel
 {
-    public string Avatar { get; set; }
-    public string Title { get; set; }
-    public string Datetime { get; set; }
     public string Type { get; set; }
+    public string Title { get; set; }
+    public string DateTime { get; set; }    
     public string Description { get; set; }
-    /// <summary>
-    /// status
-    /// </summary>
-    /// <remarks>"primary" | "success" | "warning" | "info" | "danger";</remarks>
     public string Status { get; set; }
     public string Extra { get; set; }
 }

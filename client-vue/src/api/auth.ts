@@ -51,3 +51,7 @@ export const getSystemPlatformInfo = () => {
     {}
   );
 };
+
+export const getUnReadNotice = () => {
+  return http.request("get", "/auth/unread-notice");
+};

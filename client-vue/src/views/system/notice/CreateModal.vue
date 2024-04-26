@@ -112,14 +112,14 @@ const formRules = ref<VxeFormPropTypes.Rules>({
 });
 
 const showAddModal = () => {
-  showModal(`添加系统配置`);
+  showModal(`添加通知公告`);
   formData.value = defaultFormData();
   nextTick(() => {
     formRef.value.clearValidate();
   });
 };
 const showEditModal = (record: Recordable) => {
-  showModal(`编辑系统配置->${record.name}`);
+  showModal(`编辑通知公告->${record.title}`);
   nextTick(() => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {
@@ -128,7 +128,7 @@ const showEditModal = (record: Recordable) => {
   });
 };
 const showViewModal = (record: Recordable) => {
-  showModal(`查看系统配置->${record.name}`, false);
+  showModal(`查看通知公告->${record.title}`, false);
   nextTick(() => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {

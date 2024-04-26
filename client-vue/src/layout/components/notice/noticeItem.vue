@@ -101,7 +101,7 @@ function hoverDescription(event, description) {
         </div>
       </el-tooltip>
       <div class="notice-text-datetime text-[#00000073] dark:text-white">
-        {{ props.noticeItem.datetime }}
+        {{ props.noticeItem.dateTime }}
       </div>
     </div>
   </div>

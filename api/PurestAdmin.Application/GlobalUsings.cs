@@ -12,6 +12,7 @@ global using PurestAdmin.Multiplex.Contracts;
 global using PurestAdmin.Multiplex.Contracts.Enum;
 global using PurestAdmin.SqlSugar;
 global using PurestAdmin.SqlSugar.Entity;
+global using Volo.Abp.Uow;
 
 global using SqlSugar;
 

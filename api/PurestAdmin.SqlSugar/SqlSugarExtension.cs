@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Volo.Abp;
-
 using Yitter.IdGenerator;
 
 namespace PurestAdmin.SqlSugar;

@@ -16,7 +16,7 @@ using Volo.Abp.EventBus.Local;
 
 namespace PurestAdmin.Api.Host.Options;
 
-public class AdminAsyncActionFilter : IAsyncActionFilter
+public class AdminRequestLogFilter : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {

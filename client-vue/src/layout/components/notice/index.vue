@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { onUnmounted, ref } from "vue";
-import { TabItem } from "./data";
+import { onUnmounted, ref, onBeforeMount } from "vue";
+import { TabItem, ListItem } from "./data";
 import NoticeList from "./noticeList.vue";
 import Bell from "@iconify-icons/ep/bell";
 import { useOnlineUserStore } from "@/store/modules/onlineUser";
 import { ElNotification } from "element-plus";
 import { message } from "@/utils/message";
 import { useUserStoreHook } from "@/store/modules/user";
+import { getDictionaryDataByCode } from "@/api/system/dictionary";
+import { getUnReadNotice } from "@/api/auth";
 const onlineUserStore = useOnlineUserStore();
 const connection = onlineUserStore.createConnection();
-connection.on("Notice", (result: TabItem[]) => {
-  notices.value = result;
+connection.on("Notice", (result: ListItem) => {
+  const tab = notices.value.find(x => x.key == result.type);
+  tab.list.push(result);
   noticesNum.value = 0;
   notices.value.map(v => (noticesNum.value += v.list.length));
-  activeKey.value = result[0].key;
+  activeKey.value = tab.key;
 });
+
 connection.on("logout", () => {
   message("您已被强制下线！3秒后返回登陆页面", { type: "error" });
   setTimeout(() => {
@@ -31,7 +35,27 @@ connection.on("Message", (result: string) => {
 const noticesNum = ref(0);
 const notices = ref<TabItem[]>([]);
 const activeKey = ref("");
+
 notices.value.map(v => (noticesNum.value += v.list.length));
+onBeforeMount(async () => {
+  let noticeRecords = (await getUnReadNotice()) as Array<any>;
+  let noticeTypes = (await getDictionaryDataByCode(
+    "dict_notice_type"
+  )) as Array<any>;
+  notices.value = noticeTypes.map(v => {
+    const items = noticeRecords.filter(x => x.type == v.id);
+    if (items.length > 0) {
+      activeKey.value = v.id.toString();
+    }
+    return {
+      key: v.id.toString(),
+      name: v.name,
+      list: items
+    };
+  });
+  noticesNum.value = 0;
+  notices.value.map(v => (noticesNum.value += v.list.length));
+});
 //销毁
 onUnmounted(() => {
   connection.stop();
@@ -56,7 +80,7 @@ onUnmounted(() => {
           :style="{ width: notices.length === 0 ? '200px' : '330px' }"
         >
           <el-empty
-            v-if="notices.length === 0"
+            v-if="noticesNum == 0"
             description="暂无消息"
             :image-size="60"
           />
@@ -101,7 +125,7 @@ onUnmounted(() => {
   }
 
   :deep(.el-tabs__header) {
-    margin: 0;
+    margin: 1px;
   }
 
   :deep(.el-tabs__nav-wrap)::after {

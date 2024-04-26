@@ -63,7 +63,8 @@ namespace PurestAdmin.WebApi.Host
             context.Services.AddControllers(options =>
             {
                 options.Filters.AddService<AdminAbpExceptionsFilter>();
-                options.Filters.Add<AdminAsyncActionFilter>();
+                options.Filters.Add<AdminRequestLogFilter>();
+                options.Filters.Add<AdminUnitOfWorkFilter>();
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             });
             //时间格式化

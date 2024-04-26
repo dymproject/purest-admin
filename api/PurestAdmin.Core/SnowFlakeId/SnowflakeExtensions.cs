@@ -18,7 +18,7 @@ public static class SnowflakeExtensions
     public static IServiceCollection AddSnowflakeId(this IServiceCollection services)
     {
         var configuration = services.GetConfiguration();
-        var workerId = configuration.GetValue<ushort>("SnowflakeIdOption:WorkId");
+        var workerId = configuration.GetValue<ushort>("SnowflakeIdOptions:WorkId");
 
         var options = new IdGeneratorOptions
         {

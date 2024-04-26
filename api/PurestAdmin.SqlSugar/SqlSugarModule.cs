@@ -17,9 +17,7 @@ namespace PurestAdmin.SqlSugar
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             context.Services.AddSqlSugarService();
-            context.Services.AddTransient<UnitOfWorkAttribute>();
             context.Services.ReplaceSqlSugarSnowflakeIdService();
-            base.ConfigureServices(context);
         }
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
@@ -32,7 +30,6 @@ namespace PurestAdmin.SqlSugar
                 ////组织机构
                 _db.ConfigQuery.SetTable<OrganizationEntity>(it => it.Id, it => it.Name);
             }
-            base.OnApplicationInitialization(context);
         }
     }
 }

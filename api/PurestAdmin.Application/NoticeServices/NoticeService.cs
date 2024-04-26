@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.SignalR;
 using PurestAdmin.Application.NoticeServices.Dtos;
 using PurestAdmin.Multiplex.AdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
+using PurestAdmin.Multiplex.Jobs.Args;
+
+using Volo.Abp.BackgroundJobs;
 
 namespace PurestAdmin.Application.NoticeServices;
 
@@ -16,17 +19,17 @@ namespace PurestAdmin.Application.NoticeServices;
 /// 通知公告
 /// </summary>
 /// <param name="db"></param>
-/// <param name="hubContext"></param>
-public class NoticeService(ISqlSugarClient db, IHubContext<OnlineUserHub, IOnlineUserClient> hubContext) : ApplicationService
+/// <param name="backgroundJobManager"></param>
+public class NoticeService(ISqlSugarClient db, IBackgroundJobManager backgroundJobManager) : ApplicationService
 {
     /// <summary>
     /// db
     /// </summary>
     private readonly ISqlSugarClient _db = db;
     /// <summary>
-    /// 在线用户Hub
+    /// IBackgroundJobManager
     /// </summary>
-    private readonly IHubContext<OnlineUserHub, IOnlineUserClient> _hubContext = hubContext;
+    private readonly IBackgroundJobManager _backgroundJobManager = backgroundJobManager;
 
     /// <summary>
     /// 分页查询
@@ -66,10 +69,15 @@ public class NoticeService(ISqlSugarClient db, IHubContext<OnlineUserHub, IOnlin
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
+    [UnitOfWork]
     public async Task<long> AddAsync(AddNoticeInput input)
     {
         var entity = input.Adapt<NoticeEntity>();
-        return await _db.Insertable(entity).ExecuteReturnSnowflakeIdAsync();
+        var noticeId = await _db.Insertable(entity).ExecuteReturnSnowflakeIdAsync();
+        //全员发送
+        var userEntities = await _db.Queryable<UserEntity>().Where(x => x.Status == (int)UserStatusEnum.Normal).ToListAsync();
+        await _backgroundJobManager.EnqueueAsync(new SendNoticeArgs { NoticeId = noticeId, UserIds = userEntities.Select(x => x.Id).ToList() });
+        return noticeId;
     }
 
     /// <summary>
@@ -93,7 +101,8 @@ public class NoticeService(ISqlSugarClient db, IHubContext<OnlineUserHub, IOnlin
     public async Task DeleteAsync(long id)
     {
         var entity = await _db.Queryable<NoticeEntity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
-        _ = await _db.Updateable(entity).ExecuteCommandAsync();
+        _ = await _db.Deleteable<NoticeRecordEntity>().Where(x => x.NoticeId == id).ExecuteCommandAsync();
+        _ = await _db.Deleteable(entity).ExecuteCommandAsync();
     }
 
     /// <summary>

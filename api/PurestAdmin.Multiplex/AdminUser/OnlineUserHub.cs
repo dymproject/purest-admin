@@ -6,6 +6,7 @@
 using IP2Region.Net.Abstractions;
 
 using Microsoft.AspNetCore.Http.Features;
+
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 
@@ -24,14 +25,6 @@ public class OnlineUserHub(ICacheOnlineUser cacheOnlineUser, ISearcher searcher)
     {
         var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
         Clients.Caller.UpdateUser([.. onlineUsers.OrderBy(x => x.UserId)]);
-    }
-
-    /// <summary>
-    /// 发送Notice
-    /// </summary>
-    public void SendNotice(string connectionsIds, NoticeModel[] model)
-    {
-        Clients.Clients(connectionsIds).Notice([.. model]);
     }
 
     /// <summary>

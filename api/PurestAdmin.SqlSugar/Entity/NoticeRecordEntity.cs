@@ -25,5 +25,4 @@ public partial class NoticeRecordEntity : BaseEntity
     /// </summary>
     [SugarColumn(ColumnName = "IS_READ")]
     public bool IsRead { get; set; }
-
 }

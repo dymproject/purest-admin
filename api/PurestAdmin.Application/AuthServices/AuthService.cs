@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using PurestAdmin.Application.AuthServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
+using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 
 namespace PurestAdmin.Application.SystemServices;
 /// <summary>
@@ -147,5 +148,27 @@ public class AuthService(IConfiguration configuration, IHttpContextAccessor http
     public GetSystemPlatformInfoOutput GetSystemPlatformInfoAsync()
     {
         return new GetSystemPlatformInfoOutput();
+    }
+
+    /// <summary>
+    /// 获得用户的通知
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<NoticeItemModel>> GetUnreadNoticeAsync()
+    {
+        var records = await _db.Queryable<NoticeRecordEntity>()
+            .LeftJoin<NoticeEntity>((r, n) => r.NoticeId == n.Id)
+            .LeftJoin<DictDataEntity>((r, n, d) => n.Level == d.Id)
+            .Where(r => r.Receiver == _currentUser.Id && !r.IsRead && r.CreateTime <= DateTime.Now.AddDays(3))
+            .Select((r, n, d) => new NoticeItemModel
+            {
+                DateTime = r.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                Description = n.Content,
+                Extra = d.Name,
+                Status = d.Remark,
+                Title = n.Title,
+                Type = n.NoticeType.ToString()
+            }).ToListAsync();
+        return records;
     }
 }

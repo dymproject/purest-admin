@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref, h } from "vue";
+import { ref, h } from "vue";
 import { getPageList, deleteData } from "@/api/system/notice";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
@@ -16,7 +16,8 @@ const columns: VxeGridPropTypes.Columns<any> = [
   {
     title: "内容",
     field: "content",
-    minWidth: 100
+    showOverflow: true,
+    minWidth: 200
   },
   {
     title: "类型",

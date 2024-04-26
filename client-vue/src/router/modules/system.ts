@@ -70,6 +70,15 @@ export default {
       component: () => import("@/views/system/systemConfig/index.vue")
     },
     {
+      path: "/notice",
+      name: "system_notice",
+      meta: {
+        title: "通知公告",
+        permissions: ["system.notice"]
+      },
+      component: () => import("@/views/system/notice/index.vue")
+    },
+    {
       path: "/online_user",
       name: "system_onlineUser",
       meta: {
@@ -86,15 +95,6 @@ export default {
         permissions: ["system.requestlog"]
       },
       component: () => import("@/views/system/requestLog/index.vue")
-    },
-    {
-      path: "/notice",
-      name: "system_notice",
-      meta: {
-        title: "通知公告",
-        permissions: ["system.notice"]
-      },
-      component: () => import("@/views/system/notice/index.vue")
     }
   ]
 } as RouteConfigsTable;

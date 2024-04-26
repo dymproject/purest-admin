@@ -19,7 +19,7 @@ public interface IOnlineUserClient
     /// </summary>
     /// <param name="notices"></param>
     /// <returns></returns>
-    Task Notice(List<NoticeModel> notices);
+    Task Notice(NoticeItemModel noticeItem);
     /// <summary>
     /// 发送消息
     /// </summary>
