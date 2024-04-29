@@ -52,6 +52,8 @@ export const useUserStore = defineStore({
     logOut() {
       this.currentUser = null;
       this.accessToken = null;
+      storageSession().setItem(ACCESS_TOKEN, null);
+      storageSession().setItem(CURRENT_USER, null);
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
       router.push("/login");
