@@ -4,11 +4,8 @@
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 using PurestAdmin.Application.NoticeServices.Dtos;
-using PurestAdmin.Multiplex.AdminUser;
-using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Jobs.Args;
 
 using Volo.Abp.BackgroundJobs;

@@ -8,12 +8,11 @@ global using System.ComponentModel.DataAnnotations;
 global using Mapster;
 
 global using PurestAdmin.Core;
-global using PurestAdmin.Multiplex.Contracts;
 global using PurestAdmin.Multiplex.Contracts.Enum;
 global using PurestAdmin.SqlSugar;
 global using PurestAdmin.SqlSugar.Entity;
-global using Volo.Abp.Uow;
 
 global using SqlSugar;
 
 global using Volo.Abp.Application.Services;
+global using Volo.Abp.Uow;

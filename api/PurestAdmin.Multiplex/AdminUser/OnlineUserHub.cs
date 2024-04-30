@@ -11,10 +11,12 @@ using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 
 using Volo.Abp.AspNetCore.SignalR;
+using Volo.Abp.Timing;
 
 namespace PurestAdmin.Multiplex.AdminUser;
-public class OnlineUserHub(ICacheOnlineUser cacheOnlineUser, ISearcher searcher) : AbpHub<IOnlineUserClient>
+public class OnlineUserHub(IClock clock, ICacheOnlineUser cacheOnlineUser, ISearcher searcher) : AbpHub<IOnlineUserClient>
 {
+    private readonly IClock _clock = clock;
     private readonly ICacheOnlineUser _cacheOnlineUser = cacheOnlineUser;
     private readonly ISearcher _searcher = searcher;
 
@@ -68,7 +70,7 @@ public class OnlineUserHub(ICacheOnlineUser cacheOnlineUser, ISearcher searcher)
                     IpString = ipString,
                     UserId = Context.UserIdentifier,
                     UserName = userName,
-                    ConnectedTime = DateTime.Now,
+                    ConnectedTime = _clock.Now,
                 });
             }
             Clients.All.UpdateUser(onlineUsers);

@@ -3,18 +3,19 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
-using System;
-
 using PurestAdmin.Multiplex.AdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 using PurestAdmin.Multiplex.Jobs.Args;
 
 using Volo.Abp.BackgroundJobs;
+using Volo.Abp.Timing;
 
 namespace PurestAdmin.Multiplex.Jobs;
-public class SendNoticeJob(ISqlSugarClient db, IHubContext<OnlineUserHub, IOnlineUserClient> hubContext, ICacheOnlineUser cacheOnlineUser) : BackgroundJob<SendNoticeArgs>, ITransientDependency
+public class SendNoticeJob(IClock clock, ISqlSugarClient db, IHubContext<OnlineUserHub, IOnlineUserClient> hubContext, ICacheOnlineUser cacheOnlineUser)
+    : BackgroundJob<SendNoticeArgs>, ITransientDependency
 {
+    private readonly IClock _clock = clock;
     /// <summary>
     /// db
     /// </summary>
@@ -53,7 +54,7 @@ public class SendNoticeJob(ISqlSugarClient db, IHubContext<OnlineUserHub, IOnlin
         {
             Type = noticeEntity.NoticeType.ToString(),
             Title = noticeEntity.Title,
-            DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            DateTime = _clock.Now.ToString("yyyy-MM-dd HH:mm:ss"),
             Description = noticeEntity.Content,
             Status = noticeEntity.LevelEntity.Remark,
             Extra = noticeEntity.LevelString

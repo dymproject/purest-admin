@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Volo.Abp.Timing;
+
 using Yitter.IdGenerator;
 
 namespace PurestAdmin.SqlSugar;
@@ -31,6 +33,7 @@ public static class SqlSugarExtension
                 #region 插入和更新过滤器
                 db.Aop.DataExecuting = (oldValue, entityInfo) =>
                 {
+                    var clock = services.GetRequiredService<IClock>();
                     var context = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext;
                     var userId = context?.User?.FindFirst("userid")?.Value ?? "0";
                     //inset生效
@@ -42,7 +45,7 @@ public static class SqlSugarExtension
                         }
                         if (entityInfo.PropertyName == nameof(BaseEntity.CreateTime))
                         {
-                            entityInfo.SetValue(DateTime.Now);
+                            entityInfo.SetValue(clock.Now);
                         }
                     }
                     //update生效        
@@ -54,7 +57,7 @@ public static class SqlSugarExtension
                         }
                         if (entityInfo.PropertyName == nameof(BaseEntity.UpdateTime))
                         {
-                            entityInfo.SetValue(DateTime.Now);
+                            entityInfo.SetValue(clock.Now);
                         }
                     }
                 };

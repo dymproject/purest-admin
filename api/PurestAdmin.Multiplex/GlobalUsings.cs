@@ -8,10 +8,8 @@ global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.SignalR;
 
 global using PurestAdmin.Core;
-global using PurestAdmin.Multiplex.Contracts;
 global using PurestAdmin.SqlSugar.Entity;
 
 global using SqlSugar;
 
 global using Volo.Abp.DependencyInjection;
-global using PurestAdmin.SqlSugar; 

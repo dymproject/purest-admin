@@ -10,10 +10,12 @@ using PurestAdmin.SqlSugar.Entity;
 
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Timing;
 
 namespace PurestAdmin.Multiplex;
-public class BackgroundJobStore(Repository<BackgroundJobRecordEntity> repository) : IBackgroundJobStore, ITransientDependency
+public class BackgroundJobStore(IClock clock, Repository<BackgroundJobRecordEntity> repository) : IBackgroundJobStore, ITransientDependency
 {
+    private readonly IClock _clock = clock;
     private readonly Repository<BackgroundJobRecordEntity> _repository = repository;
     public async Task DeleteAsync(Guid jobId)
     {
@@ -29,7 +31,7 @@ public class BackgroundJobStore(Repository<BackgroundJobRecordEntity> repository
     public async Task<List<BackgroundJobInfo>> GetWaitingJobsAsync(int maxResultCount)
     {
         var pagedList = await _repository.AsQueryable()
-            .Where(t => !t.IsAbandoned && t.NextTryTime <= DateTime.Now)
+            .Where(t => !t.IsAbandoned && t.NextTryTime <= _clock.Now)
             .OrderByDescending(t => t.Priority)
             .OrderBy(t => t.TryCount)
             .OrderBy(t => t.NextTryTime)

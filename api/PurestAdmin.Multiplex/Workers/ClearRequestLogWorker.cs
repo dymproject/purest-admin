@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
+using Volo.Abp.Timing;
 
 namespace PurestAdmin.Multiplex.Workers;
 
@@ -21,6 +22,7 @@ public class ClearRequestLogWorker : AsyncPeriodicBackgroundWorkerBase
     {
         using var scope = workerContext.ServiceProvider.CreateScope();
         var db = scope.ServiceProvider.GetService<ISqlSugarClient>();
-        _ = await db.Deleteable<RequestLogEntity>().Where(x => x.CreateTime <= DateTime.Now.AddDays(-1)).ExecuteCommandAsync();
+        var clock = scope.ServiceProvider.GetService<IClock>();
+        _ = await db.Deleteable<RequestLogEntity>().Where(x => x.CreateTime <= clock.Now.AddDays(-1)).ExecuteCommandAsync();
     }
 }
