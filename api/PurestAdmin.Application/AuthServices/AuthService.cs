@@ -3,14 +3,10 @@
 // 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 using PurestAdmin.Application.AuthServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
@@ -21,12 +17,12 @@ namespace PurestAdmin.Application.SystemServices;
 /// <summary>
 /// 用户授权服务
 /// </summary>
-public class AuthService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
+public class AuthService(IAdminToken adminToken, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
 {
     /// <summary>
-    /// configuration
+    /// IAdminToken
     /// </summary>
-    private readonly IConfiguration _configuration = configuration;
+    private readonly IAdminToken _adminToken = adminToken;
     /// <summary>
     /// db
     /// </summary>
@@ -62,25 +58,10 @@ public class AuthService(IConfiguration configuration, IHttpContextAccessor http
             new Claim("userid",user.Id.ToString()),
             new Claim("username",user.Name.ToString())
         };
-        var expiredTime = int.Parse(_configuration["JWTSettings:ExpiredTime"] ?? "20");
-        //取出私钥并以utf8编码字节输出
-        var key = Encoding.UTF8.GetBytes(_configuration["JWTSettings:IssuerSigningKey"] ?? "49BA59ABBE56E05749BA59ABBE56E057");
-        //使用非对称算法对私钥进行加密
-        var signingKey = new SymmetricSecurityKey(key);
-        //Header,选择签名算法
-        var signingAlogorithm = SecurityAlgorithms.HmacSha256;
-        //使用HmacSha256来验证加密后的私钥生成数字签名
-        var signingCredentials = new SigningCredentials(signingKey, signingAlogorithm);
-        //JwtSecurityToken
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(expiredTime),
-            signingCredentials: signingCredentials
-        );
-        //生成字符串token
-        var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-        // 设置 Swagger 刷新自动授权
+        var accessToken = _adminToken.GenerateTokenString(claims);
+
+        // 返回accesstoken
         _httpContextAccessor.HttpContext.Response.Headers["accesstoken"] = accessToken;
 
         return output;
@@ -159,7 +140,7 @@ public class AuthService(IConfiguration configuration, IHttpContextAccessor http
         var records = await _db.Queryable<NoticeRecordEntity>()
             .LeftJoin<NoticeEntity>((r, n) => r.NoticeId == n.Id)
             .LeftJoin<DictDataEntity>((r, n, d) => n.Level == d.Id)
-            .Where(r => r.Receiver == _currentUser.Id && !r.IsRead && r.CreateTime <= DateTime.Now.AddDays(3))
+            .Where(r => r.Receiver == _currentUser.Id && !r.IsRead && r.CreateTime <= Clock.Now.AddDays(3))
             .Select((r, n, d) => new NoticeItemModel
             {
                 DateTime = r.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
