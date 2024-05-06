@@ -33,7 +33,8 @@ public class AuthorizationHandler(IHostEnvironment hostEnvironment, ICurrentUser
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = jwtSecurityTokenHandler.ReadJwtToken(accessToken);
             var expires = jwtSecurityToken.ValidTo;
-            if ((expires - _clock.Now.ToUniversalTime()).TotalMinutes < 30)
+            var refreshMinutes = _adminToken.GetRefreshMinutes();
+            if ((expires - _clock.Now.ToUniversalTime()).TotalMinutes < refreshMinutes)
             {
                 //颁发新的token
                 var token = _adminToken.GenerateTokenString(jwtSecurityToken.Payload.Claims.ToArray());
