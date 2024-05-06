@@ -46,6 +46,15 @@ public class AdminToken(IConfiguration configuration, IClock clock) : IAdminToke
         //生成字符串token
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    /// <summary>
+    /// 返回刷新分钟数
+    /// </summary>
+    /// <returns></returns>
+    public double GetRefreshMinutes()
+    {
+        var jwtOptions = _configuration.GetRequiredSection("JwtOptions").Get<JwtOptions>() ?? new JwtOptions();
+        return jwtOptions.RefreshMinutes;
+    }
 }
 
 internal class JwtOptions
@@ -58,5 +67,10 @@ internal class JwtOptions
     /// <summary>
     /// 过期分钟
     /// </summary>
-    public double ExpiredMinutes { get; set; } = 30;
+    public double ExpiredMinutes { get; set; } = 60;
+
+    /// <summary>
+    /// 刷新分钟数
+    /// </summary>
+    public double RefreshMinutes { get; set; } = 30;
 }

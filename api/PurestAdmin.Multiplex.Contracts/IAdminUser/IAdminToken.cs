@@ -14,4 +14,9 @@ public interface IAdminToken
     /// <param name="claims"></param>
     /// <returns></returns>
     string GenerateTokenString(IEnumerable<Claim> claims);
+    /// <summary>
+    /// 返回刷新分钟数
+    /// </summary>
+    /// <returns></returns>
+    double GetRefreshMinutes();
 }
