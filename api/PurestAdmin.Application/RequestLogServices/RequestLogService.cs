@@ -22,6 +22,8 @@ public class RequestLogService(ISqlSugarClient client) : ApplicationService
     public async Task<PagedList<RequestLogOutput>> GetPagedListAsync(GetPagedListInput input)
     {
         var pagedList = await _client.Queryable<RequestLogEntity>()
+            .WhereIF(!input.ControllerName.IsNullOrEmpty(), x => x.ControllerName.Contains(input.ControllerName))
+            .WhereIF(!input.ActionName.IsNullOrEmpty(), x => x.ActionName.Contains(input.ActionName))
             .Where(x => x.CreateTime.ToString("yyyy-MM-dd") == input.RequestDate.ToString("yyyy-MM-dd"))
             .OrderByDescending(x => x.CreateTime)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
