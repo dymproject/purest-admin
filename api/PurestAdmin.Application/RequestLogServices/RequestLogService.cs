@@ -1,7 +1,4 @@
-﻿// MIT 许可证
-// 版权 © 2023-present https://github.com/dymproject/purest-admin作者 以及贡献者
-// 作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
-// 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
+﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.RequestLogServices.Dtos;
 using PurestAdmin.Core.Echarts;
@@ -22,6 +19,8 @@ public class RequestLogService(ISqlSugarClient client) : ApplicationService
     public async Task<PagedList<RequestLogOutput>> GetPagedListAsync(GetPagedListInput input)
     {
         var pagedList = await _client.Queryable<RequestLogEntity>()
+            .WhereIF(!input.ControllerName.IsNullOrEmpty(), x => x.ControllerName.Contains(input.ControllerName))
+            .WhereIF(!input.ActionName.IsNullOrEmpty(), x => x.ActionName.Contains(input.ActionName))
             .Where(x => x.CreateTime.ToString("yyyy-MM-dd") == input.RequestDate.ToString("yyyy-MM-dd"))
             .OrderByDescending(x => x.CreateTime)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);

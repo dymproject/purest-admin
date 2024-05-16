@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="PurestAdmin.Wpf.Platform.Views.Main"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:PurestAdmin.Wpf.Platform.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:rubyer="http://rubyer.io/winfx/xaml/toolkit"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <rubyer:BooleanToObjectConverter x:Key="BoolToSearchConverter">
+            <rubyer:BooleanToObjectConverter.TrueValue>
+                <TextBox x:Name="search" Margin="5">
+                    <rubyer:InputBoxHelper.PreContent>
+                        <rubyer:Icon Type="SearchLine" />
+                    </rubyer:InputBoxHelper.PreContent>
+                </TextBox>
+            </rubyer:BooleanToObjectConverter.TrueValue>
+            <rubyer:BooleanToObjectConverter.FalseValue>
+                <rubyer:Icon Margin="10"
+                             HorizontalAlignment="Left"
+                             Type="SearchLine" />
+            </rubyer:BooleanToObjectConverter.FalseValue>
+        </rubyer:BooleanToObjectConverter>
+        <rubyer:BooleanToObjectConverter x:Key="BoolToMenuIconConverter">
+            <rubyer:BooleanToObjectConverter.TrueValue>
+                <rubyer:Icon Type="MenuFoldLine" />
+            </rubyer:BooleanToObjectConverter.TrueValue>
+            <rubyer:BooleanToObjectConverter.FalseValue>
+                <rubyer:Icon Type="MenuUnfoldLine" />
+            </rubyer:BooleanToObjectConverter.FalseValue>
+        </rubyer:BooleanToObjectConverter>
+    </UserControl.Resources>
+
+    <Grid>
+        <rubyer:HamburgerMenu rubyer:ControlHelper.CornerRadius="0"
+                              rubyer:ControlHelper.FocusedBrush="{DynamicResource DefaultBackground}"
+                              rubyer:ControlHelper.SelectedBrush="{DynamicResource Accent}"
+                              rubyer:HeaderHelper.FontSize="{Binding FontSize, RelativeSource={RelativeSource Self}}"
+                              rubyer:HeaderHelper.Foreground="{DynamicResource WhiteForeground}"
+                              rubyer:HeaderHelper.Padding="0 11"
+                              rubyer:ItemsControlHelper.ItemMargin="0"
+                              rubyer:ItemsControlHelper.ItemPadding="0 11 "
+                              CornerRadius="15"
+                              ExpandedWidth="170"
+                              Foreground="{DynamicResource WhiteForeground}"
+                              IsExpanded="False"
+                              ItemsSource="{Binding Items}"
+                              MenuIcon="{Binding IsExpanded, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToMenuIconConverter}}"
+                              PaneBackground="{Binding TitleBackground, RelativeSource={RelativeSource AncestorType=rubyer:RubyerWindow}}"
+                              PaneBorderCornerRadius="0"
+                              PaneHeader="{Binding IsExpanded, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToSearchConverter}}"
+                              SelectedItem="{Binding CurrentViewItem}"
+                              TransitionDuration="0:0:0.5"
+                              TransitionType="Fade">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="HamburgerButtonClick">
+                    <prism:InvokeCommandAction Command="{Binding ExpandedCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <rubyer:HamburgerMenu.Resources>
+                <StackPanel x:Key="headContent"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            x:Shared="False"
+                            Orientation="Vertical">
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                </StackPanel>
+            </rubyer:HamburgerMenu.Resources>
+            <rubyer:HamburgerMenu.ItemContainerStyle>
+                <Style TargetType="rubyer:HamburgerMenuItem">
+                    <Setter Property="DataContext" Value="{Binding}" />
+                    <Setter Property="IconType" Value="{Binding Icon}" />
+                    <Setter Property="Header" Value="{StaticResource headContent}" />
+                    <Setter Property="Command" Value="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType=local:Main}}" />
+                    <Setter Property="CommandParameter" Value="{Binding View}" />
+                </Style>
+            </rubyer:HamburgerMenu.ItemContainerStyle>
+            <rubyer:HamburgerMenu.Header>
+                系统管理
+            </rubyer:HamburgerMenu.Header>
+            <rubyer:HamburgerMenu.ContentTemplate>
+                <DataTemplate>
+                    <Border Background="{DynamicResource DefaultBackground}">
+                        <ContentControl Content="{Binding View}" />
+                    </Border>
+                </DataTemplate>
+            </rubyer:HamburgerMenu.ContentTemplate>
+        </rubyer:HamburgerMenu>
+    </Grid>
+</UserControl>
