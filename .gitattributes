@@ -1,4 +1,21 @@
 ###############################################################################
+# Set linguist-language.
+###############################################################################
+*.md linguist-language=C#
+*.mdx linguist-language=C#
+*.ps1 linguist-language=C#
+*.yml linguist-language=C#
+*.html linguist-language=C#
+*.js linguist-language=C#
+*.ts linguist-language=C#
+*.tsx linguist-language=C#
+*.xml linguist-language=C#
+*.css linguist-language=C#
+*.pdm linguist-language=C#
+*.sql linguist-language=C#
+*.vue linguist-language=C#
+
+###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
