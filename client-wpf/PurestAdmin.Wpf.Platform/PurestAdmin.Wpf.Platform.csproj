@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CalcBinding" Version="2.5.2" />
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PurestAdmin.Wpf.Request\PurestAdmin.Wpf.Request.csproj" />
+    <ProjectReference Include="..\PurestAdmin.Wpf.Shared\PurestAdmin.Wpf.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Prism.Commands" />
+    <Using Include="Prism.Mvvm" />
+    <Using Include="PurestAdmin.Wpf.Shared" />
+    <Using Include="Rubyer" />
+    <Using Include="Mapster" />
+    <Using Include="System.ComponentModel.DataAnnotations;" />
+    <Using Include="PurestAdmin.Wpf.Shared.AutoRegisterAttributes" />
+  </ItemGroup>
+</Project>

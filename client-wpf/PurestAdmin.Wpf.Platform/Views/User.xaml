@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="PurestAdmin.Wpf.Platform.Views.User"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converter="clr-namespace:PurestAdmin.Wpf.Shared.Converters;assembly=PurestAdmin.Wpf.Shared"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PurestAdmin.Wpf.Platform.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:rubyer="http://rubyer.io/winfx/xaml/toolkit"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:UserSatusConverter x:Key="UserStatusConverter" />
+    </UserControl.Resources>
+    <Grid Background="White">
+        <DockPanel>
+            <Grid rubyer:GridHelper.RowDefinitions="Auto,Auto,100">
+                <rubyer:Card Margin="3,5" Padding="10">
+                    <WrapPanel HorizontalAlignment="Left" rubyer:PanelHelper.Spacing="10">
+                        <TextBox x:Name="txtName"
+                                 Width="200"
+                                 rubyer:InputBoxHelper.PreContent="用户名"
+                                 AutomationProperties.Name="txtName"
+                                 Text="{Binding SearchModel.Name, Mode=TwoWay}" />
+                        <TextBox x:Name="txtAccount"
+                                 Width="200"
+                                 rubyer:InputBoxHelper.PreContent="账号"
+                                 AutomationProperties.Name="txtAccount"
+                                 Text="{Binding SearchModel.Account, Mode=TwoWay}" />
+                        <ComboBox MinWidth="200"
+                                  rubyer:InputBoxHelper.InternalSpacing="6"
+                                  rubyer:InputBoxHelper.PreContent="用户状态"
+                                  AutomationProperties.Name="combStatus"
+                                  SelectedValue="{Binding SearchModel.Status, Converter={StaticResource UserStatusConverter}, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBoxItem>全部</ComboBoxItem>
+                            <ComboBoxItem>正常</ComboBoxItem>
+                            <ComboBoxItem>停用</ComboBoxItem>
+                        </ComboBox>
+                        <Button x:Name="defaultButton"
+                                rubyer:ButtonHelper.IconType="SearchLine"
+                                Command="{Binding SearchCommand}"
+                                Content="查询"
+                                IsDefault="True" />
+                        <Button rubyer:ButtonHelper.IconType="ArrowGoBackLine"
+                                Command="{Binding ResetCommand}"
+                                Content="重置"
+                                Style="{DynamicResource SecondaryButton}" />
+                    </WrapPanel>
+                </rubyer:Card>
+                <rubyer:Card Grid.Row="1"
+                             Margin="3,5"
+                             Padding="10">
+                    <Grid rubyer:GridHelper.RowDefinitions="Auto,30">
+                        <DataGrid x:Name="grid"
+                                  Width="Auto"
+                                  Height="300"
+                                  HorizontalAlignment="Left"
+                                  AutoGenerateColumns="False"
+                                  BorderThickness="1"
+                                  CanUserAddRows="False"
+                                  GridLinesVisibility="All"
+                                  IsReadOnly="True"
+                                  ItemsSource="{Binding UserPaginationModel.Items}"
+                                  SelectionMode="Single">
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Width="50" Header="选择" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding Name}"
+                                                    Header="用户名" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding Account}"
+                                                    Header="登录账号" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding OrganizationName}"
+                                                    Header="组织机构" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding RoleName}"
+                                                    Header="角色" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding Telephone}"
+                                                    Header="手机号" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding Email}"
+                                                    Header="邮箱" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding Status}"
+                                                    Header="状态" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding Remark}"
+                                                    Header="备注" />
+                                <!--<DataGridTemplateColumn Header="状态">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>-->
+                                <DataGridTemplateColumn Width="80" Header="操作">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Padding="5" Style="{StaticResource TextButton}">
+                                                    <rubyer:Icon Type="Edit2Fill" />
+                                                </Button>
+                                                <Button Padding="5"
+                                                        CommandParameter="{Binding .}"
+                                                        Style="{StaticResource TextErrorButton}">
+                                                    <rubyer:Icon Type="DeleteBinFill" />
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <rubyer:PageBar Grid.Row="1"
+                                        VerticalAlignment="Top"
+                                        IsRound="False"
+                                        IsShowPageSize="True"
+                                        IsShowTotal="True"
+                                        ItemsDock="Left"
+                                        ItemsPadding="1"
+                                        PageIndexChangedCommand="{Binding PageIndexChangedCommand}"
+                                        PageSize="{Binding UserPaginationModel.PageSize}"
+                                        PageSizeChangedCommand="{Binding PageSizeChangedCommand}"
+                                        Total="{Binding UserPaginationModel.Total}" />
+                    </Grid>
+                </rubyer:Card>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>
