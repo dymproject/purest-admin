@@ -1,0 +1,18 @@
+﻿<rubyer:RubyerWindow x:Class="PurestAdmin.Wpf.Entry.Views.MainWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:prism="http://prismlibrary.com/"
+                     xmlns:rubyer="http://rubyer.io/winfx/xaml/toolkit"
+                     Title="{Binding Title}"
+                     Width="1024"
+                     Height="768"
+                     prism:ViewModelLocator.AutoWireViewModel="True"
+                     TitleHeight="36"
+                     WindowStartupLocation="CenterScreen">
+    <Grid>
+        <rubyer:NotificationContainer Identifier="mainNotifyContainer" />
+        <rubyer:MessageBoxContainer Identifier="mainMessageBoxContainer" />
+        <rubyer:MessageBoxContainer Identifier="mainDialogContainer" />
+        <ContentControl prism:RegionManager.RegionName="mainRegion" />
+    </Grid>
+</rubyer:RubyerWindow>
