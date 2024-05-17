@@ -1,8 +1,9 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using Volo.Abp.BackgroundJobs;
+using Volo.Abp.DependencyInjection;
 
-namespace PurestAdmin.Multiplex.Jobs;
+namespace PurestAdmin.BackgroundService.Jobs;
 public class EmailSendingJob : BackgroundJob<EmailSendingArgs>, ITransientDependency
 {
     //private readonly IEmailSender _emailSender;

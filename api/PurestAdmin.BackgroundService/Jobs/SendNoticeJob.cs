@@ -1,14 +1,20 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using Microsoft.AspNetCore.SignalR;
+
+using PurestAdmin.BackgroundService.Jobs.Args;
 using PurestAdmin.Multiplex.AdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
-using PurestAdmin.Multiplex.Jobs.Args;
+using PurestAdmin.SqlSugar.Entity;
+
+using SqlSugar;
 
 using Volo.Abp.BackgroundJobs;
+using Volo.Abp.DependencyInjection;
 using Volo.Abp.Timing;
 
-namespace PurestAdmin.Multiplex.Jobs;
+namespace PurestAdmin.BackgroundService.Jobs;
 public class SendNoticeJob(IClock clock, ISqlSugarClient db, IHubContext<OnlineUserHub, IOnlineUserClient> hubContext, ICacheOnlineUser cacheOnlineUser)
     : BackgroundJob<SendNoticeArgs>, ITransientDependency
 {

@@ -2,11 +2,15 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
+using PurestAdmin.SqlSugar.Entity;
+
+using SqlSugar;
+
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 using Volo.Abp.Timing;
 
-namespace PurestAdmin.Multiplex.Workers;
+namespace PurestAdmin.BackgroundService.Workers;
 
 public class ClearRequestLogWorker : AsyncPeriodicBackgroundWorkerBase
 {
@@ -18,8 +22,8 @@ public class ClearRequestLogWorker : AsyncPeriodicBackgroundWorkerBase
     protected override async Task DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
     {
         using var scope = workerContext.ServiceProvider.CreateScope();
-        var db = scope.ServiceProvider.GetService<ISqlSugarClient>();
-        var clock = scope.ServiceProvider.GetService<IClock>();
+        var db = scope.ServiceProvider.GetService<ISqlSugarClient>() ?? throw new Exception();
+        var clock = scope.ServiceProvider.GetService<IClock>() ?? throw new Exception();
         _ = await db.Deleteable<RequestLogEntity>().Where(x => x.CreateTime <= clock.Now.AddDays(-1)).ExecuteCommandAsync();
     }
 }
