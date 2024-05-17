@@ -2,6 +2,7 @@
 
 using System.Reflection;
 
+using PurestAdmin.BackgroundService;
 using PurestAdmin.Multiplex;
 
 using Volo.Abp.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Volo.Abp.Modularity;
 namespace PurestAdmin.Application
 {
     [DependsOn(typeof(SqlSugarModule),
+        typeof(AdminBackgroundModule),
         typeof(AdminMultiplexModule))]
     public class AdminAppModule : AbpModule
     {

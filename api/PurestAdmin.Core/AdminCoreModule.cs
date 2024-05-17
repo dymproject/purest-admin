@@ -10,7 +10,7 @@ using Volo.Abp.Modularity;
 
 namespace PurestAdmin.Core
 {
-    [DependsOn(typeof(AbpAspNetCoreSignalRModule), typeof(AbpBackgroundJobsModule))]
+    [DependsOn(typeof(AbpAspNetCoreSignalRModule))]
     public class AdminCoreModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
@@ -19,11 +19,6 @@ namespace PurestAdmin.Core
             context.Services.AddPurestCache();
             context.Services.AddPurestSignalr();
             context.Services.AddIp2region();
-            Configure<AbpBackgroundJobWorkerOptions>(options =>
-            {
-                //默认是10天864000分钟
-                options.DefaultTimeout = 30; //30分钟
-            });
         }
     }
 }
