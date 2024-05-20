@@ -1,6 +1,10 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 11g                           */
+<<<<<<< HEAD
+/* Created on:     2024/5/20 9:36:05                            */
+=======
 /* Created on:     2024/5/17 10:37:11                           */
+>>>>>>> ecfff7f538bd696559dd9bf6842096ecb7a990e2
 /*==============================================================*/
 
 
@@ -76,7 +80,11 @@ drop table PUREST_USER_ROLE cascade constraints;
 /*==============================================================*/
 create table PUREST_BACKGROUND_JOB_RECORD 
 (
+<<<<<<< HEAD
+   ID                   VARCHAR2(40)         not null,
+=======
    "Id"                 VARCHAR2(40)         not null,
+>>>>>>> ecfff7f538bd696559dd9bf6842096ecb7a990e2
    JOB_NAME             VARCHAR2(128)        not null,
    JOB_ARGS             CLOB                 not null,
    TRY_COUNT            NUMBER,
@@ -85,13 +93,21 @@ create table PUREST_BACKGROUND_JOB_RECORD
    LAST_TRY_TIME        DATE,
    IS_ABANDONED         NUMBER(1),
    PRIORITY             NUMBER,
+<<<<<<< HEAD
+   constraint PK_PUREST_BACKGROUND_JOB_RECOR primary key (ID)
+=======
    constraint PK_PUREST_BACKGROUND_JOB_RECOR primary key ("Id")
+>>>>>>> ecfff7f538bd696559dd9bf6842096ecb7a990e2
 );
 
 comment on table PUREST_BACKGROUND_JOB_RECORD is
 '后台作业记录表';
 
+<<<<<<< HEAD
+comment on column PUREST_BACKGROUND_JOB_RECORD.ID is
+=======
 comment on column PUREST_BACKGROUND_JOB_RECORD."Id" is
+>>>>>>> ecfff7f538bd696559dd9bf6842096ecb7a990e2
 'Id';
 
 comment on column PUREST_BACKGROUND_JOB_RECORD.JOB_NAME is
