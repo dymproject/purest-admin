@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/5/20 16:32:50                           */
+/* Created on:     2024/5/21 17:55:27                           */
 /*==============================================================*/
 
 
@@ -89,7 +89,7 @@ create table PUREST_DICT_DATA
    REMARK               varchar(1000) comment '备注',
    CATEGORY_ID          numeric(19,0) not null comment '字典分类ID',
    NAME                 varchar(20) not null comment '字典名称',
-   SORT                 numeric(8,0) not null comment '排序',
+   SORT                 numeric not null comment '排序',
    primary key (ID)
 );
 
@@ -109,7 +109,6 @@ create table PUREST_FILE_RECORD
    FILE_NAME            varchar(1000) not null comment '文件名',
    FILE_SIZE            numeric(10) not null comment '文件大小',
    FILE_EXT             varchar(10) not null comment '文件扩展名',
-   FULL_PATH            varchar(1000) not null comment '完整路径',
    primary key (ID)
 );
 
@@ -166,10 +165,10 @@ create table PUREST_INTERFACE
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) not null comment '接口名称',
    PATH                 varchar(200) not null comment '接口地址',
-   REQUEST_METHOD       varchar(20) comment '请求方法',
+   REQUEST_METHOD       varchar(20) not null comment '请求方法',
    GROUP_ID             numeric(19,0) comment '接口分组ID',
    primary key (ID),
-   unique key UK_PUREST_INTERFACE_PR (PATH, REQUEST_METHOD)
+   unique key UK_INTERFACE_PATHMETHOD (PATH, REQUEST_METHOD)
 );
 
 alter table PUREST_INTERFACE comment '接口表';
@@ -244,10 +243,10 @@ create table PUREST_ORGANIZATION
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(100) not null comment '名称',
-   PARENT_ID            numeric(19,0) comment '父级Id',
+   PARENT_ID            numeric(19,0) comment '父级ID',
    TELEPHONE            varchar(20) comment '联系电话',
    LEADER               varchar(20) comment '负责人',
-   SORT                 int comment '排序',
+   SORT                 numeric comment '排序',
    primary key (ID),
    unique key UK_PUREST_ORG_NAME_PID (NAME, PARENT_ID)
 );
@@ -325,7 +324,7 @@ create table PUREST_SYSTEM_CONFIG
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) comment '名称',
-   CONFIG_CODE          varchar(40) comment '编码',
+   CONFIG_CODE          varchar(40) not null comment '编码',
    CONFIG_VALUE         varchar(1000) comment '值',
    primary key (ID),
    unique key UK_PUREST_CONFIG_CODE (CONFIG_CODE)
@@ -391,7 +390,7 @@ alter table PUREST_INTERFACE add constraint FK_Reference_17 foreign key (GROUP_I
 alter table PUREST_NOTICE_RECORD add constraint FK_Reference_13 foreign key (NOTICE_ID)
       references PUREST_NOTICE (ID) on delete restrict on update restrict;
 
-alter table PUREST_ORGANIZATION add constraint FK_Reference_8 foreign key (PARENT_ID)
+alter table PUREST_ORGANIZATION add constraint FK_Reference_14 foreign key (PARENT_ID)
       references PUREST_ORGANIZATION (ID) on delete restrict on update restrict;
 
 alter table PUREST_ROLE_FUNCTION add constraint FK_Reference_15 foreign key (ROLE_ID)

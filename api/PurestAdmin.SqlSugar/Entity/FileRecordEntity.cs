@@ -23,9 +23,4 @@ public class FileRecordEntity : BaseEntity
     ///</summary>
     [SugarColumn(ColumnName = "FILE_EXT")]
     public string FileExt { get; set; }
-    /// <summary>
-    /// 完整路径 
-    ///</summary>
-    [SugarColumn(ColumnName = "FULL_PATH")]
-    public string FullPath { get; set; }
 }
