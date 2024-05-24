@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <NoWarn>1701;1702;1591;8618;</NoWarn>
+    <NoWarn>1701;1702;1591;8618;8602;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,9 +34,5 @@
     <None Update="Ip2region\ip2region.xdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
   </ItemGroup>
 </Project>
