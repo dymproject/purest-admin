@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/5/21 17:55:27                           */
+/* Created on:     2024/5/22 17:10:47                           */
 /*==============================================================*/
 
 
@@ -109,6 +109,7 @@ create table PUREST_FILE_RECORD
    FILE_NAME            varchar(1000) not null comment '文件名',
    FILE_SIZE            numeric(10) not null comment '文件大小',
    FILE_EXT             varchar(10) not null comment '文件扩展名',
+   CONTAINER_NAME       varchar(100) not null comment '容器名称',
    primary key (ID)
 );
 

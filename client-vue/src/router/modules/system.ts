@@ -79,6 +79,15 @@ export default {
       component: () => import("@/views/system/notice/index.vue")
     },
     {
+      path: "/profile-system",
+      name: "system_profile_system",
+      meta: {
+        title: "系统文件",
+        permissions: ["system.profilesystem"]
+      },
+      component: () => import("@/views/system/profileSystem/index.vue")
+    },
+    {
       path: "/online_user",
       name: "system_onlineUser",
       meta: {

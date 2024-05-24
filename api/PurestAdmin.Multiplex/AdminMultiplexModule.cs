@@ -14,7 +14,7 @@ namespace PurestAdmin.Multiplex
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
-            
+
         }
     }
 }
