@@ -50,6 +50,7 @@ try
     var systemOnlineUserId = YitIdHelper.NextId();
     var systemRequestLogId = YitIdHelper.NextId();
     var systemNoticeId = YitIdHelper.NextId();
+    var systemProfileSytemId = YitIdHelper.NextId();
     List<FunctionEntity> functions = [
         new FunctionEntity() { Id = welcomeId, Name = "系统主页", Code = "welcome",Remark = "此项主要是为了控制首页显示内容有个归属" },
     new FunctionEntity() { Id = systemId, Name = "系统管理", Code = "system" },
@@ -97,6 +98,9 @@ try
             new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemNoticeId, Name = "通知公告编辑", Code = "system.notice.edit" },
             new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemNoticeId, Name = "通知公告查看", Code = "system.notice.view" },
             new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemNoticeId, Name = "通知公告删除", Code = "system.notice.delete" },
+        new FunctionEntity() { Id = systemProfileSytemId, ParentId = systemId, Name = "系统文件", Code = "system.profilesystem" },
+            new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemProfileSytemId, Name = "系统文件新增", Code = "system.profilesystem.add" },
+            new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemProfileSytemId, Name = "系统文件删除", Code = "system.profilesystem.delete" },
     ];
     await db.Insertable(functions).ExecuteCommandAsync();
     Console.WriteLine("初始化功能数据");
@@ -118,15 +122,15 @@ try
 
     DictDataEntity[] dictDatas = [
         new DictDataEntity() { CategoryId = dictSexId, Name = "男" },
-    new DictDataEntity() { CategoryId = dictSexId, Name = "女" },
+        new DictDataEntity() { CategoryId = dictSexId, Name = "女" },
 
-    new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "消息" },
-    new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "公告" },
-    new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "待办" },
+        new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "消息" },
+        new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "公告" },
+        new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "待办" },
 
-    new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "紧急", Remark = "danger" },
-    new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "警告", Remark = "warning" },
-    new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "正常", Remark = "info"  }
+        new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "紧急", Remark = "danger" },
+        new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "警告", Remark = "warning" },
+        new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "正常", Remark = "info"  }
         ];
     await db.Insertable(dictDatas).ExecuteReturnSnowflakeIdListAsync();
     Console.WriteLine("初始化字典明细数据");
