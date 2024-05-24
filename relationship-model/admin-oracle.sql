@@ -1,10 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 11g                           */
-<<<<<<< HEAD
-/* Created on:     2024/5/20 9:36:05                            */
-=======
-/* Created on:     2024/5/17 10:37:11                           */
->>>>>>> ecfff7f538bd696559dd9bf6842096ecb7a990e2
+/* Created on:     2024/5/22 17:15:29                           */
 /*==============================================================*/
 
 
@@ -80,11 +76,7 @@ drop table PUREST_USER_ROLE cascade constraints;
 /*==============================================================*/
 create table PUREST_BACKGROUND_JOB_RECORD 
 (
-<<<<<<< HEAD
    ID                   VARCHAR2(40)         not null,
-=======
-   "Id"                 VARCHAR2(40)         not null,
->>>>>>> ecfff7f538bd696559dd9bf6842096ecb7a990e2
    JOB_NAME             VARCHAR2(128)        not null,
    JOB_ARGS             CLOB                 not null,
    TRY_COUNT            NUMBER,
@@ -93,21 +85,13 @@ create table PUREST_BACKGROUND_JOB_RECORD
    LAST_TRY_TIME        DATE,
    IS_ABANDONED         NUMBER(1),
    PRIORITY             NUMBER,
-<<<<<<< HEAD
    constraint PK_PUREST_BACKGROUND_JOB_RECOR primary key (ID)
-=======
-   constraint PK_PUREST_BACKGROUND_JOB_RECOR primary key ("Id")
->>>>>>> ecfff7f538bd696559dd9bf6842096ecb7a990e2
 );
 
 comment on table PUREST_BACKGROUND_JOB_RECORD is
 '后台作业记录表';
 
-<<<<<<< HEAD
 comment on column PUREST_BACKGROUND_JOB_RECORD.ID is
-=======
-comment on column PUREST_BACKGROUND_JOB_RECORD."Id" is
->>>>>>> ecfff7f538bd696559dd9bf6842096ecb7a990e2
 'Id';
 
 comment on column PUREST_BACKGROUND_JOB_RECORD.JOB_NAME is
@@ -191,7 +175,7 @@ create table PUREST_DICT_DATA
    REMARK               VARCHAR2(1000),
    CATEGORY_ID          NUMBER(19,0)         not null,
    NAME                 VARCHAR2(20)         not null,
-   SORT                 NUMBER(8,0)          not null,
+   SORT                 NUMBER               not null,
    constraint PK_PUREST_DICT_DATA primary key (ID)
 );
 
@@ -239,7 +223,7 @@ create table PUREST_FILE_RECORD
    FILE_NAME            VARCHAR2(1000)       not null,
    FILE_SIZE            NUMBER(10)           not null,
    FILE_EXT             VARCHAR2(10)         not null,
-   FULL_PATH            VARCHAR2(1000)       not null,
+   CONTAINER_NAME       VARCHAR2(100)        not null,
    constraint PK_PUREST_FILE_RECORD primary key (ID)
 );
 
@@ -273,8 +257,8 @@ comment on column PUREST_FILE_RECORD.FILE_SIZE is
 comment on column PUREST_FILE_RECORD.FILE_EXT is
 '文件扩展名';
 
-comment on column PUREST_FILE_RECORD.FULL_PATH is
-'完整路径';
+comment on column PUREST_FILE_RECORD.CONTAINER_NAME is
+'容器名称';
 
 /*==============================================================*/
 /* Table: PUREST_FUNCTION                                       */
@@ -380,10 +364,10 @@ create table PUREST_INTERFACE
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20)         not null,
    PATH                 VARCHAR2(200)        not null,
-   REQUEST_METHOD       VARCHAR2(20),
+   REQUEST_METHOD       VARCHAR2(20)         not null,
    GROUP_ID             NUMBER(19,0),
    constraint PK_PUREST_INTERFACE primary key (ID),
-   constraint UK_PUREST_INTERFACE_PR unique (PATH, REQUEST_METHOD)
+   constraint UK_INTERFACE_PATHMETHOD unique (PATH, REQUEST_METHOD)
 );
 
 comment on table PUREST_INTERFACE is
@@ -576,7 +560,7 @@ create table PUREST_ORGANIZATION
    PARENT_ID            NUMBER(19,0),
    TELEPHONE            VARCHAR2(20),
    LEADER               VARCHAR2(20),
-   SORT                 INTEGER,
+   SORT                 NUMBER,
    constraint PK_PUREST_ORGANIZATION primary key (ID),
    constraint UK_PUREST_ORG_NAME_PID unique (NAME, PARENT_ID)
 );
@@ -606,7 +590,7 @@ comment on column PUREST_ORGANIZATION.NAME is
 '名称';
 
 comment on column PUREST_ORGANIZATION.PARENT_ID is
-'父级Id';
+'父级ID';
 
 comment on column PUREST_ORGANIZATION.TELEPHONE is
 '联系电话';
@@ -775,7 +759,7 @@ create table PUREST_SYSTEM_CONFIG
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20),
-   CONFIG_CODE          VARCHAR2(40),
+   CONFIG_CODE          VARCHAR2(40)         not null,
    CONFIG_VALUE         VARCHAR2(1000),
    constraint PK_PUREST_SYSTEM_CONFIG primary key (ID),
    constraint UK_PUREST_CONFIG_CODE unique (CONFIG_CODE)

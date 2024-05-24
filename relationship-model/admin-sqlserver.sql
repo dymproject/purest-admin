@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2012                    */
-/* Created on:     2024/5/20 9:46:44                            */
+/* Created on:     2024/5/22 17:16:07                           */
 /*==============================================================*/
 
 
@@ -603,7 +603,7 @@ create table PUREST_DICT_DATA (
    REMARK               varchar(1000)        null,
    CATEGORY_ID          numeric(19,0)        not null,
    NAME                 varchar(20)          not null,
-   SORT                 numeric(8,0)         not null,
+   SORT                 numeric              not null,
    constraint PK_PUREST_DICT_DATA primary key nonclustered (ID)
 )
 go
@@ -809,7 +809,7 @@ create table PUREST_FILE_RECORD (
    FILE_NAME            varchar(1000)        not null,
    FILE_SIZE            numeric(10)          not null,
    FILE_EXT             varchar(10)          not null,
-   FULL_PATH            varchar(1000)        not null,
+   CONTAINER_NAME       VARCHAR2(100)        not null,
    constraint PK_PUREST_FILE_RECORD primary key nonclustered (ID)
 )
 go
@@ -1004,21 +1004,21 @@ go
 
 if exists(select 1 from sys.extended_properties p where
       p.major_id = object_id('PUREST_FILE_RECORD')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'FULL_PATH')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'CONTAINER_NAME')
 )
 begin
    declare @CurrentUser sysname
 select @CurrentUser = user_name()
 execute sp_dropextendedproperty 'MS_Description', 
-   'user', @CurrentUser, 'table', 'PUREST_FILE_RECORD', 'column', 'FULL_PATH'
+   'user', @CurrentUser, 'table', 'PUREST_FILE_RECORD', 'column', 'CONTAINER_NAME'
 
 end
 
 
 select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
-   '完整路径',
-   'user', @CurrentUser, 'table', 'PUREST_FILE_RECORD', 'column', 'FULL_PATH'
+   '容器名称',
+   'user', @CurrentUser, 'table', 'PUREST_FILE_RECORD', 'column', 'CONTAINER_NAME'
 go
 
 /*==============================================================*/
@@ -1424,10 +1424,10 @@ create table PUREST_INTERFACE (
    REMARK               varchar(1000)        null,
    NAME                 varchar(20)          not null,
    PATH                 varchar(200)         not null,
-   REQUEST_METHOD       varchar(20)          null,
+   REQUEST_METHOD       varchar(20)          not null,
    GROUP_ID             numeric(19,0)        null,
    constraint PK_PUREST_INTERFACE primary key nonclustered (ID),
-   constraint UK_PUREST_INTERFACE_PR unique (PATH, REQUEST_METHOD)
+   constraint UK_INTERFACE_PATHMETHOD unique (PATH, REQUEST_METHOD)
 )
 go
 
@@ -2268,7 +2268,7 @@ create table PUREST_ORGANIZATION (
    PARENT_ID            numeric(19,0)        null,
    TELEPHONE            varchar(20)          null,
    LEADER               varchar(20)          null,
-   SORT                 int                  null,
+   SORT                 numeric              null,
    constraint PK_PUREST_ORGANIZATION primary key nonclustered (ID),
    constraint UK_PUREST_ORG_NAME_PID unique (NAME, PARENT_ID)
 )
@@ -2439,7 +2439,7 @@ end
 
 select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
-   '父级Id',
+   '父级ID',
    'user', @CurrentUser, 'table', 'PUREST_ORGANIZATION', 'column', 'PARENT_ID'
 go
 
@@ -3147,7 +3147,7 @@ create table PUREST_SYSTEM_CONFIG (
    UPDATE_TIME          datetime             null,
    REMARK               varchar(1000)        null,
    NAME                 varchar(20)          null,
-   CONFIG_CODE          varchar(40)          null,
+   CONFIG_CODE          varchar(40)          not null,
    CONFIG_VALUE         varchar(1000)        null,
    constraint PK_PUREST_SYSTEM_CONFIG primary key nonclustered (ID),
    constraint UK_PUREST_CONFIG_CODE unique (CONFIG_CODE)
