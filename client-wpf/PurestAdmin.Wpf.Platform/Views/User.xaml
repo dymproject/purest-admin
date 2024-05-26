@@ -12,7 +12,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <converter:UserSatusConverter x:Key="UserStatusConverter" />
+        <converter:UserStatusConverter x:Key="UserStatusConverter" />
     </UserControl.Resources>
     <Grid Background="White">
         <DockPanel>
@@ -52,7 +52,7 @@
                 <rubyer:Card Grid.Row="1"
                              Margin="3,5"
                              Padding="10">
-                    <Grid rubyer:GridHelper.RowDefinitions="Auto,30">
+                    <Grid rubyer:GridHelper.RowDefinitions="Auto,50">
                         <DataGrid x:Name="grid"
                                   Width="Auto"
                                   Height="300"
@@ -85,20 +85,11 @@
                                                     Binding="{Binding Email}"
                                                     Header="邮箱" />
                                 <DataGridTextColumn Width="*"
-                                                    Binding="{Binding Status}"
+                                                    Binding="{Binding Status, Converter={StaticResource UserStatusConverter}}"
                                                     Header="状态" />
                                 <DataGridTextColumn Width="*"
                                                     Binding="{Binding Remark}"
                                                     Header="备注" />
-                                <!--<DataGridTemplateColumn Header="状态">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Name}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>-->
                                 <DataGridTemplateColumn Width="80" Header="操作">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -118,7 +109,8 @@
                             </DataGrid.Columns>
                         </DataGrid>
                         <rubyer:PageBar Grid.Row="1"
-                                        VerticalAlignment="Top"
+                                        Margin="0,10"
+                                        VerticalAlignment="Stretch"
                                         IsRound="False"
                                         IsShowPageSize="True"
                                         IsShowTotal="True"
