@@ -4,7 +4,7 @@ import Setting from "@iconify-icons/ep/setting";
 const Layout = () => import("@/layout/index.vue");
 
 export default {
-  path: "/",
+  path: "/system",
   name: "system",
   component: Layout,
   redirect: "/welcome",
@@ -86,15 +86,6 @@ export default {
         permissions: ["system.profilesystem"]
       },
       component: () => import("@/views/system/profileSystem/index.vue")
-    },
-    {
-      path: "/online_user",
-      name: "system_onlineUser",
-      meta: {
-        title: "在线用户",
-        permissions: ["system.onlineuser"]
-      },
-      component: () => import("@/views/system/onlineUser/index.vue")
     },
     {
       path: "/request_log",

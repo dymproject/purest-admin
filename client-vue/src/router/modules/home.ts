@@ -7,8 +7,8 @@ export default {
   component: Layout,
   redirect: "/welcome",
   meta: {
-    icon: "ep:home-filled",
-    title: "首页",
+    icon: "ep:chrome-filled",
+    title: "欢迎使用",
     rank: 0
   },
   children: [
@@ -17,9 +17,18 @@ export default {
       name: "Welcome",
       component: () => import("@/views/welcome/index.vue"),
       meta: {
-        title: "首页",
+        title: "系统主页",
         showLink: VITE_HIDE_HOME === "true" ? false : true
       }
+    },
+    {
+      path: "/online_user",
+      name: "system_onlineUser",
+      meta: {
+        title: "在线用户",
+        permissions: ["system.onlineuser"]
+      },
+      component: () => import("@/views/system/onlineUser/index.vue")
     },
     {
       path: "/userprofile",
