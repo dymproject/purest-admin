@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/5/22 17:10:47                           */
+/* Created on:     2024/5/27 16:33:01                           */
 /*==============================================================*/
 
 
@@ -25,6 +25,8 @@ drop table if exists PUREST_NOTICE;
 drop table if exists PUREST_NOTICE_RECORD;
 
 drop table if exists PUREST_ORGANIZATION;
+
+drop table if exists PUREST_PROFILE_SYSTEM;
 
 drop table if exists PUREST_REQUEST_LOG;
 
@@ -106,10 +108,9 @@ create table PUREST_FILE_RECORD
    UPDATE_BY            numeric(19,0) comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
-   FILE_NAME            varchar(1000) not null comment '文件名',
+   FILE_NAME            varchar(100) not null comment '文件名',
    FILE_SIZE            numeric(10) not null comment '文件大小',
    FILE_EXT             varchar(10) not null comment '文件扩展名',
-   CONTAINER_NAME       varchar(100) not null comment '容器名称',
    primary key (ID)
 );
 
@@ -255,6 +256,26 @@ create table PUREST_ORGANIZATION
 alter table PUREST_ORGANIZATION comment '组织机构';
 
 /*==============================================================*/
+/* Table: PUREST_PROFILE_SYSTEM                                 */
+/*==============================================================*/
+create table PUREST_PROFILE_SYSTEM
+(
+   ID                   numeric(19,0) not null comment '主键Id',
+   CREATE_BY            numeric(19,0) not null comment '创建人',
+   CREATE_TIME          datetime not null comment '创建时间',
+   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_TIME          datetime comment '修改时间',
+   REMARK               varchar(1000) comment '备注',
+   NAME                 varchar(20) not null comment '名称',
+   CODE                 varchar(40) not null comment '编码',
+   FILE_ID              numeric(19,0) not null comment '文件ID',
+   primary key (ID),
+   unique key UK_PUREST_FILESYSTEM_CODE (CODE)
+);
+
+alter table PUREST_PROFILE_SYSTEM comment '系统文件表';
+
+/*==============================================================*/
 /* Table: PUREST_REQUEST_LOG                                    */
 /*==============================================================*/
 create table PUREST_REQUEST_LOG
@@ -393,6 +414,9 @@ alter table PUREST_NOTICE_RECORD add constraint FK_Reference_13 foreign key (NOT
 
 alter table PUREST_ORGANIZATION add constraint FK_Reference_14 foreign key (PARENT_ID)
       references PUREST_ORGANIZATION (ID) on delete restrict on update restrict;
+
+alter table PUREST_PROFILE_SYSTEM add constraint FK_Reference_18 foreign key (FILE_ID)
+      references PUREST_FILE_RECORD (ID) on delete restrict on update restrict;
 
 alter table PUREST_ROLE_FUNCTION add constraint FK_Reference_15 foreign key (ROLE_ID)
       references PUREST_ROLE (ID) on delete restrict on update restrict;

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2012                    */
-/* Created on:     2024/5/22 17:16:07                           */
+/* Created on:     2024/5/27 17:01:50                           */
 /*==============================================================*/
 
 
@@ -44,6 +44,13 @@ if exists (select 1
    where r.fkeyid = object_id('PUREST_ORGANIZATION') and o.name = 'FK_PUREST_O_REFERENCE_PUREST_O')
 alter table PUREST_ORGANIZATION
    drop constraint FK_PUREST_O_REFERENCE_PUREST_O
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('PUREST_PROFILE_SYSTEM') and o.name = 'FK_PUREST_P_REFERENCE_PUREST_F')
+alter table PUREST_PROFILE_SYSTEM
+   drop constraint FK_PUREST_P_REFERENCE_PUREST_F
 go
 
 if exists (select 1
@@ -156,6 +163,13 @@ if exists (select 1
            where  id = object_id('PUREST_ORGANIZATION')
             and   type = 'U')
    drop table PUREST_ORGANIZATION
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('PUREST_PROFILE_SYSTEM')
+            and   type = 'U')
+   drop table PUREST_PROFILE_SYSTEM
 go
 
 if exists (select 1
@@ -806,10 +820,9 @@ create table PUREST_FILE_RECORD (
    UPDATE_BY            numeric(19,0)        null,
    UPDATE_TIME          datetime             null,
    REMARK               varchar(1000)        null,
-   FILE_NAME            varchar(1000)        not null,
+   FILE_NAME            varchar(100)         not null,
    FILE_SIZE            numeric(10)          not null,
    FILE_EXT             varchar(10)          not null,
-   CONTAINER_NAME       VARCHAR2(100)        not null,
    constraint PK_PUREST_FILE_RECORD primary key nonclustered (ID)
 )
 go
@@ -1000,25 +1013,6 @@ select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
    '文件扩展名',
    'user', @CurrentUser, 'table', 'PUREST_FILE_RECORD', 'column', 'FILE_EXT'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PUREST_FILE_RECORD')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'CONTAINER_NAME')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'user', @CurrentUser, 'table', 'PUREST_FILE_RECORD', 'column', 'CONTAINER_NAME'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '容器名称',
-   'user', @CurrentUser, 'table', 'PUREST_FILE_RECORD', 'column', 'CONTAINER_NAME'
 go
 
 /*==============================================================*/
@@ -2501,6 +2495,212 @@ execute sp_addextendedproperty 'MS_Description',
 go
 
 /*==============================================================*/
+/* Table: PUREST_PROFILE_SYSTEM                                 */
+/*==============================================================*/
+create table PUREST_PROFILE_SYSTEM (
+   ID                   numeric(19,0)        not null,
+   CREATE_BY            numeric(19,0)        not null,
+   CREATE_TIME          datetime             not null,
+   UPDATE_BY            numeric(19,0)        null,
+   UPDATE_TIME          datetime             null,
+   REMARK               varchar(1000)        null,
+   NAME                 varchar(20)          not null,
+   CODE                 varchar(40)          not null,
+   FILE_ID              numeric(19,0)        not null,
+   constraint PK_PUREST_PROFILE_SYSTEM primary key nonclustered (ID),
+   constraint UK_PUREST_FILESYSTEM_CODE unique (CODE)
+)
+go
+
+if exists (select 1 from  sys.extended_properties
+           where major_id = object_id('PUREST_PROFILE_SYSTEM') and minor_id = 0)
+begin 
+   declare @CurrentUser sysname 
+select @CurrentUser = user_name() 
+execute sp_dropextendedproperty 'MS_Description',  
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM' 
+ 
+end 
+
+
+select @CurrentUser = user_name() 
+execute sp_addextendedproperty 'MS_Description',  
+   '系统文件表', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'ID')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'ID'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '主键Id',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'ID'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'CREATE_BY')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'CREATE_BY'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '创建人',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'CREATE_BY'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'CREATE_TIME')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'CREATE_TIME'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '创建时间',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'CREATE_TIME'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'UPDATE_BY')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'UPDATE_BY'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '修改人',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'UPDATE_BY'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'UPDATE_TIME')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'UPDATE_TIME'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '修改时间',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'UPDATE_TIME'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'REMARK')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'REMARK'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '备注',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'REMARK'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'NAME')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'NAME'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '名称',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'NAME'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'CODE')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'CODE'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '编码',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'CODE'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_PROFILE_SYSTEM')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'FILE_ID')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'FILE_ID'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '文件ID',
+   'user', @CurrentUser, 'table', 'PUREST_PROFILE_SYSTEM', 'column', 'FILE_ID'
+go
+
+/*==============================================================*/
 /* Table: PUREST_REQUEST_LOG                                    */
 /*==============================================================*/
 create table PUREST_REQUEST_LOG (
@@ -3861,6 +4061,11 @@ go
 alter table PUREST_ORGANIZATION
    add constraint FK_PUREST_O_REFERENCE_PUREST_O foreign key (PARENT_ID)
       references PUREST_ORGANIZATION (ID)
+go
+
+alter table PUREST_PROFILE_SYSTEM
+   add constraint FK_PUREST_P_REFERENCE_PUREST_F foreign key (FILE_ID)
+      references PUREST_FILE_RECORD (ID)
 go
 
 alter table PUREST_ROLE_FUNCTION
