@@ -6,16 +6,18 @@ using System.Windows.Data;
 
 namespace PurestAdmin.Wpf.Shared.Converters
 {
-    public class UserSatusConverter : IValueConverter
+    public class UserStatusConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return "全部";
-            if (bool.TryParse(value.ToString(), out bool result))
+            string result = string.Empty;
+            result = value switch
             {
-                return !result ? "正常" : "停用";
-            }
-            return "全部";
+                0 => "正常",
+                1 => "停用",
+                _ => "全部",
+            };
+            return result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
