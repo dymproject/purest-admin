@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 11g                           */
-/* Created on:     2024/5/22 17:15:29                           */
+/* Created on:     2024/5/27 17:01:33                           */
 /*==============================================================*/
 
 
@@ -21,6 +21,9 @@ alter table PUREST_NOTICE_RECORD
 
 alter table PUREST_ORGANIZATION
    drop constraint FK_PUREST_O_REFERENCE_PUREST_O;
+
+alter table PUREST_PROFILE_SYSTEM
+   drop constraint FK_PUREST_P_REFERENCE_PUREST_F;
 
 alter table PUREST_ROLE_FUNCTION
    drop constraint FK_PUREST_R_REFERENCE_PUREST_R;
@@ -58,6 +61,8 @@ drop table PUREST_NOTICE cascade constraints;
 drop table PUREST_NOTICE_RECORD cascade constraints;
 
 drop table PUREST_ORGANIZATION cascade constraints;
+
+drop table PUREST_PROFILE_SYSTEM cascade constraints;
 
 drop table PUREST_REQUEST_LOG cascade constraints;
 
@@ -220,10 +225,9 @@ create table PUREST_FILE_RECORD
    UPDATE_BY            NUMBER(19,0),
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
-   FILE_NAME            VARCHAR2(1000)       not null,
+   FILE_NAME            VARCHAR2(100)        not null,
    FILE_SIZE            NUMBER(10)           not null,
    FILE_EXT             VARCHAR2(10)         not null,
-   CONTAINER_NAME       VARCHAR2(100)        not null,
    constraint PK_PUREST_FILE_RECORD primary key (ID)
 );
 
@@ -256,9 +260,6 @@ comment on column PUREST_FILE_RECORD.FILE_SIZE is
 
 comment on column PUREST_FILE_RECORD.FILE_EXT is
 '文件扩展名';
-
-comment on column PUREST_FILE_RECORD.CONTAINER_NAME is
-'容器名称';
 
 /*==============================================================*/
 /* Table: PUREST_FUNCTION                                       */
@@ -602,6 +603,54 @@ comment on column PUREST_ORGANIZATION.SORT is
 '排序';
 
 /*==============================================================*/
+/* Table: PUREST_PROFILE_SYSTEM                                 */
+/*==============================================================*/
+create table PUREST_PROFILE_SYSTEM 
+(
+   ID                   NUMBER(19,0)         not null,
+   CREATE_BY            NUMBER(19,0)         not null,
+   CREATE_TIME          DATE                 not null,
+   UPDATE_BY            NUMBER(19,0),
+   UPDATE_TIME          DATE,
+   REMARK               VARCHAR2(1000),
+   NAME                 VARCHAR2(20)         not null,
+   CODE                 VARCHAR2(40)         not null,
+   FILE_ID              NUMBER(19,0)         not null,
+   constraint PK_PUREST_PROFILE_SYSTEM primary key (ID),
+   constraint UK_PUREST_FILESYSTEM_CODE unique (CODE)
+);
+
+comment on table PUREST_PROFILE_SYSTEM is
+'系统文件表';
+
+comment on column PUREST_PROFILE_SYSTEM.ID is
+'主键Id';
+
+comment on column PUREST_PROFILE_SYSTEM.CREATE_BY is
+'创建人';
+
+comment on column PUREST_PROFILE_SYSTEM.CREATE_TIME is
+'创建时间';
+
+comment on column PUREST_PROFILE_SYSTEM.UPDATE_BY is
+'修改人';
+
+comment on column PUREST_PROFILE_SYSTEM.UPDATE_TIME is
+'修改时间';
+
+comment on column PUREST_PROFILE_SYSTEM.REMARK is
+'备注';
+
+comment on column PUREST_PROFILE_SYSTEM.NAME is
+'名称';
+
+comment on column PUREST_PROFILE_SYSTEM.CODE is
+'编码';
+
+comment on column PUREST_PROFILE_SYSTEM.FILE_ID is
+'文件ID';
+
+/*==============================================================*/
 /* Table: PUREST_REQUEST_LOG                                    */
 /*==============================================================*/
 create table PUREST_REQUEST_LOG 
@@ -929,6 +978,10 @@ alter table PUREST_NOTICE_RECORD
 alter table PUREST_ORGANIZATION
    add constraint FK_PUREST_O_REFERENCE_PUREST_O foreign key (PARENT_ID)
       references PUREST_ORGANIZATION (ID);
+
+alter table PUREST_PROFILE_SYSTEM
+   add constraint FK_PUREST_P_REFERENCE_PUREST_F foreign key (FILE_ID)
+      references PUREST_FILE_RECORD (ID);
 
 alter table PUREST_ROLE_FUNCTION
    add constraint FK_PUREST_R_REFERENCE_PUREST_R foreign key (ROLE_ID)
