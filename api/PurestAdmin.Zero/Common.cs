@@ -18,8 +18,8 @@ public static class Common
             "tinyint" or "smallint" or "mediumint" or "int" or "bigint" => "int",
             "float" or "double" => "decimal",
             "decimal" => columnInfo.Scale > 0 ? "decimal" : (columnInfo.Length > 10 ? "long" : "int"),
-            "char" or "varchar" or "text" or "tinytext" or "mediumtext" or "largetext" => "string",
-            "blob" or "tinyblob" or "mediumblob" or "largeblob" => "byte[]",
+            "char" or "varchar" or "text" or "tinytext" or "mediumtext" or "longtext" => "string",
+            "blob" or "tinyblob" or "mediumblob" or "longblob" => "byte[]",
             "date" or "datetime" => "DateTime",
             _ => "string",
         };
@@ -38,7 +38,7 @@ public static class Common
             {
                 continue;
             }
-            dtoResult.Append("\t/// <summary>");
+            dtoResult.Append("\r\n\t/// <summary>");
             dtoResult.Append("\r\n\t/// " + columnInfo.ColumnDescription);
             dtoResult.Append("\r\n\t/// </summary>");
 

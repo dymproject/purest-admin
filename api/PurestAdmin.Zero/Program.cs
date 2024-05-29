@@ -25,8 +25,12 @@ while (true)
             await dataSeed.Initialization();
             break;
         case "1":
-            var autoCode = app.Services.GetRequiredService<AutoEntity>();
-            autoCode.Initialization();
+            var autoEntity = app.Services.GetRequiredService<AutoEntity>();
+            autoEntity.Initialization();
+            break;
+        case "2":
+            var autoService = app.Services.GetRequiredService<AutoService>();
+            autoService.Initialization();
             break;
         default:
             Console.WriteLine("未进行任何操作！");

@@ -1,10 +1,5 @@
 ﻿
 namespace @NameSpace@.Dtos;
 public class @ClassName@Output
-{
-    /// <summary>
-    /// 主键Id
-    /// </summary>
-    public long Id { get; set; }
-    @props@
+{@props@
 }
