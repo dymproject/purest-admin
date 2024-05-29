@@ -34,7 +34,7 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
             TextInfo ti = new CultureInfo("en-US", false).TextInfo;
             className = nameList.Aggregate("", (current, fName) => current + ti.ToTitleCase(fName.ToLower()));
         }
-        Console.Write($"您的类名为：{className}");
+        Console.WriteLine($"您的类名为：{className}");
         CreateService(table, className);
     }
 

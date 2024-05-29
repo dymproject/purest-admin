@@ -32,7 +32,7 @@ public class AutoEntity : ISingletonDependency
         var replay = Console.ReadLine() ?? "0";
 
         var table = tables[int.Parse(replay)];
-        Console.WriteLine($"您选择的表是：{table.Name}，请输入类名,如果直接回车则使用默认类名");
+        Console.WriteLine($"您选择的表是：{table.Name}，请输入类名,如果直接回车则使用“默认类名”");
         var className = Console.ReadLine();
         if (className.IsNullOrEmpty())
         {
