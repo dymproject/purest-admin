@@ -49,7 +49,8 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
         Console.WriteLine($"您的命名空间为：{nameSpace}");
 
         var columns = _db.DbMaintenance.GetColumnInfosByTableName(table.Name, false);
-        var props = Common.GetDtosString(columns);
+        var outputProps = Common.GetOutputDtoString(columns);
+        var inputProps = Common.GetInputDtoString(columns);
 
 
         var basePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -70,7 +71,7 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
         using (var reader = new StreamReader(Path.Combine(basePath, "Templates", "AddTemplate.txt")))
         {
             var content = reader.ReadToEnd();
-            var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className).Replace("@props@", props);
+            var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className).Replace("@props@", inputProps);
             using StreamWriter writer = new(Path.Combine(dtoPath, $"Add{className}Input.cs"));
             writer.Write(result);
         };
@@ -79,7 +80,7 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
         using (var reader = new StreamReader(Path.Combine(basePath, "Templates", "OutputTemplate.txt")))
         {
             var content = reader.ReadToEnd();
-            var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className).Replace("@props@", props);
+            var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className).Replace("@props@", outputProps);
             using StreamWriter writer = new(Path.Combine(dtoPath, $"{className}Output.cs"));
             writer.Write(result);
         };
@@ -88,7 +89,7 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
         using (var reader = new StreamReader(Path.Combine(basePath, "Templates", "PutInputTemplate.txt")))
         {
             var content = reader.ReadToEnd();
-            var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className).Replace("@props@", props);
+            var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className);
             using StreamWriter writer = new(Path.Combine(dtoPath, $"Put{className}Input.cs"));
             writer.Write(result);
         };
@@ -97,7 +98,7 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
         using (var reader = new StreamReader(Path.Combine(basePath, "Templates", "ServiceTemplate.txt")))
         {
             var content = reader.ReadToEnd();
-            var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className).Replace("@props@", props);
+            var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className);
             using StreamWriter writer = new(Path.Combine(servicePath, $"{className}Service.cs"));
             writer.Write(result);
         };

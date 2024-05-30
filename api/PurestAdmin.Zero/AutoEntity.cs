@@ -77,7 +77,15 @@ public class AutoEntity : ISingletonDependency
             sb.Append("\r\n\t/// <summary>");
             sb.Append("\r\n\t/// " + columnInfo.ColumnDescription);
             sb.Append("\r\n\t/// </summary>");
-            sb.Append($"\r\n\t[SugarColumn(ColumnName = \"{columnInfo.DbColumnName}\")]");
+            if (columnInfo.IsPrimarykey)
+            {
+                sb.Append($"\r\n\t[SugarColumn(ColumnName = \"{columnInfo.DbColumnName}\", IsPrimaryKey = true)]");
+            }
+            else
+            {
+                sb.Append($"\r\n\t[SugarColumn(ColumnName = \"{columnInfo.DbColumnName}\")]");
+            }
+
             var fieldName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(columnInfo.DbColumnName.ToLower());
 
             var strType = Common.GetCsharpType(columnInfo);

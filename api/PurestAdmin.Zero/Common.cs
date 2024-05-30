@@ -26,7 +26,7 @@ public static class Common
         return strType;
     }
     private static readonly string[] sourceArray = ["string", "byte[]"];
-    public static string GetDtosString(List<DbColumnInfo> dbColumns)
+    public static string GetInputDtoString(List<DbColumnInfo> dbColumns)
     {
         StringBuilder dtoResult = new();
         TextInfo ti = new CultureInfo("en-US", false).TextInfo;
@@ -42,7 +42,7 @@ public static class Common
             dtoResult.Append("\r\n\t/// " + columnInfo.ColumnDescription);
             dtoResult.Append("\r\n\t/// </summary>");
 
-            var strType = Common.GetCsharpType(columnInfo);
+            var strType = GetCsharpType(columnInfo);
             if (!columnInfo.IsNullable)
             {
                 if (strType == "string")
@@ -56,6 +56,37 @@ public static class Common
                 }
             }
 
+            var fieldName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(columnInfo.DbColumnName.ToLower());
+            var isNull = (columnInfo.IsNullable && !sourceArray.Contains(strType)) ? "?" : "";
+
+            if (columnInfo.DbColumnName.Contains('_'))
+            {
+                var listFieldName = columnInfo.DbColumnName.Split('_').ToList();
+                fieldName = listFieldName.Aggregate("", (current, fName) => current + ti.ToTitleCase(fName.ToLower()));
+            }
+
+            dtoResult.Append($"\r\n\tpublic {strType}{isNull} {fieldName} {{ get; set; }}");
+        }
+        return dtoResult.ToString();
+    }
+
+    public static string GetOutputDtoString(List<DbColumnInfo> dbColumns)
+    {
+        StringBuilder dtoResult = new();
+        TextInfo ti = new CultureInfo("en-US", false).TextInfo;
+        foreach (var columnInfo in dbColumns)
+        {
+            //排除
+            string[] baseColumnName = ["CREATE_BY", "CREATE_TIME", "UPDATE_BY", "UPDATE_TIME"];
+            if (baseColumnName.Contains(columnInfo.DbColumnName.ToUpper()))
+            {
+                continue;
+            }
+            dtoResult.Append("\r\n\t/// <summary>");
+            dtoResult.Append("\r\n\t/// " + columnInfo.ColumnDescription);
+            dtoResult.Append("\r\n\t/// </summary>");
+
+            var strType = GetCsharpType(columnInfo);
             var fieldName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(columnInfo.DbColumnName.ToLower());
             var isNull = (columnInfo.IsNullable && !sourceArray.Contains(strType)) ? "?" : "";
 
