@@ -1,0 +1,5 @@
+﻿
+namespace @NameSpace@.Dtos;
+public class Add@ClassName@Input
+{@props@
+}
