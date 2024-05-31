@@ -10,8 +10,8 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Timing;
 
 namespace PurestAdmin.Zero;
-[DependsOn(typeof(SqlSugarModule), typeof(AdminCoreModule))]
-public class ZeroModule : AbpModule
+[DependsOn(typeof(AdminSqlSugarModule), typeof(AdminCoreModule))]
+public class AdminZeroModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {

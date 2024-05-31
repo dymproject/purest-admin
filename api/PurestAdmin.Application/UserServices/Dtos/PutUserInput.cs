@@ -5,7 +5,7 @@ namespace PurestAdmin.Application.UserServices.Dtos;
 /// <summary>
 /// 用户编辑
 /// </summary>
-public class EditUserInput
+public class PutUserInput
 {
     /// <summary>
     /// 备注

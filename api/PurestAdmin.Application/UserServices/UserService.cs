@@ -95,7 +95,7 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
     /// <param name="id"></param>
     /// <param name="input"></param>
     /// <returns></returns>
-    public async Task PutAsync(long id, EditUserInput input)
+    public async Task PutAsync(long id, PutUserInput input)
     {
         var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
         entity = input.Adapt(entity);

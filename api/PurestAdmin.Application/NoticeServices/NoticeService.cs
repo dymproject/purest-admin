@@ -80,7 +80,7 @@ public class NoticeService(ISqlSugarClient db, IBackgroundJobManager backgroundJ
     /// <param name="id"></param>
     /// <param name="input"></param>
     /// <returns></returns>
-    public async Task PutAsync(long id, EditNoticeInput input)
+    public async Task PutAsync(long id, PutNoticeInput input)
     {
         var entity = await _db.Queryable<NoticeEntity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);

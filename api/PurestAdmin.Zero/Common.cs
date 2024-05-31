@@ -5,8 +5,6 @@ using System.Text;
 
 using SqlSugar;
 
-using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
-
 namespace PurestAdmin.Zero;
 public static class Common
 {

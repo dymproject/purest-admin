@@ -10,7 +10,7 @@ using Volo.Abp.Modularity;
 
 namespace PurestAdmin.Application
 {
-    [DependsOn(typeof(SqlSugarModule),
+    [DependsOn(typeof(AdminSqlSugarModule),
         typeof(AdminBackgroundModule),
         typeof(AdminMultiplexModule))]
     public class AdminAppModule : AbpModule

@@ -6,7 +6,7 @@ using PurestAdmin.Zero;
 
 using Volo.Abp;
 
-var app = await AbpApplicationFactory.CreateAsync<ZeroModule>();
+var app = await AbpApplicationFactory.CreateAsync<AdminZeroModule>();
 // 初始化应用
 await app.InitializeAsync();
 while (true)

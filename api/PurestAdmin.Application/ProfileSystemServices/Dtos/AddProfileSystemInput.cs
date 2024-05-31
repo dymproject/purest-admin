@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 using PurestAdmin.Core.File;
 
-namespace PurestAdmin.Application.FileServices.Dtos;
+namespace PurestAdmin.Application.ProfileSystemServices.Dtos;
 
 /// <summary>
 /// 系统文件添加

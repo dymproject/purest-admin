@@ -9,7 +9,7 @@ using Volo.Abp.Modularity;
 
 namespace PurestAdmin.SqlSugar
 {
-    public class SqlSugarModule : AbpModule
+    public class AdminSqlSugarModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {

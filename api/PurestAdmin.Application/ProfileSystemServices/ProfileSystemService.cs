@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 
-using PurestAdmin.Application.FileServices.Dtos;
+using PurestAdmin.Application.ProfileSystemServices.Dtos;
 using PurestAdmin.Core.File;
 using PurestAdmin.Core.File.Containers;
 
@@ -15,7 +15,7 @@ using Volo.Abp;
 using Volo.Abp.Validation;
 
 
-namespace PurestAdmin.Application.FileServices;
+namespace PurestAdmin.Application.ProfileSystemServices;
 
 public class ProfileSystemService(ISqlSugarClient db, IFileCommand<ProfileSystemContainer> fileCommand,
     IHttpContextAccessor httpContextAccessor, IObjectValidator objectValidator) : ApplicationService
