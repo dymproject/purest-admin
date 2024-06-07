@@ -1,6 +1,7 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using PurestAdmin.Application.SystemConfig.Dtos;
+using PurestAdmin.Application.SystemConfigServices.Dtos;
+using PurestAdmin.Core.Oops;
 
 namespace PurestAdmin.Application.SystemConfigServices;
 /// <summary>

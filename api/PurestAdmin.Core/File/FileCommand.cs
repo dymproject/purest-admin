@@ -41,8 +41,8 @@ public class FileCommand<T>(ISqlSugarClient db, IBlobContainer<T> blobContainer)
     }
     public async Task<byte[]> ReadAsync(long fileId)
     {
-        _ = await _db.Queryable<FileRecordEntity>().Where(x => x.Id == fileId).FirstAsync() ?? throw Oops.Bah("无此文件记录");
-        return await _blobContainer.GetAllBytesAsync(fileId.ToString());
+        var fileRecord = await _db.Queryable<FileRecordEntity>().Where(x => x.Id == fileId).FirstAsync();
+        return fileRecord == null ? [] : await _blobContainer.GetAllBytesAsync(fileId.ToString());
     }
     public async Task<bool> RemoveAsync(long fileId)
     {

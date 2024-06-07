@@ -4,8 +4,7 @@ global using System.ComponentModel.DataAnnotations;
 
 global using Mapster;
 
-global using PurestAdmin.Core;
-global using PurestAdmin.Multiplex.Contracts.Enum;
+global using PurestAdmin.Multiplex.Contracts.Enums;
 global using PurestAdmin.SqlSugar;
 global using PurestAdmin.SqlSugar.Entity;
 

@@ -63,7 +63,7 @@ const columns: VxeGridPropTypes.Columns<any> = [
     title: "名称",
     field: "name",
     treeNode: true,
-    minWidth: 300
+    minWidth: 100
   },
   {
     title: "接口地址",
@@ -73,7 +73,7 @@ const columns: VxeGridPropTypes.Columns<any> = [
   {
     title: "请求方法",
     field: "requestMethod",
-    minWidth: 80
+    minWidth: 30
   }
 ];
 const customTableActions: VxeGridPropTypes.Columns<any> = [
@@ -81,7 +81,7 @@ const customTableActions: VxeGridPropTypes.Columns<any> = [
     title: "操作",
     field: "operate",
     align: "center",
-    width: 100,
+    minWidth: 100,
     slots: {
       default: ({ row }) => {
         if (!row.path) return null;
@@ -160,15 +160,15 @@ defineExpose({ showInterface });
     ref="vxeModalRef"
     v-model="modalOptions.modalValue"
     width="1400"
-    height="850"
+    height="750"
     showFooter
     :draggable="false"
     :title="modalOptions.modalTitle"
   >
     <template #default>
       <div style="display: flex; width: 100%">
-        <ReCard header="已绑定接口">
-          <vxe-table height="590" :data="myInterfaceData">
+        <ReCard header="已绑定接口" style="width: 40%">
+          <vxe-table height="510" :data="myInterfaceData">
             <vxe-column field="name" width="180" title="名称" />
             <vxe-column field="path" width="180" title="接口地址" />
             <vxe-column
@@ -190,7 +190,7 @@ defineExpose({ showInterface });
             </vxe-column>
           </vxe-table>
         </ReCard>
-        <ReCard header="接口列表" body-style="width:860px">
+        <ReCard header="接口列表" style="width: 60%">
           <vxe-form
             ref="formRef"
             :data="formData"
@@ -200,12 +200,14 @@ defineExpose({ showInterface });
           />
           <ReVxeGrid
             ref="reVxeGridRef"
-            :max-height="580"
-            :treeConfig="{ rowField: 'id', children: 'interfaces' }"
+            :min-height="450"
+            :max-height="450"
+            :treeConfig="{ rowField: 'id', childrenField: 'interfaces' }"
             :customToolbarActions="[]"
             :searchParams="formData"
             :showOperateColumn="false"
             :customTableActions="customTableActions"
+            :getPageList
             :request="getPageList"
             :columns="columns"
           />

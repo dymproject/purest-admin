@@ -1,6 +1,6 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using PurestAdmin.WebApi.Host;
+using PurestAdmin.Api.Host;
 
 using Serilog;
 using Serilog.Events;

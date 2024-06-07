@@ -1,16 +1,19 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.RoleServices.Dtos;
+using PurestAdmin.Core.Cache;
+using PurestAdmin.Core.Oops;
+using PurestAdmin.Multiplex.Contracts.Consts;
 
 namespace PurestAdmin.Application.RoleServices;
 /// <summary>
 /// 角色服务
 /// </summary>
-public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleRepository) : ApplicationService
+public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleRepository, IAdminCache cache) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
     private readonly Repository<RoleEntity> _roleRepository = roleRepository;
-
+    private readonly IAdminCache _cache = cache;
     /// <summary>
     /// 分页查询
     /// </summary>
@@ -100,6 +103,9 @@ public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleReposito
 
         var roleSecurityEntities = input.Select(x => new RoleFunctionEntity { RoleId = roleId, FunctionId = x }).ToList();
         _ = await _db.Insertable(roleSecurityEntities).ExecuteReturnSnowflakeIdListAsync();
+
+        //移除对应角色的缓存的接口
+        _cache.Remove(AdminConst.CACHE_ROLESINTERFACE_PREFIX + roleId);
     }
     /// <summary>
     /// 获取角色的功能

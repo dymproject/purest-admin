@@ -4,7 +4,6 @@ import { VxeButton, VxeGridPropTypes, VxePagerEvents } from "vxe-table";
 import { hasAuth } from "@/router/utils";
 const props = defineProps<{
   rowKey?: string;
-  maxHeight?: number;
   searchParams?: any;
   request?: (params) => Promise<any>;
   columns: Array<any>;
@@ -127,7 +126,7 @@ defineExpose({ loadData });
 </script>
 <template>
   <vxe-grid
-    :max-height="props.maxHeight ?? 650"
+    :max-height="650"
     :min-height="650"
     :columns="gridColumns"
     :tree-config="treeOption"

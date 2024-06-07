@@ -26,6 +26,20 @@ public class AuthorizationHandler(IHostEnvironment hostEnvironment, ICurrentUser
                 context.Fail();
                 return;
             }
+            //校验用户是否有接口权限
+            var endpoint = httpContext.GetEndpoint() as RouteEndpoint;
+            var pattern = endpoint?.RoutePattern;
+            if (_hostEnvironment.IsProduction())
+            {
+                var interfaces = await _currentUser.GetInterfacesAsync();
+                var isAllow = interfaces.Any(x => x.Path == $"/{pattern?.RawText}" && x.RequestMethod.Equals(httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase));
+                if (!isAllow)
+                {
+                    context.Fail();
+                    return;
+                }
+            }
+            //单token无感刷新
             var accessToken = httpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = jwtSecurityTokenHandler.ReadJwtToken(accessToken);
@@ -37,23 +51,6 @@ public class AuthorizationHandler(IHostEnvironment hostEnvironment, ICurrentUser
                 var token = _adminToken.GenerateTokenString(jwtSecurityToken.Payload.Claims.ToArray());
                 httpContext.Response.Headers["accesstoken"] = token;
             }
-            //if (_hostEnvironment.IsProduction() && !httpContext.Request.Method.Equals("get", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    context.Fail();
-            //    return;
-            //}
-            //var endpoint = httpContext.GetEndpoint() as RouteEndpoint;
-            //var pattern = endpoint?.RoutePattern;
-            //if (!_hostEnvironment.IsDevelopment())
-            //{
-            //    var interfaces = await _currentUser.GetInterfacesAsync();
-            //    var ownInterface = interfaces.Any(x => x.Path == $"/{pattern?.RawText}" && x.RequestMethod.Equals(httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase));
-            //    if (!ownInterface)
-            //    {
-            //        context.Fail();
-            //        return;
-            //    }
-            //}
         }
         await Task.CompletedTask;
     }

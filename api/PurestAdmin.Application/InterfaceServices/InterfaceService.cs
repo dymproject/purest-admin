@@ -9,7 +9,7 @@ using PurestAdmin.Application.InterfaceServices.Dtos;
 
 namespace PurestAdmin.Application.InterfaceServices;
 /// <summary>
-/// 接口功能实现
+/// 接口服务
 /// </summary>
 public class InterfaceService(ISqlSugarClient db) : ApplicationService
 {
@@ -42,34 +42,36 @@ public class InterfaceService(ISqlSugarClient db) : ApplicationService
     }
 
     /// <summary>
-    /// 导入接口文件
+    /// 导入swagger生成的接口文件
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
     [HttpPost, UnitOfWork]
-    public async Task<int> ImportAsync(IFormFile file)
+    public async Task ImportAsync(IFormFile file)
     {
-        using StreamReader sr = new(file.OpenReadStream());
+        using var sr = new StreamReader(file.OpenReadStream());
         string json = sr.ReadToEnd();
         var swaggerModel = JsonConvert.DeserializeObject<SwaggerModel>(json);
-        await _db.Deleteable<InterfaceEntity>().ExecuteCommandAsync();
+        var interfaceEntities = await _db.Queryable<InterfaceEntity>().ToListAsync();
         foreach (var tag in swaggerModel.Tags)
         {
-            var group = new InterfaceGroupEntity { Name = tag.Description, Code = tag.Name };
-            var groupId = await _db.Insertable(group).ExecuteReturnSnowflakeIdAsync();
+            var groupEntity = await _db.Queryable<InterfaceGroupEntity>().FirstAsync(x => x.Code == tag.Name);
+            var groupId = groupEntity == null ? await _db.Insertable(new InterfaceGroupEntity { Name = tag.Description, Code = tag.Name }).ExecuteReturnSnowflakeIdAsync() : groupEntity.Id;
             var interfaceDetails = new List<InterfaceEntity>();
             foreach (var path in swaggerModel.Paths)
             {
                 foreach (var pathItem in path.Value)
                 {
-                    if (pathItem.Value.Tags.Contains(tag.Name))
+                    if (pathItem.Value.Tags.Contains(tag.Name) && !interfaceEntities.Any(x => x.RequestMethod == pathItem.Key && x.Path == path.Key))
                     {
                         interfaceDetails.Add(new InterfaceEntity { GroupId = groupId, Path = path.Key, RequestMethod = pathItem.Key, Name = pathItem.Value.Summary });
                     }
                 }
             }
-            _ = await _db.Insertable(interfaceDetails).ExecuteReturnSnowflakeIdListAsync();
+            if (interfaceDetails.Count > 0)
+            {
+                await _db.Insertable(interfaceDetails).ExecuteReturnSnowflakeIdListAsync();
+            }
         }
-        return swaggerModel.Tags.Length;
     }
 }

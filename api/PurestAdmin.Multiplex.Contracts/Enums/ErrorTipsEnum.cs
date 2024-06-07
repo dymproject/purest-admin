@@ -2,7 +2,7 @@
 
 using System.ComponentModel;
 
-namespace PurestAdmin.Multiplex.Contracts.Enum;
+namespace PurestAdmin.Multiplex.Contracts.Enums;
 /// <summary>
 /// 业务日志错误码
 /// </summary>

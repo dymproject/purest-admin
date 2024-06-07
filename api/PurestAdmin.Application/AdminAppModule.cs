@@ -3,6 +3,7 @@
 using System.Reflection;
 
 using PurestAdmin.BackgroundService;
+using PurestAdmin.Core.Mapster;
 using PurestAdmin.Multiplex;
 
 using Volo.Abp.AspNetCore.Mvc;

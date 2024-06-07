@@ -8,6 +8,7 @@ using PurestAdmin.Core.File;
 using PurestAdmin.Core.File.Containers;
 using PurestAdmin.Core.Ip2region;
 using PurestAdmin.Core.Signalr;
+using PurestAdmin.Core.SnowFlakeId;
 
 using Volo.Abp.AspNetCore.SignalR;
 using Volo.Abp.BlobStoring;

@@ -1,6 +1,7 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using PurestAdmin.Application.Organization.Dtos;
+using PurestAdmin.Application.OrganizationServices.Dtos;
+using PurestAdmin.Core.Oops;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 
 namespace PurestAdmin.Application.OrganizationServices;

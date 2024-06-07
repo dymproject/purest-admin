@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Yitter.IdGenerator;
 
-namespace PurestAdmin.Core;
+namespace PurestAdmin.Core.SnowFlakeId;
 public static class SnowflakeExtensions
 {
     /// <summary>

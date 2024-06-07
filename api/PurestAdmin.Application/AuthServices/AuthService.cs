@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Http;
 
 using PurestAdmin.Application.AuthServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
+using PurestAdmin.Core.Oops;
+using PurestAdmin.Multiplex.Contracts.Consts;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 
-namespace PurestAdmin.Application.SystemServices;
+namespace PurestAdmin.Application.AuthServices;
 /// <summary>
 /// 用户授权服务
 /// </summary>
@@ -45,15 +47,17 @@ public class AuthService(IAdminToken adminToken, IHttpContextAccessor httpContex
         var password = MD5Encryption.Encrypt(input.Password);
         var user = await _db.Queryable<UserEntity>().FirstAsync(u => u.Account.Equals(input.Account) && u.Password.Equals(password)) ?? throw Oops.Bah("用户名不存在或用户名密码错误！");
         if (user.Status != (int)UserStatusEnum.Normal) throw Oops.Bah("帐号状态异常，请联系管理员");
-
+        var userRole = await _db.Queryable<UserRoleEntity>().FirstAsync(x => x.UserId == user.Id);
         // 映射结果
         var output = user.Adapt<LoginOutput>();
 
         //Payload,存放用户信息
         var claims = new[]
         {
-            new Claim("userid",user.Id.ToString()),
-            new Claim("username",user.Name.ToString())
+            new Claim(AdminConst.USER_ID,user.Id.ToString()),
+            new Claim(AdminConst.USER_NAME,user.Name),
+            new Claim(AdminConst.ORGANIZATION_ID,user.OrganizationId.ToString()),
+            new Claim(AdminConst.ROLE_ID,userRole.RoleId.ToString()),
         };
 
         var accessToken = _adminToken.GenerateTokenString(claims);
@@ -105,7 +109,7 @@ public class AuthService(IAdminToken adminToken, IHttpContextAccessor httpContex
     /// <returns></returns>
     public async Task<List<GetOrganizationTreeOutput>> GetOrganizationTreeAsync()
     {
-        var organizationId = _currentUser.Self.OrganizationId;
+        var organizationId = _currentUser.OrganizationId;
 
         var organization = await _db.Queryable<OrganizationEntity>().FirstAsync(x => x.Id == organizationId) ?? throw Oops.Bah("无法找到当前登录用户的组织机构，请联系管理检查数据");
 

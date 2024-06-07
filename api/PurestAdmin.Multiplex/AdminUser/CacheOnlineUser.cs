@@ -1,14 +1,14 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using PurestAdmin.Core.Cache;
+using PurestAdmin.Multiplex.Contracts.Consts;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 
 namespace PurestAdmin.Multiplex.AdminUser;
-public class CacheOnlineUser(IPurestCache cache) : ICacheOnlineUser, ISingletonDependency
+public class CacheOnlineUser(IAdminCache cache) : ICacheOnlineUser, ISingletonDependency
 {
-    private readonly IPurestCache _cache = cache;
-
-    private const string USER_KEY = "online_user";
+    private readonly IAdminCache _cache = cache;
 
     /// <summary>
     /// 获取在线用户
@@ -16,7 +16,7 @@ public class CacheOnlineUser(IPurestCache cache) : ICacheOnlineUser, ISingletonD
     /// <returns></returns>
     public List<OnlineUserModel> GetOnlineUsers()
     {
-        return _cache.Get<List<OnlineUserModel>>(USER_KEY) ?? [];
+        return _cache.Get<List<OnlineUserModel>>(AdminConst.ONLINE_USER) ?? [];
     }
 
     /// <summary>
@@ -25,6 +25,6 @@ public class CacheOnlineUser(IPurestCache cache) : ICacheOnlineUser, ISingletonD
     /// <param name="users"></param>
     public void SetOnlineUser(List<OnlineUserModel> users)
     {
-        _cache.Set(USER_KEY, users);
+        _cache.Set(AdminConst.ONLINE_USER, users);
     }
 }

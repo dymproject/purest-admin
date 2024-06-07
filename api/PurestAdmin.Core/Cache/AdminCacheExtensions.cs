@@ -3,11 +3,11 @@
 using Microsoft.Extensions.DependencyInjection;
 
 namespace PurestAdmin.Core.Cache;
-public static class PurestCacheExtensions
+public static class AdminCacheExtensions
 {
     public static IServiceCollection AddPurestCache(this IServiceCollection services)
     {
-        services.AddSingleton<IPurestCache, PurestMemoryCache>();
+        services.AddSingleton<IAdminCache, AdminMemoryCache>();
         return services;
     }
 }

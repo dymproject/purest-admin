@@ -24,7 +24,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
 
-namespace PurestAdmin.WebApi.Host
+namespace PurestAdmin.Api.Host
 {
     [DependsOn(typeof(AbpSwashbuckleModule),
         typeof(AbpAutofacModule),
@@ -94,7 +94,7 @@ namespace PurestAdmin.WebApi.Host
                             // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
-                                (path.StartsWithSegments("/signalr-hubs")))
+                                path.StartsWithSegments("/signalr-hubs"))
                             {
                                 // Read the token out of the query string
                                 context.Token = accessToken;
@@ -111,34 +111,29 @@ namespace PurestAdmin.WebApi.Host
         }
         private void ConfigureSwaggerServices(ServiceConfigurationContext context)
         {
-            Configure<AbpRemoteServiceApiDescriptionProviderOptions>((options) =>
+            context.Services.AddAbpSwaggerGen(options =>
             {
-                options.SupportedResponseTypes.Clear();
-            });
-            context.Services.AddAbpSwaggerGen(
-                options =>
-                {
-                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-                    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PurestAdmin.Application.xml"));
-                    options.DocInclusionPredicate((docName, description) => true);
-                    options.CustomSchemaIds(type => type.FullName);
-                    options.HideAbpEndpoints();
-                    options.SchemaFilter<HideAbpSchemaFilter>();
-                    options.MapType<DateTime>(() => new OpenApiSchema { Type = "string" });
-                    //swagger授权方案定义
-                    options.AddSecurityDefinition("Bearer",  //定义授权方案的名称
-                        new OpenApiSecurityScheme()
-                        {
-                            Description = "JWT Authorization header using the Bearer scheme.",
-                            BearerFormat = "JWT",
-                            Scheme = "bearer",
-                            Name = "Authorization",  //参数名--与标题头的参名相同
-                            In = ParameterLocation.Header,  //参数放在Header中
-                            Type = SecuritySchemeType.Http,  //类型是apikey
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PurestAdmin.Application.xml"), true);
+                options.DocInclusionPredicate((docName, description) => true);
+                options.CustomSchemaIds(type => type.FullName);
+                options.HideAbpEndpoints();
+                options.SchemaFilter<HideAbpSchemaFilter>();
+                options.MapType<DateTime>(() => new OpenApiSchema { Type = "string" });
+                //swagger授权方案定义
+                options.AddSecurityDefinition("Bearer",  //定义授权方案的名称
+                    new OpenApiSecurityScheme()
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme.",
+                        BearerFormat = "JWT",
+                        Scheme = "bearer",
+                        Name = "Authorization",  //参数名--与标题头的参名相同
+                        In = ParameterLocation.Header,  //参数放在Header中
+                        Type = SecuritySchemeType.Http,  //类型是apikey
 
-                        });
-                    //加载授权方案
-                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    });
+                //加载授权方案
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
                         {
                             new OpenApiSecurityScheme
@@ -152,7 +147,11 @@ namespace PurestAdmin.WebApi.Host
                             Array.Empty<string>()
                         }
                     });
-                });
+            });
+            Configure<AbpRemoteServiceApiDescriptionProviderOptions>((options) =>
+            {
+                options.SupportedResponseTypes.Clear();
+            });
         }
         private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
         {

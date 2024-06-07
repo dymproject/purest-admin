@@ -4,7 +4,7 @@ using System.Security.Claims;
 
 using Microsoft.AspNetCore.SignalR;
 
-namespace PurestAdmin.Core;
+namespace PurestAdmin.Core.Signalr;
 public class PurestUserIdProvider : IUserIdProvider
 {
     public virtual string? GetUserId(HubConnectionContext connection)

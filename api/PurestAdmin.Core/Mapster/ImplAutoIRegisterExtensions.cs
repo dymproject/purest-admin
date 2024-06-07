@@ -6,7 +6,7 @@ using Mapster;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PurestAdmin.Core;
+namespace PurestAdmin.Core.Mapster;
 
 /// <summary>
 /// 实现Mapster的IRegister自动映射
