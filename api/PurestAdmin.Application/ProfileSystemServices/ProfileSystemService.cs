@@ -10,6 +10,7 @@ using Microsoft.Net.Http.Headers;
 using PurestAdmin.Application.ProfileSystemServices.Dtos;
 using PurestAdmin.Core.File;
 using PurestAdmin.Core.File.Containers;
+using PurestAdmin.Core.Oops;
 
 using Volo.Abp;
 using Volo.Abp.Validation;
@@ -17,6 +18,13 @@ using Volo.Abp.Validation;
 
 namespace PurestAdmin.Application.ProfileSystemServices;
 
+/// <summary>
+/// 系统文件服务
+/// </summary>
+/// <param name="db"></param>
+/// <param name="fileCommand"></param>
+/// <param name="httpContextAccessor"></param>
+/// <param name="objectValidator"></param>
 public class ProfileSystemService(ISqlSugarClient db, IFileCommand<ProfileSystemContainer> fileCommand,
     IHttpContextAccessor httpContextAccessor, IObjectValidator objectValidator) : ApplicationService
 {

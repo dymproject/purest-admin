@@ -9,7 +9,7 @@ using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Timing;
 
-namespace PurestAdmin.Multiplex;
+namespace PurestAdmin.BackgroundService;
 public class BackgroundJobStore(IClock clock, Repository<BackgroundJobRecordEntity> repository) : IBackgroundJobStore, ITransientDependency
 {
     private readonly IClock _clock = clock;

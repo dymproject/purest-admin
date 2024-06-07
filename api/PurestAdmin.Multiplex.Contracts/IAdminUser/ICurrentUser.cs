@@ -10,12 +10,22 @@ namespace PurestAdmin.Multiplex.Contracts.IAdminUser;
 public interface ICurrentUser
 {
     /// <summary>
-    /// 获取用户 Id
+    /// 用户 Id
     /// </summary>
-    public long Id { get; }
+    long Id { get; }
 
     /// <summary>
-    /// 获取用户实体
+    /// 角色Id
+    /// </summary>
+    long RoleId { get; }
+
+    /// <summary>
+    /// 组织机构Id
+    /// </summary>
+    long OrganizationId { get; }
+
+    /// <summary>
+    /// 用户实体
     /// </summary>
     public UserEntity Self { get; }
 

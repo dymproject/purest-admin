@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using PurestAdmin.Application.NoticeServices.Dtos;
 using PurestAdmin.BackgroundService.Jobs.Args;
+using PurestAdmin.Core.Oops;
 
 using Volo.Abp.BackgroundJobs;
 

@@ -6,7 +6,7 @@ using Microsoft.OpenApi.Extensions;
 
 using Volo.Abp;
 
-namespace PurestAdmin.Core;
+namespace PurestAdmin.Core.Oops;
 public static class Oops
 {
     /// <summary>

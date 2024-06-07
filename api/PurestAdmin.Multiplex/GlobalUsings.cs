@@ -4,7 +4,6 @@
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.SignalR;
 
-global using PurestAdmin.Core;
 global using PurestAdmin.SqlSugar.Entity;
 
 global using SqlSugar;

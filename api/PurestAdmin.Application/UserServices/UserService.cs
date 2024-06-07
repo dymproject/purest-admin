@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 
 using PurestAdmin.Application.UserServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
+using PurestAdmin.Core.Oops;
 using PurestAdmin.Multiplex.AdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 

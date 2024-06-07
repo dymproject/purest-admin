@@ -1,16 +1,19 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.FunctionServices.Dtos;
+using PurestAdmin.Core.Cache;
+using PurestAdmin.Core.Oops;
+using PurestAdmin.Multiplex.Contracts.Consts;
 
 namespace PurestAdmin.Application.FunctionServices;
 /// <summary>
 /// 功能接口实现
 /// </summary>
-public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> functionRepository) : ApplicationService
+public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> functionRepository, IAdminCache cache) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
     private readonly Repository<FunctionEntity> _functionRepository = functionRepository;
-
+    private readonly IAdminCache _cache = cache;
     /// <summary>
     /// 分页查询
     /// </summary>
@@ -115,6 +118,7 @@ public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> func
         {
             _ = await _db.Deleteable(record).ExecuteCommandAsync();
         }
+        _cache.Clear(AdminConst.CACHE_ROLESINTERFACE_PREFIX);
     }
 
     /// <summary>
@@ -125,6 +129,7 @@ public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> func
     {
         var record = await _db.Queryable<FunctionInterfaceEntity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
         await _db.Deleteable(record).ExecuteCommandAsync();
+        _cache.Clear(AdminConst.CACHE_ROLESINTERFACE_PREFIX);
     }
 
 }
