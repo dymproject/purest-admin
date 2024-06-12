@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Serilog;
+
 using Volo.Abp.Timing;
 
 using Yitter.IdGenerator;
@@ -14,12 +16,13 @@ public static class SqlSugarExtension
     public static IServiceCollection AddSqlSugarService(this IServiceCollection services)
     {
         var configuration = services.GetConfiguration();
+        var options = configuration?.GetSection("ConnectionOptions").Get<ConnectionOption>() ?? throw new Exception("未正确配置数据库");
         SqlSugarScope sqlSugar = new(
             new ConnectionConfig()
             {
-                DbType = DbType.MySql,
-                ConnectionString = configuration.GetConnectionString("default"),
-                IsAutoCloseConnection = true,
+                DbType = options.DbTypeEnum,
+                ConnectionString = options.ConnectionString,
+                IsAutoCloseConnection = options.IsAutoCloseConnection,
             },
             db =>
             {
@@ -45,7 +48,7 @@ public static class SqlSugarExtension
                             entityInfo.SetValue(clock.Now);
                         }
                     }
-                    //update生效        
+                    //update生效
                     if (entityInfo.OperationType == DataFilterType.UpdateByObject)
                     {
                         if (entityInfo.PropertyName == nameof(BaseEntity.UpdateBy))
@@ -74,6 +77,8 @@ public static class SqlSugarExtension
                 #region SQL执行完
                 db.Aop.OnLogExecuted = (sql, pars) =>
                 {
+                    var logger = services.GetRequiredService<ILogger>();
+                    logger.Error(sql);
                     //执行完了可以输出SQL执行时间 (OnLogExecutedDelegate) 
                     //Console.Write("time:" + db.Ado.SqlExecutionTime.ToString());
                 };
@@ -82,6 +87,8 @@ public static class SqlSugarExtension
                 #region SQL报错
                 db.Aop.OnError = (exp) =>//SQL报错
                 {
+                    var logger = services.GetRequiredService<ILogger>();
+                    logger.Error(exp.Sql);
                     //exp.sql 这样可以拿到错误SQL，性能无影响拿到ORM带参数使用的SQL
                     //exp.Sql.LogError<SqlString>();
                     //5.0.8.2 获取无参数化 SQL  对性能有影响，特别大的SQL参数多的，调试使用
