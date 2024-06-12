@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PurestAdmin.Core\PurestAdmin.Core.csproj" />
-    <ProjectReference Include="..\PurestAdmin.SqlSugar\PurestAdmin.SqlSugar.csproj" />
   </ItemGroup>
 
 </Project>

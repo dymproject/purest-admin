@@ -24,6 +24,6 @@ public class ClearRequestLogWorker : AsyncPeriodicBackgroundWorkerBase
         using var scope = workerContext.ServiceProvider.CreateScope();
         var db = scope.ServiceProvider.GetService<ISqlSugarClient>() ?? throw new Exception();
         var clock = scope.ServiceProvider.GetService<IClock>() ?? throw new Exception();
-        _ = await db.Deleteable<RequestLogEntity>().Where(x => x.CreateTime <= clock.Now.AddDays(-1)).ExecuteCommandAsync();
+        _ = await db.Deleteable<RequestLogEntity>().Where(x => x.CreateTime <= clock.Now.AddDays(-14)).ExecuteCommandAsync();
     }
 }
