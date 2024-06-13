@@ -20,9 +20,11 @@
                 </TextBox>
             </rubyer:BooleanToObjectConverter.TrueValue>
             <rubyer:BooleanToObjectConverter.FalseValue>
-                <rubyer:Icon Margin="10"
-                             HorizontalAlignment="Left"
-                             Type="SearchLine" />
+                <Button Width="40"
+                        HorizontalAlignment="Left"
+                        Command="{Binding ExpandedCommand}">
+                    <rubyer:Icon Margin="0,5" Type="SearchLine" />
+                </Button>
             </rubyer:BooleanToObjectConverter.FalseValue>
         </rubyer:BooleanToObjectConverter>
         <rubyer:BooleanToObjectConverter x:Key="BoolToMenuIconConverter">
@@ -47,7 +49,7 @@
                               CornerRadius="15"
                               ExpandedWidth="170"
                               Foreground="{DynamicResource WhiteForeground}"
-                              IsExpanded="False"
+                              IsExpanded="{Binding MenuStatus}"
                               ItemsSource="{Binding Items}"
                               MenuIcon="{Binding IsExpanded, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToMenuIconConverter}}"
                               PaneBackground="{Binding TitleBackground, RelativeSource={RelativeSource AncestorType=rubyer:RubyerWindow}}"
