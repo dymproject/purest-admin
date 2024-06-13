@@ -62,13 +62,25 @@ namespace PurestAdmin.Wpf.Platform.ViewModels
             set { _searchContent = value; }
         }
 
+        private bool _menuStatus = false;
+
+        public bool MenuStatus
+        {
+            get { return _menuStatus; }
+            set { SetProperty(ref _menuStatus, value); }
+        }
+
+
         private DelegateCommand<object> _expandedCommand;
-        public DelegateCommand<object> ExpandedCommand =>
-            _expandedCommand ?? (_expandedCommand = new DelegateCommand<object>(ExecuteExpandedCommand));
+        public DelegateCommand<object> ExpandedCommand => _expandedCommand ??= new DelegateCommand<object>(ExecuteExpandedCommand);
 
         void ExecuteExpandedCommand(object parameter)
         {
             var e = parameter as RoutedEventArgs;
+            if (e == null)
+            {
+                MenuStatus = !MenuStatus;
+            }
         }
 
 
