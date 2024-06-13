@@ -77,8 +77,6 @@ public static class SqlSugarExtension
                 #region SQL执行完
                 db.Aop.OnLogExecuted = (sql, pars) =>
                 {
-                    var logger = services.GetRequiredService<ILogger>();
-                    logger.Error(sql);
                     //执行完了可以输出SQL执行时间 (OnLogExecutedDelegate) 
                     //Console.Write("time:" + db.Ado.SqlExecutionTime.ToString());
                 };

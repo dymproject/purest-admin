@@ -3,7 +3,6 @@
 using System.Text;
 
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
 using Volo.Abp;
@@ -30,9 +29,10 @@ public class AdminAbpExceptionsFilter : AbpExceptionFilter
         {
             var remoteServiceErrorInfoBuilder = new StringBuilder();
             remoteServiceErrorInfoBuilder.AppendLine(context.GetRequiredService<IJsonSerializer>().Serialize(remoteServiceErrorInfo, indented: true));
-            var logger = context.GetService<ILogger<AbpExceptionFilter>>(NullLogger<AbpExceptionFilter>.Instance)!;
+
+            var logger = context.GetService<ILogger<AbpExceptionFilter>>();
             var logLevel = context.Exception.GetLogLevel();
-            logger.LogWithLevel(logLevel, remoteServiceErrorInfoBuilder.ToString());
+            logger?.LogWithLevel(logLevel, remoteServiceErrorInfoBuilder.ToString());
         }
     }
 }

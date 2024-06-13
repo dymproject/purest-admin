@@ -10,6 +10,9 @@ using PurestAdmin.Core.Ip2region;
 using PurestAdmin.Core.Signalr;
 using PurestAdmin.Core.SnowFlakeId;
 
+using Serilog;
+using Serilog.Events;
+
 using Volo.Abp.AspNetCore.SignalR;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
@@ -31,6 +34,7 @@ namespace PurestAdmin.Core
             context.Services.AddFileStorage();
 
             ConfigFileStorage(configuration);
+            ConfigSerilog(context);
         }
 
         private void ConfigFileStorage(IConfiguration configuration)
@@ -45,6 +49,17 @@ namespace PurestAdmin.Core
                         fileSystem.BasePath = fileSystemOptions.Path ?? Path.Combine(AppContext.BaseDirectory, "FileSystem");
                     });
                 });
+            });
+        }
+
+        private void ConfigSerilog(ServiceConfigurationContext context)
+        {
+            var template = "[{Timestamp:HH:mm:ss}] [{Level:u3}] {SourceContext} {NewLine}{Message:lj}{NewLine}{Exception}{NewLine}";
+            context.Services.AddSerilog(options =>
+            {
+                options.MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
+                options.WriteTo.Console();
+                options.WriteTo.File($"{AppContext.BaseDirectory}/logs/.txt", LogEventLevel.Warning, template, rollingInterval: RollingInterval.Day, shared: true);
             });
         }
     }
