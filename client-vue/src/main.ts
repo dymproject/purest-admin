@@ -42,7 +42,7 @@ app.component("FontIcon", FontIcon);
 
 // 全局注册按钮级别权限组件
 import { Auth } from "@/components/ReAuth";
-import { useTable } from "./plugins/vxe-table";
+import { useVxeTable } from "./plugins/vxeTable";
 import { ReCard } from "./components/ReCard";
 import { ReVxeGrid } from "./components/ReVxeTable";
 import * as echarts from "echarts";
@@ -63,7 +63,7 @@ getPlatformConfig(app).then(async config => {
   await router.isReady();
   injectResponsiveStorage(app, config);
   app.use(MotionPlugin).use(useElementPlus).use(Table);
-  app.use(useTable);
+  app.use(useVxeTable);
   // .use(PureDescriptions)
   // .use(useEcharts);
   app.mount("#app");
