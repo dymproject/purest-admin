@@ -10,7 +10,7 @@ import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vu
 
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
-import Edit from "@iconify-icons/ri/edit-2-line";
+
 const menuRef = ref();
 
 const {
@@ -22,8 +22,7 @@ const {
   username,
   userAvatar,
   backTopMenu,
-  avatarsStyle,
-  changePassword
+  avatarsStyle
 } = useNav();
 
 const defaultActive = computed(() =>
@@ -73,10 +72,6 @@ nextTick(() => {
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
-            <el-dropdown-item @click="changePassword">
-              <IconifyIconOffline :icon="Edit" style="margin: 5px" />
-              个人信息
-            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"
