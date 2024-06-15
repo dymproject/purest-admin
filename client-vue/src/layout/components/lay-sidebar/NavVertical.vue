@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
         unique-opened
         mode="vertical"
         popper-class="pure-scrollbar"
-        class="select-none outer-most"
+        class="outer-most select-none"
         :collapse="isCollapse"
         :collapse-transition="false"
         :popper-effect="tooltipEffect"
@@ -113,7 +113,7 @@ onBeforeUnmount(() => {
           :key="routes.path"
           :item="routes"
           :base-path="routes.path"
-          class="select-none outer-most"
+          class="outer-most select-none"
         />
       </el-menu>
     </el-scrollbar>
