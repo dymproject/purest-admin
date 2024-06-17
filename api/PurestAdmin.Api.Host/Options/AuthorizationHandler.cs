@@ -27,12 +27,12 @@ public class AuthorizationHandler(IHostEnvironment hostEnvironment, ICurrentUser
                 return;
             }
             //校验用户是否有接口权限
-            var endpoint = httpContext.GetEndpoint() as RouteEndpoint;
-            var pattern = endpoint?.RoutePattern;
             if (_hostEnvironment.IsProduction())
             {
+                var endpoint = httpContext.GetEndpoint() as RouteEndpoint;
+                var pattern = endpoint?.RoutePattern;
                 var interfaces = await _currentUser.GetInterfacesAsync();
-                var isAllow = interfaces.Any(x => x.Path == $"/{pattern?.RawText}" && x.RequestMethod.Equals(httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase));
+                var isAllow = interfaces.Any(x => x.Path == pattern?.RawText && x.RequestMethod.Equals(httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase));
                 if (!isAllow)
                 {
                     context.Fail();

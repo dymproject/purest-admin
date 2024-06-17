@@ -25,3 +25,7 @@ export const getSingle = (id: number) => {
 export const deleteData = (id: number) => {
   return http.request("delete", `/interface/${id}`);
 };
+
+export const asyncApi = () => {
+  return http.request("post", `/interface/async-api`);
+};
