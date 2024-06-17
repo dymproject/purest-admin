@@ -1,9 +1,12 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Controllers;
+
+using Namotion.Reflection;
 
 using PurestAdmin.Application.InterfaceServices.Dtos;
 
@@ -11,12 +14,16 @@ namespace PurestAdmin.Application.InterfaceServices;
 /// <summary>
 /// 接口服务
 /// </summary>
-public class InterfaceService(ISqlSugarClient db) : ApplicationService
+public class InterfaceService(ISqlSugarClient db, IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider) : ApplicationService
 {
     /// <summary>
     /// db
     /// </summary>
     private readonly ISqlSugarClient _db = db;
+    /// <summary>
+    /// apiDescriptionGroupCollectionProvider
+    /// </summary>
+    private readonly IApiDescriptionGroupCollectionProvider _apiDescriptionGroupCollectionProvider = apiDescriptionGroupCollectionProvider;
 
     /// <summary>
     /// 分页查询
@@ -40,38 +47,57 @@ public class InterfaceService(ISqlSugarClient db) : ApplicationService
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return groups.Adapt<PagedList<InterfaceGroupOutput>>();
     }
-
     /// <summary>
-    /// 导入swagger生成的接口文件
+    /// 同步接口
     /// </summary>
-    /// <param name="file"></param>
     /// <returns></returns>
-    [HttpPost, UnitOfWork]
-    public async Task ImportAsync(IFormFile file)
+    [UnitOfWork]
+    public async Task AsyncApi()
     {
-        using var sr = new StreamReader(file.OpenReadStream());
-        string json = sr.ReadToEnd();
-        var swaggerModel = JsonConvert.DeserializeObject<SwaggerModel>(json);
-        var interfaceEntities = await _db.Queryable<InterfaceEntity>().ToListAsync();
-        foreach (var tag in swaggerModel.Tags)
+        var apiDescriptionGroupsItems = _apiDescriptionGroupCollectionProvider.ApiDescriptionGroups.Items.Where(x => !x.GroupName.StartsWith("Abp", StringComparison.OrdinalIgnoreCase));
+        var apiDescriptions = apiDescriptionGroupsItems.SelectMany(x => x.Items);
+        foreach (var apiDescriptionGroupsItem in apiDescriptionGroupsItems)
         {
-            var groupEntity = await _db.Queryable<InterfaceGroupEntity>().FirstAsync(x => x.Code == tag.Name);
-            var groupId = groupEntity == null ? await _db.Insertable(new InterfaceGroupEntity { Name = tag.Description, Code = tag.Name }).ExecuteReturnSnowflakeIdAsync() : groupEntity.Id;
-            var interfaceDetails = new List<InterfaceEntity>();
-            foreach (var path in swaggerModel.Paths)
+            if (!apiDescriptionGroupsItem.Items.Any()) continue;
+            var groupEntity = await _db.Queryable<InterfaceGroupEntity>().FirstAsync(x => x.Code == apiDescriptionGroupsItem.GroupName);
+            long groupId;
+            List<InterfaceEntity> savedInterfaces = [];
+            List<InterfaceEntity> newInterfaces = [];
+            if (groupEntity == null)
             {
-                foreach (var pathItem in path.Value)
+                var summary = ((ControllerActionDescriptor)apiDescriptionGroupsItem.Items[0].ActionDescriptor).ControllerTypeInfo.GetXmlDocsSummary();
+                ArgumentNullException.ThrowIfNull(apiDescriptionGroupsItem.GroupName);
+                groupId = await _db.Insertable(new InterfaceGroupEntity { Name = summary, Code = apiDescriptionGroupsItem.GroupName }).ExecuteReturnSnowflakeIdAsync();
+            }
+            else
+            {
+                groupId = groupEntity.Id;
+                savedInterfaces = await _db.Queryable<InterfaceEntity>().Where(x => x.GroupId == groupId).ToListAsync();
+            }
+            foreach (var apiDescription in apiDescriptionGroupsItem.Items)
+            {
+                var actionDescriptor = apiDescription.ActionDescriptor as ControllerActionDescriptor;
+                var allowAnonymous = actionDescriptor.MethodInfo.GetCustomAttribute<AllowAnonymousAttribute>();
+                if (allowAnonymous != null)
                 {
-                    if (pathItem.Value.Tags.Contains(tag.Name) && !interfaceEntities.Any(x => x.RequestMethod == pathItem.Key && x.Path == path.Key))
-                    {
-                        interfaceDetails.Add(new InterfaceEntity { GroupId = groupId, Path = path.Key, RequestMethod = pathItem.Key, Name = pathItem.Value.Summary });
-                    }
+                    continue;
+                }
+                if (!savedInterfaces.Any(x => x.Path == apiDescription.RelativePath && x.RequestMethod == apiDescription.HttpMethod))
+                {
+                    ArgumentNullException.ThrowIfNull(apiDescription.RelativePath);
+                    ArgumentNullException.ThrowIfNull(apiDescription.HttpMethod);
+                    var summary = actionDescriptor.MethodInfo.GetXmlDocsSummary();
+                    newInterfaces.Add(new InterfaceEntity { GroupId = groupId, Name = summary, Path = apiDescription.RelativePath, RequestMethod = apiDescription.HttpMethod });
                 }
             }
-            if (interfaceDetails.Count > 0)
+            await _db.Insertable(newInterfaces).ExecuteReturnSnowflakeIdListAsync();
+            //移除已删除的接口
+            var removeInterfaces = savedInterfaces.Where(x =>
             {
-                await _db.Insertable(interfaceDetails).ExecuteReturnSnowflakeIdListAsync();
-            }
+                return !apiDescriptionGroupsItem.Items.Any(o => o.RelativePath == x.Path && o.HttpMethod == x.RequestMethod);
+            }).ToList();
+            await _db.Deleteable<FunctionInterfaceEntity>().Where(x => removeInterfaces.Select(o => o.Id).Contains(x.InterfaceId)).ExecuteCommandAsync();
+            await _db.Deleteable(removeInterfaces).ExecuteCommandAsync();
         }
     }
 }

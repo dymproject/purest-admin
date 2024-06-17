@@ -6,7 +6,8 @@ import {
   VxeModalInstance,
   VxeSwitch
 } from "vxe-table";
-import { getPageList } from "@/api/system/interface";
+import { getPageList, asyncApi } from "@/api/system/interface";
+import { ElLoading } from "element-plus";
 import {
   getFunInterface,
   assignInterface,
@@ -116,6 +117,20 @@ const formRef = ref();
 const handleInitialFormParams = () => ({
   path: ""
 });
+const handleAsyncApi = () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: "正在同步……",
+    background: "rgba(0, 0, 0, 0.7)"
+  });
+  asyncApi()
+    .then(_ => {
+      reVxeGridRef.value.loadData();
+    })
+    .finally(() => {
+      loading.close();
+    });
+};
 const formItems = [
   {
     field: "path",
@@ -134,6 +149,15 @@ const formItems = [
             icon: "vxe-icon-search",
             content: "查询",
             status: "primary"
+          }
+        },
+        {
+          props: {
+            type: "button",
+            icon: "vxe-icon-refresh",
+            content: "同步接口",
+            status: "success",
+            onclick: handleAsyncApi
           }
         }
       ]
