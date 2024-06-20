@@ -31,22 +31,18 @@ public class AdminPersistenceProvider(ISqlSugarClient db) : IPersistenceProvider
     {
         workflow.Id = Guid.NewGuid().ToString();
         var workflowEntity = workflow.Adapt<WfWorkflowEntity>();
-        await _db.Insertable(workflowEntity).ExecuteReturnSnowflakeIdAsync(cancellationToken);
+        await _db.InsertNav(workflowEntity).Include(x => x.ExecutionPointers).ThenInclude(x => x.ExtensionAttributes).ExecuteCommandAsync();
         return workflow.Id;
     }
 
     public async Task<IEnumerable<string>> GetRunnableInstances(DateTime asAt, CancellationToken cancellationToken = default)
     {
-        using (var db = ConstructDbContext())
-        {
-            var now = asAt.ToUniversalTime().Ticks;
-            var raw = await db.Set<PersistedWorkflow>()
-                .Where(x => x.NextExecution.HasValue && (x.NextExecution <= now) && (x.Status == WorkflowStatus.Runnable))
-                .Select(x => x.InstanceId)
-                .ToListAsync(cancellationToken);
-
-            return raw.Select(s => s.ToString()).ToList();
-        }
+        var now = asAt.Ticks;
+        var raw = await _db.Queryable<WfWorkflowEntity>()
+            .Where(x => x.NextExecution.HasValue && (x.NextExecution <= now) && (x.Status == (int)WorkflowStatus.Runnable))
+            .Select(x => x.InstanceId)
+            .ToListAsync(cancellationToken);
+        return raw.Select(s => s.ToString()).ToList();
     }
 
     public async Task<IEnumerable<WorkflowInstance>> GetWorkflowInstances(WorkflowStatus? status, string type, DateTime? createdFrom, DateTime? createdTo, int skip, int take)
