@@ -11,7 +11,7 @@ var app = await AbpApplicationFactory.CreateAsync<AdminZeroModule>();
 await app.InitializeAsync();
 while (true)
 {
-    string[] operatorArr = ["初始化种子数据", "Entity代码生成", "Service代码生成"];
+    string[] operatorArr = ["初始化种子数据", "Entity代码生成", "Service代码生成", "工作流测试"];
     Console.WriteLine("------请选择您要做的事-------");
     for (int i = 0; i < operatorArr.Length; i++)
     {
@@ -31,6 +31,10 @@ while (true)
         case "2":
             var autoService = app.Services.GetRequiredService<AutoService>();
             autoService.Initialization();
+            break;
+        case "3":
+            var workflowTestService = app.Services.GetRequiredService<WorkflowTestService>();
+            workflowTestService.Initialization();
             break;
         default:
             Console.WriteLine("未进行任何操作！");

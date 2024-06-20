@@ -13,7 +13,9 @@ public static class Common
         string strType;
         strType = columnInfo.DataType.ToLower() switch
         {
-            "tinyint" or "smallint" or "mediumint" or "int" or "bigint" => "int",
+            "tinyint" => columnInfo.Length == 1 ? "bool" : "int",
+            "smallint" or "mediumint" or "int" => "int",
+            "bigint" => "long",
             "float" or "double" => "decimal",
             "decimal" => columnInfo.Scale > 0 ? "decimal" : (columnInfo.Length > 10 ? "long" : "int"),
             "char" or "varchar" or "text" or "tinytext" or "mediumtext" or "longtext" => "string",
