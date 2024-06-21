@@ -49,6 +49,11 @@ public partial class WfPointerEntity
     /// <summary>
     /// 
     /// </summary>
+    [SugarColumn(ColumnName = "ID")]
+    public string Id { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     [SugarColumn(ColumnName = "PERSISTENCE_DATA")]
     public string PersistenceData { get; set; }
     /// <summary>

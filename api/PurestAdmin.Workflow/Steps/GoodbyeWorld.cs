@@ -8,7 +8,7 @@ using WorkflowCore.Models;
 
 namespace PurestAdmin.Workflow.Steps
 {
-    public class GoodbyeWorld : StepBody
+    public class GoodbyeWorld : StepBody, ITransientDependency
     {
 
         private ILogger _logger;

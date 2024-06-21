@@ -8,6 +8,8 @@ using PurestAdmin.SqlSugar.Entity;
 
 using WorkflowCore.Models;
 
+using Yitter.IdGenerator;
+
 namespace PurestAdmin.Workflow.Mappers;
 public class ExecutionPointerToEntity : IRegister
 {
@@ -15,6 +17,7 @@ public class ExecutionPointerToEntity : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.ForType<ExecutionPointer, WfPointerEntity>()
+            .Map(dest => dest.PersistenceId, src => YitIdHelper.NextId())
             .Map(dest => dest.PersistenceData, src => JsonConvert.SerializeObject(src.PersistenceData, SerializerSettings))
             .Map(dest => dest.ContextItem, src => JsonConvert.SerializeObject(src.ContextItem, SerializerSettings))
             .Map(dest => dest.Children, src => string.Join(";", src.Children))

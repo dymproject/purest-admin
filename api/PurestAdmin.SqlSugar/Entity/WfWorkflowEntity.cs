@@ -56,4 +56,9 @@ public partial class WfWorkflowEntity
     /// </summary>
     [SugarColumn(ColumnName = "REFERENCE")]
     public string Reference { get; set; }
+    /// <summary>
+    /// 创建时间
+    ///</summary>
+    [SugarColumn(ColumnName = "CREATE_TIME")]
+    public DateTime CreateTime { get; set; }
 }

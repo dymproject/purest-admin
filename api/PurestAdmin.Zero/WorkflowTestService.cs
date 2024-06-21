@@ -10,6 +10,6 @@ public class WorkflowTestService(IWorkflowHost workflowHost) : ISingletonDepende
     private readonly IWorkflowHost _workflowhost = workflowHost;
     public void Initialization()
     {
-        //_workflowhost.Start();
+        _workflowhost.StartWorkflow("HelloWorld");
     }
 }

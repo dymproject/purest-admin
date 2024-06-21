@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 
 using PurestAdmin.SqlSugar.Entity;
 
+using Yitter.IdGenerator;
+
 namespace PurestAdmin.Workflow.Mappers;
 public class ExtensionAttributeToEntity : IRegister
 {
@@ -13,6 +15,7 @@ public class ExtensionAttributeToEntity : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.ForType<KeyValuePair<string, object>, WfAttributeEntity>()
+            .Map(dest => dest.PersistenceId, src => YitIdHelper.NextId())
             .Map(dest => dest.AttributeKey, src => src.Key)
             .Map(dest => dest.AttributeValue, src => JsonConvert.SerializeObject(src.Value, SerializerSettings));
     }
