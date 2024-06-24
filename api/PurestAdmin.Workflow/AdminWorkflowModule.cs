@@ -2,12 +2,16 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-using PurestAdmin.Workflow.Workflows;
+using PurestAdmin.Workflow.Workflows.D01;
+using PurestAdmin.Workflow.Workflows.D02;
+//using PurestAdmin.Workflow.Workflows.D03;
+using PurestAdmin.Workflow.Workflows.D04;
 
 using Volo.Abp;
 using Volo.Abp.Modularity;
 
 using WorkflowCore.Interface;
+using WorkflowCore.Models;
 
 namespace PurestAdmin.Workflow;
 
@@ -21,11 +25,21 @@ public class AdminWorkflowModule : AbpModule
         });
         context.Services.AddWorkflowDSL();
         context.Services.AddTransient<IDateTimeProvider, AdminDateTimeProvider>();
+
+        context.Services.AutoRegisterStepBodys();
     }
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
         var workflowHost = context.ServiceProvider.GetRequiredService<IWorkflowHost>();
+        workflowHost.OnStepError += (WorkflowInstance workflow, WorkflowStep step, Exception exception) =>
+        {
+
+        };
         workflowHost.RegisterWorkflow<HelloWorldWorkflow>();
+        workflowHost.RegisterWorkflow<SimpleDecisionWorkflow>();
+        //workflowHost.RegisterWorkflow<PassingDataWorkflow, MyDataClass>();
+        //workflowHost.RegisterWorkflow<PassingDataWorkflow2, Dictionary<string, int>>();
+        workflowHost.RegisterWorkflow<EventSampleWorkflow, MyDataClass>();
         workflowHost.Start();
     }
 }

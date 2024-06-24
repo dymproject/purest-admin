@@ -1,14 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
-
 using System;
 using System.Linq;
 
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
-namespace PurestAdmin.Workflow.Steps
+namespace PurestAdmin.Workflow.Workflows.D01.Steps
 {
-    public class GoodbyeWorld : StepBody, ITransientDependency
+    public class GoodbyeWorld : StepBody
     {
 
         private ILogger _logger;

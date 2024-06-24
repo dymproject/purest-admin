@@ -34,7 +34,7 @@ public class PagedList<T>
     public List<T>? Items { get; set; }
 }
 
-public static class PagedListExtension
+public static class PagedListExtensions
 {
     /// <summary>
     /// 分页拓展

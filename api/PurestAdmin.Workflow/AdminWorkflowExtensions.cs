@@ -1,5 +1,8 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+
 using Newtonsoft.Json;
 
 using PurestAdmin.SqlSugar.Entity;
@@ -253,5 +256,25 @@ internal static class ExtensionMethods
         result.Data = instance.Data;
         result.ExecuteTime = instance.ExecuteTime;
         return result;
+    }
+
+    internal static DateTime ToUnfiyDateTime(this DateTime dateTime, IClock clock)
+    {
+        return clock.Kind switch
+        {
+            DateTimeKind.Utc => dateTime.ToUniversalTime(),
+            DateTimeKind.Local => dateTime.ToLocalTime(),
+            DateTimeKind.Unspecified => dateTime,
+            _ => dateTime,
+        };
+    }
+
+    internal static void AutoRegisterStepBodys(this IServiceCollection services)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(StepBody)) || x.IsSubclassOf(typeof(StepBodyAsync))).ToList().ForEach(x =>
+        {
+            services.AddTransient(x);
+        });
     }
 }

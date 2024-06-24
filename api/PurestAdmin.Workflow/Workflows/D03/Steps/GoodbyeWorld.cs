@@ -4,13 +4,13 @@ using System.Linq;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
-namespace PurestAdmin.Workflow.Steps
+namespace PurestAdmin.Workflow.Workflows.D03.Steps
 {
-    public class HelloWorld : StepBody
+    public class GoodbyeWorld : StepBody
     {
         public override ExecutionResult Run(IStepExecutionContext context)
         {
-            Console.WriteLine("Hello world");
+            Console.WriteLine("Goodbye world");
             return ExecutionResult.Next();
         }
     }

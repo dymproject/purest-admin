@@ -52,10 +52,10 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
             query = query.Where(x => x.WorkflowDefinitionId == type);
 
         if (createdFrom.HasValue)
-            query = query.Where(x => x.CreateTime >= createdFrom.Value);
+            query = query.Where(x => x.CreateTime >= createdFrom.Value.ToUnfiyDateTime(_clock));
 
         if (createdTo.HasValue)
-            query = query.Where(x => x.CreateTime <= createdTo.Value);
+            query = query.Where(x => x.CreateTime <= createdTo.Value.ToUnfiyDateTime(_clock));
 
         var pagedList = await query.ToPurestPagedListAsync(skip, take);
         List<WorkflowInstance> result = [];
@@ -94,17 +94,28 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
 
     public async Task PersistWorkflow(WorkflowInstance workflow, List<EventSubscription> subscriptions, CancellationToken cancellationToken = default)
     {
-        var query = _db.Queryable<WfWorkflowEntity>().Includes(x => x.ExecutionPointers, p => p.ExtensionAttributes);
-        var existingEntity = await query.FirstAsync(x => x.InstanceId == workflow.Id, cancellationToken);
-        var workflowPersistable = workflow.ToPersistable(existingEntity);
-        List<WfSubscriptionEntity> wfSubscriptions = [];
-        foreach (var subscription in subscriptions)
+        try
         {
-            subscription.Id = Guid.NewGuid().ToString();
-            var subscriptionPersistable = subscription.ToPersistable(_clock);
-            wfSubscriptions.Add(subscriptionPersistable);
+            await _db.AsTenant().BeginTranAsync();
+            var query = _db.Queryable<WfWorkflowEntity>().Includes(x => x.ExecutionPointers, p => p.ExtensionAttributes);
+            var existingEntity = await query.FirstAsync(x => x.InstanceId == workflow.Id, cancellationToken);
+            var workflowPersistable = workflow.ToPersistable(existingEntity);
+            List<WfSubscriptionEntity> wfSubscriptions = [];
+            foreach (var subscription in subscriptions)
+            {
+                subscription.Id = Guid.NewGuid().ToString();
+                var subscriptionPersistable = subscription.ToPersistable(_clock);
+                wfSubscriptions.Add(subscriptionPersistable);
+            }
+            await _db.UpdateNav(workflowPersistable).Include(x => x.ExecutionPointers).ThenInclude(x => x.ExtensionAttributes).ExecuteCommandAsync();
+            await _db.Insertable(wfSubscriptions).ExecuteReturnSnowflakeIdListAsync(cancellationToken);
+            await _db.Ado.CommitTranAsync();
         }
-        await _db.UpdateNav(workflowPersistable).Include(x => x.ExecutionPointers).ThenInclude(x => x.ExtensionAttributes).ExecuteCommandAsync();
+        catch (Exception)
+        {
+            await _db.Ado.RollbackTranAsync();
+            throw;
+        }
     }
 
     public async Task TerminateSubscription(string eventSubscriptionId, CancellationToken cancellationToken = default)
@@ -118,29 +129,14 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
 
     public virtual void EnsureStoreExists()
     {
-        //using (var context = ConstructDbContext())
-        //{
-        //    if (_canCreateDB && !_canMigrateDB)
-        //    {
-        //        context.Database.EnsureCreated();
-        //        return;
-        //    }
 
-        //    if (_canMigrateDB)
-        //    {
-        //        context.Database.Migrate();
-        //        return;
-        //    }
-        //}
     }
 
     public async Task<IEnumerable<EventSubscription>> GetSubscriptions(string eventName, string eventKey, DateTime asOf, CancellationToken cancellationToken = default)
     {
-        asOf = _clock.Normalize(asOf);
         var raw = await _db.Queryable<WfSubscriptionEntity>()
-            .Where(x => x.EventName == eventName && x.EventKey == eventKey && x.SubscribeAsOf <= asOf)
+            .Where(x => x.EventName == eventName && x.EventKey == eventKey && x.SubscribeAsOf <= asOf.ToUnfiyDateTime(_clock))
             .ToListAsync(cancellationToken);
-
         return raw.Select(item => item.ToEventSubscription(_clock)).ToList();
     }
 
@@ -161,10 +157,9 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
 
     public async Task<IEnumerable<string>> GetRunnableEvents(DateTime asAt, CancellationToken cancellationToken = default)
     {
-        var now = _clock.Normalize(asAt);
         var raw = await _db.Queryable<WfEventEntity>()
               .Where(x => !x.IsProcessed)
-              .Where(x => x.EventTime <= now)
+              .Where(x => x.EventTime <= asAt.ToUnfiyDateTime(_clock))
               .Select(x => x.EventId)
               .ToListAsync(cancellationToken);
 
@@ -183,7 +178,7 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
     {
         var raw = await _db.Queryable<WfEventEntity>()
                 .Where(x => x.EventName == eventName && x.EventKey == eventKey)
-                .Where(x => x.EventTime >= asOf)
+                .Where(x => x.EventTime >= asOf.ToUnfiyDateTime(_clock))
                 .Select(x => x.EventId)
                 .ToListAsync(cancellationToken);
         return raw;
@@ -219,7 +214,7 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
 
     public async Task<EventSubscription> GetFirstOpenSubscription(string eventName, string eventKey, DateTime asOf, CancellationToken cancellationToken = default)
     {
-        var raw = await _db.Queryable<WfSubscriptionEntity>().FirstAsync(x => x.EventName == eventName && x.EventKey == eventKey && x.SubscribeAsOf <= asOf && x.ExternalToken == null, cancellationToken);
+        var raw = await _db.Queryable<WfSubscriptionEntity>().FirstAsync(x => x.EventName == eventName && x.EventKey == eventKey && x.SubscribeAsOf <= _clock.Normalize(asOf) && x.ExternalToken == null, cancellationToken);
         return raw.ToEventSubscription(_clock);
     }
 
@@ -231,7 +226,7 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
 
         existingEntity.ExternalToken = token;
         existingEntity.ExternalWorkerId = workerId;
-        existingEntity.ExternalTokenExpiry = expiry;
+        existingEntity.ExternalTokenExpiry = expiry.ToUnfiyDateTime(_clock);
         await _db.Updateable(existingEntity).ExecuteCommandAsync(cancellationToken);
         return true;
     }
