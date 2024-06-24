@@ -20,6 +20,7 @@ public class AdminWorkflowModule : AbpModule
             options.UsePersistence(sp => sp.GetService<AdminPersistenceProvider>());
         });
         context.Services.AddWorkflowDSL();
+        context.Services.AddTransient<IDateTimeProvider, AdminDateTimeProvider>();
     }
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {

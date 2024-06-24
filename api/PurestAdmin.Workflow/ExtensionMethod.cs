@@ -4,13 +4,14 @@ using Newtonsoft.Json;
 
 using PurestAdmin.SqlSugar.Entity;
 
+using Volo.Abp.Timing;
+
 using WorkflowCore.Models;
-using WorkflowCore.Persistence.EntityFramework.Models;
 
 namespace PurestAdmin.Workflow;
 internal static class ExtensionMethods
 {
-    private static JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+    private static readonly JsonSerializerSettings SerializerSettings = new() { TypeNameHandling = TypeNameHandling.All };
 
     internal static WfWorkflowEntity ToPersistable(this WorkflowInstance instance, WfWorkflowEntity? persistable = null)
     {
@@ -30,13 +31,20 @@ internal static class ExtensionMethods
 
         foreach (var ep in instance.ExecutionPointers)
         {
-            var persistedEP = persistable.ExecutionPointers.FirstOrDefault(x => x.Id == ep.Id);
+            var persistedEP = persistable.ExecutionPointers?.FirstOrDefault(x => x.Id == ep.Id);
 
             if (persistedEP == null)
             {
-                persistedEP = new WfPointerEntity();
+                persistedEP = new WfExecutionPointerEntity();
                 persistedEP.Id = ep.Id ?? Guid.NewGuid().ToString();
-                persistable.ExecutionPointers.Add(persistedEP);
+                if (persistable.ExecutionPointers == null)
+                {
+                    persistable.ExecutionPointers = [persistedEP];
+                }
+                else
+                {
+                    persistable.ExecutionPointers.Add(persistedEP);
+                }
             }
 
             persistedEP.StepId = ep.StepId;
@@ -67,11 +75,18 @@ internal static class ExtensionMethods
 
             foreach (var attr in ep.ExtensionAttributes)
             {
-                var persistedAttr = persistedEP.ExtensionAttributes.FirstOrDefault(x => x.AttributeKey == attr.Key);
+                var persistedAttr = persistedEP.ExtensionAttributes?.FirstOrDefault(x => x.AttributeKey == attr.Key);
                 if (persistedAttr == null)
                 {
-                    persistedAttr = new WfAttributeEntity();
-                    persistedEP.ExtensionAttributes.Add(persistedAttr);
+                    persistedAttr = new WfExecutionAttributeEntity();
+                    if (persistedEP.ExtensionAttributes == null)
+                    {
+                        persistedEP.ExtensionAttributes = [persistedAttr];
+                    }
+                    else
+                    {
+                        persistedEP.ExtensionAttributes.Add(persistedAttr);
+                    }
                 }
 
                 persistedAttr.AttributeKey = attr.Key;
@@ -82,9 +97,9 @@ internal static class ExtensionMethods
         return persistable;
     }
 
-    internal static WfErrorEntity ToPersistable(this ExecutionError instance)
+    internal static WfExecutionErrorEntity ToPersistable(this ExecutionError instance)
     {
-        var result = new WfErrorEntity();
+        var result = new WfExecutionErrorEntity();
         result.ErrorTime = instance.ErrorTime;
         result.Message = instance.Message;
         result.ExecutionPointerId = instance.ExecutionPointerId;
@@ -93,7 +108,7 @@ internal static class ExtensionMethods
         return result;
     }
 
-    internal static WfSubscriptionEntity ToPersistable(this EventSubscription instance)
+    internal static WfSubscriptionEntity ToPersistable(this EventSubscription instance, IClock clock)
     {
         WfSubscriptionEntity result = new WfSubscriptionEntity();
         result.SubscriptionId = instance.Id;
@@ -102,7 +117,7 @@ internal static class ExtensionMethods
         result.StepId = instance.StepId;
         result.ExecutionPointerId = instance.ExecutionPointerId;
         result.WorkflowId = instance.WorkflowId;
-        result.SubscribeAsOf = DateTime.SpecifyKind(instance.SubscribeAsOf, DateTimeKind.Utc);
+        result.SubscribeAsOf = DateTime.SpecifyKind(instance.SubscribeAsOf, clock.Kind);
         result.SubscriptionData = JsonConvert.SerializeObject(instance.SubscriptionData, SerializerSettings);
         result.ExternalToken = instance.ExternalToken;
         result.ExternalTokenExpiry = instance.ExternalTokenExpiry;
@@ -111,13 +126,13 @@ internal static class ExtensionMethods
         return result;
     }
 
-    internal static WfEventEntity ToPersistable(this Event instance)
+    internal static WfEventEntity ToPersistable(this Event instance, IClock clock)
     {
         WfEventEntity result = new WfEventEntity();
         result.EventId = instance.Id;
         result.EventKey = instance.EventKey;
         result.EventName = instance.EventName;
-        result.EventTime = DateTime.SpecifyKind(instance.EventTime, DateTimeKind.Utc);
+        result.EventTime = DateTime.SpecifyKind(instance.EventTime, clock.Kind);
         result.IsProcessed = instance.IsProcessed;
         result.EventData = JsonConvert.SerializeObject(instance.EventData, SerializerSettings);
 
@@ -134,7 +149,7 @@ internal static class ExtensionMethods
         return result;
     }
 
-    internal static WorkflowInstance ToWorkflowInstance(this WfWorkflowEntity instance)
+    internal static WorkflowInstance ToWorkflowInstance(this WfWorkflowEntity instance, IClock clock)
     {
         WorkflowInstance result = new WorkflowInstance();
         result.Data = JsonConvert.DeserializeObject(instance.Data, SerializerSettings);
@@ -145,9 +160,9 @@ internal static class ExtensionMethods
         result.Version = instance.Version;
         result.WorkflowDefinitionId = instance.WorkflowDefinitionId;
         result.Status = (WorkflowStatus)instance.Status;
-        result.CreateTime = DateTime.SpecifyKind(instance.CreateTime, DateTimeKind.Utc);
+        result.CreateTime = DateTime.SpecifyKind(instance.CreateTime, clock.Kind);
         if (instance.CompleteTime.HasValue)
-            result.CompleteTime = DateTime.SpecifyKind(instance.CompleteTime.Value, DateTimeKind.Utc);
+            result.CompleteTime = DateTime.SpecifyKind(instance.CompleteTime.Value, clock.Kind);
 
         result.ExecutionPointers = new ExecutionPointerCollection(instance.ExecutionPointers.Count + 8);
 
@@ -160,15 +175,15 @@ internal static class ExtensionMethods
             pointer.Active = ep.Active;
 
             if (ep.SleepUntil.HasValue)
-                pointer.SleepUntil = DateTime.SpecifyKind(ep.SleepUntil.Value, DateTimeKind.Utc);
+                pointer.SleepUntil = DateTime.SpecifyKind(ep.SleepUntil.Value, clock.Kind);
 
             pointer.PersistenceData = JsonConvert.DeserializeObject(ep.PersistenceData ?? string.Empty, SerializerSettings);
 
             if (ep.StartTime.HasValue)
-                pointer.StartTime = DateTime.SpecifyKind(ep.StartTime.Value, DateTimeKind.Utc);
+                pointer.StartTime = DateTime.SpecifyKind(ep.StartTime.Value, clock.Kind);
 
             if (ep.EndTime.HasValue)
-                pointer.EndTime = DateTime.SpecifyKind(ep.EndTime.Value, DateTimeKind.Utc);
+                pointer.EndTime = DateTime.SpecifyKind(ep.EndTime.Value, clock.Kind);
 
             pointer.StepName = ep.StepName;
 
@@ -200,7 +215,7 @@ internal static class ExtensionMethods
         return result;
     }
 
-    internal static EventSubscription ToEventSubscription(this WfSubscriptionEntity instance)
+    internal static EventSubscription ToEventSubscription(this WfSubscriptionEntity instance, IClock clock)
     {
         EventSubscription result = new EventSubscription();
         result.Id = instance.SubscriptionId.ToString();
@@ -209,7 +224,7 @@ internal static class ExtensionMethods
         result.StepId = instance.StepId;
         result.ExecutionPointerId = instance.ExecutionPointerId;
         result.WorkflowId = instance.WorkflowId;
-        result.SubscribeAsOf = DateTime.SpecifyKind(instance.SubscribeAsOf, DateTimeKind.Utc);
+        result.SubscribeAsOf = DateTime.SpecifyKind(instance.SubscribeAsOf, clock.Kind);
         result.SubscriptionData = JsonConvert.DeserializeObject(instance.SubscriptionData, SerializerSettings);
         result.ExternalToken = instance.ExternalToken;
         result.ExternalTokenExpiry = instance.ExternalTokenExpiry;
@@ -218,13 +233,13 @@ internal static class ExtensionMethods
         return result;
     }
 
-    internal static Event ToEvent(this WfEventEntity instance)
+    internal static Event ToEvent(this WfEventEntity instance, IClock clock)
     {
         Event result = new Event();
         result.Id = instance.EventId.ToString();
         result.EventKey = instance.EventKey;
         result.EventName = instance.EventName;
-        result.EventTime = DateTime.SpecifyKind(instance.EventTime, DateTimeKind.Utc);
+        result.EventTime = DateTime.SpecifyKind(instance.EventTime, clock.Kind);
         result.IsProcessed = instance.IsProcessed;
         result.EventData = JsonConvert.DeserializeObject(instance.EventData, SerializerSettings);
 
@@ -237,7 +252,6 @@ internal static class ExtensionMethods
         result.CommandName = instance.CommandName;
         result.Data = instance.Data;
         result.ExecuteTime = instance.ExecuteTime;
-
         return result;
     }
 }

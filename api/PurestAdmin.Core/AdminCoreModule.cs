@@ -17,6 +17,7 @@ using Volo.Abp.AspNetCore.SignalR;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
 using Volo.Abp.Modularity;
+using Volo.Abp.Timing;
 
 namespace PurestAdmin.Core
 {
@@ -35,6 +36,15 @@ namespace PurestAdmin.Core
 
             ConfigFileStorage(configuration);
             ConfigSerilog(context);
+            ConfigClock();
+        }
+
+        private void ConfigClock()
+        {
+            Configure<AbpClockOptions>(options =>
+            {
+                options.Kind = DateTimeKind.Local;
+            });
         }
 
         private void ConfigFileStorage(IConfiguration configuration)

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/5/27 16:33:01                           */
+/* Created on:     2024/6/24 14:53:14                           */
 /*==============================================================*/
 
 
@@ -39,6 +39,46 @@ drop table if exists PUREST_SYSTEM_CONFIG;
 drop table if exists PUREST_USER;
 
 drop table if exists PUREST_USER_ROLE;
+
+drop index IX_Event_EventName_EventKey on PUREST_WF_EVENT;
+
+drop index IX_Event_IsProcessed on PUREST_WF_EVENT;
+
+drop index IX_Event_EventTime on PUREST_WF_EVENT;
+
+drop index IX_Event_EventId on PUREST_WF_EVENT;
+
+drop table if exists PUREST_WF_EVENT;
+
+drop index IX_ExtensionAttribute_ExecutionPointerId on PUREST_WF_EXECUTION_ATTRIBUTE;
+
+drop table if exists PUREST_WF_EXECUTION_ATTRIBUTE;
+
+drop table if exists PUREST_WF_EXECUTION_ERROR;
+
+drop index IX_ExecutionPointer_WorkflowId on PUREST_WF_EXECUTION_POINTER;
+
+drop table if exists PUREST_WF_EXECUTION_POINTER;
+
+drop index IX_ScheduledCommand_ExecuteTime on PUREST_WF_SCHEDULED_COMMAND;
+
+drop index IX_ScheduledCommand_CommandName_Data on PUREST_WF_SCHEDULED_COMMAND;
+
+drop table if exists PUREST_WF_SCHEDULED_COMMAND;
+
+drop index IX_Subscription_EventName on PUREST_WF_SUBSCRIPTION;
+
+drop index IX_Subscription_EventKey on PUREST_WF_SUBSCRIPTION;
+
+drop index IX_Subscription_SubscriptionId on PUREST_WF_SUBSCRIPTION;
+
+drop table if exists PUREST_WF_SUBSCRIPTION;
+
+drop index IX_Workflow_NextExecution on PUREST_WF_WORKFLOW;
+
+drop index IX_Workflow_InstanceId on PUREST_WF_WORKFLOW;
+
+drop table if exists PUREST_WF_WORKFLOW;
 
 /*==============================================================*/
 /* Table: PUREST_BACKGROUND_JOB_RECORD                          */
@@ -397,6 +437,246 @@ create table PUREST_USER_ROLE
 
 alter table PUREST_USER_ROLE comment '用户角色';
 
+/*==============================================================*/
+/* Table: PUREST_WF_EVENT                                       */
+/*==============================================================*/
+create table PUREST_WF_EVENT
+(
+   PERSISTENCE_ID       bigint not null,
+   EVENT_ID             varchar(36) not null,
+   EVENT_NAME           varchar(200),
+   EVENT_KEY            varchar(200),
+   EVENT_DATA           text,
+   EVENT_TIME           datetime not null,
+   IS_PROCESSED         boolean not null,
+   primary key (PERSISTENCE_ID)
+);
+
+alter table PUREST_WF_EVENT comment '事件';
+
+/*==============================================================*/
+/* Index: IX_Event_EventId                                      */
+/*==============================================================*/
+create unique index IX_Event_EventId on PUREST_WF_EVENT
+(
+   EVENT_ID
+);
+
+/*==============================================================*/
+/* Index: IX_Event_EventTime                                    */
+/*==============================================================*/
+create index IX_Event_EventTime on PUREST_WF_EVENT
+(
+   EVENT_TIME
+);
+
+/*==============================================================*/
+/* Index: IX_Event_IsProcessed                                  */
+/*==============================================================*/
+create index IX_Event_IsProcessed on PUREST_WF_EVENT
+(
+   IS_PROCESSED
+);
+
+/*==============================================================*/
+/* Index: IX_Event_EventName_EventKey                           */
+/*==============================================================*/
+create index IX_Event_EventName_EventKey on PUREST_WF_EVENT
+(
+   EVENT_NAME,
+   EVENT_KEY
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_EXECUTION_ATTRIBUTE                         */
+/*==============================================================*/
+create table PUREST_WF_EXECUTION_ATTRIBUTE
+(
+   PERSISTENCE_ID       bigint not null,
+   ATTRIBUTE_KEY        varchar(100),
+   ATTRIBUTE_VALUE      text,
+   EXECUTION_POINTER_ID bigint not null,
+   primary key (PERSISTENCE_ID)
+);
+
+alter table PUREST_WF_EXECUTION_ATTRIBUTE comment '自定义属性';
+
+/*==============================================================*/
+/* Index: IX_ExtensionAttribute_ExecutionPointerId              */
+/*==============================================================*/
+create index IX_ExtensionAttribute_ExecutionPointerId on PUREST_WF_EXECUTION_ATTRIBUTE
+(
+   EXECUTION_POINTER_ID
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_EXECUTION_ERROR                             */
+/*==============================================================*/
+create table PUREST_WF_EXECUTION_ERROR
+(
+   PERSISTENCE_ID       bigint not null,
+   ERROR_TIME           date not null,
+   EXECUTION_POINTER_ID varchar(100),
+   MESSAGE              text,
+   WORKFLOW_ID          varchar(100),
+   primary key (PERSISTENCE_ID)
+);
+
+alter table PUREST_WF_EXECUTION_ERROR comment '执行异常';
+
+/*==============================================================*/
+/* Table: PUREST_WF_EXECUTION_POINTER                           */
+/*==============================================================*/
+create table PUREST_WF_EXECUTION_POINTER
+(
+   PERSISTENCE_ID       bigint not null,
+   ACTIVE               boolean not null,
+   RETRY_COUNT          integer not null,
+   END_TIME             datetime,
+   EVENT_DATA           text,
+   EVENT_KEY            varchar(100),
+   EVENT_NAME           varchar(100),
+   EVENT_PUBLISHED      boolean not null,
+   ID                   varchar(50),
+   PERSISTENCE_DATA     text,
+   SLEEP_UNTIL          datetime,
+   START_TIME           datetime,
+   STEP_ID              integer not null,
+   STEP_NAME            varchar(100),
+   WORKFLOW_ID          bigint not null,
+   CHILDREN             text,
+   CONTEXT_ITEM         text,
+   PREDECESSOR_ID       varchar(100),
+   OUTCOME              text,
+   SCOPE                text,
+   STATUS               integer not null,
+   primary key (PERSISTENCE_ID)
+);
+
+alter table PUREST_WF_EXECUTION_POINTER comment '步骤';
+
+/*==============================================================*/
+/* Index: IX_ExecutionPointer_WorkflowId                        */
+/*==============================================================*/
+create index IX_ExecutionPointer_WorkflowId on PUREST_WF_EXECUTION_POINTER
+(
+   WORKFLOW_ID
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_SCHEDULED_COMMAND                           */
+/*==============================================================*/
+create table PUREST_WF_SCHEDULED_COMMAND
+(
+   PERSISTENCE_ID       bigint not null,
+   COMMAND_NAME         varchar(200),
+   DATA                 varchar(500),
+   EXECUTE_TIME         bigint not null,
+   primary key (PERSISTENCE_ID)
+);
+
+alter table PUREST_WF_SCHEDULED_COMMAND comment '计划命令';
+
+/*==============================================================*/
+/* Index: IX_ScheduledCommand_CommandName_Data                  */
+/*==============================================================*/
+create unique index IX_ScheduledCommand_CommandName_Data on PUREST_WF_SCHEDULED_COMMAND
+(
+   COMMAND_NAME,
+   DATA
+);
+
+/*==============================================================*/
+/* Index: IX_ScheduledCommand_ExecuteTime                       */
+/*==============================================================*/
+create index IX_ScheduledCommand_ExecuteTime on PUREST_WF_SCHEDULED_COMMAND
+(
+   EXECUTE_TIME
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_SUBSCRIPTION                                */
+/*==============================================================*/
+create table PUREST_WF_SUBSCRIPTION
+(
+   PERSISTENCE_ID       bigint not null,
+   EVENT_KEY            varchar(200),
+   EVENT_NAME           varchar(200),
+   STEP_ID              integer not null,
+   SUBSCRIPTION_ID      varchar(36) not null,
+   WORKFLOW_ID          varchar(200),
+   SUBSCRIBE_AS_OF      datetime not null,
+   SUBSCRIPTION_DATA    text,
+   EXECUTION_POINTER_ID varchar(200),
+   EXTERNAL_TOKEN       varchar(200),
+   EXTERNAL_TOKEN_EXPIRY datetime,
+   EXTERNAL_WORKER_ID   varchar(200),
+   primary key (PERSISTENCE_ID)
+);
+
+alter table PUREST_WF_SUBSCRIPTION comment '订阅';
+
+/*==============================================================*/
+/* Index: IX_Subscription_SubscriptionId                        */
+/*==============================================================*/
+create unique index IX_Subscription_SubscriptionId on PUREST_WF_SUBSCRIPTION
+(
+   SUBSCRIPTION_ID
+);
+
+/*==============================================================*/
+/* Index: IX_Subscription_EventKey                              */
+/*==============================================================*/
+create index IX_Subscription_EventKey on PUREST_WF_SUBSCRIPTION
+(
+   EVENT_KEY
+);
+
+/*==============================================================*/
+/* Index: IX_Subscription_EventName                             */
+/*==============================================================*/
+create index IX_Subscription_EventName on PUREST_WF_SUBSCRIPTION
+(
+   EVENT_NAME
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_WORKFLOW                                    */
+/*==============================================================*/
+create table PUREST_WF_WORKFLOW
+(
+   PERSISTENCE_ID       bigint not null,
+   COMPLETE_TIME        datetime,
+   CREATE_TIME          datetime not null,
+   DATA                 text,
+   DESCRIPTION          varchar(500),
+   INSTANCE_ID          varchar(36) not null,
+   NEXT_EXECUTION       bigint,
+   STATUS               integer not null,
+   VERSION              integer not null,
+   WORKFLOW_DEFINITION_ID varchar(200),
+   REFERENCE            varchar(200),
+   primary key (PERSISTENCE_ID)
+);
+
+alter table PUREST_WF_WORKFLOW comment '工作流程';
+
+/*==============================================================*/
+/* Index: IX_Workflow_InstanceId                                */
+/*==============================================================*/
+create index IX_Workflow_InstanceId on PUREST_WF_WORKFLOW
+(
+   INSTANCE_ID
+);
+
+/*==============================================================*/
+/* Index: IX_Workflow_NextExecution                             */
+/*==============================================================*/
+create index IX_Workflow_NextExecution on PUREST_WF_WORKFLOW
+(
+   NEXT_EXECUTION
+);
+
 alter table PUREST_DICT_DATA add constraint FK_Reference_5 foreign key (CATEGORY_ID)
       references PUREST_DICT_CATEGORY (ID) on delete restrict on update restrict;
 
@@ -432,4 +712,10 @@ alter table PUREST_USER_ROLE add constraint FK_Reference_4 foreign key (ROLE_ID)
 
 alter table PUREST_USER_ROLE add constraint FK_Reference_6 foreign key (USER_ID)
       references PUREST_USER (ID) on delete restrict on update restrict;
+
+alter table PUREST_WF_EXECUTION_ATTRIBUTE add constraint FK_ExtensionAttribute_ExecutionPointer_ExecutionPointerId foreign key (EXECUTION_POINTER_ID)
+      references PUREST_WF_EXECUTION_POINTER (PERSISTENCE_ID) on delete restrict on update restrict;
+
+alter table PUREST_WF_EXECUTION_POINTER add constraint FK_ExecutionPointer_Workflow_WorkflowId foreign key (WORKFLOW_ID)
+      references PUREST_WF_WORKFLOW (PERSISTENCE_ID) on delete restrict on update restrict;
 

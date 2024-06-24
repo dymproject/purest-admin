@@ -3,8 +3,8 @@ namespace PurestAdmin.SqlSugar.Entity;
 /// <summary>
 /// 自定义属性
 /// </summary>
-[SugarTable("PUREST_WF_ATTRIBUTE")]
-public partial class WfAttributeEntity
+[SugarTable("PUREST_WF_EXECUTION_ATTRIBUTE")]
+public partial class WfExecutionAttributeEntity
 {
 	/// <summary>
 	/// 

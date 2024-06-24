@@ -3,8 +3,8 @@ namespace PurestAdmin.SqlSugar.Entity;
 /// <summary>
 /// 步骤
 /// </summary>
-[SugarTable("PUREST_WF_POINTER")]
-public partial class WfPointerEntity
+[SugarTable("PUREST_WF_EXECUTION_POINTER")]
+public partial class WfExecutionPointerEntity
 {
     /// <summary>
     /// 

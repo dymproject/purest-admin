@@ -3,6 +3,6 @@
 namespace PurestAdmin.SqlSugar.Entity;
 public partial class WfWorkflowEntity
 {
-    [Navigate(NavigateType.OneToMany, nameof(WfPointerEntity.WorkflowId))]
-    public List<WfPointerEntity> ExecutionPointers { get; set; } = [];
+    [Navigate(NavigateType.OneToMany, nameof(WfExecutionPointerEntity.WorkflowId), nameof(PersistenceId))]
+    public List<WfExecutionPointerEntity> ExecutionPointers { get; set; }
 }

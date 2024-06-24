@@ -3,8 +3,8 @@ namespace PurestAdmin.SqlSugar.Entity;
 /// <summary>
 /// 执行异常
 /// </summary>
-[SugarTable("PUREST_WF_ERROR")]
-public partial class WfErrorEntity
+[SugarTable("PUREST_WF_EXECUTION_ERROR")]
+public partial class WfExecutionErrorEntity
 {
     /// <summary>
     /// 
