@@ -215,7 +215,7 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
     public async Task<EventSubscription> GetFirstOpenSubscription(string eventName, string eventKey, DateTime asOf, CancellationToken cancellationToken = default)
     {
         var raw = await _db.Queryable<WfSubscriptionEntity>().FirstAsync(x => x.EventName == eventName && x.EventKey == eventKey && x.SubscribeAsOf <= _clock.Normalize(asOf) && x.ExternalToken == null, cancellationToken);
-        return raw.ToEventSubscription(_clock);
+        return raw?.ToEventSubscription(_clock);
     }
 
     public async Task<bool> SetSubscriptionToken(string eventSubscriptionId, string token, string workerId, DateTime expiry, CancellationToken cancellationToken = default)
@@ -226,7 +226,7 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
 
         existingEntity.ExternalToken = token;
         existingEntity.ExternalWorkerId = workerId;
-        existingEntity.ExternalTokenExpiry = expiry.ToUnfiyDateTime(_clock);
+        existingEntity.ExternalTokenExpiry = expiry.ToUnfiyDateTime(_clock).AddSeconds(-1);
         await _db.Updateable(existingEntity).ExecuteCommandAsync(cancellationToken);
         return true;
     }

@@ -6,6 +6,7 @@ using PurestAdmin.Workflow.Workflows.D01;
 using PurestAdmin.Workflow.Workflows.D02;
 //using PurestAdmin.Workflow.Workflows.D03;
 using PurestAdmin.Workflow.Workflows.D04;
+using PurestAdmin.Workflow.Workflows.D18;
 
 using Volo.Abp;
 using Volo.Abp.Modularity;
@@ -40,6 +41,7 @@ public class AdminWorkflowModule : AbpModule
         //workflowHost.RegisterWorkflow<PassingDataWorkflow, MyDataClass>();
         //workflowHost.RegisterWorkflow<PassingDataWorkflow2, Dictionary<string, int>>();
         workflowHost.RegisterWorkflow<EventSampleWorkflow, MyDataClass>();
+        workflowHost.RegisterWorkflow<ActivityWorkflow, MyData>();
         workflowHost.Start();
     }
 }
