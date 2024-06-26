@@ -3,7 +3,6 @@
 using System.Web;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 
@@ -25,6 +24,7 @@ namespace PurestAdmin.Application.ProfileSystemServices;
 /// <param name="fileCommand"></param>
 /// <param name="httpContextAccessor"></param>
 /// <param name="objectValidator"></param>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class ProfileSystemService(ISqlSugarClient db, IFileCommand<ProfileSystemContainer> fileCommand,
     IHttpContextAccessor httpContextAccessor, IObjectValidator objectValidator) : ApplicationService
 {

@@ -11,17 +11,16 @@ using Volo.Abp.Modularity;
 
 namespace PurestAdmin.Application
 {
-    [DependsOn(typeof(AdminSqlSugarModule),
-        typeof(AdminBackgroundModule),
+    [DependsOn(typeof(AdminBackgroundModule),
         typeof(AdminMultiplexModule))]
-    public class AdminAppModule : AbpModule
+    public class AdminApplicationModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             context.Services.AddMapsterIRegister(Assembly.GetExecutingAssembly());
             Configure<AbpAspNetCoreMvcOptions>(options =>
             {
-                options.ConventionalControllers.Create(typeof(AdminAppModule).Assembly, opts =>
+                options.ConventionalControllers.Create(typeof(AdminApplicationModule).Assembly, opts =>
                 {
                     opts.RootPath = "v1";
                     //opts.UrlActionNameNormalizer = (action) =>
@@ -30,7 +29,6 @@ namespace PurestAdmin.Application
                     //};
                 });
             });
-            base.ConfigureServices(context);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Security.Claims;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 using PurestAdmin.Application.AuthServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
@@ -16,6 +17,7 @@ namespace PurestAdmin.Application.AuthServices;
 /// <summary>
 /// 用户授权服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class AuthService(IAdminToken adminToken, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
 {
     /// <summary>

@@ -8,6 +8,7 @@ namespace PurestAdmin.Application.DictCategoryServices;
 /// <summary>
 /// 字典分类服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class DictCategoryService(ISqlSugarClient db, Repository<DictCategoryEntity> dictCategoryRepository) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;

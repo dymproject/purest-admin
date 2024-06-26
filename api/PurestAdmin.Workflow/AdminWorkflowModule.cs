@@ -1,14 +1,20 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using System.Reflection;
+
 using Microsoft.Extensions.DependencyInjection;
 
+using PurestAdmin.Core.Mapster;
+using PurestAdmin.Workflow.Middleware;
 using PurestAdmin.Workflow.Workflows.D01;
 using PurestAdmin.Workflow.Workflows.D02;
 //using PurestAdmin.Workflow.Workflows.D03;
 using PurestAdmin.Workflow.Workflows.D04;
-using PurestAdmin.Workflow.Workflows.D18;
+using PurestAdmin.Workflow.Workflows.D11;
+//using PurestAdmin.Workflow.Workflows.D18;
 
 using Volo.Abp;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Modularity;
 
 using WorkflowCore.Interface;
@@ -26,8 +32,17 @@ public class AdminWorkflowModule : AbpModule
         });
         context.Services.AddWorkflowDSL();
         context.Services.AddTransient<IDateTimeProvider, AdminDateTimeProvider>();
-
+        context.Services.AddWorkflowMiddleware<PreWorkflowMiddleware>();
         context.Services.AutoRegisterStepBodys();
+
+        context.Services.AddMapsterIRegister(Assembly.GetExecutingAssembly());
+        Configure<AbpAspNetCoreMvcOptions>(options =>
+        {
+            options.ConventionalControllers.Create(typeof(AdminWorkflowModule).Assembly, opts =>
+            {
+                opts.RootPath = "v2";
+            });
+        });
     }
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
@@ -41,7 +56,8 @@ public class AdminWorkflowModule : AbpModule
         //workflowHost.RegisterWorkflow<PassingDataWorkflow, MyDataClass>();
         //workflowHost.RegisterWorkflow<PassingDataWorkflow2, Dictionary<string, int>>();
         workflowHost.RegisterWorkflow<EventSampleWorkflow, MyDataClass>();
-        workflowHost.RegisterWorkflow<ActivityWorkflow, MyData>();
+        //workflowHost.RegisterWorkflow<ActivityWorkflow, MyData>();
+        workflowHost.RegisterWorkflow<IfWorkflow, MyData>();
         workflowHost.Start();
     }
 }

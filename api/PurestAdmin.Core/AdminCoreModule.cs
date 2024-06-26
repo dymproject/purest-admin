@@ -9,6 +9,7 @@ using PurestAdmin.Core.File.Containers;
 using PurestAdmin.Core.Ip2region;
 using PurestAdmin.Core.Signalr;
 using PurestAdmin.Core.SnowFlakeId;
+using PurestAdmin.SqlSugar;
 
 using Serilog;
 using Serilog.Events;
@@ -21,7 +22,7 @@ using Volo.Abp.Timing;
 
 namespace PurestAdmin.Core
 {
-    [DependsOn(typeof(AbpAspNetCoreSignalRModule), typeof(AbpBlobStoringFileSystemModule))]
+    [DependsOn(typeof(AdminSqlSugarModule), typeof(AbpAspNetCoreSignalRModule), typeof(AbpBlobStoringFileSystemModule))]
     public class AdminCoreModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

@@ -3,12 +3,12 @@
 using PurestAdmin.Application.RoleServices.Dtos;
 using PurestAdmin.Core.Cache;
 using PurestAdmin.Core.Oops;
-using PurestAdmin.Multiplex.Contracts.Consts;
 
 namespace PurestAdmin.Application.RoleServices;
 /// <summary>
 /// 角色服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleRepository, IAdminCache cache) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;

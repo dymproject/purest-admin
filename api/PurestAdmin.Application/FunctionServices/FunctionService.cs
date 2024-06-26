@@ -3,12 +3,12 @@
 using PurestAdmin.Application.FunctionServices.Dtos;
 using PurestAdmin.Core.Cache;
 using PurestAdmin.Core.Oops;
-using PurestAdmin.Multiplex.Contracts.Consts;
 
 namespace PurestAdmin.Application.FunctionServices;
 /// <summary>
 /// 功能接口实现
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> functionRepository, IAdminCache cache) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;

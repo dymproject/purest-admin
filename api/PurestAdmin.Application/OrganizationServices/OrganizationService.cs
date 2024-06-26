@@ -8,6 +8,7 @@ namespace PurestAdmin.Application.OrganizationServices;
 /// <summary>
 /// 组织机构服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class OrganizationService(Repository<OrganizationEntity> organizationRepository, ICurrentUser currentUser) : ApplicationService
 {
     private readonly Repository<OrganizationEntity> _organizationRepository = organizationRepository;

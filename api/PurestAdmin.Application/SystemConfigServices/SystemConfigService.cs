@@ -7,6 +7,7 @@ namespace PurestAdmin.Application.SystemConfigServices;
 /// <summary>
 /// 系统配置表服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class SystemConfigService(ISqlSugarClient db, Repository<SystemConfigEntity> systemConfigRepository) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;

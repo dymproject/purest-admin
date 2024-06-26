@@ -8,6 +8,7 @@ namespace PurestAdmin.Application.DictDataServices;
 /// <summary>
 /// 字典数据服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class DictDataService(ISqlSugarClient db, Repository<DictDataEntity> dictDataRepository) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;

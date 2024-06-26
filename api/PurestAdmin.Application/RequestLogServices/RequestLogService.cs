@@ -7,6 +7,7 @@ namespace PurestAdmin.Application.RequestLogServices;
 /// <summary>
 /// 请求日志服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class RequestLogService(ISqlSugarClient client) : ApplicationService
 {
     private readonly ISqlSugarClient _client = client;

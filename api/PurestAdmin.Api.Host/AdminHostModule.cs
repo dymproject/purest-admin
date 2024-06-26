@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using PurestAdmin.Api.Host.Options;
 using PurestAdmin.Application;
 using PurestAdmin.Core;
+using PurestAdmin.Workflow;
 
 using Volo.Abp;
 using Volo.Abp.AspNetCore.ExceptionHandling;
@@ -29,7 +30,8 @@ namespace PurestAdmin.Api.Host
     [DependsOn(typeof(AbpSwashbuckleModule),
         typeof(AbpAutofacModule),
         typeof(AdminCoreModule),
-        typeof(AdminAppModule))]
+        typeof(AdminApplicationModule),
+        typeof(AdminWorkflowModule))]
     public class AdminHostModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
@@ -113,9 +115,11 @@ namespace PurestAdmin.Api.Host
         {
             context.Services.AddAbpSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "系统管理" });
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PurestAdmin.Application.xml"), true);
-                options.DocInclusionPredicate((docName, description) => true);
+                options.SwaggerDoc("v2", new OpenApiInfo { Title = "工作流管理" });
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PurestAdmin.Workflow.xml"), true);
+                //options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
                 options.HideAbpEndpoints();
                 options.SchemaFilter<HideAbpSchemaFilter>();
@@ -230,7 +234,8 @@ namespace PurestAdmin.Api.Host
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "API");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "系统管理");
+                    options.SwaggerEndpoint("/swagger/v2/swagger.json", "工作流管理");
                     var responseInterceptor = @" (res) => {
                             const token = res.headers.accesstoken;
                             if(token){localStorage.setItem('token', token);}

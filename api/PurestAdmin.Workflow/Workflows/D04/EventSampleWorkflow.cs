@@ -20,8 +20,6 @@ namespace PurestAdmin.Workflow.Workflows.D04
                 .StartWith(context => ExecutionResult.Next())
                 .WaitFor("MyEvent", (data, context) => context.Workflow.Id, data => DateTime.Now)
                     .Output(data => data.Value1, step => step.EventData)
-                .WaitFor("MyEvent", (data, context) => context.Workflow.Id, data => DateTime.Now)
-                    .Output(data => data.Value1, step => step.EventData)
                 .Then<CustomMessage>()
                     .Input(step => step.Message, data => "The data from the event is " + data.Value1)
                 .Then(context => Console.WriteLine("workflow complete"));

@@ -1,7 +1,5 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using Microsoft.AspNetCore.Mvc;
-
 using PurestAdmin.Application.NoticeServices.Dtos;
 using PurestAdmin.BackgroundService.Jobs.Args;
 using PurestAdmin.Core.Oops;
@@ -15,6 +13,7 @@ namespace PurestAdmin.Application.NoticeServices;
 /// </summary>
 /// <param name="db"></param>
 /// <param name="backgroundJobManager"></param>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class NoticeService(ISqlSugarClient db, IBackgroundJobManager backgroundJobManager) : ApplicationService
 {
     /// <summary>

@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <NoWarn>1701;1702;1591;8618;8603;</NoWarn>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PurestAdmin.Core\PurestAdmin.Core.csproj" />
+    <ProjectReference Include="..\PurestAdmin.Multiplex.Contracts\PurestAdmin.Multiplex.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middleware\" />
+    <Folder Include="Services\Dtos\" />
   </ItemGroup>
 
 </Project>

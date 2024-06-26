@@ -12,6 +12,7 @@ namespace PurestAdmin.Application.UserServices;
 /// <summary>
 /// 用户服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class UserService(ISqlSugarClient db, Repository<UserEntity> userRepository,
     IHubContext<OnlineUserHub, IOnlineUserClient> hubContext, ICacheOnlineUser cacheOnlineUser) : ApplicationService
 {
