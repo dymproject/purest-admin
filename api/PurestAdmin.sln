@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.Zero", "PurestA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.BackgroundService", "PurestAdmin.BackgroundService\PurestAdmin.BackgroundService.csproj", "{7E7B7A8C-AC37-48F3-97F5-DC5AAC65620B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurestAdmin.Workflow", "PurestAdmin.Workflow\PurestAdmin.Workflow.csproj", "{B7D70908-4F1B-45E0-AA75-455038FC1C0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurestAdmin.Workflow", "PurestAdmin.Workflow\PurestAdmin.Workflow.csproj", "{B7D70908-4F1B-45E0-AA75-455038FC1C0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

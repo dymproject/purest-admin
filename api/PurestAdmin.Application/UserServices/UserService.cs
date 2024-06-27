@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.SignalR;
 
 using PurestAdmin.Application.UserServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
-using PurestAdmin.Core.Oops;
 using PurestAdmin.Multiplex.AdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 
@@ -99,7 +98,7 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
     /// <returns></returns>
     public async Task PutAsync(long id, PutUserInput input)
     {
-        var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _userRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         entity = input.Adapt(entity);
         _ = await _db.Deleteable<UserRoleEntity>().Where(x => x.UserId == id).ExecuteCommandAsync();
         _ = await _db.Insertable(new UserRoleEntity
@@ -118,10 +117,10 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
     [UnitOfWork]
     public async Task DeleteAsync(long id)
     {
-        var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _userRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         if (entity.Account == "admin")
         {
-            throw Oops.Bah("初始化账户禁止删除！");
+            throw PersistdValidateException.Message("初始化账户禁止删除！");
         }
         await _db.Deleteable<UserRoleEntity>().Where(x => x.UserId == id).ExecuteCommandAsync();
         await _userRepository.DeleteAsync(entity);
@@ -134,10 +133,10 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
     /// <returns></returns>
     public async Task StopAsync(long id)
     {
-        var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _userRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         if (entity.Account == "admin")
         {
-            throw Oops.Bah("初始化账户不能停用！");
+            throw PersistdValidateException.Message("初始化账户不能停用！");
         }
         entity.Status = (int)UserStatusEnum.Stop;
         await _userRepository.UpdateAsync(entity);
@@ -153,7 +152,7 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
     /// <returns></returns>
     public async Task NormalAsync(long id)
     {
-        var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _userRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         entity.Status = (int)UserStatusEnum.Normal;
         await _userRepository.UpdateAsync(entity);
     }
@@ -165,7 +164,7 @@ public class UserService(ISqlSugarClient db, Repository<UserEntity> userReposito
     /// <returns></returns>
     public async Task<string> ResetPasswordAsync(long id)
     {
-        var entity = await _userRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _userRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var randomNumber = new Random().Next(100000, 999999).ToString();
         entity.Password = MD5Encryption.Encrypt(randomNumber);
         _ = await _userRepository.UpdateAsync(entity);

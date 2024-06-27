@@ -1,7 +1,7 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Core.Cache;
-using PurestAdmin.Core.Oops;
+using PurestAdmin.Core.ExceptionExtensions;
 using PurestAdmin.Multiplex.Contracts.Consts;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 
@@ -31,28 +31,28 @@ public class CurrentUser(ISqlSugarClient db, IHttpContextAccessor httpContextAcc
     /// </summary>
     public long Id
     {
-        get => long.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(AdminConst.USER_ID)?.Value ?? throw Oops.Bah("令牌超时，请重新登录！"));
+        get => long.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(AdminClaimConst.USER_ID)?.Value ?? throw PersistdValidateException.Message("令牌超时，请重新登录！"));
     }
     /// <summary>
     /// 角色Id
     /// </summary>
     public long RoleId
     {
-        get => long.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(AdminConst.ROLE_ID)?.Value ?? throw Oops.Bah("令牌超时，请重新登录！"));
+        get => long.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(AdminClaimConst.ROLE_ID)?.Value ?? throw PersistdValidateException.Message("令牌超时，请重新登录！"));
     }
     /// <summary>
     /// 组织机构Id
     /// </summary>
     public long OrganizationId
     {
-        get => long.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(AdminConst.ORGANIZATION_ID)?.Value ?? throw Oops.Bah("令牌超时，请重新登录！"));
+        get => long.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(AdminClaimConst.ORGANIZATION_ID)?.Value ?? throw PersistdValidateException.Message("令牌超时，请重新登录！"));
     }
     /// <summary>
     /// self
     /// </summary>
     public UserEntity Self
     {
-        get => _db.Queryable<UserEntity>().First(x => x.Id == Id) ?? throw Oops.Bah("用户不存在！");
+        get => _db.Queryable<UserEntity>().First(x => x.Id == Id) ?? throw PersistdValidateException.Message("用户不存在！");
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class CurrentUser(ISqlSugarClient db, IHttpContextAccessor httpContextAcc
     /// <returns></returns>
     public async Task<List<InterfaceEntity>> GetInterfacesAsync()
     {
-        var interfaces = await _cache.Get(AdminConst.CACHE_ROLESINTERFACE_PREFIX + RoleId, async () =>
+        var interfaces = await _cache.Get(AdminClaimConst.CACHE_ROLESINTERFACE_PREFIX + RoleId, async () =>
         {
             return await _db.Queryable<UserRoleEntity>()
             .RightJoin<RoleFunctionEntity>((ur, rf) => ur.RoleId == rf.RoleId)
@@ -95,7 +95,7 @@ public class CurrentUser(ISqlSugarClient db, IHttpContextAccessor httpContextAcc
     {
         var organizationId = OrganizationId;
 
-        var organization = await _db.Queryable<OrganizationEntity>().FirstAsync(x => x.Id == organizationId) ?? throw Oops.Bah("无法找到当前登录用户的组织机构，请联系管理检查数据");
+        var organization = await _db.Queryable<OrganizationEntity>().FirstAsync(x => x.Id == organizationId) ?? throw PersistdValidateException.Message("无法找到当前登录用户的组织机构，请联系管理检查数据");
 
         var organizationChildren = await _db.Queryable<OrganizationEntity>().OrderByDescending(x => x.Sort).ToTreeAsync(x => x.Children, x => x.ParentId, organizationId);
 

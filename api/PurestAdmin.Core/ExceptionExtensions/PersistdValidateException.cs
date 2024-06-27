@@ -6,26 +6,26 @@ using Microsoft.OpenApi.Extensions;
 
 using Volo.Abp;
 
-namespace PurestAdmin.Core.Oops;
-public static class Oops
+namespace PurestAdmin.Core.ExceptionExtensions;
+public static class PersistdValidateException
 {
     /// <summary>
     /// 抛出业务异常信息
     /// </summary>
     /// <param name="errorMessage">异常消息</param>
     /// <returns>异常实例</returns>
-    public static BusinessException Bah(string errorMessage)
+    public static BusinessException Message(string errorMessage)
     {
-        return new UserFriendlyException(message: errorMessage);
+        return new UserFriendlyException(errorMessage, "Qa.001");
     }
     /// <summary>
     /// 抛出业务异常信息
     /// </summary>
     /// <param name="errorMessage">异常消息</param>
     /// <returns>异常实例</returns>
-    public static BusinessException Bah(Enum tipsEnum)
+    public static BusinessException Message(Enum tipsEnum)
     {
-        var description = tipsEnum.GetAttributeOfType<DescriptionAttribute>() ?? throw Bah("未找到对应异常的枚举描述");
-        return new UserFriendlyException(description.Description);
+        var description = tipsEnum.GetAttributeOfType<DescriptionAttribute>() ?? throw Message("未找到对应异常的枚举描述");
+        return new UserFriendlyException(description.Description, "Qa.001");
     }
 }

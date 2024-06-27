@@ -1,7 +1,6 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.OrganizationServices.Dtos;
-using PurestAdmin.Core.Oops;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 
 namespace PurestAdmin.Application.OrganizationServices;
@@ -56,7 +55,7 @@ public class OrganizationService(Repository<OrganizationEntity> organizationRepo
     /// <returns></returns>
     public async Task PutAsync(long id, AddOrganizationInput input)
     {
-        var entity = await _organizationRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _organizationRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
         _ = await _organizationRepository.UpdateAsync(newEntity);
     }
@@ -68,7 +67,7 @@ public class OrganizationService(Repository<OrganizationEntity> organizationRepo
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var entity = await _organizationRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _organizationRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         await _organizationRepository.DeleteAsync(entity);
     }
 

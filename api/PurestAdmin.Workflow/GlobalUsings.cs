@@ -13,6 +13,5 @@ global using PurestAdmin.SqlSugar.Entity;
 
 global using SqlSugar;
 
-global using Volo.Abp;
 global using Volo.Abp.Application.Services;
-global using Volo.Abp.Uow;
+global using Volo.Abp.DependencyInjection;

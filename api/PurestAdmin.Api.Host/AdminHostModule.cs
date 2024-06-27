@@ -23,7 +23,6 @@ using Volo.Abp.Autofac;
 using Volo.Abp.Json;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
-using Volo.Abp.VirtualFileSystem;
 
 namespace PurestAdmin.Api.Host
 {
@@ -42,7 +41,6 @@ namespace PurestAdmin.Api.Host
             CoinfigureControllers(context, hostingEnvironment);
             ConfigureAuthorizationServices(context, configuration);
             ConfigureSwaggerServices(context);
-            ConfigureVirtualFileSystem(context);
             ConfigureCors(context, configuration);
         }
 
@@ -157,26 +155,7 @@ namespace PurestAdmin.Api.Host
                 options.SupportedResponseTypes.Clear();
             });
         }
-        private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
-        {
-            var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-            if (hostingEnvironment.IsDevelopment())
-            {
-                Configure<AbpVirtualFileSystemOptions>(options =>
-                {
-                    options.FileSets.ReplaceEmbeddedByPhysical<AdminCoreModule>(
-                        Path.Combine(hostingEnvironment.ContentRootPath,
-                            $"..{Path.DirectorySeparatorChar}PurestAdmin.Core"));
-                    //options.FileSets.ReplaceEmbeddedByPhysical<AdminDomainModule>(
-                    //    Path.Combine(hostingEnvironment.ContentRootPath,
-                    //        $"..{Path.DirectorySeparatorChar}PurestAdmin.Domain"));
-                    //options.FileSets.ReplaceEmbeddedByPhysical<AdminAppModule>(
-                    //    Path.Combine(hostingEnvironment.ContentRootPath,
-                    //        $"..{Path.DirectorySeparatorChar}PurestAdmin.Application.Contracts"));
-                });
-            }
-        }
         private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
         {
             context.Services.AddCors(options =>

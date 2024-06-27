@@ -1,10 +1,5 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using PurestAdmin.SqlSugar;
-using PurestAdmin.SqlSugar.Entity;
-
-using SqlSugar;
-
 using Volo.Abp.Timing;
 
 using WorkflowCore.Interface;

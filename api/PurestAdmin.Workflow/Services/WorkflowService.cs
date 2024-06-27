@@ -1,11 +1,5 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using Microsoft.AspNetCore.Mvc;
-
-using PurestAdmin.Multiplex.Contracts.Consts;
-
-using Volo.Abp.Application.Services;
-
 using WorkflowCore.Interface;
 
 namespace PurestAdmin.Workflow.Services;
@@ -16,6 +10,7 @@ namespace PurestAdmin.Workflow.Services;
 public class WorkflowService(IWorkflowHost workflowHost) : ApplicationService
 {
     private readonly IWorkflowHost _workflowHost = workflowHost;
+
     /// <summary>
     /// 开始流程
     /// </summary>
@@ -30,5 +25,8 @@ public class WorkflowService(IWorkflowHost workflowHost) : ApplicationService
     /// 审核流程
     /// </summary>
     /// <returns></returns>
-    //public async Task Auditing(string)
+    public async Task Auditing(string instanceId)
+    {
+
+    }
 }

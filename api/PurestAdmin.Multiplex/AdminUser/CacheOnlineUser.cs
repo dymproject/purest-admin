@@ -16,7 +16,7 @@ public class CacheOnlineUser(IAdminCache cache) : ICacheOnlineUser, ISingletonDe
     /// <returns></returns>
     public List<OnlineUserModel> GetOnlineUsers()
     {
-        return _cache.Get<List<OnlineUserModel>>(AdminConst.ONLINE_USER) ?? [];
+        return _cache.Get<List<OnlineUserModel>>(AdminClaimConst.ONLINE_USER) ?? [];
     }
 
     /// <summary>
@@ -25,6 +25,6 @@ public class CacheOnlineUser(IAdminCache cache) : ICacheOnlineUser, ISingletonDe
     /// <param name="users"></param>
     public void SetOnlineUser(List<OnlineUserModel> users)
     {
-        _cache.Set(AdminConst.ONLINE_USER, users);
+        _cache.Set(AdminClaimConst.ONLINE_USER, users);
     }
 }

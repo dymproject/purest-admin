@@ -9,9 +9,7 @@ using Microsoft.Net.Http.Headers;
 using PurestAdmin.Application.ProfileSystemServices.Dtos;
 using PurestAdmin.Core.File;
 using PurestAdmin.Core.File.Containers;
-using PurestAdmin.Core.Oops;
 
-using Volo.Abp;
 using Volo.Abp.Validation;
 
 
@@ -61,7 +59,7 @@ public class ProfileSystemService(ISqlSugarClient db, IFileCommand<ProfileSystem
     /// <returns></returns>
     public async Task<ProfileSystemOutput> GetAsync(long id)
     {
-        var entity = await _db.Queryable<ProfileSystemEntity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _db.Queryable<ProfileSystemEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         return entity.Adapt<ProfileSystemOutput>();
     }
 
@@ -73,10 +71,10 @@ public class ProfileSystemService(ISqlSugarClient db, IFileCommand<ProfileSystem
     public async Task<long> AddByStreamAsync()
     {
         var formAccumulator = new KeyValueAccumulator();
-        var contentType = _httpContextAccessor.HttpContext.Request.ContentType ?? throw Oops.Bah("请求被拒绝,请求内容为空");
+        var contentType = _httpContextAccessor.HttpContext.Request.ContentType ?? throw PersistdValidateException.Message("请求被拒绝,请求内容为空");
         if (!contentType.Contains("multipart/", StringComparison.OrdinalIgnoreCase))
         {
-            throw Oops.Bah("请求被拒绝，http 415");
+            throw PersistdValidateException.Message("请求被拒绝，http 415");
         }
         var boundary = HeaderUtilities.RemoveQuotes(MediaTypeHeaderValue.Parse(contentType).Boundary).Value;
         ArgumentNullException.ThrowIfNull(boundary);
@@ -129,8 +127,8 @@ public class ProfileSystemService(ISqlSugarClient db, IFileCommand<ProfileSystem
     [UnitOfWork]
     public async Task DeleteAsync(long id)
     {
-        var profileSystemEntity = await _db.Queryable<ProfileSystemEntity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
-        var fileRecordEntity = await _db.Queryable<FileRecordEntity>().FirstAsync(x => x.Id == profileSystemEntity.FileId) ?? throw Oops.Bah("未找到对应的文件记录！");
+        var profileSystemEntity = await _db.Queryable<ProfileSystemEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
+        var fileRecordEntity = await _db.Queryable<FileRecordEntity>().FirstAsync(x => x.Id == profileSystemEntity.FileId) ?? throw PersistdValidateException.Message("未找到对应的文件记录！");
         await _fileCommand.RemoveAsync(profileSystemEntity.FileId);
         await _db.Deleteable(profileSystemEntity).ExecuteCommandAsync();
         await _db.Deleteable(fileRecordEntity).ExecuteCommandAsync();

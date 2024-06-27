@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Volo.Abp.DependencyInjection" />
+    <Folder Include="Services\WorkflowDtos\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Dtos\" />
+    <Using Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 
 </Project>

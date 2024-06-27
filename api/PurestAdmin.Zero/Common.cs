@@ -47,8 +47,15 @@ public static class Common
             {
                 if (strType == "string")
                 {
-                    dtoResult.AppendFormat("\r\n\t[Required(ErrorMessage = \"{0}\"), MaxLength({1}, ErrorMessage = \"{2}\")]",
-                        columnInfo.ColumnDescription + "不能为空", columnInfo.Length, columnInfo.ColumnDescription + "最大长度为：" + columnInfo.Length);
+                    if (columnInfo.DataType.Contains("text"))
+                    {
+                        dtoResult.AppendFormat("\r\n\t[Required(ErrorMessage = \"{0}\")]", columnInfo.ColumnDescription + "不能为空");
+                    }
+                    else
+                    {
+                        dtoResult.AppendFormat("\r\n\t[Required(ErrorMessage = \"{0}\"), MaxLength({1}, ErrorMessage = \"{2}\")]", columnInfo.ColumnDescription + "不能为空", columnInfo.Length, columnInfo.ColumnDescription + "最大长度为：" + columnInfo.Length);
+                    }
+
                 }
                 else
                 {

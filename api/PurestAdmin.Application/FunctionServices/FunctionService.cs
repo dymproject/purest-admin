@@ -2,7 +2,6 @@
 
 using PurestAdmin.Application.FunctionServices.Dtos;
 using PurestAdmin.Core.Cache;
-using PurestAdmin.Core.Oops;
 
 namespace PurestAdmin.Application.FunctionServices;
 /// <summary>
@@ -57,7 +56,7 @@ public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> func
     /// <returns></returns>
     public async Task PutAsync(long id, AddFunctionInput input)
     {
-        var entity = await _functionRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _functionRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
         _ = await _functionRepository.UpdateAsync(newEntity);
     }
@@ -69,7 +68,7 @@ public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> func
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var entity = await _functionRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _functionRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         await _functionRepository.DeleteAsync(entity);
     }
 
@@ -118,7 +117,7 @@ public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> func
         {
             _ = await _db.Deleteable(record).ExecuteCommandAsync();
         }
-        _cache.Clear(AdminConst.CACHE_ROLESINTERFACE_PREFIX);
+        _cache.Clear(AdminClaimConst.CACHE_ROLESINTERFACE_PREFIX);
     }
 
     /// <summary>
@@ -127,9 +126,9 @@ public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> func
     /// <param name="id"></param>
     public async Task DeleteFunctionInterfaceAsync(long id)
     {
-        var record = await _db.Queryable<FunctionInterfaceEntity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var record = await _db.Queryable<FunctionInterfaceEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         await _db.Deleteable(record).ExecuteCommandAsync();
-        _cache.Clear(AdminConst.CACHE_ROLESINTERFACE_PREFIX);
+        _cache.Clear(AdminClaimConst.CACHE_ROLESINTERFACE_PREFIX);
     }
 
 }

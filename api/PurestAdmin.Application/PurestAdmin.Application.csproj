@@ -17,6 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Microsoft.AspNetCore.Mvc" />
+    <Using Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 </Project>
