@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\WorkflowDtos\" />
+    <Using Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="System.ComponentModel.DataAnnotations" />
+    <Folder Include="Workflows\" />
   </ItemGroup>
 
 </Project>

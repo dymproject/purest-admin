@@ -1,6 +1,6 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using WorkflowCore.Interface;
+using PurestAdmin.Workflow.Services.WorkflowDtos;
 
 namespace PurestAdmin.Workflow.Services;
 /// <summary>
@@ -17,16 +17,16 @@ public class WorkflowService(IWorkflowHost workflowHost) : ApplicationService
     /// <param name="definitionId"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public async Task Start(string definitionId, object data)
+    public async Task Start(string definitionId, Dictionary<string, object> data)
     {
         await _workflowHost.StartWorkflow(definitionId, data);
     }
     /// <summary>
-    /// 审核流程
+    /// 审核
     /// </summary>
     /// <returns></returns>
-    public async Task Auditing(string instanceId)
+    public async Task Auditing(AuditingInput input)
     {
-
+        await _workflowHost.PublishEvent("AuditingEvent", input.InstanceId, input);
     }
 }

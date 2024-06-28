@@ -15,3 +15,6 @@ global using SqlSugar;
 
 global using Volo.Abp.Application.Services;
 global using Volo.Abp.DependencyInjection;
+
+global using WorkflowCore.Interface;
+global using WorkflowCore.Models;
