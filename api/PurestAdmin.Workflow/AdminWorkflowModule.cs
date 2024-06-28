@@ -39,19 +39,12 @@ public class AdminWorkflowModule : AbpModule
     }
     public override async void OnApplicationInitialization(ApplicationInitializationContext context)
     {
-        await RegisterPeristenceWorflow(context);
-
         var workflowHost = context.ServiceProvider.GetRequiredService<IWorkflowHost>();
+        workflowHost.Start();
         workflowHost.OnStepError += (WorkflowInstance workflow, WorkflowStep step, Exception exception) =>
         {
 
         };
-        workflowHost.Start();
-    }
-
-    private async Task RegisterPeristenceWorflow(ApplicationInitializationContext context)
-    {
-        var scope = context.ServiceProvider.CreateScope();
         var loader = context.ServiceProvider.GetRequiredService<IDefinitionLoader>();
         var db = context.ServiceProvider.GetRequiredService<ISqlSugarClient>();
         var definitions = await db.Queryable<WfDefinitionEntity>().ToListAsync();

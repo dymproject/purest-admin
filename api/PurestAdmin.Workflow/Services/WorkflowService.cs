@@ -1,5 +1,6 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using PurestAdmin.Workflow.DataTypes;
 using PurestAdmin.Workflow.Services.WorkflowDtos;
 
 namespace PurestAdmin.Workflow.Services;
@@ -17,7 +18,7 @@ public class WorkflowService(IWorkflowHost workflowHost) : ApplicationService
     /// <param name="definitionId"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public async Task Start(string definitionId, Dictionary<string, object> data)
+    public async Task Start(string definitionId, DynamicData data)
     {
         await _workflowHost.StartWorkflow(definitionId, data);
     }

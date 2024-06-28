@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Workflows\**" />
+    <EmbeddedResource Remove="Workflows\**" />
+    <None Remove="Workflows\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="WorkflowCore" Version="3.10.0" />
     <PackageReference Include="WorkflowCore.DSL" Version="3.10.0" />
     <PackageReference Include="WorkflowCore.Persistence.MySQL" Version="3.10.0" />
@@ -21,10 +27,6 @@
 
   <ItemGroup>
     <Using Include="System.ComponentModel.DataAnnotations" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Workflows\" />
   </ItemGroup>
 
 </Project>
