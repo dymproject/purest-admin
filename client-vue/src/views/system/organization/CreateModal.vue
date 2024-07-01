@@ -67,7 +67,7 @@ const formItems = ref<VxeFormPropTypes.Items>([
           modelValue: data.parentId,
           onNodeClick(nodeData: Recordable) {
             formData.value.parentId = nodeData.id;
-            formRef.value.validateField("organizationId");
+            formRef.value.validateField("parentId");
           }
         })
       ]
@@ -100,8 +100,7 @@ const formItems = ref<VxeFormPropTypes.Items>([
 ]);
 const formRules = ref<VxeFormPropTypes.Rules>({
   name: [{ required: true, message: "请输入组织机构名称" }],
-
-  organizationId: [{ required: true, message: "请选择组织机构" }]
+  parentId: [{ required: true, message: "请选择组织机构" }]
 });
 
 const showAddModal = () => {

@@ -1,7 +1,5 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using PurestAdmin.Workflow.Workflows.D11;
-
 using Volo.Abp.DependencyInjection;
 
 using WorkflowCore.Interface;
@@ -36,12 +34,12 @@ public class WorkflowTestService(IWorkflowHost workflowHost) : ISingletonDepende
         #endregion
 
         #region 11
-        Console.WriteLine("Starting workflow...");
-        string workflowId = _workflowhost.StartWorkflow("if-sample", new MyData() { }).Result;
-        Console.WriteLine("请输入数字");
-        var count = Console.ReadLine() ?? "0";
-        await _workflowhost.PublishEvent("BranchEvent", workflowId, int.Parse(count));
-        Console.ReadLine();
+        //Console.WriteLine("Starting workflow...");
+        //string workflowId = _workflowhost.StartWorkflow("if-sample", new MyData() { }).Result;
+        //Console.WriteLine("请输入数字");
+        //var count = Console.ReadLine() ?? "0";
+        //await _workflowhost.PublishEvent("BranchEvent", workflowId, int.Parse(count));
+        //Console.ReadLine();
         #endregion
     }
 }

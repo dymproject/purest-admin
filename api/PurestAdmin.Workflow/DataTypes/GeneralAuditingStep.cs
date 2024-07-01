@@ -1,32 +1,80 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 
+
+using PurestAdmin.Multiplex.Contracts.IAdminUser;
+using PurestAdmin.Multiplex.Contracts.Workflow;
+
+using Volo.Abp.Timing;
+
 namespace PurestAdmin.Workflow.DataTypes;
-public class GeneralAuditingStep : StepBody
+public class GeneralAuditingStep(ISqlSugarClient db, ICurrentUser currentUser, IClock clock) : StepBodyAsync
 {
-    public string EventKey { get; set; }
+    private readonly ISqlSugarClient _db = db;
+    private readonly ICurrentUser _currentUser = currentUser;
+    private readonly IClock _clock = clock;
+    /// <summary>
+    /// 审核人
+    /// </summary>
+    public long Auditor { get; set; }
 
-    public string EventName { get; set; }
+    /// <summary>
+    /// 审核人类型
+    /// </summary>
+    public GeneralAuditingAuditorTypeEnum AuditorType { get; set; }
 
-    public DateTime? EffectiveDate { get; set; }
+    /// <summary>
+    /// 是否会签
+    /// </summary>
+    public bool IsCountersign { get; set; }
 
-    public object EventData { get; set; }
+    /// <summary>
+    /// 审核数据
+    /// </summary>
+    public GeneralAuditingData GeneralAuditingData { get; set; }
 
-    public override ExecutionResult Run(IStepExecutionContext context)
+    public async override Task<ExecutionResult> RunAsync(IStepExecutionContext context)
     {
         if (!context.ExecutionPointer.EventPublished)
         {
-            DateTime effectiveDate = DateTime.MinValue;
-
-            if (EffectiveDate != null)
+            var workflowInstance = await _db.Queryable<WfWorkflowEntity>().FirstAsync(x => x.InstanceId == context.Workflow.Id);
+            var workflowDefinition = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.DefinitionId == workflowInstance.WorkflowDefinitionId);
+            List<UserEntity> users = AuditorType switch
             {
-                effectiveDate = EffectiveDate.Value;
-            }
+                GeneralAuditingAuditorTypeEnum.Organization => await _db.Queryable<UserEntity>().Where(x => x.OrganizationId == Auditor).ToListAsync(),
+                GeneralAuditingAuditorTypeEnum.User => await _db.Queryable<UserEntity>().Where(x => x.Id == Auditor).ToListAsync(),
+                GeneralAuditingAuditorTypeEnum.Role => await _db.Queryable<UserEntity>().Where(x => SqlFunc.Subqueryable<UserRoleEntity>().Where(o => o.UserId == x.Id && o.RoleId == Auditor).Any()).ToListAsync(),
+                _ => [],
+            };
+            //todo:待完善通知用户待办
 
-            return ExecutionResult.WaitForEvent(EventName, EventKey, effectiveDate);
+            var auditing = new WfAuditingEntity()
+            {
+                WorkflowId = context.Workflow.Id,
+                Auditor = Auditor,
+                ExecutionPointerId = context.ExecutionPointer.Id,
+                AuditorType = (int)AuditorType,
+                IsCountersign = IsCountersign,
+                Status = (int)GeneralAuditingStatusEnum.Waiting
+            };
+            await _db.Insertable(auditing).ExecuteReturnSnowflakeIdAsync();
+            return ExecutionResult.WaitForEvent(GeneralAuditingConst.EVENT, Guid.NewGuid().ToString(), DateTime.MinValue);
         }
+        //var autitingEntity = await _db.Queryable<WfAuditingEntity>().FirstAsync(x => x.ExecutionPointerId == context.ExecutionPointer.Id);
+        //if (GeneralAuditingData.AuditingStatus == GeneralAuditingStatusEnum.Unapproved)
+        //{
+        //    context.Workflow.Status = WorkflowStatus.Complete;
+        //}
+        //if (!IsCountersign)
+        //{
+        //    autitingEntity.AuditingOpinion = GeneralAuditingData.AuditingOpinion;
+        //    autitingEntity.AuditingTime = _clock.Now;
+        //    autitingEntity.Status = (int)GeneralAuditingData.AuditingStatus;
+        //}
+        //else
+        //{
 
-        EventData = context.ExecutionPointer.EventData;
+        //}
         return ExecutionResult.Next();
     }
 }
