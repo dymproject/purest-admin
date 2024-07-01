@@ -63,4 +63,14 @@ public partial class WfWorkflowEntity
     ///</summary>
     [SugarColumn(ColumnName = "CREATE_TIME")]
     public DateTime CreateTime { get; set; }
+    /// <summary>
+    /// 创建人
+    ///</summary>
+    [SugarColumn(ColumnName = "CREATE_BY")]
+    public long CreateBy { get; set; }
+    /// <summary>
+    /// 备注 
+    ///</summary>
+    [SugarColumn(ColumnName = "REMARK")]
+    public string Remark { get; set; }
 }

@@ -7,10 +7,6 @@ namespace PurestAdmin.Workflow.Services.WorkflowDtos;
 public class AuditingInput
 {
     /// <summary>
-    /// 实例ID
-    /// </summary>
-    public string InstanceId { get; set; }
-    /// <summary>
     /// 是否同意
     /// </summary>
     public bool IsAgree { get; set; }
@@ -18,5 +14,4 @@ public class AuditingInput
     /// 审核意见
     /// </summary>
     public string Opinion { get; set; }
-
 }
