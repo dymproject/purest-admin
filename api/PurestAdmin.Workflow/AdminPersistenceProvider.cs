@@ -65,7 +65,7 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
     {
         var query = _db.Queryable<WfWorkflowEntity>().Includes(x => x.ExecutionPointers, p => p.ExtensionAttributes);
         var raw = await query.FirstAsync(x => x.InstanceId == Id, cancellationToken);
-        return raw.ToWorkflowInstance(_clock);
+        return raw?.ToWorkflowInstance(_clock);
     }
 
     public async Task<IEnumerable<WorkflowInstance>> GetWorkflowInstances(IEnumerable<string> ids, CancellationToken cancellationToken = default)
