@@ -1,6 +1,6 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-namespace PurestAdmin.BackgroundService.Jobs.Args;
+namespace PurestAdmin.Multiplex.Contracts.BackgroundArgs;
 public class SendNoticeArgs
 {
     /// <summary>

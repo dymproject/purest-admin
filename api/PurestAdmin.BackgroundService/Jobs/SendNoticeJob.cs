@@ -2,8 +2,8 @@
 
 using Microsoft.AspNetCore.SignalR;
 
-using PurestAdmin.BackgroundService.Jobs.Args;
 using PurestAdmin.Multiplex.AdminUser;
+using PurestAdmin.Multiplex.Contracts.BackgroundArgs;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 using PurestAdmin.SqlSugar.Entity;
@@ -16,7 +16,7 @@ using Volo.Abp.Timing;
 
 namespace PurestAdmin.BackgroundService.Jobs;
 public class SendNoticeJob(IClock clock, ISqlSugarClient db, IHubContext<OnlineUserHub, IOnlineUserClient> hubContext, ICacheOnlineUser cacheOnlineUser)
-    : BackgroundJob<SendNoticeArgs>, ITransientDependency
+    : AsyncBackgroundJob<SendNoticeArgs>, ITransientDependency
 {
     private readonly IClock _clock = clock;
     /// <summary>
@@ -32,7 +32,7 @@ public class SendNoticeJob(IClock clock, ISqlSugarClient db, IHubContext<OnlineU
     /// </summary>
     private readonly ICacheOnlineUser _cacheOnlineUser = cacheOnlineUser;
 
-    public override async void Execute(SendNoticeArgs args)
+    public override async Task ExecuteAsync(SendNoticeArgs args)
     {
         var noticeEntity = await _db.Queryable<NoticeEntity>()
             .Where(x => x.Id == args.NoticeId).Select(x => new NoticeEntity

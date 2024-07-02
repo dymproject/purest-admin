@@ -1,17 +1,11 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-
-
-using PurestAdmin.Multiplex.Contracts.IAdminUser;
-using PurestAdmin.Workflow.DataTypes;
-
 using Volo.Abp.Timing;
 
 namespace PurestAdmin.Workflow.Steps;
-public class GeneralAuditingStep(ISqlSugarClient db, ICurrentUser currentUser, IClock clock) : StepBodyAsync
+public class GeneralAuditingStep(ISqlSugarClient db, IClock clock) : StepBodyAsync
 {
     private readonly ISqlSugarClient _db = db;
-    private readonly ICurrentUser _currentUser = currentUser;
     private readonly IClock _clock = clock;
 
     /// <summary>
@@ -33,21 +27,20 @@ public class GeneralAuditingStep(ISqlSugarClient db, ICurrentUser currentUser, I
     {
         if (!context.ExecutionPointer.EventPublished)
         {
-            var aa = context.ExecutionPointer.EventData;
-            var workflowInstance = await _db.Queryable<WfWorkflowEntity>().FirstAsync(x => x.InstanceId == context.Workflow.Id);
-            var workflowDefinition = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.DefinitionId == workflowInstance.WorkflowDefinitionId);
-            List<UserEntity> users = AuditorType switch
-            {
-                (int)GeneralAuditingAuditorTypeEnum.Organization => await _db.Queryable<UserEntity>().Where(x => x.OrganizationId == Auditor).ToListAsync(),
-                (int)GeneralAuditingAuditorTypeEnum.User => await _db.Queryable<UserEntity>().Where(x => x.Id == Auditor).ToListAsync(),
-                (int)GeneralAuditingAuditorTypeEnum.Role => await _db.Queryable<UserEntity>().Where(x => SqlFunc.Subqueryable<UserRoleEntity>().Where(o => o.UserId == x.Id && o.RoleId == Auditor).Any()).ToListAsync(),
-                _ => [],
-            };
+            //var workflowInstance = await _db.Queryable<WfWorkflowEntity>().FirstAsync(x => x.InstanceId == context.Workflow.Id);
+            //var workflowDefinition = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.DefinitionId == workflowInstance.WorkflowDefinitionId);
+            //List<UserEntity> users = AuditorType switch
+            //{
+            //    (int)GeneralAuditingAuditorTypeEnum.Organization => await _db.Queryable<UserEntity>().Where(x => x.OrganizationId == Auditor).ToListAsync(),
+            //    (int)GeneralAuditingAuditorTypeEnum.User => await _db.Queryable<UserEntity>().Where(x => x.Id == Auditor).ToListAsync(),
+            //    (int)GeneralAuditingAuditorTypeEnum.Role => await _db.Queryable<UserEntity>().Where(x => SqlFunc.Subqueryable<UserRoleEntity>().Where(o => o.UserId == x.Id && o.RoleId == Auditor).Any()).ToListAsync(),
+            //    _ => [],
+            //};
             //todo:待完善通知用户待办
 
             var auditing = new WfAuditingEntity()
             {
-                WorkflowId = context.Workflow.Id,
+                InstanceId = context.Workflow.Id,
                 Auditor = Auditor,
                 ExecutionPointerId = context.ExecutionPointer.Id,
                 AuditorType = (int)AuditorType,
@@ -57,24 +50,14 @@ public class GeneralAuditingStep(ISqlSugarClient db, ICurrentUser currentUser, I
             await _db.Insertable(auditing).ExecuteReturnSnowflakeIdAsync();
             return ExecutionResult.WaitForEvent(GeneralAuditingConst.EVENT, Guid.NewGuid().ToString(), DateTime.MinValue);
         }
-        GeneralAuditingData auditingData;
-        if (context.ExecutionPointer.EventData is GeneralAuditingData data)
-        {
-            auditingData = data;
-        }
-        else
-        {
-            auditingData = new GeneralAuditingData()
-            {
-                AuditingOpinion = "同意",
-                AuditingStatus = GeneralAuditingStatusEnum.Approved,
-            };
-        }
-        var autitingEntity = await _db.Queryable<WfAuditingEntity>().FirstAsync(x => x.ExecutionPointerId == context.ExecutionPointer.Id);
 
-        autitingEntity.AuditingOpinion = auditingData.AuditingOpinion;
+        var autitingEntity = await _db.Queryable<WfAuditingEntity>().FirstAsync(x => x.ExecutionPointerId == context.ExecutionPointer.Id);
+        if (context.ExecutionPointer.EventData != null)
+        {
+            autitingEntity.AuditingOpinion = context.ExecutionPointer.EventData.ToString();
+        }
         autitingEntity.AuditingTime = _clock.Now;
-        autitingEntity.Status = (int)auditingData.AuditingStatus;
+        autitingEntity.Status = (int)GeneralAuditingStatusEnum.Approved;
         await _db.Updateable(autitingEntity).ExecuteCommandAsync();
         return ExecutionResult.Next();
     }

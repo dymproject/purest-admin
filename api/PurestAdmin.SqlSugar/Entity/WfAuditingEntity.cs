@@ -1,3 +1,5 @@
+// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
+
 namespace PurestAdmin.SqlSugar.Entity;
 
 /// <summary>
@@ -12,10 +14,10 @@ public partial class WfAuditingEntity
     [SugarColumn(ColumnName = "ID", IsPrimaryKey = true)]
     public long Id { get; set; }
     /// <summary>
-    /// 流程Id
+    /// 流程实例Id
     /// </summary>
-    [SugarColumn(ColumnName = "WORKFLOW_ID")]
-    public string WorkflowId { get; set; }
+    [SugarColumn(ColumnName = "INSTANCE_ID")]
+    public string InstanceId { get; set; }
     /// <summary>
     /// 步骤Id
     /// </summary>

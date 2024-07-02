@@ -13,5 +13,5 @@ public class AuditingInput
     /// <summary>
     /// 审核意见
     /// </summary>
-    public string Opinion { get; set; }
+    public string AuditingOpinion { get; set; }
 }

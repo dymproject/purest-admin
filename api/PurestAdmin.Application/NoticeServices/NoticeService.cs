@@ -1,7 +1,7 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.NoticeServices.Dtos;
-using PurestAdmin.BackgroundService.Jobs.Args;
+using PurestAdmin.Multiplex.Contracts.BackgroundArgs;
 
 using Volo.Abp.BackgroundJobs;
 

@@ -4,9 +4,6 @@
 
 using Serilog;
 
-using WorkflowCore.Interface;
-using WorkflowCore.Models;
-
 namespace PurestAdmin.Workflow.Middleware;
 public class UpdateWorkflowInstanceMiddleware(ILogger logger) : IWorkflowStepMiddleware
 {
