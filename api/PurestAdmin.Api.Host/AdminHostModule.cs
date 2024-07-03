@@ -113,9 +113,9 @@ namespace PurestAdmin.Api.Host
         {
             context.Services.AddAbpSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "系统管理" });
+                options.SwaggerDoc("system", new OpenApiInfo { Title = "系统管理" });
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PurestAdmin.Application.xml"), true);
-                options.SwaggerDoc("v2", new OpenApiInfo { Title = "工作流管理" });
+                options.SwaggerDoc("workflow", new OpenApiInfo { Title = "工作流管理" });
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PurestAdmin.Workflow.xml"), true);
                 //options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
@@ -213,8 +213,8 @@ namespace PurestAdmin.Api.Host
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "系统管理");
-                    options.SwaggerEndpoint("/swagger/v2/swagger.json", "工作流管理");
+                    options.SwaggerEndpoint("/swagger/system/swagger.json", "系统管理");
+                    options.SwaggerEndpoint("/swagger/workflow/swagger.json", "工作流管理");
                     var responseInterceptor = @" (res) => {
                             const token = res.headers.accesstoken;
                             if(token){localStorage.setItem('token', token);}
@@ -222,7 +222,6 @@ namespace PurestAdmin.Api.Host
                         }";
                     var requestInterceptor = @" (req) => {
                             req.headers.Authorization = 'Bearer ' + localStorage.getItem('token');
-                            console.log(localStorage.getItem('token'));
                             return req;
                         }";
                     options.UseResponseInterceptor(Regex.Replace(responseInterceptor, @"\s+", " "));

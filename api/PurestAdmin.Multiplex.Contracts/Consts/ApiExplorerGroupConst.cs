@@ -3,6 +3,6 @@
 namespace PurestAdmin.Multiplex.Contracts.Consts;
 public class ApiExplorerGroupConst
 {
-    public const string WORKFLOW = "v2";
-    public const string SYSTEM = "v1";
+    public const string WORKFLOW = "workflow";
+    public const string SYSTEM = "system";
 }

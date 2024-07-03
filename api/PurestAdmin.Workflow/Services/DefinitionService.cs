@@ -7,7 +7,7 @@ namespace PurestAdmin.Workflow.Services;
 /// WfDefinition服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.WORKFLOW)]
-public class WfDefinitionService(ISqlSugarClient db) : ApplicationService
+public class DefinitionService(ISqlSugarClient db) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
 
@@ -18,7 +18,9 @@ public class WfDefinitionService(ISqlSugarClient db) : ApplicationService
     /// <returns></returns>
     public async Task<PagedList<WfDefinitionOutput>> GetPagedListAsync(GetPagedListInput input)
     {
-        var pagedList = await _db.Queryable<WfDefinitionEntity>().ToPurestPagedListAsync(input.PageIndex, input.PageSize);
+        var pagedList = await _db.Queryable<WfDefinitionEntity>()
+            .Where(x => x.IsLocked)
+            .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<WfDefinitionOutput>>();
     }
 

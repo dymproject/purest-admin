@@ -12,12 +12,56 @@ namespace PurestAdmin.Workflow.Services;
 /// 工作流服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.WORKFLOW)]
-public class WorkflowService(IWorkflowHost workflowHost, ISqlSugarClient db, ICurrentUser currentUser, IBackgroundJobManager backgroundJobManager) : ApplicationService
+public class InstanceService(IWorkflowHost workflowHost, ISqlSugarClient db, ICurrentUser currentUser, IBackgroundJobManager backgroundJobManager) : ApplicationService
 {
     private readonly IWorkflowHost _workflowHost = workflowHost;
     private readonly ISqlSugarClient _db = db;
     private readonly ICurrentUser _currentUser = currentUser;
     private readonly IBackgroundJobManager _backgroundJobManager = backgroundJobManager;
+
+    /// <summary>
+    /// 我发起的
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public async Task<PagedList<GetSelfPagedListOutput>> GetSelfPagedListAsync(GetSelfPagedListInput input)
+    {
+        var pagedList = await _db.Queryable<WfWorkflowEntity>()
+            .WhereIF(input.WorkflowStatus.HasValue, x => x.Status == input.WorkflowStatus)
+            .OrderByDescending(x => x.CreateTime)
+            .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
+        return pagedList.Adapt<PagedList<GetSelfPagedListOutput>>();
+    }
+
+    /// <summary>
+    /// 我审批的
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public async Task<PagedList<GetWaitingAuditingOutput>> GetAuditingPagedListAsync(GetWaitingPagedListInput input)
+    {
+        var all = new List<GetSelfPagedListOutput>();
+        var organizationTypeItemQuery = _db.Queryable<WfAuditingEntity>()
+            .Where(x => x.Auditor == _currentUser.OrganizationId && x.Status == (int)input.Status);
+        var userTypeItemQuery = _db.Queryable<WfAuditingEntity>()
+            .Where(x => x.Auditor == _currentUser.Id && x.Status == (int)input.Status);
+        var roleTypeItemQuery = _db.Queryable<WfAuditingEntity>()
+            .Where(x => SqlFunc.Subqueryable<UserRoleEntity>().Where(o => o.RoleId == x.Auditor && o.UserId == _currentUser.Id).Any() && x.Status == (int)input.Status);
+        var query = _db.Union(organizationTypeItemQuery, userTypeItemQuery, roleTypeItemQuery);
+        var pagedList = await query.LeftJoin<WfWorkflowEntity>((a, b) => a.InstanceId == b.InstanceId)
+            .LeftJoin<WfDefinitionEntity>((a, b, c) => b.WorkflowDefinitionId == c.DefinitionId)
+            .LeftJoin<UserEntity>((a, b, c, d) => b.CreateBy == d.Id)
+            .Select((a, b, c, d) => new GetWaitingAuditingOutput()
+            {
+                Id = a.Id,
+                CreateTime = a.CreateTime,
+                WorkflowInstanceTitle = c.Name,
+                CreateByName = d.Name,
+                Version = c.Version
+            }).ToPageListAsync(input.PageIndex, input.PageSize);
+        return pagedList.Adapt<PagedList<GetWaitingAuditingOutput>>();
+    }
+
     /// <summary>
     /// 开始流程
     /// </summary>

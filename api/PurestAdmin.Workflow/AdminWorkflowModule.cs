@@ -33,7 +33,7 @@ public class AdminWorkflowModule : AbpModule
         {
             options.ConventionalControllers.Create(typeof(AdminWorkflowModule).Assembly, opts =>
             {
-                opts.RootPath = "v2";
+                opts.RootPath = "v1";
             });
         });
     }
