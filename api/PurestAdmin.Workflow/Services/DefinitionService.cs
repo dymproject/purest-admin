@@ -19,7 +19,9 @@ public class DefinitionService(ISqlSugarClient db) : ApplicationService
     public async Task<PagedList<WfDefinitionOutput>> GetPagedListAsync(GetPagedListInput input)
     {
         var pagedList = await _db.Queryable<WfDefinitionEntity>()
-            .Where(x => x.IsLocked)
+            .WhereIF(!input.Name.IsNullOrEmpty(), x => x.Name.Contains(input.Name))
+            .WhereIF(input.Version.HasValue, x => x.Version == input.Version)
+            .WhereIF(input.IsLocked.HasValue, x => x.IsLocked == input.IsLocked)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
         return pagedList.Adapt<PagedList<WfDefinitionOutput>>();
     }

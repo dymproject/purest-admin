@@ -3,7 +3,7 @@ import { ref, h } from "vue";
 import { getSelfPageList } from "@/api/workflow/instance";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
-import { VxeButton, VxeGridPropTypes, VXETable } from "vxe-table";
+import { VxeButton, VxeGridPropTypes } from "vxe-table";
 import { hasAuth } from "@/router/utils";
 
 const statusOptions = [
@@ -67,7 +67,7 @@ const handleInitialFormParams = () => ({
 const formItems = [
   {
     field: "workflowStatus",
-    title: "工作流状态",
+    title: "流程状态",
     span: 6,
     itemRender: {
       name: "$select",
@@ -113,27 +113,17 @@ const createModalRef = ref();
 const handleAdd = () => {
   createModalRef.value.showAddModal();
 };
-const handleEdit = (record: Recordable) => {
-  createModalRef.value.showEditModal(record);
-};
-const handleDelete = async (record: Recordable) => {
-  const type = await VXETable.modal.confirm("您确定要删除吗？");
-  if (type == "confirm") {
-    deleteData(record.id).then(() => {
-      handleSearch();
-    });
-  }
-};
+
 const handleView = (record: Recordable) => {
   createModalRef.value.showViewModal(record);
 };
-const functions: Record<string, string> = {
-  add: "system.notice.add",
-  edit: "system.notice.edit",
-  view: "system.notice.view",
-  delete: "system.notice.delete"
-};
-const customTableActions = [
+// const functions: Record<string, string> = {
+//   add: "system.notice.add",
+//   edit: "system.notice.edit",
+//   view: "system.notice.view",
+//   delete: "system.notice.delete"
+// };
+const customTableActions: VxeGridPropTypes.Columns<any> = [
   {
     title: "操作",
     field: "operate",
@@ -164,6 +154,22 @@ const customTableActions = [
     }
   }
 ];
+
+const toolbarConfig: VxeGridPropTypes.ToolbarConfig = {
+  slots: {
+    buttons: () => [
+      hasAuth("system.notice.add")
+        ? h(VxeButton, {
+            icon: "vxe-icon-add",
+            status: "primary",
+            content: "发起流程",
+            onClick: handleAdd
+          })
+        : null
+    ]
+  },
+  custom: true
+};
 </script>
 <template>
   <div>
@@ -180,17 +186,12 @@ const customTableActions = [
       <ReVxeGrid
         ref="reVxeGridRef"
         :request="getSelfPageList"
-        :functions="functions"
         :searchParams="formData"
         :columns="columns"
+        :customToolbarActions="toolbarConfig"
         :customTableActions="customTableActions"
-        @handleAdd="handleAdd"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        @handleView="handleView"
       />
     </el-card>
     <CreateModal ref="createModalRef" @reload="handleSearch" />
   </div>
 </template>
-@/api/workflow/definition

@@ -16,6 +16,15 @@ export default {
   },
   children: [
     {
+      path: "/definition",
+      name: "workflow_definition",
+      meta: {
+        title: "流程模板",
+        // permissions: ["system.user"]
+      },
+      component: () => import("@/views/workflow/definition/index.vue")
+    },
+    {
       path: "/self",
       name: "workflow_self",
       meta: {
@@ -31,7 +40,7 @@ export default {
         title: "待办事项",
         // permissions: ["system.user"]
       },
-      component: () => import("@/views/workflow/instance/auditing.vue")
+      component: () => import("@/views/workflow/instance/Auditing.vue")
     },
   ]
 } as RouteConfigsTable;
