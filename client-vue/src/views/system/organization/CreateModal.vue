@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, h, nextTick, reactive } from "vue";
-import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-table";
+import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-pc-ui";
 import { ReOrganizationTreeSelect } from "@/components/ReOrganizationTreeSelect";
 import { getSingle, submitData } from "@/api/system/organization";
 const emits = defineEmits<{ (e: "reload"): void }>();

@@ -6,7 +6,7 @@ import {
   deleteData
 } from "@/api/system/dictionary";
 import { ReVxeGrid } from "@/components/ReVxeTable";
-import { VxeButton, VxeGridPropTypes, VXETable } from "vxe-table";
+import { VxeButton, VxeUI } from "vxe-pc-ui";
 import CreateModal from "./CreateModal.vue";
 
 import { hasAuth } from "@/router/utils";
@@ -14,7 +14,7 @@ import { message } from "@/utils/message";
 
 const reVxeGridRef = ref();
 const reVxeGridRef2 = ref();
-const columns: VxeGridPropTypes.Columns<any> = [
+const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
     title: "Id",
@@ -47,7 +47,7 @@ const columns: VxeGridPropTypes.Columns<any> = [
         hasAuth("system.dictionary.view")
           ? h(VxeButton, {
               status: "error",
-              type: "text",
+              mode: "text",
               icon: "vxe-icon-file-txt",
               content: "查看",
               onClick() {
@@ -60,7 +60,7 @@ const columns: VxeGridPropTypes.Columns<any> = [
   }
 ];
 
-const columns2: VxeGridPropTypes.Columns<any> = [
+const columns2 = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
     title: "Id",
@@ -134,7 +134,7 @@ const handleEdit = (record: Recordable) => {
   createModalRef.value.showEditModal(record);
 };
 const handleDelete = async (record: Recordable) => {
-  const type = await VXETable.modal.confirm("您确定要删除吗？");
+  const type = await VxeUI.modal.confirm("您确定要删除吗？");
   if (type == "confirm") {
     deleteData(record.id).then(() => {
       handleSearch();
@@ -236,4 +236,3 @@ const functions: Record<string, string> = {
     />
   </div>
 </template>
-@/api/system/dictionary

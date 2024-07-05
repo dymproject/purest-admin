@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { VxeFormPropTypes, VxeFormInstance } from "vxe-table";
+import { VxeFormPropTypes, VxeFormInstance } from "vxe-pc-ui";
 import { getUserInfo, editUserInfo } from "@/api/auth";
 import { message } from "@/utils/message";
 import { useUserStore } from "@/store/modules/user";

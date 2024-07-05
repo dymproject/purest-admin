@@ -1,6 +1,7 @@
 <script lang="tsx" setup>
 import { h, onMounted, reactive, ref } from "vue";
-import { VxeButton, VxeGridPropTypes, VxePagerEvents } from "vxe-table";
+import { VxeGridPropTypes, VxePagerEvents } from "vxe-table";
+import { VxeButton } from "vxe-pc-ui";
 import { hasAuth } from "@/router/utils";
 const props = defineProps<{
   rowKey?: string;
@@ -8,7 +9,7 @@ const props = defineProps<{
   request?: (params) => Promise<any>;
   columns: Array<any>;
   operateColumnWidth?: number;
-  customTableActions?: VxeGridPropTypes.Columns<any>;
+  customTableActions?: VxeGridPropTypes.Columns<any> | any;
   customToolbarActions?: VxeGridPropTypes.ToolbarConfig;
   functions?: Record<string, string>;
   treeConfig?: any;
@@ -35,7 +36,7 @@ const actionColumns: VxeGridPropTypes.Columns<any> =
           hasAuth(props.functions["view"])
             ? h(VxeButton, {
                 status: "error",
-                type: "text",
+                mode: "text",
                 icon: "vxe-icon-file-txt",
                 content: "查看",
                 onClick() {
@@ -47,7 +48,7 @@ const actionColumns: VxeGridPropTypes.Columns<any> =
             ? h(VxeButton, {
                 status: "primary",
                 icon: "vxe-icon-edit",
-                type: "text",
+                mode: "text",
                 content: "编辑",
                 onClick() {
                   emits("handleEdit", row);
@@ -57,7 +58,7 @@ const actionColumns: VxeGridPropTypes.Columns<any> =
           hasAuth(props.functions["delete"])
             ? h(VxeButton, {
                 status: "danger",
-                type: "text",
+                mode: "text",
                 icon: "vxe-icon-delete",
                 content: "删除",
                 onClick() {
@@ -102,7 +103,7 @@ const data = ref<[]>([]);
 const loading = ref(false);
 
 const loadData = async () => {
-  loading.value = true;
+  //loading.value = true;
   props.request({ ...pager, ...props.searchParams }).then(result => {
     loading.value = false;
     const { pageIndex, total, items } = result;

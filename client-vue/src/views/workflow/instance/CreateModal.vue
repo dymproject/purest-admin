@@ -1,6 +1,6 @@
 <script lang="tsx" setup>
 import { ref, nextTick, reactive, h } from "vue";
-import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-table";
+import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-pc-ui";
 import { getSingle, submitData } from "@/api/system/notice";
 import { ReDictionary } from "@/components/ReDictionary";
 const emits = defineEmits<{ (e: "reload"): void }>();

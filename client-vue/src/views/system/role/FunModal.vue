@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, reactive } from "vue";
-import { VxeModalInstance, VxeTableEvents, VxeTableInstance } from "vxe-table";
 import { getTreeList } from "@/api/system/function";
 import { getFunctions, assignFunction } from "@/api/system/role";
-const vxeModalRef = ref<VxeModalInstance>();
-const vxeTableRef = ref<VxeTableInstance>();
+const vxeModalRef = ref();
+const vxeTableRef = ref();
 const modalOptions = reactive<{
   modalValue: boolean;
   modalTitle: string;
@@ -42,11 +41,7 @@ const handleSubmit = () => {
   assignFunction(roleId.value, checkRowKeys.value);
   modalOptions.modalValue = false;
 };
-const selectChangeEvent: VxeTableEvents.CheckboxChange<any> = ({
-  $table,
-  checked,
-  row
-}) => {
+const selectChangeEvent = ({ $table, checked, row }) => {
   setTableChecked(checked, row);
   row.checked = false;
   const records = $table.getCheckboxRecords();

@@ -6,8 +6,8 @@ import {
   VxeModalInstance,
   VxeInput,
   VxeButton,
-  VXETable
-} from "vxe-table";
+  VxeUI
+} from "vxe-pc-ui";
 import { submitData } from "@/api/system/profileSystem";
 const emits = defineEmits<{ (e: "reload"): void }>();
 const vxeModalRef = ref<VxeModalInstance>();
@@ -83,7 +83,7 @@ const formItems = ref<VxeFormPropTypes.Items>([
               style: { width: `30%` },
               async onClick() {
                 try {
-                  const { file } = await VXETable.readFile();
+                  const { file } = await VxeUI.readFile();
                   data.file = file;
                   fileName.value = file.name;
                   formRef.value.validate();

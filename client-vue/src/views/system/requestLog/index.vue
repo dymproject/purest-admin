@@ -2,9 +2,9 @@
 import { reactive, ref } from "vue";
 import { getPageList } from "@/api/system/requestLog";
 import { ReVxeGrid } from "@/components/ReVxeTable";
-import { VxeGridPropTypes } from "vxe-table";
+
 const reVxeGridRef = ref();
-const columns: VxeGridPropTypes.Columns<any> = [
+const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
     title: "控制器",

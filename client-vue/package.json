@@ -74,8 +74,8 @@
     "vue-router": "^4.3.3",
     "vue-tippy": "^6.4.1",
     "vue-types": "^5.1.2",
-    "vxe-pc-ui": "v4",
-    "vxe-table": "^4.6.15",
+    "vxe-pc-ui": "^4.0.48",
+    "vxe-table": "^4.7.44",
     "xe-utils": "^3.5.26"
   },
   "devDependencies": {

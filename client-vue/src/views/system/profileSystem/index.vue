@@ -3,10 +3,10 @@ import { h, reactive, ref } from "vue";
 import { getPageList, deleteData, download } from "@/api/system/profileSystem";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
-import { VxeButton, VxeGridPropTypes, VXETable } from "vxe-table";
+import { VxeButton, VxeUI } from "vxe-pc-ui";
 
 const reVxeGridRef = ref();
-const columns: VxeGridPropTypes.Columns<any> = [
+const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
     title: "名称",
@@ -98,7 +98,7 @@ const handleAdd = () => {
   createModalRef.value.showAddModal();
 };
 const handleDelete = async (record: Recordable) => {
-  const type = await VXETable.modal.confirm("您确定要删除吗？");
+  const type = await VxeUI.modal.confirm("您确定要删除吗？");
   if (type == "confirm") {
     deleteData(record.id).then(() => {
       handleSearch();

@@ -3,7 +3,7 @@ import { ref, h } from "vue";
 import { getSelfPageList } from "@/api/workflow/instance";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
-import { VxeButton, VxeGridPropTypes } from "vxe-table";
+import { VxeButton } from "vxe-pc-ui";
 import { hasAuth } from "@/router/utils";
 
 const statusOptions = [
@@ -25,7 +25,7 @@ const statusOptions = [
   }
 ];
 const reVxeGridRef = ref();
-const columns: VxeGridPropTypes.Columns<any> = [
+const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
     title: "流程描述",
@@ -123,7 +123,7 @@ const handleView = (record: Recordable) => {
 //   view: "system.notice.view",
 //   delete: "system.notice.delete"
 // };
-const customTableActions: VxeGridPropTypes.Columns<any> = [
+const customTableActions = [
   {
     title: "操作",
     field: "operate",
@@ -155,7 +155,7 @@ const customTableActions: VxeGridPropTypes.Columns<any> = [
   }
 ];
 
-const toolbarConfig: VxeGridPropTypes.ToolbarConfig = {
+const toolbarConfig = {
   slots: {
     buttons: () => [
       hasAuth("system.notice.add")

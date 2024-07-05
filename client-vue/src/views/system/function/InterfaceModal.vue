@@ -1,11 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, reactive, h, nextTick } from "vue";
-import {
-  VxeButton,
-  VxeGridPropTypes,
-  VxeModalInstance,
-  VxeSwitch
-} from "vxe-table";
+import { VxeButton, VxeModalInstance, VxeSwitch } from "vxe-pc-ui";
 import { getPageList, asyncApi } from "@/api/system/interface";
 import { ElLoading } from "element-plus";
 import {
@@ -53,7 +48,7 @@ const showInterface = (record: Recordable) => {
 const handleSubmit = () => {
   modalOptions.modalValue = false;
 };
-const columns: VxeGridPropTypes.Columns<any> = [
+const columns = [
   {
     title: "Id",
     field: "id",
@@ -77,7 +72,7 @@ const columns: VxeGridPropTypes.Columns<any> = [
     minWidth: 30
   }
 ];
-const customTableActions: VxeGridPropTypes.Columns<any> = [
+const customTableActions = [
   {
     title: "操作",
     field: "operate",
@@ -97,7 +92,7 @@ const customTableActions: VxeGridPropTypes.Columns<any> = [
               size: "medium",
               openLabel: "已绑定",
               closeLabel: "未绑定",
-              onChange({ value }) {
+              onChange(value) {
                 assignInterface({
                   functionId: functionId.value,
                   interfaceId: row.id
