@@ -3,7 +3,30 @@ import { ref, nextTick, reactive } from "vue";
 import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-pc-ui";
 import { getSingle, submitData } from "@/api/system/user";
 import { Picture, Collection, Edit } from "@element-plus/icons-vue";
+import { VxeFormDesignPropTypes, VxeFormDesignInstance } from "vxe-pc-ui";
+import { message } from "@/utils/message";
+import FlowChartDesign from "./FlowChartDesign.vue";
+
 const emits = defineEmits<{ (e: "reload"): void }>();
+const formDesignRef = ref<VxeFormDesignInstance>();
+const formDesignWidgets = ref<VxeFormDesignPropTypes.Widgets>([
+  {
+    group: "layout",
+    children: ["row"]
+  },
+  {
+    group: "base",
+    children: [
+      "VxeInput",
+      "VxeTextarea",
+      "VxeSelect",
+      "VxeSwitch",
+      "VxeRadioGroup",
+      "VxeCheckboxGroup"
+    ]
+  }
+]);
+
 const vxeModalRef = ref<VxeModalInstance>();
 const modalOptions = reactive<{
   modalValue: boolean;
@@ -22,20 +45,24 @@ const showModal = (title: string, canSubmit?: boolean): void => {
   modalOptions.canSubmit = canSubmit ?? true;
 };
 
-interface AddUserInput {
+interface AddDefinitionInput {
   name: string;
   version: number;
   remark: string;
+  designsContent: string;
+  formContent: string;
 }
 const formRef = ref<VxeFormInstance>();
-const defaultFormData = () => {
+const defaultFormData = (): AddDefinitionInput => {
   return {
     name: "",
     version: 1,
+    designsContent: "",
+    formContent: "",
     remark: ""
   };
 };
-const formData = ref<AddUserInput>(defaultFormData());
+const formData = ref<AddDefinitionInput>(defaultFormData());
 const formItems = ref<VxeFormPropTypes.Items>([
   {
     field: "name",
@@ -96,16 +123,25 @@ const showViewModal = (record: Recordable) => {
   });
 };
 const handleSubmit = async () => {
-  const validate = await formRef.value.validate();
-  if (!validate) {
-    submitData(formData.value).then(() => {
-      modalOptions.modalValue = false;
-      emits("reload");
-    });
-  }
+  submitData(formData.value).then(() => {
+    modalOptions.modalValue = false;
+    emits("reload");
+  });
 };
 const activeValue = ref(0);
-
+const handleNext = async () => {
+  if (activeValue.value == 0) {
+    const validate = await formRef.value.validate();
+    if (validate) return false;
+  } else if (activeValue.value == 1) {
+    var formDesign = formDesignRef.value.getConfig();
+    if (formDesign.widgetData.length == 0) {
+      message("表单内容不能为空", { type: "warning" });
+      return false;
+    }
+  }
+  if (activeValue.value++ > 1) activeValue.value = 0;
+};
 defineExpose({ showAddModal, showEditModal, showViewModal });
 </script>
 <template>
@@ -128,33 +164,21 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
           >
             <el-step :icon="Edit">
               <template #title>
-                <el-button
-                  link
-                  :type="activeValue > -1 ? `primary` : `info`"
-                  @click="activeValue = 0"
-                >
+                <el-button link :type="activeValue > -1 ? `primary` : `info`">
                   基本信息
                 </el-button>
               </template>
             </el-step>
             <el-step :icon="Collection">
               <template #title>
-                <el-button
-                  link
-                  :type="activeValue > 0 ? `primary` : `info`"
-                  @click="activeValue = 1"
-                >
+                <el-button link :type="activeValue > 0 ? `primary` : `info`">
                   表单设计
                 </el-button>
               </template>
             </el-step>
             <el-step :icon="Picture">
               <template #title>
-                <el-button
-                  link
-                  :type="activeValue > 1 ? `primary` : `info`"
-                  @click="activeValue = 2"
-                >
+                <el-button link :type="activeValue > 0 ? `primary` : `info`">
                   流程设计
                 </el-button>
               </template>
@@ -162,7 +186,7 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
           </el-steps>
         </el-col>
       </el-row>
-      <el-row v-if="activeValue == 0">
+      <el-row v-show="activeValue == 0">
         <el-col>
           <el-col>
             <vxe-form
@@ -177,14 +201,27 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
           </el-col>
         </el-col>
       </el-row>
-      <el-row v-if="activeValue == 1">
-        <el-col> 123 </el-col>
+      <el-row v-show="activeValue == 1">
+        <el-col>
+          <vxe-form-design
+            ref="formDesignRef"
+            :widgets="formDesignWidgets"
+            :height="600"
+          />
+        </el-col>
       </el-row>
-      <el-row v-if="activeValue == 2"> aaa </el-row>
+      <el-row v-show="activeValue == 2">
+        <FlowChartDesign style="width: 100%" />
+      </el-row>
     </template>
     <template #footer>
       <div>
         <vxe-button content="关闭" @click="modalOptions.modalValue = false" />
+        <vxe-button
+          :content="activeValue == 2 ? `重新开始` : `下一步`"
+          status="warning"
+          @click="handleNext"
+        />
         <vxe-button
           v-if="modalOptions.canSubmit && activeValue == 2"
           status="primary"

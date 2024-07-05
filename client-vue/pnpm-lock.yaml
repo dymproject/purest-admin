@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@logicflow/core':
+        specifier: 2.0.0-beta.2
+        version: 2.0.0-beta.2
+      '@logicflow/extension':
+        specifier: 2.0.0-beta.2
+        version: 2.0.0-beta.2(@logicflow/core@2.0.0-beta.2)
       '@microsoft/signalr':
         specifier: ^8.0.0
         version: 8.0.0
@@ -74,6 +80,9 @@ importers:
       vue:
         specifier: ^3.4.27
         version: 3.4.27(typescript@5.4.5)
+      vue-json-pretty:
+        specifier: ^2.4.0
+        version: 2.4.0(vue@3.4.27(typescript@5.4.5))
       vue-router:
         specifier: ^4.3.3
         version: 4.3.3(vue@3.4.27(typescript@5.4.5))
@@ -271,6 +280,9 @@ packages:
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
+
+  '@antv/hierarchy@0.6.12':
+    resolution: {integrity: sha512-WvWT9WYtm2SvYunm1HtzrHazvOozeP4cPFDhJWsnLzmTGMX/tNhsoCD3O+DDB3aeDY8fyM+wfZDvLv7+/4lIeA==}
 
   '@babel/code-frame@7.24.2':
     resolution: {integrity: sha512-y5+tLQyV8pg3fsiln67BVLD1P13Eg4lh5RW9mF0zUuvLrv9uIQ4MCL+CRT+FTsBlBjcIan6PGsLcBN0m3ClUyQ==}
@@ -1034,6 +1046,14 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
+  '@logicflow/core@2.0.0-beta.2':
+    resolution: {integrity: sha512-B27+hL6Gn4CnLsdHz/Ur3u5DTAB49fZohKa8tmQNy+3npPmO9qikpRJmPkNEKf71Oh/r7irhuSq/zrwn88jhpg==}
+
+  '@logicflow/extension@2.0.0-beta.2':
+    resolution: {integrity: sha512-yehQFYDCxeVg1fKYpkSaQ9Wh+0ejmWc8ok3r9F+tNpmR+LfbQepV1u8nGhd5DV2gbbA7Nm9S9dI80r/HIlh3Vg==}
+    peerDependencies:
+      '@logicflow/core': 2.0.0-beta.2
+
   '@microsoft/signalr@8.0.0':
     resolution: {integrity: sha512-K/wS/VmzRWePCGqGh8MU8OWbS1Zvu7DG7LSJS62fBB8rJUXwwj4axQtqrAAwKGUZHQF6CuteuQR9xMsVpM2JNA==}
 
@@ -1590,6 +1610,9 @@ packages:
 
   citty@0.1.6:
     resolution: {integrity: sha512-tskPPKEs8D2KPafUypv2gxwJP8h/OaJmC82QQGGDQcHvXX43xF2VDACcJVmZ0EuSxkpO9Kc4MlrA3q0+FG58AQ==}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   cli-boxes@3.0.0:
     resolution: {integrity: sha512-/lzGpEWL/8PfI0BmBOPRwp0c/wFNX1RdUML3jK/RcSBA9T8mZDdQpqYBKtCFTOfQbwPqWEOpjqW+Fnayc0969g==}
@@ -2285,6 +2308,9 @@ packages:
   hey-listen@1.0.8:
     resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
 
+  hoist-non-react-statics@2.5.5:
+    resolution: {integrity: sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==}
+
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
@@ -2681,6 +2707,23 @@ packages:
 
   mlly@1.7.0:
     resolution: {integrity: sha512-U9SDaXGEREBYQgfejV97coK0UL1r+qnF2SyO9A3qcI8MzKnsIFKHNVEkrDyNncQTKQQumsasmeq84eNMdBfsNQ==}
+
+  mobx-preact@3.0.0:
+    resolution: {integrity: sha512-ijan/cBs3WmRye87E5+3JmoFBB00KDAwNA3pm7bMwYLPHBAXlN86aC3gdrXw8aKzM5RI8V3a993PphzPv6P4FA==}
+    peerDependencies:
+      mobx: 5.x
+      preact: '>=8'
+
+  mobx-utils@5.6.2:
+    resolution: {integrity: sha512-a/WlXyGkp6F12b01sTarENpxbmlRgPHFyR1Xv2bsSjQBm5dcOtd16ONb40/vOqck8L99NHpI+C9MXQ+SZ8f+yw==}
+    peerDependencies:
+      mobx: ^4.13.1 || ^5.13.1
+
+  mobx@5.15.7:
+    resolution: {integrity: sha512-wyM3FghTkhmC+hQjyPGGFdpehrcX1KOXsDuERhfK2YbJemkUhEB+6wzEN639T21onxlfYBmriA1PFnvxTUhcKw==}
+
+  mousetrap@1.6.5:
+    resolution: {integrity: sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==}
 
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -3299,6 +3342,9 @@ packages:
     resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
     engines: {node: ^10 || ^12 || >=14}
 
+  preact@10.22.1:
+    resolution: {integrity: sha512-jRYbDDgMpIb5LHq3hkI0bbl+l/TQ9UnkdQ0ww+lp+4MMOdqaUYdFc5qeyP+IV8FAd/2Em7drVPeKdQxsiWCf/A==}
+
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -3823,6 +3869,10 @@ packages:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
 
+  uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    hasBin: true
+
   vite-plugin-cdn-import@1.0.1:
     resolution: {integrity: sha512-lgjLxgwFSKvJLbqjVBirUZ0rQo00GpUGJzRpgQu8RyBw9LA7jaqG6fUMQzBC9qWmTGabPC3iOzwCcoi7PseRAQ==}
 
@@ -3911,6 +3961,12 @@ packages:
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'
+
+  vue-json-pretty@2.4.0:
+    resolution: {integrity: sha512-e9bP41DYYIc2tWaB6KuwqFJq5odZ8/GkE6vHQuGcbPn37kGk4a3n1RNw3ZYeDrl66NWXgTlOfS+M6NKkowmkWw==}
+    engines: {node: '>= 10.0.0', npm: '>= 5.0.0'}
+    peerDependencies:
+      vue: '>=3.0.0'
 
   vue-router@4.3.3:
     resolution: {integrity: sha512-8Q+u+WP4N2SXY38FDcF2H1dUEbYVHVPtPCPZj/GTZx8RCbiB8AtJP9+YIxn4Vs0svMTNQcLIzka4GH7Utkx9xQ==}
@@ -4068,6 +4124,8 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
+
+  '@antv/hierarchy@0.6.12': {}
 
   '@babel/code-frame@7.24.2':
     dependencies:
@@ -4870,6 +4928,22 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  '@logicflow/core@2.0.0-beta.2':
+    dependencies:
+      classnames: 2.5.1
+      mobx: 5.15.7
+      mobx-preact: 3.0.0(mobx@5.15.7)(preact@10.22.1)
+      mobx-utils: 5.6.2(mobx@5.15.7)
+      mousetrap: 1.6.5
+      preact: 10.22.1
+      uuid: 9.0.1
+
+  '@logicflow/extension@2.0.0-beta.2(@logicflow/core@2.0.0-beta.2)':
+    dependencies:
+      '@antv/hierarchy': 0.6.12
+      '@logicflow/core': 2.0.0-beta.2
+      preact: 10.22.1
+
   '@microsoft/signalr@8.0.0':
     dependencies:
       abort-controller: 3.0.0
@@ -5589,6 +5663,8 @@ snapshots:
     dependencies:
       consola: 3.2.3
     optional: true
+
+  classnames@2.5.1: {}
 
   cli-boxes@3.0.0: {}
 
@@ -6414,6 +6490,8 @@ snapshots:
 
   hey-listen@1.0.8: {}
 
+  hoist-non-react-statics@2.5.5: {}
+
   hookable@5.5.3:
     optional: true
 
@@ -6752,6 +6830,20 @@ snapshots:
       pkg-types: 1.1.1
       ufo: 1.5.3
     optional: true
+
+  mobx-preact@3.0.0(mobx@5.15.7)(preact@10.22.1):
+    dependencies:
+      hoist-non-react-statics: 2.5.5
+      mobx: 5.15.7
+      preact: 10.22.1
+
+  mobx-utils@5.6.2(mobx@5.15.7):
+    dependencies:
+      mobx: 5.15.7
+
+  mobx@5.15.7: {}
+
+  mousetrap@1.6.5: {}
 
   mri@1.2.0:
     optional: true
@@ -7306,6 +7398,8 @@ snapshots:
       nanoid: 3.3.7
       picocolors: 1.0.0
       source-map-js: 1.2.0
+
+  preact@10.22.1: {}
 
   prelude-ls@1.2.1: {}
 
@@ -7913,6 +8007,8 @@ snapshots:
 
   uuid@8.3.2: {}
 
+  uuid@9.0.1: {}
+
   vite-plugin-cdn-import@1.0.1(rollup@4.17.2)(vite@5.3.0(@types/node@20.14.2)(sass@1.77.5)):
     dependencies:
       rollup-plugin-external-globals: 0.10.0(rollup@4.17.2)
@@ -8000,6 +8096,10 @@ snapshots:
       semver: 7.6.2
     transitivePeerDependencies:
       - supports-color
+
+  vue-json-pretty@2.4.0(vue@3.4.27(typescript@5.4.5)):
+    dependencies:
+      vue: 3.4.27(typescript@5.4.5)
 
   vue-router@4.3.3(vue@3.4.27(typescript@5.4.5)):
     dependencies:

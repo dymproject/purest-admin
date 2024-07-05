@@ -144,7 +144,6 @@ const functions: Record<string, string> = {
   view: "system.user.view",
   delete: "system.user.delete"
 };
-console.log(functions.edit);
 </script>
 <template>
   <div>
