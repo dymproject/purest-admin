@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, nextTick, reactive } from "vue";
 import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-pc-ui";
-import { getSingle, submitData } from "@/api/system/user";
+import { getSingle, submitData } from "@/api/workflow/definition";
 import { Picture, Collection, Edit } from "@element-plus/icons-vue";
 import { VxeFormDesignPropTypes, VxeFormDesignInstance } from "vxe-pc-ui";
 import { message } from "@/utils/message";
@@ -122,13 +122,16 @@ const showViewModal = (record: Recordable) => {
     });
   });
 };
+const flowchartRef = ref();
 const handleSubmit = async () => {
+  formData.value.designsContent = flowchartRef.value.getData();
   submitData(formData.value).then(() => {
     modalOptions.modalValue = false;
     emits("reload");
   });
 };
 const activeValue = ref(0);
+const widgetData = ref();
 const handleNext = async () => {
   if (activeValue.value == 0) {
     const validate = await formRef.value.validate();
@@ -139,6 +142,8 @@ const handleNext = async () => {
       message("表单内容不能为空", { type: "warning" });
       return false;
     }
+    widgetData.value = formDesign.widgetData;
+    formData.value.formContent = JSON.stringify(formDesign);
   }
   if (activeValue.value++ > 1) activeValue.value = 0;
 };
@@ -211,7 +216,11 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
         </el-col>
       </el-row>
       <el-row v-show="activeValue == 2">
-        <FlowChartDesign style="width: 100%" />
+        <FlowChartDesign
+          ref="flowchartRef"
+          :widgetData="widgetData"
+          style="width: 100%"
+        />
       </el-row>
     </template>
     <template #footer>
