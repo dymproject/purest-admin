@@ -5,7 +5,7 @@ import { getSingle, submitData } from "@/api/workflow/definition";
 import { Picture, Collection, Edit } from "@element-plus/icons-vue";
 import { VxeFormDesignPropTypes, VxeFormDesignInstance } from "vxe-pc-ui";
 import { message } from "@/utils/message";
-import FlowChartDesign from "./FlowChartDesign.vue";
+import FlowChartDesign from "./components/FlowChartDesign.vue";
 
 const emits = defineEmits<{ (e: "reload"): void }>();
 const formDesignRef = ref<VxeFormDesignInstance>();
@@ -101,6 +101,8 @@ const showAddModal = () => {
   showModal(`添加模板`);
   formData.value = defaultFormData();
   nextTick(() => {
+    formDesignRef.value.clearConfig();
+    flowchartRef.value.renderDesign(null);
     formRef.value.clearValidate();
   });
 };
@@ -110,6 +112,8 @@ const showEditModal = (record: Recordable) => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {
       formData.value = data;
+      formDesignRef.value.loadConfig(JSON.parse(data.formContent));
+      flowchartRef.value.renderDesign(JSON.parse(data.designsContent));
     });
   });
 };
@@ -119,12 +123,14 @@ const showViewModal = (record: Recordable) => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {
       formData.value = data;
+      formDesignRef.value.loadConfig(JSON.parse(data.formContent));
+      flowchartRef.value.renderDesign(JSON.parse(data.designsContent));
     });
   });
 };
 const flowchartRef = ref();
 const handleSubmit = async () => {
-  formData.value.designsContent = flowchartRef.value.getData();
+  formData.value.designsContent = JSON.stringify(flowchartRef.value.getData());
   submitData(formData.value).then(() => {
     modalOptions.modalValue = false;
     emits("reload");

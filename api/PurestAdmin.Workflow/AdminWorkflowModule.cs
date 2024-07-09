@@ -49,7 +49,7 @@ public class AdminWorkflowModule : AbpModule
         };
         workflowHost.Start();
 
-        var definitions = await db.Queryable<WfDefinitionEntity>().ToListAsync();
+        var definitions = await db.Queryable<WfDefinitionEntity>().Where(x => x.IsLocked == true).ToListAsync();
         foreach (var definition in definitions)
         {
             loader.LoadDefinition(definition.WorkflowContent, Deserializers.Json);

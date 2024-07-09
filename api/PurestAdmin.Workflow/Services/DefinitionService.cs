@@ -1,16 +1,22 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using Newtonsoft.Json;
+
 using PurestAdmin.Workflow.Services.WfDefiniationDtos;
+using PurestAdmin.Workflow.Services.WorkflowDtos;
+
+using WorkflowCore.Models.DefinitionStorage.v1;
+using WorkflowCore.Services.DefinitionStorage;
 
 namespace PurestAdmin.Workflow.Services;
 /// <summary>
 /// WfDefinition服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.WORKFLOW)]
-public class DefinitionService(ISqlSugarClient db) : ApplicationService
+public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionLoader) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
-
+    private readonly IDefinitionLoader _definitionLoader = definitionLoader;
     /// <summary>
     /// 分页查询
     /// </summary>
@@ -46,7 +52,56 @@ public class DefinitionService(ISqlSugarClient db) : ApplicationService
     {
         var entity = input.Adapt<WfDefinitionEntity>();
         entity.DefinitionId = Guid.NewGuid().ToString();
+        GenerateWorkflowContent(entity);
         return await _db.Insertable(entity).ExecuteReturnSnowflakeIdAsync();
+    }
+
+    private static void GenerateWorkflowContent(WfDefinitionEntity entity)
+    {
+        var v1 = new DefinitionSourceV1()
+        {
+            Id = entity.DefinitionId,
+            DataType = "PurestAdmin.Workflow.DataTypes.GeneralAuditingDefinition, PurestAdmin.Workflow",
+            Version = entity.Version,
+            Description = entity.Name,
+            Steps = []
+        };
+        var logicFlowDto = JsonConvert.DeserializeObject<LogicFlowDto>(entity.DesignsContent) ?? new LogicFlowDto();
+        foreach (var item in logicFlowDto.Nodes)
+        {
+            var step = new StepSourceV1()
+            {
+                Id = item.Id,
+                Name = item.Text?.Value ?? "",
+                StepType = item.GetWorkflowStepType()
+
+            };
+            foreach (var p in item.Properties)
+            {
+                step.Inputs.TryAdd(string.Concat(p.Key.First().ToString().ToUpper(), p.Key.AsSpan(1)), p.Value);
+            }
+            var edges = logicFlowDto.Edges.Where(x => x.SourceNodeId == item.Id).ToList();
+            if (edges.Count > 1)
+            {
+                foreach (var edge in edges)
+                {
+                    if (decimal.TryParse(edge.Properties.Value, out var value))
+                    {
+                        step.SelectNextStep.Add(edge.TargetNodeId, $"decimal.Parse(data[\"{edge.Properties.Field}\"].ToString()) {edge.Properties.Operate} {value}");
+                    }
+                    else
+                    {
+                        throw BusinessValidateException.Message("条件转换失败");
+                    }
+                }
+            }
+            else if (edges.Count > 0)
+            {
+                step.NextStepId = edges.First().TargetNodeId;
+            }
+            v1.Steps.Add(step);
+        }
+        entity.WorkflowContent = JsonConvert.SerializeObject(v1);
     }
 
     /// <summary>
@@ -59,6 +114,7 @@ public class DefinitionService(ISqlSugarClient db) : ApplicationService
     {
         var entity = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
+        GenerateWorkflowContent(newEntity);
         _ = await _db.Updateable(newEntity).ExecuteCommandAsync();
     }
 
@@ -82,6 +138,7 @@ public class DefinitionService(ISqlSugarClient db) : ApplicationService
     {
         var entity = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         entity.IsLocked = true;
+        _definitionLoader.LoadDefinition(entity.WorkflowContent, Deserializers.Json);
         _ = await _db.Updateable(entity).ExecuteCommandAsync();
     }
 

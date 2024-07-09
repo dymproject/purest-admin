@@ -15,11 +15,6 @@ public class AddWfDefinitionInput
     [Required(ErrorMessage = "名称不能为空"), MaxLength(20, ErrorMessage = "名称最大长度为：20")]
     public string Name { get; set; }
     /// <summary>
-    /// 流程内容
-    /// </summary>
-    [Required(ErrorMessage = "流程内容不能为空")]
-    public string WorkflowContent { get; set; }
-    /// <summary>
     /// 设计器内容
     /// </summary>
     [Required(ErrorMessage = "设计器内容不能为空")]

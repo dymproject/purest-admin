@@ -35,7 +35,7 @@ const actionColumns: VxeGridPropTypes.Columns<any> =
         default: ({ row }) => [
           hasAuth(props.functions["view"])
             ? h(VxeButton, {
-                status: "error",
+                status: "warning",
                 mode: "text",
                 icon: "vxe-icon-file-txt",
                 content: "查看",
