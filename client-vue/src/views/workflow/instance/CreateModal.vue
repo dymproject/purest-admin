@@ -1,9 +1,17 @@
-<script lang="tsx" setup>
-import { ref, nextTick, reactive, h } from "vue";
-import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-pc-ui";
-import { getSingle, submitData } from "@/api/system/notice";
-import { ReDictionary } from "@/components/ReDictionary";
+<script lang="ts" setup>
+import { ref, nextTick, reactive, onBeforeMount } from "vue";
+import {
+  VxeFormPropTypes,
+  VxeFormInstance,
+  VxeModalInstance,
+  VxeFormViewInstance
+} from "vxe-pc-ui";
+import { getDefinitions } from "@/api/workflow/definition";
+import { startWorkflow } from "@/api/workflow/instance";
+import { Collection, Edit } from "@element-plus/icons-vue";
+
 const emits = defineEmits<{ (e: "reload"): void }>();
+const formViewRef = ref<VxeFormViewInstance>();
 const vxeModalRef = ref<VxeModalInstance>();
 const modalOptions = reactive<{
   modalValue: boolean;
@@ -16,166 +24,186 @@ const modalOptions = reactive<{
 });
 
 const showModal = (title: string, canSubmit?: boolean): void => {
+  activeValue.value = 0;
   modalOptions.modalTitle = title;
   modalOptions.modalValue = true;
   modalOptions.canSubmit = canSubmit ?? true;
 };
 
-interface AddNoticeInput {
-  title: string;
-  content: string;
-  noticeType: number | null;
-  level: number | null;
-  remark: string;
+interface AddInstanceInput {
+  definitionId: number | null;
+  data: Recordable | null;
 }
 const formRef = ref<VxeFormInstance>();
-const defaultFormData = () => {
+const defaultFormData = (): AddInstanceInput => {
   return {
-    title: "",
-    content: "",
-    noticeType: null,
-    level: null,
-    remark: ""
+    definitionId: null,
+    data: null
   };
 };
-const formData = ref<AddNoticeInput>(defaultFormData());
+const definitionOptions = ref<Array<any>>([]);
+const formData = ref<AddInstanceInput>(defaultFormData());
 const formItems = ref<VxeFormPropTypes.Items>([
   {
-    field: "title",
-    title: "标题",
+    field: "definitionId",
+    title: "流程名称",
     span: 24,
     itemRender: {
-      name: "$input",
-      props: { placeholder: "请输入标题" }
-    }
-  },
-  {
-    field: "noticeType",
-    title: "类型",
-    span: 24,
-    slots: {
-      default: ({ data }) => {
-        return h(ReDictionary, {
-          code: "dict_notice_type",
-          modelValue: data.noticeType,
-          placeholder: "请选择类型",
-          onChange({ value }) {
-            data.noticeType = value;
-            formRef.value.validateField("noticeType");
-          }
-        });
+      name: "VxeSelect",
+      options: definitionOptions.value,
+      props: { placeholder: "请选择流程" },
+      events: {
+        change(value) {
+          designConfig.value = JSON.parse(
+            definitions.value.find(item => item.id == value.data.definitionId)
+              .formContent
+          );
+        }
       }
-    }
-  },
-  {
-    field: "level",
-    title: "级别",
-    span: 24,
-    slots: {
-      default: ({ data }) => {
-        return h(ReDictionary, {
-          code: "dict_notice_level",
-          modelValue: data.level,
-          placeholder: "请选择级别",
-          onChange({ value }) {
-            data.level = value;
-            formRef.value.validateField("level");
-          }
-        });
-      }
-    }
-  },
-  {
-    field: "content",
-    title: "内容",
-    span: 24,
-    itemRender: {
-      name: "$textarea",
-      props: { rows: 4, placeholder: "请输入内容" }
-    }
-  },
-  {
-    field: "remark",
-    title: "备注",
-    span: 24,
-    itemRender: {
-      name: "$textarea",
-      props: { placeholder: "请输入备注" }
     }
   }
 ]);
 const formRules = ref<VxeFormPropTypes.Rules>({
-  title: [{ required: true, message: "请输入标题" }],
-  content: [{ required: true, message: "请输入内容" }],
-  noticeType: [{ required: true, message: "请选择通知类型" }],
-  level: [{ required: true, message: "请选择通知级别" }]
+  definitionId: [{ required: true, message: "请选择流程" }]
 });
 
-const showAddModal = () => {
-  showModal(`添加通知公告`);
+const showAddModal = async () => {
+  showModal(`发起流程`);
   formData.value = defaultFormData();
+  designConfig.value = null;
+  definitionOptions.value = [];
   nextTick(() => {
     formRef.value.clearValidate();
   });
 };
-const showEditModal = (record: Recordable) => {
-  showModal(`编辑通知公告->${record.title}`);
-  nextTick(() => {
-    formRef.value.clearValidate();
-    getSingle(record.id).then((data: any) => {
-      formData.value = data;
-    });
-  });
-};
+
 const showViewModal = (record: Recordable) => {
-  showModal(`查看通知公告->${record.title}`, false);
+  showModal(`查看流程->${record.name}`, false);
   nextTick(() => {
     formRef.value.clearValidate();
-    getSingle(record.id).then((data: any) => {
-      formData.value = data;
-    });
+    // getSingle(record.id).then((data: any) => {
+    //   formData.value = data;
+    //   formDesignRef.value.loadConfig(JSON.parse(data.formContent));
+    //   flowchartRef.value.renderDesign(JSON.parse(data.designsContent));
+    // });
   });
 };
 const handleSubmit = async () => {
-  const validate = await formRef.value.validate();
-  if (!validate) {
-    submitData(formData.value).then(() => {
-      modalOptions.modalValue = false;
-      emits("reload");
-    });
-  }
+  document.getElementById("submitRef").click();
+  startWorkflow(formData.value.definitionId, formData.value.data).then(() => {
+    modalOptions.modalValue = false;
+    emits("reload");
+  });
 };
+const activeValue = ref(0);
+const designConfig = ref();
+const handleNext = async () => {
+  if (activeValue.value == 0) {
+    const validate = await formRef.value.validate();
+    if (validate) return false;
+  }
+  if (activeValue.value++ > 0) activeValue.value = 0;
+};
+const definitions =
+  ref<Array<{ id: number; name: string; formContent: string }>>();
 
-defineExpose({ showAddModal, showEditModal, showViewModal });
+onBeforeMount(async () => {
+  definitions.value = await getDefinitions();
+  definitions.value.forEach(item => {
+    definitionOptions.value.push({
+      label: `${item.name}`,
+      value: item.id
+    });
+  });
+});
+defineExpose({ showAddModal, showViewModal });
 </script>
 <template>
   <vxe-modal
     ref="vxeModalRef"
     v-model="modalOptions.modalValue"
-    width="600"
-    height="500"
+    width="1000"
+    height="800"
     showFooter
     :title="modalOptions.modalTitle"
   >
     <template #default>
-      <vxe-form
-        ref="formRef"
-        :data="formData"
-        :items="formItems"
-        :rules="formRules"
-        :titleWidth="100"
-        :titleColon="true"
-        :titleAlign="`right`"
-      />
+      <el-row :span="24">
+        <el-col>
+          <el-steps
+            process-status="finish"
+            style="width: 100%"
+            :active="activeValue"
+            align-center
+          >
+            <el-step :icon="Edit">
+              <template #title>
+                <el-button link :type="activeValue > -1 ? `primary` : `info`">
+                  流程选择
+                </el-button>
+              </template>
+            </el-step>
+            <el-step :icon="Collection">
+              <template #title>
+                <el-button link :type="activeValue > 0 ? `primary` : `info`">
+                  流程数据
+                </el-button>
+              </template>
+            </el-step>
+          </el-steps>
+        </el-col>
+      </el-row>
+      <el-row v-show="activeValue == 0">
+        <el-col>
+          <el-col>
+            <vxe-form
+              ref="formRef"
+              :data="formData"
+              :items="formItems"
+              :rules="formRules"
+              :titleWidth="100"
+              :titleColon="true"
+              :titleAlign="`right`"
+            />
+          </el-col>
+        </el-col>
+      </el-row>
+      <el-row v-show="activeValue == 1">
+        <el-col>
+          <vxe-form-view
+            ref="formViewRef"
+            v-model="formData.data"
+            :config="designConfig"
+          >
+            <template #footer>
+              <div v-show="false">
+                <vxe-button
+                  id="submitRef"
+                  type="submit"
+                  status="primary"
+                  content="提交"
+                ></vxe-button>
+              </div>
+            </template>
+          </vxe-form-view>
+        </el-col>
+      </el-row>
     </template>
     <template #footer>
-      <vxe-button content="关闭" @click="modalOptions.modalValue = false" />
-      <vxe-button
-        v-if="modalOptions.canSubmit"
-        status="primary"
-        content="确定"
-        @click="handleSubmit"
-      />
+      <div>
+        <vxe-button content="关闭" @click="modalOptions.modalValue = false" />
+        <vxe-button
+          :content="activeValue == 1 ? `上一步` : `下一步`"
+          status="warning"
+          @click="handleNext"
+        />
+        <vxe-button
+          v-if="modalOptions.canSubmit && activeValue == 1"
+          status="primary"
+          content="确定"
+          @click="handleSubmit"
+        />
+      </div>
     </template>
   </vxe-modal>
 </template>

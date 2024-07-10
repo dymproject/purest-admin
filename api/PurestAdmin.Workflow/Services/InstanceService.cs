@@ -20,27 +20,27 @@ public class InstanceService(IWorkflowHost workflowHost, ISqlSugarClient db, ICu
     private readonly IBackgroundJobManager _backgroundJobManager = backgroundJobManager;
 
     /// <summary>
-    /// 我发起的
+    /// 我的流程
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<PagedList<GetSelfPagedListOutput>> GetSelfPagedListAsync(GetSelfPagedListInput input)
+    public async Task<PagedList<SelfPagedListOutput>> GetSelfPagedListAsync(GetSelfPagedListInput input)
     {
         var pagedList = await _db.Queryable<WfWorkflowEntity>()
             .WhereIF(input.WorkflowStatus.HasValue, x => x.Status == input.WorkflowStatus)
             .OrderByDescending(x => x.CreateTime)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
-        return pagedList.Adapt<PagedList<GetSelfPagedListOutput>>();
+        return pagedList.Adapt<PagedList<SelfPagedListOutput>>();
     }
 
     /// <summary>
-    /// 我审批的
+    /// 待办事项
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<PagedList<GetWaitingAuditingOutput>> GetAuditingPagedListAsync(GetWaitingPagedListInput input)
+    public async Task<PagedList<WaitingAuditingOutput>> GetAuditingPagedListAsync(GetWaitingPagedListInput input)
     {
-        var all = new List<GetSelfPagedListOutput>();
+        var all = new List<SelfPagedListOutput>();
         var organizationTypeItemQuery = _db.Queryable<WfAuditingEntity>()
             .Where(x => x.Auditor == _currentUser.OrganizationId && x.Status == (int)input.Status);
         var userTypeItemQuery = _db.Queryable<WfAuditingEntity>()
@@ -51,15 +51,15 @@ public class InstanceService(IWorkflowHost workflowHost, ISqlSugarClient db, ICu
         var pagedList = await query.LeftJoin<WfWorkflowEntity>((a, b) => a.InstanceId == b.InstanceId)
             .LeftJoin<WfDefinitionEntity>((a, b, c) => b.WorkflowDefinitionId == c.DefinitionId)
             .LeftJoin<UserEntity>((a, b, c, d) => b.CreateBy == d.Id)
-            .Select((a, b, c, d) => new GetWaitingAuditingOutput()
+            .Select((a, b, c, d) => new WaitingAuditingOutput()
             {
                 Id = a.Id,
                 CreateTime = a.CreateTime,
                 WorkflowInstanceTitle = c.Name,
                 CreateByName = d.Name,
                 Version = c.Version
-            }).ToPageListAsync(input.PageIndex, input.PageSize);
-        return pagedList.Adapt<PagedList<GetWaitingAuditingOutput>>();
+            }).ToPurestPagedListAsync(input.PageIndex, input.PageSize);
+        return pagedList;
     }
 
     /// <summary>

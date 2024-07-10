@@ -52,56 +52,8 @@ public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionL
     {
         var entity = input.Adapt<WfDefinitionEntity>();
         entity.DefinitionId = Guid.NewGuid().ToString();
-        GenerateWorkflowContent(entity);
+        entity.WorkflowContent = GetWorkflowContent(entity);
         return await _db.Insertable(entity).ExecuteReturnSnowflakeIdAsync();
-    }
-
-    private static void GenerateWorkflowContent(WfDefinitionEntity entity)
-    {
-        var v1 = new DefinitionSourceV1()
-        {
-            Id = entity.DefinitionId,
-            DataType = "PurestAdmin.Workflow.DataTypes.GeneralAuditingDefinition, PurestAdmin.Workflow",
-            Version = entity.Version,
-            Description = entity.Name,
-            Steps = []
-        };
-        var logicFlowDto = JsonConvert.DeserializeObject<LogicFlowDto>(entity.DesignsContent) ?? new LogicFlowDto();
-        foreach (var item in logicFlowDto.Nodes)
-        {
-            var step = new StepSourceV1()
-            {
-                Id = item.Id,
-                Name = item.Text?.Value ?? "",
-                StepType = item.GetWorkflowStepType()
-
-            };
-            foreach (var p in item.Properties)
-            {
-                step.Inputs.TryAdd(string.Concat(p.Key.First().ToString().ToUpper(), p.Key.AsSpan(1)), p.Value);
-            }
-            var edges = logicFlowDto.Edges.Where(x => x.SourceNodeId == item.Id).ToList();
-            if (edges.Count > 1)
-            {
-                foreach (var edge in edges)
-                {
-                    if (decimal.TryParse(edge.Properties.Value, out var value))
-                    {
-                        step.SelectNextStep.Add(edge.TargetNodeId, $"decimal.Parse(data[\"{edge.Properties.Field}\"].ToString()) {edge.Properties.Operate} {value}");
-                    }
-                    else
-                    {
-                        throw BusinessValidateException.Message("条件转换失败");
-                    }
-                }
-            }
-            else if (edges.Count > 0)
-            {
-                step.NextStepId = edges.First().TargetNodeId;
-            }
-            v1.Steps.Add(step);
-        }
-        entity.WorkflowContent = JsonConvert.SerializeObject(v1);
     }
 
     /// <summary>
@@ -114,7 +66,7 @@ public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionL
     {
         var entity = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
-        GenerateWorkflowContent(newEntity);
+        newEntity.WorkflowContent = GetWorkflowContent(newEntity);
         _ = await _db.Updateable(newEntity).ExecuteCommandAsync();
     }
 
@@ -143,14 +95,72 @@ public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionL
     }
 
     /// <summary>
-    /// 解锁
+    /// 已注册流程集合
     /// </summary>
-    /// <param name="id"></param>
     /// <returns></returns>
-    public async Task UnlockAsync(long id)
+    public async Task<List<WfDefinitionOutput>> GetDefinitionsAsync()
     {
-        var entity = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
-        entity.IsLocked = false;
-        _ = await _db.Updateable(entity).ExecuteCommandAsync();
+        var list = await _db.Queryable<WfDefinitionEntity>().Where(x => x.IsLocked).ToListAsync();
+        return list.Adapt<List<WfDefinitionOutput>>();
     }
+
+    #region 私有方法
+    /// <summary>
+    /// 转换
+    /// </summary>
+    /// <param name="entity"></param>
+    private static string GetWorkflowContent(WfDefinitionEntity entity)
+    {
+        var v1 = new DefinitionSourceV1()
+        {
+            Id = entity.DefinitionId,
+            DataType = "PurestAdmin.Workflow.DataTypes.GeneralAuditingDefinition, PurestAdmin.Workflow",
+            Version = entity.Version,
+            Description = entity.Name,
+            Steps = []
+        };
+        var logicFlowDto = JsonConvert.DeserializeObject<LogicFlowDto>(entity.DesignsContent) ?? new LogicFlowDto();
+        var startNode = logicFlowDto.Nodes.First(x => x.Type == "Start");
+        var endNode = logicFlowDto.Nodes.First(x => x.Type == "End");
+        var newNodes = logicFlowDto.Nodes.Where(x => !"Start,End".Split(',').Contains(x.Type)).ToList();
+        newNodes.AddFirst(startNode);
+        newNodes.AddLast(endNode);
+        foreach (var item in newNodes)
+        {
+            var step = new StepSourceV1()
+            {
+                Id = item.Id,
+                Name = item.Text?.Value ?? "",
+                StepType = item.GetWorkflowStepType()
+
+            };
+            foreach (var p in item.Properties)
+            {
+                step.Inputs.TryAdd(string.Concat(p.Key.First().ToString().ToUpper(), p.Key.AsSpan(1)), p.Value is string ? "\"" + p.Value.ToString() + "\"" : p.Value.ToString());
+            }
+            var edges = logicFlowDto.Edges.Where(x => x.SourceNodeId == item.Id).ToList();
+            if (edges.Count > 1)
+            {
+                foreach (var edge in edges)
+                {
+                    if (decimal.TryParse(edge.Properties.Value, out var value))
+                    {
+                        step.SelectNextStep.Add(edge.TargetNodeId, $"decimal.Parse(data[\"{edge.Properties.Field}\"].ToString()) {edge.Properties.Operate} {value}");
+                    }
+                    else
+                    {
+                        throw BusinessValidateException.Message("条件转换失败");
+                    }
+                }
+            }
+            else if (edges.Count > 0)
+            {
+                step.NextStepId = edges.First().TargetNodeId;
+            }
+            v1.Steps.Add(step);
+        }
+        return JsonConvert.SerializeObject(v1);
+    }
+
+    #endregion
 }

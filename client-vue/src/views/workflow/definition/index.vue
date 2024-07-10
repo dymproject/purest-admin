@@ -1,14 +1,10 @@
 <script lang="ts" setup>
 import { reactive, ref, h } from "vue";
-import {
-  getPageList,
-  deleteData,
-  lock,
-  unlock
-} from "@/api/workflow/definition";
+import { getPageList, deleteData, lock } from "@/api/workflow/definition";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
 import { VxeButton, VxeUI } from "vxe-pc-ui";
+import { message } from "@/utils/message";
 const reVxeGridRef = ref();
 const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
@@ -117,9 +113,17 @@ const handleAdd = () => {
   createModalRef.value.showAddModal();
 };
 const handleEdit = (record: Recordable) => {
+  if (record.isLocked) {
+    message("已锁定的流程无法进行：解锁、删除、编辑操作", { type: "warning" });
+    return false;
+  }
   createModalRef.value.showEditModal(record);
 };
 const handleDelete = async (record: Recordable) => {
+  if (record.isLocked) {
+    message("已锁定的流程无法进行：解锁、删除、编辑操作", { type: "warning" });
+    return false;
+  }
   const type = await VxeUI.modal.confirm("您确定要删除吗？");
   if (type == "confirm") {
     deleteData(record.id).then(() => {
@@ -131,11 +135,11 @@ const handleView = (record: Recordable) => {
   createModalRef.value.showViewModal(record);
 };
 const handleChangeStatus = async (record: Recordable) => {
-  if (!record.isLocked) {
-    await lock(record.id);
-  } else {
-    await unlock(record.id);
+  if (record.isLocked) {
+    message("已锁定的流程无法进行：解锁、删除、编辑操作", { type: "warning" });
+    return false;
   }
+  await lock(record.id);
   handleSearch();
 };
 const functions: Record<string, string> = {

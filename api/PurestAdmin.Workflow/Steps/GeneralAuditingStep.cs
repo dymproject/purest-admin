@@ -14,6 +14,11 @@ public class GeneralAuditingStep(ISqlSugarClient db, IClock clock) : StepBodyAsy
     public long Auditor { get; set; }
 
     /// <summary>
+    /// 审核人名称
+    /// </summary>
+    public string AuditorName { get; set; }
+
+    /// <summary>
     /// 审核人类型
     /// </summary>
     public int AuditorType { get; set; }

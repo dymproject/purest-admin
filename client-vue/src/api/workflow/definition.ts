@@ -1,4 +1,5 @@
 import { http } from "@/utils/http";
+
 export function getPageList(params: any) {
   return http.request("get", "/definition/paged-list", { params });
 }
@@ -25,6 +26,6 @@ export const lock = (id: number) => {
   return http.request("post", `/definition/${id}/lock`);
 };
 
-export const unlock = (id: number) => {
-  return http.request("post", `/definition/${id}/unlock`);
-};
+export const getDefinitions = (): Promise<Array<any>> => {
+  return http.request("get", "/definition/definitions");
+}

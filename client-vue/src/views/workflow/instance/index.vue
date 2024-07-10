@@ -60,9 +60,7 @@ const columns = [
 const formRef = ref();
 
 const handleInitialFormParams = () => ({
-  title: "",
-  level: null,
-  noticeType: null
+  workflowStatus: null
 });
 const formItems = [
   {
@@ -96,9 +94,7 @@ const formItems = [
   }
 ];
 const formData = ref<{
-  title: string;
-  level: number | null;
-  noticeType: number | null;
+  workflowStatus: number | null;
 }>(handleInitialFormParams());
 
 const handleSearch = () => {
@@ -135,7 +131,7 @@ const customTableActions = [
         hasAuth("system.notice.add")
           ? h(VxeButton, {
               status: "error",
-              type: "text",
+              mode: "text",
               icon: "vxe-icon-file-txt",
               content: "查看",
               onClick: handleView
@@ -145,7 +141,7 @@ const customTableActions = [
           ? h(VxeButton, {
               status: "primary",
               icon: "vxe-icon-edit",
-              type: "text",
+              mode: "text",
               content: "重新发起",
               onClick: handleAdd
             })

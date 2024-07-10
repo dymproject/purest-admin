@@ -4,7 +4,7 @@ namespace PurestAdmin.Workflow.Services.WorkflowDtos;
 /// <summary>
 /// 待审核数据
 /// </summary>
-public class GetSelfPagedListOutput
+public class SelfPagedListOutput
 {
     /// <summary>
     /// 主键Id

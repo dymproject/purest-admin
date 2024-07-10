@@ -4,7 +4,7 @@ namespace PurestAdmin.Workflow.Services.WorkflowDtos;
 /// <summary>
 /// 待审核数据
 /// </summary>
-public class GetWaitingAuditingOutput
+public class WaitingAuditingOutput
 {
     /// <summary>
     /// 主键Id
