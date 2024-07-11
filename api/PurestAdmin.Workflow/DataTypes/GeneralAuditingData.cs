@@ -4,9 +4,9 @@ namespace PurestAdmin.Workflow.DataTypes;
 public class GeneralAuditingData
 {
     /// <summary>
-    /// 审核状态
+    /// 是否同意
     /// </summary>
-    public GeneralAuditingStatusEnum AuditingStatus { get; set; }
+    public int IsAgree { get; set; }
     /// <summary>
     /// 审核意见
     /// </summary>

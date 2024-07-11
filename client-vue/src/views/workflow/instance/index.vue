@@ -3,24 +3,24 @@ import { ref, h } from "vue";
 import { getSelfPageList } from "@/api/workflow/instance";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
-import { VxeButton } from "vxe-pc-ui";
+import { VxeButton, VxeTag } from "vxe-pc-ui";
 import { hasAuth } from "@/router/utils";
 
 const statusOptions = [
   {
-    label: "Runnable",
+    label: "运行中",
     value: 0
   },
   {
-    label: "Suspended",
+    label: "已挂起",
     value: 1
   },
   {
-    label: "Complete",
+    label: "已完成",
     value: 2
   },
   {
-    label: "Terminated",
+    label: "已终止",
     value: 3
   }
 ];
@@ -42,9 +42,30 @@ const columns = [
     field: "status",
     minWidth: 100,
     slots: {
-      default: ({ row }): any =>
-        statusOptions.find(x => x.value == row.status)?.label
+      default: ({ row }) => {
+        const label = statusOptions.find(x => x.value == row.status)?.label;
+        switch (row.status) {
+          case 0:
+            return h(VxeTag, { status: "primary", content: label });
+          case 1:
+            return h(VxeTag, { status: "warning", content: label });
+          case 2:
+            return h(VxeTag, { status: "success", content: label });
+          case 3:
+            return h(VxeTag, { status: "error", content: label });
+        }
+      }
     }
+  },
+  {
+    title: "当前节点",
+    field: "currentNodeName",
+    minWidth: 100
+  },
+  {
+    title: "节点状态",
+    field: "currentNodeStatusString",
+    minWidth: 100
   },
   {
     title: "版本",
@@ -71,7 +92,8 @@ const formItems = [
       name: "$select",
       props: {
         options: statusOptions,
-        placeholder: "工作流状态"
+        clearable: true,
+        placeholder: "流程状态"
       }
     }
   },
@@ -125,15 +147,15 @@ const customTableActions = [
     field: "operate",
     align: "center",
     fixed: `right`,
-    width: 180,
+    width: 200,
     slots: {
       default: ({ row }) => [
         hasAuth("system.notice.add")
           ? h(VxeButton, {
-              status: "error",
+              status: "warning",
               mode: "text",
               icon: "vxe-icon-file-txt",
-              content: "查看",
+              content: "审批记录",
               onClick: handleView
             })
           : null,

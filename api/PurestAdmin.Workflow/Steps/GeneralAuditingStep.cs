@@ -43,6 +43,7 @@ public class GeneralAuditingStep(ISqlSugarClient db, IClock clock) : StepBodyAsy
             //};
             //todo:待完善通知用户待办
 
+            //写入审批表
             var auditing = new WfAuditingEntity()
             {
                 InstanceId = context.Workflow.Id,

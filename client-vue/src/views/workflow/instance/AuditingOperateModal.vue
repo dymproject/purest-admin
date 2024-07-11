@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+import { getAuditingDetail, auditingWorkflow } from "@/api/workflow/instance";
+import { nextTick } from "vue";
+import { VxeFormInstance, VxeFormPropTypes } from "vxe-pc-ui";
 const emits = defineEmits<{ (e: "reload"): void }>();
+interface AuditingInput {
+  isAgree: boolean;
+  auditingOpinion: string;
+}
 const modalOptions = reactive<{
   modalValue: boolean;
   modalTitle: string;
@@ -15,11 +22,68 @@ const showModal = (title: string, canSubmit?: boolean): void => {
   modalOptions.modalValue = true;
   modalOptions.canSubmit = canSubmit ?? true;
 };
+const auditingDetail = ref();
 const showViewModal = (record: Recordable) => {
-  showModal(
-    `查看->${record.createByName}的${record.workflowInstanceTitle}`,
-    false
-  );
+  auditingDetail.value = record;
+  auditingFormData.value = defaultAuditingInput();
+  showModal(`查看->${record.createByName}的${record.workflowInstanceTitle}`);
+  nextTick(() => {
+    getAuditingDetail(record.id).then((result: any) => {
+      designConfig.value = JSON.parse(result.formContent);
+      workflowFormData.value = JSON.parse(result.formData);
+    });
+  });
+};
+const designConfig = ref();
+const workflowFormData = ref();
+const formRef = ref<VxeFormInstance>();
+const defaultAuditingInput = (): AuditingInput => {
+  return {
+    isAgree: true,
+    auditingOpinion: ""
+  };
+};
+const auditingFormData = ref<AuditingInput>(defaultAuditingInput());
+const formItems = [
+  {
+    field: "isAgree",
+    title: "是否同意",
+    span: 24,
+    titleWidth: "100",
+    itemRender: {
+      name: "VxeRadioGroup",
+      options: [
+        { label: "通过", value: true },
+        { label: "驳回", value: false }
+      ]
+    }
+  },
+  {
+    field: "auditingOpinion",
+    title: "意见",
+    titleWidth: "100",
+    span: 24,
+    itemRender: {
+      name: "VxeTextarea",
+      props: {
+        rows: 4
+      }
+    }
+  }
+];
+const formRules = ref<VxeFormPropTypes.Rules>({
+  auditingOpinion: [{ required: true, message: "请输入意见" }]
+});
+const handleSubmit = async () => {
+  const validate = await formRef.value.validate();
+  if (!validate) {
+    auditingWorkflow(auditingDetail.value.id, auditingFormData.value).then(
+      _ => {
+        modalOptions.modalValue = false;
+        emits(`reload`);
+      }
+    );
+  }
 };
 defineExpose({ showViewModal });
 </script>
@@ -33,35 +97,38 @@ defineExpose({ showViewModal });
     showFooter
     :title="modalOptions.modalTitle"
   >
-    <ReCard>
-      <el-descriptions :column="4" title="流程信息">
-        <el-descriptions-item label="流程名称"
-          >kooriookami</el-descriptions-item
-        >
-        <el-descriptions-item label="发起人">18100000000</el-descriptions-item>
-        <el-descriptions-item label="流程版本">
-          <el-tag>School</el-tag>
+    <el-card shadow="never">
+      <el-descriptions border :column="4">
+        <el-descriptions-item width="50" label="流程名称">
+          {{ auditingDetail.workflowInstanceTitle }}
         </el-descriptions-item>
-        <el-descriptions-item label="发起时间"> 111 </el-descriptions-item>
-      </el-descriptions>
-    </ReCard>
-    <ReCard class="table-card">
-      <el-descriptions title="流程内容">
-        <el-descriptions-item label="Username"
-          >kooriookami</el-descriptions-item
-        >
-        <el-descriptions-item label="Telephone"
-          >18100000000</el-descriptions-item
-        >
-        <el-descriptions-item label="Place">Suzhou</el-descriptions-item>
-        <el-descriptions-item label="Remarks">
-          <el-tag size="small">School</el-tag>
+        <el-descriptions-item width="50" label="发起人">
+          {{ auditingDetail.createByName }}
         </el-descriptions-item>
-        <el-descriptions-item label="Address">
-          No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+        <el-descriptions-item width="100" label="发起时间">
+          {{ auditingDetail.createTime }}
+        </el-descriptions-item>
+        <el-descriptions-item width="50" label="流程版本">
+          {{ auditingDetail.version }}
         </el-descriptions-item>
       </el-descriptions>
-    </ReCard>
+    </el-card>
+    <el-card shadow="never" class="table-card">
+      <vxe-form-view
+        ref="formViewRef"
+        v-model="workflowFormData"
+        :config="designConfig"
+      >
+      </vxe-form-view>
+    </el-card>
+    <el-card shadow="never" class="table-card">
+      <vxe-form
+        ref="formRef"
+        :rules="formRules"
+        :data="auditingFormData"
+        :items="formItems"
+      />
+    </el-card>
     <template #footer>
       <div>
         <vxe-button content="关闭" @click="modalOptions.modalValue = false" />
@@ -69,7 +136,7 @@ defineExpose({ showViewModal });
           v-if="modalOptions.canSubmit"
           status="primary"
           content="确定"
-          @click=""
+          @click="handleSubmit"
         />
       </div>
     </template>

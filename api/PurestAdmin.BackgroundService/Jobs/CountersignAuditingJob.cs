@@ -39,7 +39,7 @@ public class CountersignAuditingJob(ISqlSugarClient db, IWorkflowHost workflowHo
         if (users.Select(x => x.Id).All(x => countersignRecordEntities.Select(x => x.Auditor).Contains(x)))
         {
             var pointerEntity = await _db.Queryable<WfExecutionPointerEntity>().FirstAsync(x => x.Id == auditingEntity.ExecutionPointerId);
-            await _workflowHost.PublishEvent(pointerEntity.EventName, pointerEntity.EventKey, new GeneralAuditingData() { AuditingOpinion = "会签意见", AuditingStatus = GeneralAuditingStatusEnum.Approved });
+            await _workflowHost.PublishEvent(pointerEntity.EventName, pointerEntity.EventKey, new GeneralAuditingData() { AuditingOpinion = "会签意见", IsAgree = 1 });
         }
     }
 }

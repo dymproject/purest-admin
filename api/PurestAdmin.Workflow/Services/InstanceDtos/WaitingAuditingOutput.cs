@@ -1,10 +1,10 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-namespace PurestAdmin.Workflow.Services.WorkflowDtos;
+namespace PurestAdmin.Workflow.Services.InstanceDtos;
 /// <summary>
 /// 待审核数据
 /// </summary>
-public class SelfPagedListOutput
+public class WaitingAuditingOutput
 {
     /// <summary>
     /// 主键Id
@@ -17,14 +17,14 @@ public class SelfPagedListOutput
     public DateTime CreateTime { get; set; }
 
     /// <summary>
-    /// 流程描述
+    /// 流程发起人
     /// </summary>
-    public string Description { get; set; }
+    public string CreateByName { get; set; }
 
     /// <summary>
-    /// 流程状态
+    /// 流程名称
     /// </summary>
-    public int Status { get; set; }
+    public string WorkflowInstanceTitle { get; set; }
 
     /// <summary>
     /// 版本
