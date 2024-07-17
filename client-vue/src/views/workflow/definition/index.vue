@@ -3,8 +3,9 @@ import { reactive, ref, h } from "vue";
 import { getPageList, deleteData, lock } from "@/api/workflow/definition";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
-import { VxeButton, VxeUI } from "vxe-pc-ui";
+import { VxeButton, VxeTag, VxeUI } from "vxe-pc-ui";
 import { message } from "@/utils/message";
+import { hasAuth } from "@/router/utils";
 const reVxeGridRef = ref();
 const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
@@ -21,21 +22,28 @@ const columns = [
   {
     title: "版本",
     field: "version",
-    minWidth: 100
+    align: `center`,
+    minWidth: 50
   },
   {
     title: "状态",
     field: "isLockedStr",
     align: `center`,
-    minWidth: 100,
+    minWidth: 50,
     slots: {
-      default: ({ row }) =>
-        h(VxeButton, {
-          circle: true,
-          status: row.isLocked ? "success" : `warning`,
-          icon: row.isLocked ? "vxe-icon-lock-fill" : `vxe-icon-unlock-fill`,
-          onClick: () => handleChangeStatus(row)
-        })
+      default: ({ row }) => [
+        hasAuth("workflow.definition.lock")
+          ? h(VxeButton, {
+              size: "mini",
+              status: row.isLocked ? "success" : `warning`,
+              icon: row.isLocked
+                ? "vxe-icon-lock-fill"
+                : `vxe-icon-unlock-fill`,
+              content: row.isLocked ? "已锁定" : "点击锁定",
+              onClick: () => handleChangeStatus(row)
+            })
+          : h(VxeTag, {}, () => (row.isLocked ? "已锁定" : "无锁定权限"))
+      ]
     }
   },
   {
@@ -143,10 +151,10 @@ const handleChangeStatus = async (record: Recordable) => {
   handleSearch();
 };
 const functions: Record<string, string> = {
-  add: "system.user.add",
-  edit: "system.user.edit",
-  view: "system.user.view",
-  delete: "system.user.delete"
+  add: "workflow.definition.add",
+  edit: "workflow.definition.edit",
+  view: "workflow.definition.view",
+  delete: "workflow.definition.delete"
 };
 </script>
 <template>

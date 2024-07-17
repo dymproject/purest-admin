@@ -22,8 +22,12 @@ public class DataSeed : ISingletonDependency
         {
             Console.WriteLine("开启事务！");
             await _db.Ado.BeginTranAsync();
-            var organization = new OrganizationEntity() { Name = "初始化组织机构", Leader = "dym" };
+            var organization = new OrganizationEntity() { Name = "PurestAdmin", Leader = "dym" };
             var organizationId = await _db.Insertable(organization).ExecuteReturnSnowflakeIdAsync();
+            var lv1_1 = await _db.Insertable(new OrganizationEntity() { Name = "人力资源", Leader = "dym", ParentId = organizationId }).ExecuteReturnSnowflakeIdAsync();
+            var lv1_2 = await _db.Insertable(new OrganizationEntity() { Name = "软件研发", Leader = "dym", ParentId = organizationId }).ExecuteReturnSnowflakeIdAsync();
+            var lv2_1 = await _db.Insertable(new OrganizationEntity() { Name = "研发主管", Leader = "dym", ParentId = lv1_2 }).ExecuteReturnSnowflakeIdAsync();
+            var lv2_2 = await _db.Insertable(new OrganizationEntity() { Name = "研发小组", Leader = "dym", ParentId = lv1_2 }).ExecuteReturnSnowflakeIdAsync();
             Console.WriteLine("初始化组织机构完成");
             var user = new UserEntity()
             {
@@ -33,12 +37,24 @@ public class DataSeed : ISingletonDependency
                 OrganizationId = organizationId
             };
             var uid = await _db.Insertable(user).ExecuteReturnSnowflakeIdAsync();
+
+            var uid1 = await _db.Insertable(new UserEntity() { Account = "rlzy", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "人力资源1", OrganizationId = lv1_1 }).ExecuteReturnSnowflakeIdAsync();
+            var uid2 = await _db.Insertable(new UserEntity() { Account = "rjyf", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "人力资源2", OrganizationId = lv1_1 }).ExecuteReturnSnowflakeIdAsync();
+            var uid3 = await _db.Insertable(new UserEntity() { Account = "yfzg", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "研发主管", OrganizationId = lv2_1 }).ExecuteReturnSnowflakeIdAsync();
+            var uid4 = await _db.Insertable(new UserEntity() { Account = "yfxz", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "研发小组", OrganizationId = lv2_2 }).ExecuteReturnSnowflakeIdAsync();
+
             Console.WriteLine("初始化用户admin/123456");
             var role = new RoleEntity { Name = "超级管理员" };
             var roleId = await _db.Insertable(role).ExecuteReturnSnowflakeIdAsync();
             Console.WriteLine("初始化角色：超级管理员");
-            var userRole = new UserRoleEntity { RoleId = roleId, UserId = uid };
-            _ = await _db.Insertable(userRole).ExecuteReturnSnowflakeIdAsync();
+            UserRoleEntity[] userRoles = [
+                new UserRoleEntity { RoleId = roleId, UserId = uid },
+                new UserRoleEntity { RoleId = roleId, UserId = uid1 },
+                new UserRoleEntity { RoleId = roleId, UserId = uid2 },
+                new UserRoleEntity { RoleId = roleId, UserId = uid3 },
+                new UserRoleEntity { RoleId = roleId, UserId = uid4 }
+            ];
+            _ = await _db.Insertable(userRoles).ExecuteReturnSnowflakeIdAsync();
             Console.WriteLine("绑定用户角色关系admin->超级管理员");
             var dashboardId = YitIdHelper.NextId();
             var welcomeId = YitIdHelper.NextId();
@@ -53,6 +69,10 @@ public class DataSeed : ISingletonDependency
             var systemRequestLogId = YitIdHelper.NextId();
             var systemNoticeId = YitIdHelper.NextId();
             var systemProfileSytemId = YitIdHelper.NextId();
+            var workflowId = YitIdHelper.NextId();
+            var definitionId = YitIdHelper.NextId();
+            var myInstanceId = YitIdHelper.NextId();
+            var waitingAuditingId = YitIdHelper.NextId();
             List<FunctionEntity> functions = [
                 new FunctionEntity() { Id = dashboardId, Name = "欢迎使用", Code = "dashboard",Remark = "此项主要是为了控制首页显示内容有个归属" },
                 new FunctionEntity() { Id = welcomeId, Name = "系统主页", ParentId = dashboardId, Code = "welcome",Remark = "前端未控制此功能权限,一定会显示" },
@@ -104,6 +124,18 @@ public class DataSeed : ISingletonDependency
                 new FunctionEntity() { Id = systemProfileSytemId, ParentId = systemId, Name = "系统文件", Code = "system.profilesystem" },
                 new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemProfileSytemId, Name = "系统文件新增", Code = "system.profilesystem.add" },
                 new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemProfileSytemId, Name = "系统文件删除", Code = "system.profilesystem.delete" },
+                new FunctionEntity() { Id = workflowId, Name = "工作流程", Code = "workflow" },
+                new FunctionEntity() { Id = definitionId, ParentId = workflowId, Name = "流程模版", Code = "workflow.definition" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = definitionId, Name = "模版新增", Code = "workflow.definition.add" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = definitionId, Name = "模版编辑", Code = "workflow.definition.edit" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = definitionId, Name = "模版查看", Code = "workflow.definition.view" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = definitionId, Name = "模版删除", Code = "workflow.definition.delete" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = definitionId, Name = "模版锁定", Code = "workflow.definition.lock" },
+                new FunctionEntity() { Id = myInstanceId, ParentId = workflowId, Name = "我的流程", Code = "workflow.my" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = myInstanceId, Name = "发起流程", Code = "workflow.my.add" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = myInstanceId, Name = "详细信息", Code = "workflow.my.view" },
+                new FunctionEntity() { Id = waitingAuditingId, ParentId = workflowId, Name = "待办事项", Code = "workflow.auditing" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = waitingAuditingId, Name = "流程审批", Code = "workflow.auditing.approve" },
             ];
             await _db.Insertable(functions).ExecuteCommandAsync();
             Console.WriteLine("初始化功能数据");

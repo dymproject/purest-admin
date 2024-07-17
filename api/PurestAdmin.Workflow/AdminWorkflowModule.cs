@@ -37,7 +37,8 @@ public class AdminWorkflowModule : AbpModule
             });
         });
     }
-    public override async void OnApplicationInitialization(ApplicationInitializationContext context)
+
+    public override void OnPreApplicationInitialization(ApplicationInitializationContext context)
     {
         var workflowHost = context.ServiceProvider.GetRequiredService<IWorkflowHost>();
         var loader = context.ServiceProvider.GetRequiredService<IDefinitionLoader>();
@@ -49,7 +50,7 @@ public class AdminWorkflowModule : AbpModule
         };
         workflowHost.Start();
 
-        var definitions = await db.Queryable<WfDefinitionEntity>().Where(x => x.IsLocked == true).ToListAsync();
+        var definitions = db.Queryable<WfDefinitionEntity>().Where(x => x.IsLocked == true).ToList();
         foreach (var definition in definitions)
         {
             loader.LoadDefinition(definition.WorkflowContent, Deserializers.Json);

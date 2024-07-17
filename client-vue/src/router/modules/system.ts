@@ -16,7 +16,7 @@ export default {
   },
   children: [
     {
-      path: "/user",
+      path: "/system/user",
       name: "system_user",
       meta: {
         title: "用户管理",
@@ -25,7 +25,7 @@ export default {
       component: () => import("@/views/system/user/index.vue")
     },
     {
-      path: "/role",
+      path: "/system/role",
       name: "system_role",
       meta: {
         title: "角色管理",
@@ -34,7 +34,7 @@ export default {
       component: () => import("@/views/system/role/index.vue")
     },
     {
-      path: "/function",
+      path: "/system/function",
       name: "system_function",
       meta: {
         title: "功能管理",
@@ -43,7 +43,7 @@ export default {
       component: () => import("@/views/system/function/index.vue")
     },
     {
-      path: "/organization",
+      path: "/system/organization",
       name: "system_organization",
       meta: {
         title: "组织机构",
@@ -52,7 +52,7 @@ export default {
       component: () => import("@/views/system/organization/index.vue")
     },
     {
-      path: "/dictionary",
+      path: "/system/dictionary",
       name: "system_dictionary",
       meta: {
         title: "字典管理",
@@ -61,7 +61,7 @@ export default {
       component: () => import("@/views/system/dictionary/index.vue")
     },
     {
-      path: "/config",
+      path: "/system/config",
       name: "system_config",
       meta: {
         title: "配置管理",
@@ -70,7 +70,7 @@ export default {
       component: () => import("@/views/system/systemConfig/index.vue")
     },
     {
-      path: "/notice",
+      path: "/system/notice",
       name: "system_notice",
       meta: {
         title: "通知公告",
@@ -79,7 +79,7 @@ export default {
       component: () => import("@/views/system/notice/index.vue")
     },
     {
-      path: "/profile-system",
+      path: "/system/profile-system",
       name: "system_profile_system",
       meta: {
         title: "系统文件",
@@ -88,7 +88,7 @@ export default {
       component: () => import("@/views/system/profileSystem/index.vue")
     },
     {
-      path: "/request_log",
+      path: "/system/request_log",
       name: "system_requestLog",
       meta: {
         title: "请求日志",

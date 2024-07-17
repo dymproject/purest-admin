@@ -10,7 +10,7 @@ const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
     title: "流程名称",
-    field: "workflowInstanceTitle",
+    field: "description",
     minWidth: 100
   },
   {
@@ -108,17 +108,22 @@ const customTableActions = [
     width: 180,
     slots: {
       default: ({ row }) => [
-        hasAuth("system.notice.add")
+        hasAuth("workflow.auditing.approve")
           ? h(VxeButton, {
               status: "error",
               mode: "text",
               icon: "vxe-icon-file-txt",
-              content: "查看",
+              content: "流程审批",
               onClick() {
                 handleView(row);
               }
             })
-          : null
+          : h(VxeButton, {
+              status: "error",
+              mode: "text",
+              icon: "vxe-icon-file-txt",
+              content: "无权限"
+            })
       ]
     }
   }

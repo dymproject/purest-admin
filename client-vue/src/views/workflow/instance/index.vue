@@ -2,9 +2,10 @@
 import { ref, h } from "vue";
 import { getSelfPageList } from "@/api/workflow/instance";
 import { ReVxeGrid } from "@/components/ReVxeTable";
-import CreateModal from "./CreateModal.vue";
 import { VxeButton, VxeTag } from "vxe-pc-ui";
 import { hasAuth } from "@/router/utils";
+import CreateModal from "./CreateModal.vue";
+import ViewDetailModal from "./ViewDetailModal.vue";
 
 const statusOptions = [
   {
@@ -44,6 +45,9 @@ const columns = [
     slots: {
       default: ({ row }) => {
         const label = statusOptions.find(x => x.value == row.status)?.label;
+        if (row.remark != null) {
+          return h(VxeTag, { status: "error", content: label });
+        }
         switch (row.status) {
           case 0:
             return h(VxeTag, { status: "primary", content: label });
@@ -131,9 +135,9 @@ const createModalRef = ref();
 const handleAdd = () => {
   createModalRef.value.showAddModal();
 };
-
+const viewDetailModalRef = ref();
 const handleView = (record: Recordable) => {
-  createModalRef.value.showViewModal(record);
+  viewDetailModalRef.value.showViewModal(record);
 };
 // const functions: Record<string, string> = {
 //   add: "system.notice.add",
@@ -150,22 +154,13 @@ const customTableActions = [
     width: 200,
     slots: {
       default: ({ row }) => [
-        hasAuth("system.notice.add")
+        hasAuth("workflow.my.view")
           ? h(VxeButton, {
               status: "warning",
               mode: "text",
               icon: "vxe-icon-file-txt",
-              content: "审批记录",
-              onClick: handleView
-            })
-          : null,
-        hasAuth("system.notice.add")
-          ? h(VxeButton, {
-              status: "primary",
-              icon: "vxe-icon-edit",
-              mode: "text",
-              content: "重新发起",
-              onClick: handleAdd
+              content: "详细信息",
+              onClick: () => handleView(row)
             })
           : null
       ]
@@ -176,7 +171,7 @@ const customTableActions = [
 const toolbarConfig = {
   slots: {
     buttons: () => [
-      hasAuth("system.notice.add")
+      hasAuth("workflow.my.add")
         ? h(VxeButton, {
             icon: "vxe-icon-add",
             status: "primary",
@@ -211,5 +206,6 @@ const toolbarConfig = {
       />
     </el-card>
     <CreateModal ref="createModalRef" @reload="handleSearch" />
+    <ViewDetailModal ref="viewDetailModalRef" />
   </div>
 </template>

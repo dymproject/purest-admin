@@ -82,7 +82,6 @@ const formItems = ref<VxeFormPropTypes.Items>([
       props: { type: "number", placeholder: "版本" }
     }
   },
-
   {
     field: "remark",
     title: "备注",

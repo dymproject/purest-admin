@@ -1,15 +1,17 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using PurestAdmin.Workflow.Services.WfDefiniationDtos;
+
 namespace PurestAdmin.Workflow.Services.InstanceDtos;
 /// <summary>
-/// 待审核数据
+/// 待审批数据
 /// </summary>
-public class SelfPagedListOutput
+public class InstanceOutput
 {
     /// <summary>
     /// 主键Id
     /// </summary>
-    public long Id { get; set; }
+    public long PersistenceId { get; set; }
 
     /// <summary>
     /// 创建时间
@@ -20,6 +22,11 @@ public class SelfPagedListOutput
     /// 流程描述
     /// </summary>
     public string Description { get; set; }
+
+    /// <summary>
+    /// 数据
+    /// </summary>
+    public string Data { get; set; }
 
     /// <summary>
     /// 备注
@@ -37,9 +44,14 @@ public class SelfPagedListOutput
     public int Version { get; set; }
 
     /// <summary>
+    /// 流程设计
+    /// </summary>
+    public WfDefinitionOutput Definition { get; set; }
+
+    /// <summary>
     /// 当前节点名称
     /// </summary>
-    public string CurrentNodeName => ExecutionPointers.OrderByDescending(x => x.StepId).FirstOrDefault()?.StepName ?? "";
+    public string CurrentNodeName => ExecutionPointers.OrderBy(x => x.StartTime).Last()?.StepName ?? "";
 
     /// <summary>
     /// 当前节点状态

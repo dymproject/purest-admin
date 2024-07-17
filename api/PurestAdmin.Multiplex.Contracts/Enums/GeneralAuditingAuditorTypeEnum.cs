@@ -3,6 +3,9 @@
 using System.ComponentModel;
 
 namespace PurestAdmin.Multiplex.Contracts.Enums;
+/// <summary>
+/// 通用审批人类型枚举
+/// </summary>
 public enum GeneralAuditingAuditorTypeEnum
 {
     /// <summary>

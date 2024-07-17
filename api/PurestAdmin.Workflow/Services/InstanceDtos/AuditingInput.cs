@@ -2,16 +2,20 @@
 
 namespace PurestAdmin.Workflow.Services.InstanceDtos;
 /// <summary>
-/// 审核输入DTO
+/// 审批输入DTO
 /// </summary>
 public class AuditingInput
 {
+    /// <summary>
+    /// 审批步骤
+    /// </summary>
+    public int StepId { get; set; }
     /// <summary>
     /// 是否同意
     /// </summary>
     public bool IsAgree { get; set; }
     /// <summary>
-    /// 审核意见
+    /// 审批意见
     /// </summary>
     public string AuditingOpinion { get; set; }
 }

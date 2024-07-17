@@ -18,7 +18,7 @@ interface AuditingDataModel extends Record<string, unknown> {
   auditorType: number;
   auditor?: number;
   auditorName?: string;
-  isCountersign: number;
+  auditingStepType: number;
 }
 interface JudgedDataModel extends Record<string, unknown> {
   field: string;
@@ -58,7 +58,11 @@ onMounted(() => {
         const nodeProperties = lf.value
           .getNodeModelById(data.id)
           .getProperties() as AuditingDataModel;
-        auditingData.value = nodeProperties;
+        nodeProperties.auditingStepType;
+        auditingData.value =
+          Object.keys(nodeProperties).length == 0
+            ? defaultAuditingData()
+            : nodeProperties;
       } else if (data.type == "Judge") {
         showBusinessPanel.value = true;
         showAuditingNode.value = false;
@@ -108,8 +112,9 @@ const defaultAuditingData = () => {
   return {
     auditor: null,
     auditorType: 0,
-    isCountersign: 0
-  } as AuditingDataModel;
+    auditorName: "",
+    auditingStepType: 0
+  };
 };
 const auditingData = ref<AuditingDataModel>(defaultAuditingData());
 const defaultJudgedData = () => {
@@ -124,7 +129,7 @@ const auditingColumns: VxeFormPropTypes.Items = [
   {
     field: "auditorType",
     titleWidth: 100,
-    title: "审核人类型",
+    title: "审批人类型",
     span: 24,
     itemRender: {
       name: "VxeSelect",
@@ -143,7 +148,7 @@ const auditingColumns: VxeFormPropTypes.Items = [
   {
     field: "auditor",
     titleWidth: 100,
-    title: "审核人",
+    title: "审批人",
     span: 24,
     slots: {
       default: ({ data }) => [
@@ -158,21 +163,21 @@ const auditingColumns: VxeFormPropTypes.Items = [
     }
   },
   {
-    field: "isCountersign",
+    field: "auditingStepType",
     titleWidth: 100,
-    title: "是否会签",
+    title: "节点类型",
     span: 20,
     itemRender: {
       name: "VxeSwitch",
       props: {
-        openLabel: "是",
-        closeLabel: "否",
+        openLabel: "并行节点",
+        closeLabel: "串行节点",
         openValue: 1,
         closeValue: 0
       },
       events: {
         change: value => {
-          auditingData.value.isCountersign = value.data.isCountersign;
+          auditingData.value.auditingStepType = value.data.auditingStepType;
         }
       }
     }

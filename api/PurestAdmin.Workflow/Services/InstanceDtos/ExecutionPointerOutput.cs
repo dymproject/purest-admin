@@ -8,4 +8,5 @@ public class ExecutionPointerOutput
     public int Status { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime? EndTime { get; set; }
+    public List<AuditingRecordOutput> AuditingRecords { get; set; }
 }

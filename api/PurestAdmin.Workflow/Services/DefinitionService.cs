@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using PurestAdmin.Workflow.Services.InstanceDtos;
 using PurestAdmin.Workflow.Services.WfDefiniationDtos;
 
+using SharpYaml.Tokens;
+
 using WorkflowCore.Models.DefinitionStorage.v1;
 using WorkflowCore.Services.DefinitionStorage;
 
@@ -65,6 +67,10 @@ public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionL
     public async Task PutAsync(long id, PutWfDefinitionInput input)
     {
         var entity = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
+        if (entity.IsLocked)
+        {
+            throw BusinessValidateException.Message("已锁定的流程无法编辑!");
+        }
         var newEntity = input.Adapt(entity);
         newEntity.WorkflowContent = GetWorkflowContent(newEntity);
         _ = await _db.Updateable(newEntity).ExecuteCommandAsync();
@@ -139,23 +145,43 @@ public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionL
                 step.Inputs.TryAdd(string.Concat(p.Key.First().ToString().ToUpper(), p.Key.AsSpan(1)), p.Value is string ? "\"" + p.Value.ToString() + "\"" : p.Value.ToString());
             }
             var edges = logicFlowDto.Edges.Where(x => x.SourceNodeId == item.Id).ToList();
-            if (edges.Count > 1)
+            if (item.Type == "GeneralAuditing")
             {
-                foreach (var edge in edges)
+                switch (edges.Count)
                 {
-                    if (decimal.TryParse(edge.Properties.Value, out var value))
-                    {
-                        step.SelectNextStep.Add(edge.TargetNodeId, $"decimal.Parse(data[\"{edge.Properties.Field}\"].ToString()) {edge.Properties.Operate} {value}");
-                    }
-                    else
-                    {
-                        throw BusinessValidateException.Message("条件转换失败");
-                    }
+                    case 0:
+                        throw BusinessValidateException.Message("有节点未连接");
+                    case 1:
+                        step.SelectNextStep.Add(edges.First().TargetNodeId, $"int.Parse(data[\"GeneralAuditingDataResultEnum\"].ToString()) == {(int)GeneralAuditingDataResultEnum.Proceed}");
+                        break;
+                    case > 1:
+                        foreach (var edge in edges)
+                        {
+                            if (decimal.TryParse(edge.Properties?.Value, out var value))
+                            {
+                                step.SelectNextStep.Add(edge.TargetNodeId, $"decimal.Parse(data[\"{edge.Properties.Field}\"].ToString()) {edge.Properties.Operate} {value} " +
+                                    $"&& int.Parse(data[\"GeneralAuditingDataResultEnum\"].ToString()) == {(int)GeneralAuditingDataResultEnum.Proceed}");
+                            }
+                            else
+                            {
+                                throw BusinessValidateException.Message("条件转换失败,只支持数字相关判断");
+                            }
+                        }
+                        break;
+                }
+                var exist = step.SelectNextStep.Any(x => x.Key == endNode.Id);
+                if (exist)
+                {
+                    step.SelectNextStep[endNode.Id] += $" || int.Parse(data[\"GeneralAuditingDataResultEnum\"].ToString()) == {(int)GeneralAuditingDataResultEnum.Discontinue}";
+                }
+                else
+                {
+                    step.SelectNextStep.Add(endNode.Id, $"int.Parse(data[\"GeneralAuditingDataResultEnum\"].ToString()) == {(int)GeneralAuditingDataResultEnum.Discontinue}");
                 }
             }
-            else if (edges.Count > 0)
+            else
             {
-                step.NextStepId = edges.First().TargetNodeId;
+                step.NextStepId = edges.FirstOrDefault() == null ? null : edges.First().TargetNodeId;
             }
             v1.Steps.Add(step);
         }

@@ -2,7 +2,6 @@
 
 using PurestAdmin.Multiplex.Contracts.BackgroundArgs;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
-using PurestAdmin.SqlSugar.Entity;
 using PurestAdmin.Workflow.DataTypes;
 using PurestAdmin.Workflow.Services.InstanceDtos;
 
@@ -25,14 +24,14 @@ public class InstanceService(IWorkflowHost workflowHost, ISqlSugarClient db, ICu
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<PagedList<SelfPagedListOutput>> GetSelfPagedListAsync(GetSelfPagedListInput input)
+    public async Task<PagedList<InstanceOutput>> GetSelfPagedListAsync(GetSelfPagedListInput input)
     {
         var pagedList = await _db.Queryable<WfWorkflowEntity>().Includes(x => x.ExecutionPointers)
             .WhereIF(input.WorkflowStatus.HasValue, x => x.Status == input.WorkflowStatus)
             .Where(x => x.CreateBy == _currentUser.Id)
             .OrderByDescending(x => x.CreateTime)
             .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
-        return pagedList.Adapt<PagedList<SelfPagedListOutput>>();
+        return pagedList.Adapt<PagedList<InstanceOutput>>();
     }
 
     /// <summary>
@@ -42,27 +41,18 @@ public class InstanceService(IWorkflowHost workflowHost, ISqlSugarClient db, ICu
     /// <returns></returns>
     public async Task<PagedList<WaitingAuditingOutput>> GetAuditingPagedListAsync(GetWaitingPagedListInput input)
     {
-        var all = new List<SelfPagedListOutput>();
-        var organizationTypeItemQuery = _db.Queryable<WfAuditingEntity>()
-            .Where(x => x.Auditor == _currentUser.OrganizationId && x.Status == (int)input.Status);
-        var userTypeItemQuery = _db.Queryable<WfAuditingEntity>()
-            .Where(x => x.Auditor == _currentUser.Id && x.Status == (int)input.Status);
-        var roleTypeItemQuery = _db.Queryable<WfAuditingEntity>()
-            .Where(x => SqlFunc.Subqueryable<UserRoleEntity>().Where(o => o.RoleId == x.Auditor && o.UserId == _currentUser.Id).Any() && x.Status == (int)input.Status);
-        var query = _db.Union(organizationTypeItemQuery, userTypeItemQuery, roleTypeItemQuery);
-        var pagedList = await query.LeftJoin<WfWorkflowEntity>((a, b) => a.InstanceId == b.InstanceId)
-            .LeftJoin<WfDefinitionEntity>((a, b, c) => b.WorkflowDefinitionId == c.DefinitionId)
-            .LeftJoin<UserEntity>((a, b, c, d) => b.CreateBy == d.Id)
-            .Where((a, b, c, d) => b.Status == (int)WorkflowStatus.Runnable)
-            .Select((a, b, c, d) => new WaitingAuditingOutput()
+        var pagedList = await _db.Queryable<WfWorkflowEntity>()
+            .LeftJoin<WfExecutionPointerEntity>((a, b) => a.PersistenceId == b.WorkflowId)
+            .LeftJoin<UserEntity>((a, b, u) => a.CreateBy == u.Id)
+            .Where((a, b, u) => SqlFunc.Subqueryable<WfWaitingPointerEntity>().Where(w => w.UserId == _currentUser.Id && b.Id == w.PointerId).Any())
+            .Select((a, b, u) => new WfWorkflowEntity
             {
-                Id = a.Id,
-                CreateTime = a.CreateTime,
-                WorkflowInstanceTitle = b.Description,
-                CreateByName = d.Name,
-                Version = c.Version
-            }).ToPurestPagedListAsync(input.PageIndex, input.PageSize);
-        return pagedList;
+                PersistenceId = a.PersistenceId.SelectAll(),
+                ExecutionPointers = SqlFunc.Subqueryable<WfExecutionPointerEntity>().Where(x => x.WorkflowId == a.PersistenceId).ToList(),
+                CreateByName = u.Name,
+            })
+            .ToPurestPagedListAsync(input.PageIndex, input.PageSize);
+        return pagedList.Adapt<PagedList<WaitingAuditingOutput>>();
     }
 
     /// <summary>
@@ -74,11 +64,12 @@ public class InstanceService(IWorkflowHost workflowHost, ISqlSugarClient db, ICu
     public async Task StartAsync(long id, GeneralAuditingDefinition data)
     {
         var definition = await _db.Queryable<WfDefinitionEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
+        data.Add(nameof(GeneralAuditingDataResultEnum), GeneralAuditingDataResultEnum.Proceed);
         await _workflowHost.StartWorkflow(definition.DefinitionId, data);
     }
 
     /// <summary>
-    /// 开始流程
+    /// 终止流程
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -93,55 +84,47 @@ public class InstanceService(IWorkflowHost workflowHost, ISqlSugarClient db, ICu
     }
 
     /// <summary>
-    /// 审核
+    /// 审批流程
     /// </summary>
     /// <returns></returns>
-    public async Task AuditingAsync(long auditingId, AuditingInput input)
+    public async Task AuditingAsync(long id, AuditingInput input)
     {
-        var auditingEntity = await _db.Queryable<WfAuditingEntity>().FirstAsync(x => x.Id == auditingId) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
-        var pointerEntity = await _db.Queryable<WfExecutionPointerEntity>().FirstAsync(x => x.Id == auditingEntity.ExecutionPointerId);
+        var workflow = await _db.Queryable<WfWorkflowEntity>()
+            .Includes(x => x.ExecutionPointers, a => a.ExtensionAttributes)
+            .Where(x => x.PersistenceId == id).FirstAsync() ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
+        var pointer = workflow.ExecutionPointers.First(p => p.Status == (int)PointerStatus.WaitingForEvent);
+        if (pointer.StepId != input.StepId) throw BusinessValidateException.Message("流程节点已完成。请刷新数据！");
+
+        await _db.Deleteable<WfWaitingPointerEntity>().Where(x => x.PointerId == pointer.Id && x.UserId == _currentUser.Id).ExecuteCommandAsync();
+
         if (!input.IsAgree)
         {
-            //直接结束
-            if (await _workflowHost.TerminateWorkflow(auditingEntity.InstanceId))
-            {
-                auditingEntity.Status = (int)GeneralAuditingStatusEnum.Unapproved;
-                await _db.Updateable(auditingEntity).ExecuteCommandAsync();
-                var workflowEntity = await _db.Queryable<WfWorkflowEntity>().FirstAsync(x => x.InstanceId == auditingEntity.InstanceId);
-                workflowEntity.Remark = "审批驳回";
-                await _db.Updateable(workflowEntity).ExecuteCommandAsync();
-            }
-            return;
+            workflow.Remark = input.AuditingOpinion;
+            await _db.Updateable(workflow).ExecuteCommandAsync();
         }
-        if (auditingEntity.IsCountersign)
+
+        await _backgroundJobManager.EnqueueAsync(new GeneralAuditingArgs()
         {
-            //插入会签人集合。等所有人同意之后，由后台作业推送下一步
-            WfCountersignRecordEntity wfCountersignRecordEntity = new()
-            {
-                InstanceId = auditingEntity.InstanceId,
-                ExecutionPointerId = auditingEntity.ExecutionPointerId,
-                AuditingOpinion = input.AuditingOpinion,
-                AuditingTime = Clock.Now,
-                Auditor = _currentUser.Id
-            };
-            await _backgroundJobManager.EnqueueAsync(new CountersignAuditingArgs() { ExecutionPointerId = auditingEntity.ExecutionPointerId, InstanceId = auditingEntity.InstanceId });
-            return;
-        }
-        await _workflowHost.PublishEvent(pointerEntity.EventName, pointerEntity.EventKey, input.AuditingOpinion);
+            AuditingOpinion = input.AuditingOpinion,
+            IsAgree = input.IsAgree,
+            AuditorName = _currentUser.Self.Name,
+            Auditor = _currentUser.Id,
+            AuditingTime = Clock.Now,
+            ExecutionPointerId = pointer.PersistenceId
+        });
     }
     /// <summary>
-    /// 获取审核详情
+    /// 获取实例详情
     /// </summary>
-    /// <param name="auditingId">审核数据Id</param>
+    /// <param name="id">实例Id</param>
     /// <returns></returns>
-    public async Task<AuditingDetailOutput> GetAuditingDetailAsync(long auditingId)
+    public async Task<InstanceOutput> GetInstanceDetailAsync(long id)
     {
-        var result = await _db.Queryable<WfAuditingEntity>()
-            .LeftJoin<WfWorkflowEntity>((a, i) => a.InstanceId == i.InstanceId)
-            .LeftJoin<WfDefinitionEntity>((a, i, d) => i.WorkflowDefinitionId == d.DefinitionId)
-            .Where((a, i, d) => a.Id == auditingId)
-            .Select((a, i, d) => new AuditingDetailOutput { FormContent = d.FormContent, FormData = i.Data })
+        var result = await _db.Queryable<WfWorkflowEntity>()
+            .Includes(w => w.Definition)
+            .Includes(w => w.ExecutionPointers, p => p.AuditingRecords)
+            .Where(w => w.PersistenceId == id)
             .FirstAsync();
-        return result;
+        return result.Adapt<InstanceOutput>();
     }
 }

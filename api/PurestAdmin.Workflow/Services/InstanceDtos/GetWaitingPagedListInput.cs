@@ -3,8 +3,5 @@
 namespace PurestAdmin.Workflow.Services.InstanceDtos;
 public class GetWaitingPagedListInput : PaginationParams
 {
-    /// <summary>
-    /// 审批状态
-    /// </summary>
-    public GeneralAuditingStatusEnum Status { get; set; }
+
 }

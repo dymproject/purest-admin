@@ -15,6 +15,6 @@ export const auditingWorkflow = (id: number, params: any) => {
   return http.request("post", `/instance/${id}/auditing`, { data: params });
 };
 
-export const getAuditingDetail = (id: number) => {
-  return http.request("get", `/instance/${id}/auditing-detail`);
+export const getInstanceDetail = (id: number) => {
+  return http.request("get", `/instance/${id}/instance-detail`);
 };

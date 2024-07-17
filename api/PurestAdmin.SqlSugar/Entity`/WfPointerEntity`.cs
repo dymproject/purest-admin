@@ -5,4 +5,7 @@ public partial class WfExecutionPointerEntity
 {
     [Navigate(NavigateType.OneToMany, nameof(WfExecutionAttributeEntity.ExecutionPointerId), nameof(PersistenceId))]
     public List<WfExecutionAttributeEntity> ExtensionAttributes { get; set; }
+
+    [Navigate(NavigateType.OneToMany, nameof(WfAuditingRecordEntity.ExecutionPointerId), nameof(PersistenceId))]
+    public List<WfAuditingRecordEntity> AuditingRecords { get; set; }
 }

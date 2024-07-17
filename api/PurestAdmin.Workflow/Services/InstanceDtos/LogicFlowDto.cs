@@ -45,7 +45,7 @@ public class LogicEdge
 
     public string TargetNodeId { get; set; }
 
-    public ConditionDto Properties { get; set; }
+    public ConditionDto? Properties { get; set; }
 
     public LogicText Text { get; set; }
 }

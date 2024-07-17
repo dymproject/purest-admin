@@ -11,34 +11,34 @@ export default {
   meta: {
     icon: useRenderIcon(Collection),
     title: "工作流程",
-    permissions: ["system"],
+    permissions: ["workflow"],
     rank: 0
   },
   children: [
     {
-      path: "/definition",
+      path: "/workflow/definition",
       name: "workflow_definition",
       meta: {
         title: "流程模板",
-        // permissions: ["system.user"]
+        permissions: ["workflow.definition"]
       },
       component: () => import("@/views/workflow/definition/index.vue")
     },
     {
-      path: "/self",
-      name: "workflow_self",
+      path: "/workflow/my",
+      name: "workflow_my",
       meta: {
         title: "我的流程",
-        // permissions: ["system.user"]
+        permissions: ["workflow.my"]
       },
       component: () => import("@/views/workflow/instance/index.vue")
     },
     {
-      path: "/auditing",
+      path: "/workflow/auditing",
       name: "workflow_auditing",
       meta: {
         title: "待办事项",
-        // permissions: ["system.user"]
+        permissions: ["workflow.auditing"]
       },
       component: () => import("@/views/workflow/instance/Auditing.vue")
     },
