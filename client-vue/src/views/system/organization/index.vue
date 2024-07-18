@@ -3,9 +3,9 @@ import { reactive, ref } from "vue";
 import { getPageList, deleteData } from "@/api/system/organization";
 import { ReVxeGrid } from "@/components/ReVxeTable";
 import CreateModal from "./CreateModal.vue";
-import { VxeGridPropTypes, VXETable } from "vxe-table";
+import { VxeUI } from "vxe-pc-ui";
 const reVxeGridRef = ref();
-const columns: VxeGridPropTypes.Columns<any> = [
+const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
     title: "组织机构名称",
@@ -87,7 +87,7 @@ const handleEdit = (record: Recordable) => {
   createModalRef.value.showEditModal(record);
 };
 const handleDelete = async (record: Recordable) => {
-  const type = await VXETable.modal.confirm("您确定要删除吗？");
+  const type = await VxeUI.modal.confirm("您确定要删除吗？");
   if (type == "confirm") {
     deleteData(record.id).then(() => {
       handleSearch();

@@ -2,13 +2,12 @@
 
 using PurestAdmin.Application.RoleServices.Dtos;
 using PurestAdmin.Core.Cache;
-using PurestAdmin.Core.Oops;
-using PurestAdmin.Multiplex.Contracts.Consts;
 
 namespace PurestAdmin.Application.RoleServices;
 /// <summary>
 /// 角色服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleRepository, IAdminCache cache) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
@@ -49,7 +48,7 @@ public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleReposito
     /// <returns></returns>
     public async Task<RoleOutput> GetAsync(long id)
     {
-        var entity = await _roleRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _roleRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         return entity.Adapt<RoleOutput>();
     }
 
@@ -72,7 +71,7 @@ public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleReposito
     /// <returns></returns>
     public async Task PutAsync(long id, AddRoleInput input)
     {
-        var entity = await _roleRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _roleRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
         _ = await _roleRepository.UpdateAsync(newEntity);
     }
@@ -84,7 +83,7 @@ public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleReposito
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var entity = await _roleRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _roleRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         _ = await _roleRepository.DeleteAsync(entity);
     }
 
@@ -97,7 +96,7 @@ public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleReposito
     [UnitOfWork]
     public async Task AssignFunctionAsync(long roleId, long[] input)
     {
-        _ = await _roleRepository.GetByIdAsync(roleId) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        _ = await _roleRepository.GetByIdAsync(roleId) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
 
         _ = await _db.Deleteable<RoleFunctionEntity>().Where(x => x.RoleId == roleId).ExecuteCommandAsync();
 
@@ -105,7 +104,7 @@ public class RoleService(ISqlSugarClient db, Repository<RoleEntity> roleReposito
         _ = await _db.Insertable(roleSecurityEntities).ExecuteReturnSnowflakeIdListAsync();
 
         //移除对应角色的缓存的接口
-        _cache.Remove(AdminConst.CACHE_ROLESINTERFACE_PREFIX + roleId);
+        _cache.Remove(AdminClaimConst.CACHE_ROLESINTERFACE_PREFIX + roleId);
     }
     /// <summary>
     /// 获取角色的功能

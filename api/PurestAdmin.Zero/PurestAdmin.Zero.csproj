@@ -45,6 +45,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PurestAdmin.Core\PurestAdmin.Core.csproj" />
     <ProjectReference Include="..\PurestAdmin.SqlSugar\PurestAdmin.SqlSugar.csproj" />
+    <ProjectReference Include="..\PurestAdmin.Workflow\PurestAdmin.Workflow.csproj" />
   </ItemGroup>
 
 </Project>

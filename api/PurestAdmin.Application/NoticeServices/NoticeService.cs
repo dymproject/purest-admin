@@ -1,10 +1,7 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using Microsoft.AspNetCore.Mvc;
-
 using PurestAdmin.Application.NoticeServices.Dtos;
-using PurestAdmin.BackgroundService.Jobs.Args;
-using PurestAdmin.Core.Oops;
+using PurestAdmin.Multiplex.Contracts.BackgroundArgs;
 
 using Volo.Abp.BackgroundJobs;
 
@@ -15,6 +12,7 @@ namespace PurestAdmin.Application.NoticeServices;
 /// </summary>
 /// <param name="db"></param>
 /// <param name="backgroundJobManager"></param>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class NoticeService(ISqlSugarClient db, IBackgroundJobManager backgroundJobManager) : ApplicationService
 {
     /// <summary>
@@ -83,7 +81,7 @@ public class NoticeService(ISqlSugarClient db, IBackgroundJobManager backgroundJ
     /// <returns></returns>
     public async Task PutAsync(long id, PutNoticeInput input)
     {
-        var entity = await _db.Queryable<NoticeEntity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _db.Queryable<NoticeEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
         _ = await _db.Updateable(newEntity).ExecuteCommandAsync();
     }
@@ -95,7 +93,7 @@ public class NoticeService(ISqlSugarClient db, IBackgroundJobManager backgroundJ
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var entity = await _db.Queryable<NoticeEntity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _db.Queryable<NoticeEntity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         _ = await _db.Deleteable<NoticeRecordEntity>().Where(x => x.NoticeId == id).ExecuteCommandAsync();
         _ = await _db.Deleteable(entity).ExecuteCommandAsync();
     }

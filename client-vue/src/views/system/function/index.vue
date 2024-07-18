@@ -2,13 +2,13 @@
 import { h, reactive, ref } from "vue";
 import { getPageList, deleteData } from "@/api/system/function";
 import { ReVxeGrid } from "@/components/ReVxeTable";
-import { VxeButton, VxeGridPropTypes, VXETable } from "vxe-table";
+import { VxeButton, VxeUI } from "vxe-pc-ui";
 import CreateModal from "./CreateModal.vue";
 import InterfaceModal from "./InterfaceModal.vue";
 
 const reVxeGridRef = ref();
 const interfaceModalRef = ref();
-const columns: VxeGridPropTypes.Columns<any> = [
+const columns = [
   { type: "checkbox", title: "", width: 60, align: "center" },
   {
     title: "Id",
@@ -95,7 +95,7 @@ const handleEdit = (record: Recordable) => {
   createModalRef.value.showEditModal(record);
 };
 const handleDelete = async (record: Recordable) => {
-  const type = await VXETable.modal.confirm("您确定要删除吗？");
+  const type = await VxeUI.modal.confirm("您确定要删除吗？");
   if (type == "confirm") {
     deleteData(record.id).then(() => {
       handleSearch();

@@ -14,6 +14,7 @@ namespace PurestAdmin.Application.InterfaceServices;
 /// <summary>
 /// 接口服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class InterfaceService(ISqlSugarClient db, IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider) : ApplicationService
 {
     /// <summary>

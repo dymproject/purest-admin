@@ -11,7 +11,7 @@ using Volo.Abp.Timing;
 using Yitter.IdGenerator;
 
 namespace PurestAdmin.SqlSugar;
-public static class SqlSugarExtension
+public static class AdminSqlSugarExtensions
 {
     public static IServiceCollection AddSqlSugarService(this IServiceCollection services)
     {

@@ -1,13 +1,12 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.DictDataServices.Dtos;
-using PurestAdmin.Core.Oops;
-
 
 namespace PurestAdmin.Application.DictDataServices;
 /// <summary>
 /// 字典数据服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class DictDataService(ISqlSugarClient db, Repository<DictDataEntity> dictDataRepository) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
@@ -74,7 +73,7 @@ public class DictDataService(ISqlSugarClient db, Repository<DictDataEntity> dict
     /// <returns></returns>
     public async Task PutAsync(long id, AddDictDataInput input)
     {
-        var entity = await _dictDataRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _dictDataRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         entity = input.Adapt(entity);
         _ = await _dictDataRepository.UpdateAsync(entity);
     }
@@ -86,7 +85,7 @@ public class DictDataService(ISqlSugarClient db, Repository<DictDataEntity> dict
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var entity = await _dictDataRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _dictDataRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         await _dictDataRepository.DeleteAsync(entity);
     }
 

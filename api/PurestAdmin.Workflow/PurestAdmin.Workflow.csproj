@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>1701;1702;1591;8618;8603;8601;</NoWarn>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Workflows\**" />
+    <EmbeddedResource Remove="Workflows\**" />
+    <None Remove="Workflows\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WorkflowCore" Version="3.10.0" />
+    <PackageReference Include="WorkflowCore.DSL" Version="3.10.0" />
+    <PackageReference Include="WorkflowCore.Persistence.MySQL" Version="3.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PurestAdmin.Core\PurestAdmin.Core.csproj" />
+    <ProjectReference Include="..\PurestAdmin.Multiplex.Contracts\PurestAdmin.Multiplex.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+
+</Project>

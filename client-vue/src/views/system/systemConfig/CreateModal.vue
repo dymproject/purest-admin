@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ref, nextTick, reactive } from "vue";
-import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-table";
+import { VxeFormPropTypes, VxeFormInstance } from "vxe-pc-ui";
 import { getSingle, submitData } from "@/api/system/systemconfig";
 const emits = defineEmits<{ (e: "reload"): void }>();
-const vxeModalRef = ref<VxeModalInstance>();
+const vxeModalRef = ref();
 const modalOptions = reactive<{
   modalValue: boolean;
   modalTitle: string;

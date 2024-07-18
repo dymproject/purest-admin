@@ -13,4 +13,9 @@ public enum ErrorTipsEnum
     /// </summary>
     [Description("记录不存在")]
     NoResult,
+    /// <summary>
+    /// 无此权限
+    /// </summary>
+    [Description("无此权限")]
+    NoPermission,
 }

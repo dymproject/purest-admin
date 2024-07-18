@@ -4,12 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <NoWarn>1701;1702;1591;8618;8602;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PurestAdmin.Core\PurestAdmin.Core.csproj" />
     <ProjectReference Include="..\PurestAdmin.Multiplex\PurestAdmin.Multiplex.csproj" />
     <ProjectReference Include="..\PurestAdmin.SqlSugar\PurestAdmin.SqlSugar.csproj" />
+    <ProjectReference Include="..\PurestAdmin.Workflow\PurestAdmin.Workflow.csproj" />
   </ItemGroup>
 
 </Project>

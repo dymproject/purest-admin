@@ -13,7 +13,9 @@ public static class Common
         string strType;
         strType = columnInfo.DataType.ToLower() switch
         {
-            "tinyint" or "smallint" or "mediumint" or "int" or "bigint" => "int",
+            "tinyint" => columnInfo.Length == 1 ? "bool" : "int",
+            "smallint" or "mediumint" or "int" => "int",
+            "bigint" => "long",
             "float" or "double" => "decimal",
             "decimal" => columnInfo.Scale > 0 ? "decimal" : (columnInfo.Length > 10 ? "long" : "int"),
             "char" or "varchar" or "text" or "tinytext" or "mediumtext" or "longtext" => "string",
@@ -45,8 +47,15 @@ public static class Common
             {
                 if (strType == "string")
                 {
-                    dtoResult.AppendFormat("\r\n\t[Required(ErrorMessage = \"{0}\"), MaxLength({1}, ErrorMessage = \"{2}\")]",
-                        columnInfo.ColumnDescription + "不能为空", columnInfo.Length, columnInfo.ColumnDescription + "最大长度为：" + columnInfo.Length);
+                    if (columnInfo.DataType.Contains("text"))
+                    {
+                        dtoResult.AppendFormat("\r\n\t[Required(ErrorMessage = \"{0}\")]", columnInfo.ColumnDescription + "不能为空");
+                    }
+                    else
+                    {
+                        dtoResult.AppendFormat("\r\n\t[Required(ErrorMessage = \"{0}\"), MaxLength({1}, ErrorMessage = \"{2}\")]", columnInfo.ColumnDescription + "不能为空", columnInfo.Length, columnInfo.ColumnDescription + "最大长度为：" + columnInfo.Length);
+                    }
+
                 }
                 else
                 {

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { ref, nextTick, reactive, h } from "vue";
-import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-table";
+import { VxeModalInstance, VxeFormInstance, VxeFormPropTypes } from "vxe-pc-ui";
 import { getSingle, submitData, getTreeList } from "@/api/system/function";
 import { ElTreeSelect } from "element-plus";
 const emits = defineEmits<{ (e: "reload"): void }>();
 const vxeModalRef = ref<VxeModalInstance>();
-const treeSeelectData = ref([]);
+const treeSelectData = ref([]);
 const modalOptions = reactive<{
   modalValue: boolean;
   modalTitle: string;
@@ -66,7 +66,7 @@ const formItems = ref<VxeFormPropTypes.Items>([
         return [
           h(ElTreeSelect, {
             modelValue: formData.value.parentId,
-            data: treeSeelectData.value,
+            data: treeSelectData.value,
             checkStrictly: true,
             style: { width: `100%` },
             props: { value: "id", label: "name", children: "children" },
@@ -132,7 +132,7 @@ const handleSubmit = async () => {
 };
 const loadTreeSelectData = async () => {
   const data = await getTreeList();
-  treeSeelectData.value = data as any;
+  treeSelectData.value = data as any;
 };
 
 defineExpose({ showAddModal, showEditModal, showViewModal });

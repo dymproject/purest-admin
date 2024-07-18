@@ -1,16 +1,11 @@
 <script lang="ts" setup>
 import { ref, h, onBeforeMount, nextTick, reactive } from "vue";
-import {
-  VxeFormPropTypes,
-  VxeSelect,
-  VxeFormInstance,
-  VxeModalInstance
-} from "vxe-table";
+import { VxeFormPropTypes, VxeSelect } from "vxe-pc-ui";
 import { ReOrganizationTreeSelect } from "@/components/ReOrganizationTreeSelect";
 import { getAllList } from "@/api/system/role";
 import { getSingle, submitData } from "@/api/system/user";
 const emits = defineEmits<{ (e: "reload"): void }>();
-const vxeModalRef = ref<VxeModalInstance>();
+const vxeModalRef = ref();
 const modalOptions = reactive<{
   modalValue: boolean;
   modalTitle: string;
@@ -37,7 +32,7 @@ interface AddUserInput {
   email: string;
   remark: string;
 }
-const formRef = ref<VxeFormInstance>();
+const formRef = ref();
 const defaultFormData = () => {
   return {
     name: "",

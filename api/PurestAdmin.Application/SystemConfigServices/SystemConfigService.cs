@@ -1,12 +1,12 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.SystemConfigServices.Dtos;
-using PurestAdmin.Core.Oops;
 
 namespace PurestAdmin.Application.SystemConfigServices;
 /// <summary>
 /// 系统配置表服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class SystemConfigService(ISqlSugarClient db, Repository<SystemConfigEntity> systemConfigRepository) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
@@ -57,7 +57,7 @@ public class SystemConfigService(ISqlSugarClient db, Repository<SystemConfigEnti
     /// <returns></returns>
     public async Task PutAsync(long id, AddSystemConfigInput input)
     {
-        var entity = await _systemConfigRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _systemConfigRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
         _ = await _systemConfigRepository.UpdateAsync(newEntity);
     }
@@ -69,7 +69,7 @@ public class SystemConfigService(ISqlSugarClient db, Repository<SystemConfigEnti
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var entity = await _systemConfigRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _systemConfigRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         _ = await _systemConfigRepository.DeleteAsync(entity);
     }
 

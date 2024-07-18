@@ -5,7 +5,7 @@ namespace PurestAdmin.SqlSugar.Entity;
 /// <summary>
 /// 接口表
 /// </summary>
-public partial class InterfaceGroupEntity : BaseEntity
+public partial class InterfaceGroupEntity
 {
     /// <summary>
     /// 接口列表

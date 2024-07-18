@@ -127,7 +127,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
     // 无权限跳转403页面
     else if (
       to.meta?.permissions &&
-      !isOneOfArray(to.meta?.permissions, currentUser.permissions)
+      !isOneOfArray(to.meta?.permissions, currentUser?.permissions)
     ) {
       next({ path: "/error/403" });
     } else {

@@ -1,0 +1,46 @@
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
+import Collection from "@iconify-icons/ep/collection";
+
+const Layout = () => import("@/layout/index.vue");
+
+export default {
+  path: "/workflow",
+  name: "workflow",
+  component: Layout,
+  redirect: "/workflow",
+  meta: {
+    icon: useRenderIcon(Collection),
+    title: "工作流程",
+    permissions: ["workflow"],
+    rank: 0
+  },
+  children: [
+    {
+      path: "/workflow/definition",
+      name: "workflow_definition",
+      meta: {
+        title: "流程模板",
+        permissions: ["workflow.definition"]
+      },
+      component: () => import("@/views/workflow/definition/index.vue")
+    },
+    {
+      path: "/workflow/my",
+      name: "workflow_my",
+      meta: {
+        title: "我的流程",
+        permissions: ["workflow.my"]
+      },
+      component: () => import("@/views/workflow/instance/index.vue")
+    },
+    {
+      path: "/workflow/auditing",
+      name: "workflow_auditing",
+      meta: {
+        title: "待办事项",
+        permissions: ["workflow.auditing"]
+      },
+      component: () => import("@/views/workflow/instance/Auditing.vue")
+    },
+  ]
+} as RouteConfigsTable;

@@ -1,13 +1,12 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.DictCategoryServices.Dtos;
-using PurestAdmin.Core.Oops;
-
 
 namespace PurestAdmin.Application.DictCategoryServices;
 /// <summary>
 /// 字典分类服务
 /// </summary>
+[ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class DictCategoryService(ISqlSugarClient db, Repository<DictCategoryEntity> dictCategoryRepository) : ApplicationService
 {
     private readonly ISqlSugarClient _db = db;
@@ -57,7 +56,7 @@ public class DictCategoryService(ISqlSugarClient db, Repository<DictCategoryEnti
     /// <returns></returns>
     public async Task PutAsync(long id, AddDictCategoryInput input)
     {
-        var entity = await _dictCategoryRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _dictCategoryRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
         _ = await _dictCategoryRepository.UpdateAsync(newEntity);
     }
@@ -69,7 +68,7 @@ public class DictCategoryService(ISqlSugarClient db, Repository<DictCategoryEnti
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var entity = await _dictCategoryRepository.GetByIdAsync(id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _dictCategoryRepository.GetByIdAsync(id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         await _dictCategoryRepository.DeleteAsync(entity);
     }
 

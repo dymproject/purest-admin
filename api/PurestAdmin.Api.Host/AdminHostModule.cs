@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using PurestAdmin.Api.Host.Options;
 using PurestAdmin.Application;
 using PurestAdmin.Core;
+using PurestAdmin.Workflow;
 
 using Volo.Abp;
 using Volo.Abp.AspNetCore.ExceptionHandling;
@@ -22,14 +23,14 @@ using Volo.Abp.Autofac;
 using Volo.Abp.Json;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
-using Volo.Abp.VirtualFileSystem;
 
 namespace PurestAdmin.Api.Host
 {
     [DependsOn(typeof(AbpSwashbuckleModule),
         typeof(AbpAutofacModule),
         typeof(AdminCoreModule),
-        typeof(AdminAppModule))]
+        typeof(AdminApplicationModule),
+        typeof(AdminWorkflowModule))]
     public class AdminHostModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
@@ -40,7 +41,6 @@ namespace PurestAdmin.Api.Host
             CoinfigureControllers(context, hostingEnvironment);
             ConfigureAuthorizationServices(context, configuration);
             ConfigureSwaggerServices(context);
-            ConfigureVirtualFileSystem(context);
             ConfigureCors(context, configuration);
         }
 
@@ -113,9 +113,11 @@ namespace PurestAdmin.Api.Host
         {
             context.Services.AddAbpSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                options.SwaggerDoc("system", new OpenApiInfo { Title = "系统管理" });
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PurestAdmin.Application.xml"), true);
-                options.DocInclusionPredicate((docName, description) => true);
+                options.SwaggerDoc("workflow", new OpenApiInfo { Title = "工作流管理" });
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PurestAdmin.Workflow.xml"), true);
+                //options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
                 options.HideAbpEndpoints();
                 options.SchemaFilter<HideAbpSchemaFilter>();
@@ -153,26 +155,7 @@ namespace PurestAdmin.Api.Host
                 options.SupportedResponseTypes.Clear();
             });
         }
-        private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
-        {
-            var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-            if (hostingEnvironment.IsDevelopment())
-            {
-                Configure<AbpVirtualFileSystemOptions>(options =>
-                {
-                    options.FileSets.ReplaceEmbeddedByPhysical<AdminCoreModule>(
-                        Path.Combine(hostingEnvironment.ContentRootPath,
-                            $"..{Path.DirectorySeparatorChar}PurestAdmin.Core"));
-                    //options.FileSets.ReplaceEmbeddedByPhysical<AdminDomainModule>(
-                    //    Path.Combine(hostingEnvironment.ContentRootPath,
-                    //        $"..{Path.DirectorySeparatorChar}PurestAdmin.Domain"));
-                    //options.FileSets.ReplaceEmbeddedByPhysical<AdminAppModule>(
-                    //    Path.Combine(hostingEnvironment.ContentRootPath,
-                    //        $"..{Path.DirectorySeparatorChar}PurestAdmin.Application.Contracts"));
-                });
-            }
-        }
         private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
         {
             context.Services.AddCors(options =>
@@ -230,7 +213,8 @@ namespace PurestAdmin.Api.Host
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "API");
+                    options.SwaggerEndpoint("/swagger/system/swagger.json", "系统管理");
+                    options.SwaggerEndpoint("/swagger/workflow/swagger.json", "工作流管理");
                     var responseInterceptor = @" (res) => {
                             const token = res.headers.accesstoken;
                             if(token){localStorage.setItem('token', token);}
@@ -238,7 +222,6 @@ namespace PurestAdmin.Api.Host
                         }";
                     var requestInterceptor = @" (req) => {
                             req.headers.Authorization = 'Bearer ' + localStorage.getItem('token');
-                            console.log(localStorage.getItem('token'));
                             return req;
                         }";
                     options.UseResponseInterceptor(Regex.Replace(responseInterceptor, @"\s+", " "));

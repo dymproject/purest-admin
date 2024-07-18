@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import { h, reactive, ref, onMounted } from "vue";
-import { getPageList, deleteData } from "@/api/system/user";
-import { ReVxeGrid } from "@/components/ReVxeTable";
-import { VxeButton, VxeGridProps, VxeGridPropTypes, VXETable } from "vxe-table";
+import { VxeGridProps } from "vxe-table";
+import { VxeButton } from "vxe-pc-ui";
 import { useOnlineUserStore } from "@/store/modules/onlineUser";
 import { hasAuth } from "@/router/utils";
 import { message } from "@/utils/message";
-const reVxeGridRef = ref();
 const formRef = ref();
 
 const handleInitialFormParams = () => ({
@@ -83,7 +81,7 @@ const gridOptions = reactive<VxeGridProps<OnlineUser>>({
                           : "inline"
                     },
                     status: "danger",
-                    type: `text`,
+                    mode: `text`,
                     onClick() {
                       connection.invoke("OfflineUser", row.connectionId);
                     }
@@ -102,7 +100,7 @@ const gridOptions = reactive<VxeGridProps<OnlineUser>>({
                           ? "none"
                           : "inline"
                     },
-                    type: `text`,
+                    mode: `text`,
                     status: "primary",
                     onClick() {
                       messageOptions.modalValue = true;

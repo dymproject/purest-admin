@@ -14,7 +14,7 @@ import { stringify } from "qs";
 // import NProgress from "../progress";
 import { message } from "@/utils/message";
 import { useUserStoreHook } from "@/store/modules/user";
-import { ElMessage } from "element-plus";
+import { ElLoading, ElMessage } from "element-plus";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -181,6 +181,11 @@ class PureHttp {
     config.baseURL = "/api/v1";
     // 单独处理自定义请求/响应回调
     return new Promise((resolve, reject) => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "加载中……",
+        background: "rgba(0, 0, 0, 0)"
+      });
       PureHttp.axiosInstance
         .request(config)
         .then((response: undefined) => {
@@ -188,7 +193,7 @@ class PureHttp {
         })
         .catch(error => {
           reject(error);
-        });
+        }).finally(() => loading.close());
     });
   }
 

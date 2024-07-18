@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, nextTick, reactive } from "vue";
-import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-table";
+import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-pc-ui";
 import { getSingle, submitData } from "@/api/system/role";
 const emits = defineEmits<{ (e: "reload"): void }>();
 const vxeModalRef = ref<VxeModalInstance>();

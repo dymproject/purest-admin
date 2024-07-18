@@ -83,7 +83,7 @@ function isOneOfArray(a: Array<string>, b: Array<string>) {
 /** 从sessionStorage里取出当前登陆用户的角色roles，过滤无权限的菜单 */
 function filterNoPermissionTree(data: RouteComponent[]) {
   const currentUser = useUserStoreHook().getCurrentUser;
-  const permissions = currentUser.permissions ?? [];
+  const permissions = currentUser?.permissions ?? [];
   const newTree = cloneDeep(data).filter((v: any) => {
     return isOneOfArray(v.meta?.permissions, permissions);
   });
@@ -330,7 +330,7 @@ function getHistoryMode(routerHistory): RouterHistory {
 function getAuths(): Array<string> {
   // return router.currentRoute.value.meta.auths as Array<string>;
   const currentUser = useUserStoreHook().currentUser;
-  return currentUser.permissions ?? [];
+  return currentUser?.permissions ?? [];
 }
 
 /** 是否有按钮级别的权限 */
