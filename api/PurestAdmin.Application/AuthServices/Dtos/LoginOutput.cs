@@ -15,10 +15,4 @@ public class LoginOutput
     /// 姓名
     /// </summary>
     public string Name { get; set; }
-
-    /// <summary>
-    /// 权限集合
-    /// </summary>
-    public List<string> Permissions { get; set; }
-
 }

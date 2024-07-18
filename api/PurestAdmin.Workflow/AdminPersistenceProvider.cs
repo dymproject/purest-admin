@@ -233,8 +233,8 @@ public class AdminPersistenceProvider(ISqlSugarClient db, IClock clock) : IPersi
         if (existingEntity.ExternalToken != token)
             throw new InvalidOperationException();
 
-        existingEntity.ExternalToken = null;
-        existingEntity.ExternalWorkerId = null;
+        existingEntity.ExternalToken = string.Empty;
+        existingEntity.ExternalWorkerId = string.Empty;
         existingEntity.ExternalTokenExpiry = null;
         await _db.Updateable(existingEntity).ExecuteCommandAsync(cancellationToken);
     }

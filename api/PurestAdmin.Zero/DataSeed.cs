@@ -27,7 +27,6 @@ public class DataSeed : ISingletonDependency
             var lv1_1 = await _db.Insertable(new OrganizationEntity() { Name = "人力资源", Leader = "dym", ParentId = organizationId }).ExecuteReturnSnowflakeIdAsync();
             var lv1_2 = await _db.Insertable(new OrganizationEntity() { Name = "软件研发", Leader = "dym", ParentId = organizationId }).ExecuteReturnSnowflakeIdAsync();
             var lv2_1 = await _db.Insertable(new OrganizationEntity() { Name = "研发主管", Leader = "dym", ParentId = lv1_2 }).ExecuteReturnSnowflakeIdAsync();
-            var lv2_2 = await _db.Insertable(new OrganizationEntity() { Name = "研发小组", Leader = "dym", ParentId = lv1_2 }).ExecuteReturnSnowflakeIdAsync();
             Console.WriteLine("初始化组织机构完成");
             var user = new UserEntity()
             {
@@ -38,10 +37,10 @@ public class DataSeed : ISingletonDependency
             };
             var uid = await _db.Insertable(user).ExecuteReturnSnowflakeIdAsync();
 
-            var uid1 = await _db.Insertable(new UserEntity() { Account = "rlzy", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "人力资源1", OrganizationId = lv1_1 }).ExecuteReturnSnowflakeIdAsync();
-            var uid2 = await _db.Insertable(new UserEntity() { Account = "rjyf", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "人力资源2", OrganizationId = lv1_1 }).ExecuteReturnSnowflakeIdAsync();
-            var uid3 = await _db.Insertable(new UserEntity() { Account = "yfzg", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "研发主管", OrganizationId = lv2_1 }).ExecuteReturnSnowflakeIdAsync();
-            var uid4 = await _db.Insertable(new UserEntity() { Account = "yfxz", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "研发小组", OrganizationId = lv2_2 }).ExecuteReturnSnowflakeIdAsync();
+            var uid1 = await _db.Insertable(new UserEntity() { Account = "rlzy1", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "人力资源1", OrganizationId = lv1_1 }).ExecuteReturnSnowflakeIdAsync();
+            var uid2 = await _db.Insertable(new UserEntity() { Account = "rlzy2", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "人力资源2", OrganizationId = lv1_1 }).ExecuteReturnSnowflakeIdAsync();
+            var uid3 = await _db.Insertable(new UserEntity() { Account = "yfzg1", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "研发主管1", OrganizationId = lv2_1 }).ExecuteReturnSnowflakeIdAsync();
+            var uid4 = await _db.Insertable(new UserEntity() { Account = "yfzg2", Password = "e10adc3949ba59abbe56e057f20f883e", Name = "研发主管2", OrganizationId = lv2_1 }).ExecuteReturnSnowflakeIdAsync();
 
             Console.WriteLine("初始化用户admin/123456");
             var role = new RoleEntity { Name = "超级管理员" };
@@ -54,7 +53,7 @@ public class DataSeed : ISingletonDependency
                 new UserRoleEntity { RoleId = roleId, UserId = uid3 },
                 new UserRoleEntity { RoleId = roleId, UserId = uid4 }
             ];
-            _ = await _db.Insertable(userRoles).ExecuteReturnSnowflakeIdAsync();
+            _ = await _db.Insertable(userRoles).ExecuteReturnSnowflakeIdListAsync();
             Console.WriteLine("绑定用户角色关系admin->超级管理员");
             var dashboardId = YitIdHelper.NextId();
             var welcomeId = YitIdHelper.NextId();

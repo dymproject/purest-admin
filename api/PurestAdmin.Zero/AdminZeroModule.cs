@@ -4,14 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PurestAdmin.Core;
 using PurestAdmin.SqlSugar;
-using PurestAdmin.Workflow;
 
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using Volo.Abp.Timing;
 
 namespace PurestAdmin.Zero;
-[DependsOn(typeof(AdminSqlSugarModule), typeof(AdminCoreModule), typeof(AdminWorkflowModule))]
+[DependsOn(typeof(AdminSqlSugarModule), typeof(AdminCoreModule))]
 public class AdminZeroModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

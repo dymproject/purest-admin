@@ -100,16 +100,16 @@ defineExpose({ showViewModal });
   >
     <el-card body-class="card-padding" shadow="never">
       <vxe-form>
-        <vxe-form-item title="流程名称" span="6">
+        <vxe-form-item title="流程名称" span="9">
           {{ detailRecord.description }}
         </vxe-form-item>
-        <vxe-form-item title="发起人" span="6">
+        <vxe-form-item title="发起人" span="5">
           {{ detailRecord.createByName }}
         </vxe-form-item>
         <vxe-form-item title="发起时间" span="6">
           {{ detailRecord.createTime }}
         </vxe-form-item>
-        <vxe-form-item title="流程版本" span="6">
+        <vxe-form-item title="流程版本" span="4">
           {{ detailRecord.version }}
         </vxe-form-item>
       </vxe-form>
@@ -122,7 +122,12 @@ defineExpose({ showViewModal });
       >
       </vxe-form-view>
     </el-card>
-    <el-card shadow="never" body-class="card-padding" class="table-card">
+    <el-card
+      shadow="never"
+      body-style="padding-bottom:10px!important"
+      body-class="card-padding"
+      class="table-card"
+    >
       <vxe-form
         ref="formRef"
         :rules="formRules"
@@ -147,6 +152,6 @@ defineExpose({ showViewModal });
 <style lang="scss">
 .card-padding {
   padding-top: 0 !important;
-  padding-bottom: 10px !important;
+  padding-bottom: 0 !important;
 }
 </style>

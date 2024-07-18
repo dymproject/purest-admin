@@ -10,19 +10,20 @@ import FlowChartDesign from "./components/FlowChartDesign.vue";
 const emits = defineEmits<{ (e: "reload"): void }>();
 const formDesignRef = ref<VxeFormDesignInstance>();
 const formDesignWidgets = ref<VxeFormDesignPropTypes.Widgets>([
-  {
-    group: "layout",
-    children: ["row"]
-  },
+  // {
+  //   group: "layout",
+  //   children: ["row"]
+  // },
   {
     group: "base",
     children: [
-      "VxeInput",
-      "VxeTextarea",
-      "VxeSelect",
-      "VxeSwitch",
-      "VxeRadioGroup",
-      "VxeCheckboxGroup"
+      "VxeNumberInput",
+      "VxeTextarea"
+      // "VxeSelect",
+      // "VxeSwitch",
+      // "VxeRadioGroup",
+      // "VxeCheckboxGroup",
+      //  "VxeInput",
     ]
   }
 ]);

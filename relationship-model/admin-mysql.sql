@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/6/24 14:53:14                           */
+/* Created on:     2024/7/18 18:08:06                           */
 /*==============================================================*/
 
 
@@ -40,6 +40,10 @@ drop table if exists PUREST_USER;
 
 drop table if exists PUREST_USER_ROLE;
 
+drop table if exists PUREST_WF_AUDITING_RECORD;
+
+drop table if exists PUREST_WF_DEFINITION;
+
 drop index IX_Event_EventName_EventKey on PUREST_WF_EVENT;
 
 drop index IX_Event_IsProcessed on PUREST_WF_EVENT;
@@ -74,11 +78,15 @@ drop index IX_Subscription_SubscriptionId on PUREST_WF_SUBSCRIPTION;
 
 drop table if exists PUREST_WF_SUBSCRIPTION;
 
+drop table if exists PUREST_WF_WAITING_POINTER;
+
 drop index IX_Workflow_NextExecution on PUREST_WF_WORKFLOW;
 
 drop index IX_Workflow_InstanceId on PUREST_WF_WORKFLOW;
 
 drop table if exists PUREST_WF_WORKFLOW;
+
+drop table if exists PUREST_WORKFLOW_INSTANCE;
 
 /*==============================================================*/
 /* Table: PUREST_BACKGROUND_JOB_RECORD                          */
@@ -104,10 +112,10 @@ alter table PUREST_BACKGROUND_JOB_RECORD comment '后台作业记录表';
 /*==============================================================*/
 create table PUREST_DICT_CATEGORY
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) not null comment '分类名称',
@@ -123,13 +131,13 @@ alter table PUREST_DICT_CATEGORY comment '字典分类';
 /*==============================================================*/
 create table PUREST_DICT_DATA
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
-   CATEGORY_ID          numeric(19,0) not null comment '字典分类ID',
+   CATEGORY_ID          bigint not null comment '字典分类ID',
    NAME                 varchar(20) not null comment '字典名称',
    SORT                 numeric not null comment '排序',
    primary key (ID)
@@ -142,10 +150,10 @@ alter table PUREST_DICT_DATA comment '字典数据';
 /*==============================================================*/
 create table PUREST_FILE_RECORD
 (
-   ID                   numeric(19,0) not null comment 'Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment 'Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    FILE_NAME            varchar(100) not null comment '文件名',
@@ -161,15 +169,15 @@ alter table PUREST_FILE_RECORD comment '文件上传记录表';
 /*==============================================================*/
 create table PUREST_FUNCTION
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) not null comment '名称',
    CODE                 varchar(40) not null comment '编码',
-   PARENT_ID            numeric(19,0) comment '隶属于',
+   PARENT_ID            bigint comment '隶属于',
    primary key (ID),
    unique key UK_PUREST_FUNCTION_CODE (CODE)
 );
@@ -181,14 +189,14 @@ alter table PUREST_FUNCTION comment '功能表';
 /*==============================================================*/
 create table PUREST_FUNCTION_INTERFACE
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
-   INTERFACE_ID         numeric(19,0) comment '接口ID',
-   FUNCTION_ID          numeric(19,0) comment '功能ID',
+   INTERFACE_ID         bigint comment '接口ID',
+   FUNCTION_ID          bigint comment '功能ID',
    primary key (ID)
 );
 
@@ -199,16 +207,16 @@ alter table PUREST_FUNCTION_INTERFACE comment '页面接口表';
 /*==============================================================*/
 create table PUREST_INTERFACE
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) not null comment '接口名称',
    PATH                 varchar(200) not null comment '接口地址',
    REQUEST_METHOD       varchar(20) not null comment '请求方法',
-   GROUP_ID             numeric(19,0) comment '接口分组ID',
+   GROUP_ID             bigint comment '接口分组ID',
    primary key (ID),
    unique key UK_INTERFACE_PATHMETHOD (PATH, REQUEST_METHOD)
 );
@@ -220,10 +228,10 @@ alter table PUREST_INTERFACE comment '接口表';
 /*==============================================================*/
 create table PUREST_INTERFACE_GROUP
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) comment '名称',
@@ -239,16 +247,16 @@ alter table PUREST_INTERFACE_GROUP comment '接口分组表';
 /*==============================================================*/
 create table PUREST_NOTICE
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    TITLE                varchar(40) not null comment '主题',
    CONTENT              longtext comment '内容',
-   NOTICE_TYPE          numeric(19,0) not null comment '类型',
-   LEVEL                numeric(19,0) comment '级别',
+   NOTICE_TYPE          bigint not null comment '类型',
+   LEVEL                bigint comment '级别',
    primary key (ID)
 );
 
@@ -259,15 +267,15 @@ alter table PUREST_NOTICE comment '通知公告表';
 /*==============================================================*/
 create table PUREST_NOTICE_RECORD
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
-   RECEIVER             numeric(19,0) not null comment '接收人',
+   RECEIVER             bigint not null comment '接收人',
    IS_READ              numeric(1) not null comment '是否已读',
-   NOTICE_ID            numeric(19,0) not null comment '通知公告Id',
+   NOTICE_ID            bigint not null comment '通知公告Id',
    primary key (ID)
 );
 
@@ -278,14 +286,14 @@ alter table PUREST_NOTICE_RECORD comment '通知公告记录表';
 /*==============================================================*/
 create table PUREST_ORGANIZATION
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(100) not null comment '名称',
-   PARENT_ID            numeric(19,0) comment '父级ID',
+   PARENT_ID            bigint comment '父级ID',
    TELEPHONE            varchar(20) comment '联系电话',
    LEADER               varchar(20) comment '负责人',
    SORT                 numeric comment '排序',
@@ -300,15 +308,15 @@ alter table PUREST_ORGANIZATION comment '组织机构';
 /*==============================================================*/
 create table PUREST_PROFILE_SYSTEM
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) not null comment '名称',
    CODE                 varchar(40) not null comment '编码',
-   FILE_ID              numeric(19,0) not null comment '文件ID',
+   FILE_ID              bigint not null comment '文件ID',
    primary key (ID),
    unique key UK_PUREST_FILESYSTEM_CODE (CODE)
 );
@@ -320,10 +328,10 @@ alter table PUREST_PROFILE_SYSTEM comment '系统文件表';
 /*==============================================================*/
 create table PUREST_REQUEST_LOG
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    CONTROLLER_NAME      varchar(100) comment '控制器',
@@ -342,10 +350,10 @@ alter table PUREST_REQUEST_LOG comment '请求日志表';
 /*==============================================================*/
 create table PUREST_ROLE
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) not null comment '角色名称',
@@ -361,14 +369,14 @@ alter table PUREST_ROLE comment '角色';
 /*==============================================================*/
 create table PUREST_ROLE_FUNCTION
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
-   ROLE_ID              numeric(19,0) comment '角色ID',
-   FUNCTION_ID          numeric(19,0) comment '功能ID',
+   ROLE_ID              bigint comment '角色ID',
+   FUNCTION_ID          bigint comment '功能ID',
    primary key (ID)
 );
 
@@ -379,10 +387,10 @@ alter table PUREST_ROLE_FUNCTION comment '角色功能表';
 /*==============================================================*/
 create table PUREST_SYSTEM_CONFIG
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    NAME                 varchar(20) comment '名称',
@@ -399,10 +407,10 @@ alter table PUREST_SYSTEM_CONFIG comment '系统配置表';
 /*==============================================================*/
 create table PUREST_USER
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
    ACCOUNT              varchar(36) not null comment '账号',
@@ -412,7 +420,7 @@ create table PUREST_USER
    EMAIL                varchar(20) comment '邮箱',
    AVATAR               longblob comment '头像',
    STATUS               numeric comment '状态',
-   ORGANIZATION_ID      numeric(19,0) not null comment '组织机构Id',
+   ORGANIZATION_ID      bigint not null comment '组织机构Id',
    primary key (ID),
    unique key UK_PUREST_USER_ACCOUNT (ACCOUNT)
 );
@@ -424,18 +432,59 @@ alter table PUREST_USER comment '用户';
 /*==============================================================*/
 create table PUREST_USER_ROLE
 (
-   ID                   numeric(19,0) not null comment '主键Id',
-   CREATE_BY            numeric(19,0) not null comment '创建人',
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
    CREATE_TIME          datetime not null comment '创建时间',
-   UPDATE_BY            numeric(19,0) comment '修改人',
+   UPDATE_BY            bigint comment '修改人',
    UPDATE_TIME          datetime comment '修改时间',
    REMARK               varchar(1000) comment '备注',
-   ROLE_ID              numeric(19,0) not null comment '角色ID',
-   USER_ID              numeric(19,0) not null comment '用户ID',
+   ROLE_ID              bigint not null comment '角色ID',
+   USER_ID              bigint not null comment '用户ID',
    primary key (ID)
 );
 
 alter table PUREST_USER_ROLE comment '用户角色';
+
+/*==============================================================*/
+/* Table: PUREST_WF_AUDITING_RECORD                             */
+/*==============================================================*/
+create table PUREST_WF_AUDITING_RECORD
+(
+   ID                   bigint not null comment '主键Id',
+   EXECUTION_POINTER_ID bigint not null comment '步骤Id',
+   AUDITING_TIME        datetime not null comment '审批时间',
+   AUDITOR              bigint not null comment '审批人',
+   AUDITOR_NAME         varchar(40) comment '审批人姓名',
+   AUDITING_OPINION     longtext comment '审批意见',
+   IS_AGREE             boolean not null comment '是否同意',
+   primary key (ID)
+);
+
+alter table PUREST_WF_AUDITING_RECORD comment '流程审批记录';
+
+/*==============================================================*/
+/* Table: PUREST_WF_DEFINITION                                  */
+/*==============================================================*/
+create table PUREST_WF_DEFINITION
+(
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
+   CREATE_TIME          datetime not null comment '创建时间',
+   UPDATE_BY            bigint comment '修改人',
+   UPDATE_TIME          datetime comment '修改时间',
+   REMARK               varchar(1000) comment '备注',
+   NAME                 varchar(20) not null comment '名称',
+   DEFINITION_ID        varchar(36) not null comment '定义ID',
+   WORKFLOW_CONTENT     longtext not null comment '流程内容',
+   DESIGNS_CONTENT      longtext not null comment '设计器内容',
+   FORM_CONTENT         longtext not null comment '表单内容',
+   VERSION              integer not null comment '版本',
+   IS_LOCKED            boolean not null comment '是否锁定',
+   primary key (ID),
+   unique key UK_WORKFLOW_CODE (DEFINITION_ID)
+);
+
+alter table PUREST_WF_DEFINITION comment '流程定义';
 
 /*==============================================================*/
 /* Table: PUREST_WF_EVENT                                       */
@@ -530,25 +579,25 @@ alter table PUREST_WF_EXECUTION_ERROR comment '执行异常';
 create table PUREST_WF_EXECUTION_POINTER
 (
    PERSISTENCE_ID       bigint not null,
-   ACTIVE               boolean not null,
-   RETRY_COUNT          integer not null,
+   WORKFLOW_ID          bigint not null,
+   ID                   varchar(36),
+   START_TIME           datetime,
    END_TIME             datetime,
-   EVENT_DATA           text,
+   ACTIVE               boolean not null,
    EVENT_KEY            varchar(100),
    EVENT_NAME           varchar(100),
+   EVENT_DATA           text,
    EVENT_PUBLISHED      boolean not null,
-   ID                   varchar(50),
    PERSISTENCE_DATA     text,
    SLEEP_UNTIL          datetime,
-   START_TIME           datetime,
    STEP_ID              integer not null,
    STEP_NAME            varchar(100),
-   WORKFLOW_ID          bigint not null,
    CHILDREN             text,
    CONTEXT_ITEM         text,
    PREDECESSOR_ID       varchar(100),
    OUTCOME              text,
    SCOPE                text,
+   RETRY_COUNT          integer not null,
    STATUS               integer not null,
    primary key (PERSISTENCE_ID)
 );
@@ -641,12 +690,26 @@ create index IX_Subscription_EventName on PUREST_WF_SUBSCRIPTION
 );
 
 /*==============================================================*/
+/* Table: PUREST_WF_WAITING_POINTER                             */
+/*==============================================================*/
+create table PUREST_WF_WAITING_POINTER
+(
+   ID                   bigint not null comment '主键Id',
+   USER_ID              bigint not null comment '用户Id',
+   POINTER_ID           varchar(36) not null comment '步骤Id',
+   primary key (ID)
+);
+
+alter table PUREST_WF_WAITING_POINTER comment '待审核步骤';
+
+/*==============================================================*/
 /* Table: PUREST_WF_WORKFLOW                                    */
 /*==============================================================*/
 create table PUREST_WF_WORKFLOW
 (
    PERSISTENCE_ID       bigint not null,
    COMPLETE_TIME        datetime,
+   CREATE_BY            bigint not null,
    CREATE_TIME          datetime not null,
    DATA                 text,
    DESCRIPTION          varchar(500),
@@ -654,8 +717,9 @@ create table PUREST_WF_WORKFLOW
    NEXT_EXECUTION       bigint,
    STATUS               integer not null,
    VERSION              integer not null,
-   WORKFLOW_DEFINITION_ID varchar(200),
+   WORKFLOW_DEFINITION_ID varchar(36) not null,
    REFERENCE            varchar(200),
+   REMARK               varchar(1000),
    primary key (PERSISTENCE_ID)
 );
 
@@ -677,45 +741,73 @@ create index IX_Workflow_NextExecution on PUREST_WF_WORKFLOW
    NEXT_EXECUTION
 );
 
+/*==============================================================*/
+/* Table: PUREST_WORKFLOW_INSTANCE                              */
+/*==============================================================*/
+create table PUREST_WORKFLOW_INSTANCE
+(
+   ID                   bigint not null comment '主键Id',
+   CREATE_BY            bigint not null comment '创建人',
+   CREATE_TIME          datetime not null comment '创建时间',
+   UPDATE_BY            bigint comment '修改人',
+   UPDATE_TIME          datetime comment '修改时间',
+   REMARK               varchar(1000) comment '备注',
+   WF_ID                bigint not null comment '流程ID',
+   SCHEME_ID            bigint not null comment '设计ID',
+   FORM_DATA            longtext not null comment '表单值',
+   CURRENT_NODE         bigint comment '当前节点',
+   CURRENT_NODE_TYPE    integer not null comment '当前节点类型',
+   STATUS               integer not null comment '状态',
+   primary key (ID)
+);
+
+alter table PUREST_WORKFLOW_INSTANCE comment '流程实例';
+
 alter table PUREST_DICT_DATA add constraint FK_Reference_5 foreign key (CATEGORY_ID)
-      references PUREST_DICT_CATEGORY (ID) on delete restrict on update restrict;
+      references PUREST_DICT_CATEGORY (ID) on delete cascade on update restrict;
 
 alter table PUREST_FUNCTION_INTERFACE add constraint FK_Reference_11 foreign key (FUNCTION_ID)
-      references PUREST_FUNCTION (ID) on delete restrict on update restrict;
+      references PUREST_FUNCTION (ID) on delete cascade on update restrict;
 
 alter table PUREST_FUNCTION_INTERFACE add constraint FK_Reference_12 foreign key (INTERFACE_ID)
-      references PUREST_INTERFACE (ID) on delete restrict on update restrict;
+      references PUREST_INTERFACE (ID) on delete cascade on update restrict;
 
 alter table PUREST_INTERFACE add constraint FK_Reference_17 foreign key (GROUP_ID)
-      references PUREST_INTERFACE_GROUP (ID) on delete restrict on update restrict;
+      references PUREST_INTERFACE_GROUP (ID) on delete cascade on update restrict;
 
 alter table PUREST_NOTICE_RECORD add constraint FK_Reference_13 foreign key (NOTICE_ID)
-      references PUREST_NOTICE (ID) on delete restrict on update restrict;
+      references PUREST_NOTICE (ID) on delete cascade on update restrict;
 
 alter table PUREST_ORGANIZATION add constraint FK_Reference_14 foreign key (PARENT_ID)
-      references PUREST_ORGANIZATION (ID) on delete restrict on update restrict;
+      references PUREST_ORGANIZATION (ID) on delete cascade on update restrict;
 
 alter table PUREST_PROFILE_SYSTEM add constraint FK_Reference_18 foreign key (FILE_ID)
-      references PUREST_FILE_RECORD (ID) on delete restrict on update restrict;
+      references PUREST_FILE_RECORD (ID) on delete cascade on update restrict;
 
 alter table PUREST_ROLE_FUNCTION add constraint FK_Reference_15 foreign key (ROLE_ID)
-      references PUREST_ROLE (ID) on delete restrict on update restrict;
+      references PUREST_ROLE (ID) on delete cascade on update restrict;
 
 alter table PUREST_ROLE_FUNCTION add constraint FK_Reference_16 foreign key (FUNCTION_ID)
-      references PUREST_FUNCTION (ID) on delete restrict on update restrict;
+      references PUREST_FUNCTION (ID) on delete cascade on update restrict;
 
 alter table PUREST_USER add constraint FK_Reference_7 foreign key (ORGANIZATION_ID)
-      references PUREST_ORGANIZATION (ID) on delete restrict on update restrict;
+      references PUREST_ORGANIZATION (ID) on delete cascade on update restrict;
 
 alter table PUREST_USER_ROLE add constraint FK_Reference_4 foreign key (ROLE_ID)
-      references PUREST_ROLE (ID) on delete restrict on update restrict;
+      references PUREST_ROLE (ID) on delete cascade on update restrict;
 
 alter table PUREST_USER_ROLE add constraint FK_Reference_6 foreign key (USER_ID)
-      references PUREST_USER (ID) on delete restrict on update restrict;
+      references PUREST_USER (ID) on delete cascade on update restrict;
 
 alter table PUREST_WF_EXECUTION_ATTRIBUTE add constraint FK_ExtensionAttribute_ExecutionPointer_ExecutionPointerId foreign key (EXECUTION_POINTER_ID)
-      references PUREST_WF_EXECUTION_POINTER (PERSISTENCE_ID) on delete restrict on update restrict;
+      references PUREST_WF_EXECUTION_POINTER (PERSISTENCE_ID) on delete cascade on update restrict;
 
 alter table PUREST_WF_EXECUTION_POINTER add constraint FK_ExecutionPointer_Workflow_WorkflowId foreign key (WORKFLOW_ID)
+      references PUREST_WF_WORKFLOW (PERSISTENCE_ID) on delete cascade on update restrict;
+
+alter table PUREST_WORKFLOW_INSTANCE add constraint FK_Reference_23 foreign key (WF_ID)
       references PUREST_WF_WORKFLOW (PERSISTENCE_ID) on delete restrict on update restrict;
+
+alter table PUREST_WORKFLOW_INSTANCE add constraint FK_Reference_24 foreign key (SCHEME_ID)
+      references PUREST_WF_DEFINITION (ID) on delete restrict on update restrict;
 

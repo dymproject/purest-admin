@@ -46,13 +46,10 @@ defineExpose({ showViewModal });
   >
     <el-card body-class="card-padding" shadow="never">
       <vxe-form>
-        <vxe-form-item title="流程名称" span="6">
+        <vxe-form-item title="流程名称" span="10">
           {{ detailRecord.description }}
         </vxe-form-item>
-        <vxe-form-item title="发起人" span="6">
-          {{ detailRecord.createByName }}
-        </vxe-form-item>
-        <vxe-form-item title="发起时间" span="6">
+        <vxe-form-item title="发起时间" span="8">
           {{ detailRecord.createTime }}
         </vxe-form-item>
         <vxe-form-item title="流程版本" span="6">
@@ -94,9 +91,10 @@ defineExpose({ showViewModal });
               v-if="pointer.status == 3"
               size="mini"
               :data="pointer.auditingRecords"
+              :min-height="0"
             >
               <vxe-column field="auditingTime" title="审批时间"></vxe-column>
-              <vxe-column field="auditor" title="审批人"></vxe-column>
+              <vxe-column field="auditorName" title="审批人"></vxe-column>
               <vxe-column field="auditingOpinion" title="审批意见"></vxe-column>
               <vxe-column field="auditingResult" title="审批结果">
                 <template #default="{ row }">

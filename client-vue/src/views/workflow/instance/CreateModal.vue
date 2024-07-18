@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, nextTick, reactive, onBeforeMount } from "vue";
+import { ref, nextTick, reactive, onBeforeMount, toRaw } from "vue";
 import {
   VxeFormPropTypes,
   VxeFormInstance,
@@ -76,24 +76,34 @@ const showAddModal = async () => {
     formRef.value.clearValidate();
   });
 };
+const validateFormView = (obj, rule) => {
+  for (const key in rule) {
+    if (rule.hasOwnProperty(key)) {
+      const fieldRule = rule[key];
+      const fieldValue = obj[key];
 
-const showViewModal = (record: Recordable) => {
-  showModal(`查看流程->${record.name}`, false);
-  nextTick(() => {
-    formRef.value.clearValidate();
-    // getSingle(record.id).then((data: any) => {
-    //   formData.value = data;
-    //   formDesignRef.value.loadConfig(JSON.parse(data.formContent));
-    //   flowchartRef.value.renderDesign(JSON.parse(data.designsContent));
-    // });
-  });
+      if (fieldRule.length > 0) {
+        const requiredRule = fieldRule[0];
+
+        if (requiredRule.required && fieldValue === null) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
 };
 const handleSubmit = async () => {
   document.getElementById("submitRef").click();
-  startWorkflow(formData.value.definitionId, formData.value.data).then(() => {
-    modalOptions.modalValue = false;
-    emits("reload");
-  });
+  const rules = toRaw(formViewRef.value.reactData.formRules);
+  const value = toRaw(formViewRef.value.modelValue);
+  //没有找到校验的方法，暂时先这么搞吧
+  if (validateFormView(value, rules)) {
+    startWorkflow(formData.value.definitionId, formData.value.data).then(() => {
+      modalOptions.modalValue = false;
+      emits("reload");
+    });
+  }
 };
 const activeValue = ref(0);
 const designConfig = ref();
@@ -116,7 +126,7 @@ onBeforeMount(async () => {
     });
   });
 });
-defineExpose({ showAddModal, showViewModal });
+defineExpose({ showAddModal });
 </script>
 <template>
   <vxe-modal

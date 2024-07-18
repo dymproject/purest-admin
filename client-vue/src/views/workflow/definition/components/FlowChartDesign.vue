@@ -72,7 +72,7 @@ onMounted(() => {
         judgedData.value = edgeProperties;
         conditionOptions.value = [];
         props.widgetData.forEach(value => {
-          if (value.name == "VxeInput") {
+          if (["VxeInput", "VxeNumberInput"].indexOf(value.name) > -1) {
             conditionOptions.value.push({
               title: value.title,
               field: value.field
@@ -219,6 +219,7 @@ const showAuditingNode = ref(false);
 const selectedNodeId = ref<string>("");
 const renderDesign = data => {
   lf.value.render(data);
+  showBusinessPanel.value = false;
 };
 defineExpose({ getData, renderDesign });
 </script>
