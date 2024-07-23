@@ -55,27 +55,27 @@ public class InterfaceService(ISqlSugarClient db, IApiDescriptionGroupCollection
     [UnitOfWork]
     public async Task AsyncApi()
     {
-        var apiDescriptionGroupsItems = _apiDescriptionGroupCollectionProvider.ApiDescriptionGroups.Items.Where(x => !x.GroupName.StartsWith("Abp", StringComparison.OrdinalIgnoreCase));
-        var apiDescriptions = apiDescriptionGroupsItems.SelectMany(x => x.Items);
-        foreach (var apiDescriptionGroupsItem in apiDescriptionGroupsItems)
+        var apiDescriptionGroupsItems = _apiDescriptionGroupCollectionProvider.ApiDescriptionGroups.Items.Where(x => !x.GroupName.StartsWith("Abp", StringComparison.OrdinalIgnoreCase)).ToList();
+        var apiDescriptions = apiDescriptionGroupsItems.SelectMany(x => x.Items).ToList();
+        var controllerGroup = apiDescriptions.GroupBy(x => ((ControllerActionDescriptor)x.ActionDescriptor).ControllerName).ToList();
+        foreach (var controller in controllerGroup)
         {
-            if (!apiDescriptionGroupsItem.Items.Any()) continue;
-            var groupEntity = await _db.Queryable<InterfaceGroupEntity>().FirstAsync(x => x.Code == apiDescriptionGroupsItem.GroupName);
+            if (!controller.Any()) continue;
+            var groupEntity = await _db.Queryable<InterfaceGroupEntity>().FirstAsync(x => x.Code == controller.Key);
             long groupId;
             List<InterfaceEntity> savedInterfaces = [];
             List<InterfaceEntity> newInterfaces = [];
             if (groupEntity == null)
             {
-                var summary = ((ControllerActionDescriptor)apiDescriptionGroupsItem.Items[0].ActionDescriptor).ControllerTypeInfo.GetXmlDocsSummary();
-                ArgumentNullException.ThrowIfNull(apiDescriptionGroupsItem.GroupName);
-                groupId = await _db.Insertable(new InterfaceGroupEntity { Name = summary, Code = apiDescriptionGroupsItem.GroupName }).ExecuteReturnSnowflakeIdAsync();
+                var summary = ((ControllerActionDescriptor)controller.First().ActionDescriptor).ControllerTypeInfo.GetXmlDocsSummary();
+                groupId = await _db.Insertable(new InterfaceGroupEntity { Name = summary, Code = controller.Key }).ExecuteReturnSnowflakeIdAsync();
             }
             else
             {
                 groupId = groupEntity.Id;
                 savedInterfaces = await _db.Queryable<InterfaceEntity>().Where(x => x.GroupId == groupId).ToListAsync();
             }
-            foreach (var apiDescription in apiDescriptionGroupsItem.Items)
+            foreach (var apiDescription in controller)
             {
                 var actionDescriptor = apiDescription.ActionDescriptor as ControllerActionDescriptor;
                 var allowAnonymous = actionDescriptor.MethodInfo.GetCustomAttribute<AllowAnonymousAttribute>();
@@ -95,7 +95,7 @@ public class InterfaceService(ISqlSugarClient db, IApiDescriptionGroupCollection
             //移除已删除的接口
             var removeInterfaces = savedInterfaces.Where(x =>
             {
-                return !apiDescriptionGroupsItem.Items.Any(o => o.RelativePath == x.Path && o.HttpMethod == x.RequestMethod);
+                return !controller.Any(o => o.RelativePath == x.Path && o.HttpMethod == x.RequestMethod);
             }).ToList();
             await _db.Deleteable<FunctionInterfaceEntity>().Where(x => removeInterfaces.Select(o => o.Id).Contains(x.InterfaceId)).ExecuteCommandAsync();
             await _db.Deleteable(removeInterfaces).ExecuteCommandAsync();

@@ -10,7 +10,7 @@ using WorkflowCore.Services.DefinitionStorage;
 
 namespace PurestAdmin.Workflow.Services;
 /// <summary>
-/// WfDefinition服务
+/// 工作流定义服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.WORKFLOW)]
 public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionLoader) : ApplicationService

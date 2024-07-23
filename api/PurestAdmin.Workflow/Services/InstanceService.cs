@@ -9,7 +9,7 @@ using Volo.Abp.BackgroundJobs;
 
 namespace PurestAdmin.Workflow.Services;
 /// <summary>
-/// 工作流服务
+/// 流程实例服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.WORKFLOW)]
 public class InstanceService(IWorkflowHost workflowHost, ISqlSugarClient db, ICurrentUser currentUser, IBackgroundJobManager backgroundJobManager) : ApplicationService

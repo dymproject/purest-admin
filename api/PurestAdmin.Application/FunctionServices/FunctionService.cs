@@ -5,7 +5,7 @@ using PurestAdmin.Core.Cache;
 
 namespace PurestAdmin.Application.FunctionServices;
 /// <summary>
-/// 功能接口实现
+/// 功能服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
 public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> functionRepository, IAdminCache cache) : ApplicationService
@@ -130,5 +130,4 @@ public class FunctionService(ISqlSugarClient db, Repository<FunctionEntity> func
         await _db.Deleteable(record).ExecuteCommandAsync();
         _cache.Clear(AdminClaimConst.CACHE_ROLESINTERFACE_PREFIX);
     }
-
 }
