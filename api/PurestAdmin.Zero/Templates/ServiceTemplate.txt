@@ -50,7 +50,7 @@ public class @ClassName@Service(ISqlSugarClient db) : ApplicationService
     /// <returns></returns>
     public async Task PutAsync(long id, Put@ClassName@Input input)
     {
-        var entity = await _db.Queryable<@ClassName@Entity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _db.Queryable<@ClassName@Entity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         var newEntity = input.Adapt(entity);
         _ = await _db.Updateable(newEntity).ExecuteCommandAsync();
     }
@@ -62,7 +62,7 @@ public class @ClassName@Service(ISqlSugarClient db) : ApplicationService
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var entity = await _db.Queryable<@ClassName@Entity>().FirstAsync(x => x.Id == id) ?? throw Oops.Bah(ErrorTipsEnum.NoResult);
+        var entity = await _db.Queryable<@ClassName@Entity>().FirstAsync(x => x.Id == id) ?? throw PersistdValidateException.Message(ErrorTipsEnum.NoResult);
         _ = await _db.Deleteable(entity).ExecuteCommandAsync();
     }
 }

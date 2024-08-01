@@ -46,7 +46,7 @@ namespace PurestAdmin.Api.Host
 
         private void CoinfigureControllers(ServiceConfigurationContext context, IWebHostEnvironment hostEnvironment)
         {
-            //HTTP状态代码映射（配合oops返回400）
+            //HTTP状态代码映射（配合PersistdValidateException返回400）
             context.Services.AddSingleton<IHttpExceptionStatusCodeFinder, AdminHttpExceptionStatusCodeFinder>();
 
             //发送异常详情到客户端true(发送)/false（不发送）
