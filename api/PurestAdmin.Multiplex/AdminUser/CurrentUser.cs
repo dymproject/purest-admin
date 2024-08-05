@@ -76,13 +76,14 @@ public class CurrentUser(ISqlSugarClient db, IHttpContextAccessor httpContextAcc
     {
         var interfaces = await _cache.Get(AdminClaimConst.CACHE_ROLESINTERFACE_PREFIX + RoleId, async () =>
         {
-            return await _db.Queryable<UserRoleEntity>()
+            var interfaces = await _db.Queryable<UserRoleEntity>()
             .RightJoin<RoleFunctionEntity>((ur, rf) => ur.RoleId == rf.RoleId)
             .RightJoin<FunctionInterfaceEntity>((ur, rf, fi) => rf.FunctionId == fi.FunctionId)
             .RightJoin<InterfaceEntity>((ur, rf, fi, inter) => fi.InterfaceId == inter.Id)
             .Where((ur, rf, fi, inter) => ur.UserId == Id)
             .Select((ur, rf, fi, inter) => inter)
             .ToListAsync();
+            return interfaces?.Count > 0 ? interfaces : null;
         });
         return interfaces ?? [];
     }
