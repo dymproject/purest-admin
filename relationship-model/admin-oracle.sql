@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 11g                           */
-/* Created on:     2024/5/27 17:01:33                           */
+/* Created on:     2024/8/21 16:15:12                           */
 /*==============================================================*/
 
 
@@ -40,6 +40,18 @@ alter table PUREST_USER_ROLE
 alter table PUREST_USER_ROLE
    drop constraint FK_PUREST_U_REFERENCE_PUREST_U;
 
+alter table PUREST_WF_EXECUTION_ATTRIBUTE
+   drop constraint "FK_Reference_20";
+
+alter table PUREST_WF_EXECUTION_POINTER
+   drop constraint "FK_Reference_19";
+
+alter table PUREST_WORKFLOW_INSTANCE
+   drop constraint "FK_Reference_23";
+
+alter table PUREST_WORKFLOW_INSTANCE
+   drop constraint "FK_Reference_24";
+
 drop table PUREST_BACKGROUND_JOB_RECORD cascade constraints;
 
 drop table PUREST_DICT_CATEGORY cascade constraints;
@@ -75,6 +87,54 @@ drop table PUREST_SYSTEM_CONFIG cascade constraints;
 drop table PUREST_USER cascade constraints;
 
 drop table PUREST_USER_ROLE cascade constraints;
+
+drop table PUREST_WF_AUDITING_RECORD cascade constraints;
+
+drop table PUREST_WF_DEFINITION cascade constraints;
+
+drop index "IX_Event_EventName_EventKey";
+
+drop index "IX_Event_IsProcessed";
+
+drop index "IX_Event_EventTime";
+
+drop index "IX_Event_EventId";
+
+drop table PUREST_WF_EVENT cascade constraints;
+
+drop index "IX_ExecutionPointerId";
+
+drop table PUREST_WF_EXECUTION_ATTRIBUTE cascade constraints;
+
+drop table PUREST_WF_EXECUTION_ERROR cascade constraints;
+
+drop index "IX_ExecutionPointer_WorkflowId";
+
+drop table PUREST_WF_EXECUTION_POINTER cascade constraints;
+
+drop index "IX_ExecuteTime";
+
+drop index "IX_CommandName_Data";
+
+drop table PUREST_WF_SCHEDULED_COMMAND cascade constraints;
+
+drop index "IX_Subscription_EventName";
+
+drop index "IX_Subscription_EventKey";
+
+drop index "IX_Subscription_SubscriptionId";
+
+drop table PUREST_WF_SUBSCRIPTION cascade constraints;
+
+drop table PUREST_WF_WAITING_POINTER cascade constraints;
+
+drop index "IX_Workflow_NextExecution";
+
+drop index "IX_Workflow_InstanceId";
+
+drop table PUREST_WF_WORKFLOW cascade constraints;
+
+drop table PUREST_WORKFLOW_INSTANCE cascade constraints;
 
 /*==============================================================*/
 /* Table: PUREST_BACKGROUND_JOB_RECORD                          */
@@ -128,10 +188,10 @@ comment on column PUREST_BACKGROUND_JOB_RECORD.PRIORITY is
 /*==============================================================*/
 create table PUREST_DICT_CATEGORY 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20)         not null,
@@ -172,13 +232,13 @@ comment on column PUREST_DICT_CATEGORY.CODE is
 /*==============================================================*/
 create table PUREST_DICT_DATA 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
-   CATEGORY_ID          NUMBER(19,0)         not null,
+   CATEGORY_ID          INTEGER              not null,
    NAME                 VARCHAR2(20)         not null,
    SORT                 NUMBER               not null,
    constraint PK_PUREST_DICT_DATA primary key (ID)
@@ -219,10 +279,10 @@ comment on column PUREST_DICT_DATA.SORT is
 /*==============================================================*/
 create table PUREST_FILE_RECORD 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    FILE_NAME            VARCHAR2(100)        not null,
@@ -266,15 +326,15 @@ comment on column PUREST_FILE_RECORD.FILE_EXT is
 /*==============================================================*/
 create table PUREST_FUNCTION 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20)         not null,
    CODE                 VARCHAR2(40)         not null,
-   PARENT_ID            NUMBER(19,0),
+   PARENT_ID            INTEGER,
    constraint PK_PUREST_FUNCTION primary key (ID),
    constraint UK_PUREST_FUNCTION_CODE unique (CODE)
 );
@@ -314,14 +374,14 @@ comment on column PUREST_FUNCTION.PARENT_ID is
 /*==============================================================*/
 create table PUREST_FUNCTION_INTERFACE 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
-   INTERFACE_ID         NUMBER(19,0),
-   FUNCTION_ID          NUMBER(19,0),
+   INTERFACE_ID         INTEGER,
+   FUNCTION_ID          INTEGER,
    constraint PK_PUREST_FUNCTION_INTERFACE primary key (ID)
 );
 
@@ -357,16 +417,16 @@ comment on column PUREST_FUNCTION_INTERFACE.FUNCTION_ID is
 /*==============================================================*/
 create table PUREST_INTERFACE 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20)         not null,
    PATH                 VARCHAR2(200)        not null,
    REQUEST_METHOD       VARCHAR2(20)         not null,
-   GROUP_ID             NUMBER(19,0),
+   GROUP_ID             INTEGER,
    constraint PK_PUREST_INTERFACE primary key (ID),
    constraint UK_INTERFACE_PATHMETHOD unique (PATH, REQUEST_METHOD)
 );
@@ -409,10 +469,10 @@ comment on column PUREST_INTERFACE.GROUP_ID is
 /*==============================================================*/
 create table PUREST_INTERFACE_GROUP 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20),
@@ -453,16 +513,16 @@ comment on column PUREST_INTERFACE_GROUP.CODE is
 /*==============================================================*/
 create table PUREST_NOTICE 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    TITLE                VARCHAR2(40)         not null,
    CONTENT              CLOB,
-   NOTICE_TYPE          NUMBER(19,0)         not null,
-   "LEVEL"              NUMBER(19,0),
+   NOTICE_TYPE          INTEGER              not null,
+   "LEVEL"              INTEGER,
    constraint PK_PUREST_NOTICE primary key (ID)
 );
 
@@ -504,15 +564,15 @@ comment on column PUREST_NOTICE."LEVEL" is
 /*==============================================================*/
 create table PUREST_NOTICE_RECORD 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
-   RECEIVER             NUMBER(19,0)         not null,
+   RECEIVER             INTEGER              not null,
    IS_READ              NUMBER(1)            not null,
-   NOTICE_ID            NUMBER(19,0)         not null,
+   NOTICE_ID            INTEGER              not null,
    constraint PK_PUREST_NOTICE_RECORD primary key (ID)
 );
 
@@ -551,14 +611,14 @@ comment on column PUREST_NOTICE_RECORD.NOTICE_ID is
 /*==============================================================*/
 create table PUREST_ORGANIZATION 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(100)        not null,
-   PARENT_ID            NUMBER(19,0),
+   PARENT_ID            INTEGER,
    TELEPHONE            VARCHAR2(20),
    LEADER               VARCHAR2(20),
    SORT                 NUMBER,
@@ -607,15 +667,15 @@ comment on column PUREST_ORGANIZATION.SORT is
 /*==============================================================*/
 create table PUREST_PROFILE_SYSTEM 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20)         not null,
    CODE                 VARCHAR2(40)         not null,
-   FILE_ID              NUMBER(19,0)         not null,
+   FILE_ID              INTEGER              not null,
    constraint PK_PUREST_PROFILE_SYSTEM primary key (ID),
    constraint UK_PUREST_FILESYSTEM_CODE unique (CODE)
 );
@@ -655,10 +715,10 @@ comment on column PUREST_PROFILE_SYSTEM.FILE_ID is
 /*==============================================================*/
 create table PUREST_REQUEST_LOG 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    CONTROLLER_NAME      VARCHAR2(100),
@@ -714,10 +774,10 @@ comment on column PUREST_REQUEST_LOG.CLIENT_IP is
 /*==============================================================*/
 create table PUREST_ROLE 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20)         not null,
@@ -758,14 +818,14 @@ comment on column PUREST_ROLE.DESCRIPTION is
 /*==============================================================*/
 create table PUREST_ROLE_FUNCTION 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
-   ROLE_ID              NUMBER(19,0),
-   FUNCTION_ID          NUMBER(19,0),
+   ROLE_ID              INTEGER,
+   FUNCTION_ID          INTEGER,
    constraint PK_PUREST_ROLE_FUNCTION primary key (ID)
 );
 
@@ -801,10 +861,10 @@ comment on column PUREST_ROLE_FUNCTION.FUNCTION_ID is
 /*==============================================================*/
 create table PUREST_SYSTEM_CONFIG 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    NAME                 VARCHAR2(20),
@@ -849,10 +909,10 @@ comment on column PUREST_SYSTEM_CONFIG.CONFIG_VALUE is
 /*==============================================================*/
 create table PUREST_USER 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
    ACCOUNT              VARCHAR2(36)         not null,
@@ -862,7 +922,7 @@ create table PUREST_USER
    EMAIL                VARCHAR2(20),
    AVATAR               BLOB,
    STATUS               NUMBER,
-   ORGANIZATION_ID      NUMBER(19,0)         not null,
+   ORGANIZATION_ID      INTEGER              not null,
    constraint PK_PUREST_USER primary key (ID),
    constraint UK_PUREST_USER_ACCOUNT unique (ACCOUNT)
 );
@@ -917,14 +977,14 @@ comment on column PUREST_USER.ORGANIZATION_ID is
 /*==============================================================*/
 create table PUREST_USER_ROLE 
 (
-   ID                   NUMBER(19,0)         not null,
-   CREATE_BY            NUMBER(19,0)         not null,
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
    CREATE_TIME          DATE                 not null,
-   UPDATE_BY            NUMBER(19,0),
+   UPDATE_BY            INTEGER,
    UPDATE_TIME          DATE,
    REMARK               VARCHAR2(1000),
-   ROLE_ID              NUMBER(19,0)         not null,
-   USER_ID              NUMBER(19,0)         not null,
+   ROLE_ID              INTEGER              not null,
+   USER_ID              INTEGER              not null,
    constraint PK_PUREST_USER_ROLE primary key (ID)
 );
 
@@ -955,51 +1015,502 @@ comment on column PUREST_USER_ROLE.ROLE_ID is
 comment on column PUREST_USER_ROLE.USER_ID is
 '用户ID';
 
+/*==============================================================*/
+/* Table: PUREST_WF_AUDITING_RECORD                             */
+/*==============================================================*/
+create table PUREST_WF_AUDITING_RECORD 
+(
+   ID                   INTEGER              not null,
+   EXECUTION_POINTER_ID INTEGER              not null,
+   AUDITING_TIME        DATE                 not null,
+   AUDITOR              INTEGER              not null,
+   AUDITOR_NAME         VARCHAR2(40),
+   AUDITING_OPINION     CLOB,
+   IS_AGREE             SMALLINT             not null,
+   constraint PK_PUREST_WF_AUDITING_RECORD primary key (ID)
+);
+
+comment on table PUREST_WF_AUDITING_RECORD is
+'流程审批记录';
+
+comment on column PUREST_WF_AUDITING_RECORD.ID is
+'主键Id';
+
+comment on column PUREST_WF_AUDITING_RECORD.EXECUTION_POINTER_ID is
+'步骤Id';
+
+comment on column PUREST_WF_AUDITING_RECORD.AUDITING_TIME is
+'审批时间';
+
+comment on column PUREST_WF_AUDITING_RECORD.AUDITOR is
+'审批人';
+
+comment on column PUREST_WF_AUDITING_RECORD.AUDITOR_NAME is
+'审批人姓名';
+
+comment on column PUREST_WF_AUDITING_RECORD.AUDITING_OPINION is
+'审批意见';
+
+comment on column PUREST_WF_AUDITING_RECORD.IS_AGREE is
+'是否同意';
+
+/*==============================================================*/
+/* Table: PUREST_WF_DEFINITION                                  */
+/*==============================================================*/
+create table PUREST_WF_DEFINITION 
+(
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
+   CREATE_TIME          DATE                 not null,
+   UPDATE_BY            INTEGER,
+   UPDATE_TIME          DATE,
+   REMARK               VARCHAR2(1000),
+   NAME                 VARCHAR2(20)         not null,
+   DEFINITION_ID        VARCHAR2(36)         not null,
+   WORKFLOW_CONTENT     CLOB                 not null,
+   DESIGNS_CONTENT      CLOB                 not null,
+   FORM_CONTENT         CLOB                 not null,
+   VERSION              INTEGER              not null,
+   IS_LOCKED            SMALLINT             not null,
+   constraint PK_PUREST_WF_DEFINITION primary key (ID),
+   constraint UK_WORKFLOW_CODE unique (DEFINITION_ID)
+);
+
+comment on table PUREST_WF_DEFINITION is
+'流程定义';
+
+comment on column PUREST_WF_DEFINITION.ID is
+'主键Id';
+
+comment on column PUREST_WF_DEFINITION.CREATE_BY is
+'创建人';
+
+comment on column PUREST_WF_DEFINITION.CREATE_TIME is
+'创建时间';
+
+comment on column PUREST_WF_DEFINITION.UPDATE_BY is
+'修改人';
+
+comment on column PUREST_WF_DEFINITION.UPDATE_TIME is
+'修改时间';
+
+comment on column PUREST_WF_DEFINITION.REMARK is
+'备注';
+
+comment on column PUREST_WF_DEFINITION.NAME is
+'名称';
+
+comment on column PUREST_WF_DEFINITION.DEFINITION_ID is
+'定义ID';
+
+comment on column PUREST_WF_DEFINITION.WORKFLOW_CONTENT is
+'流程内容';
+
+comment on column PUREST_WF_DEFINITION.DESIGNS_CONTENT is
+'设计器内容';
+
+comment on column PUREST_WF_DEFINITION.FORM_CONTENT is
+'表单内容';
+
+comment on column PUREST_WF_DEFINITION.VERSION is
+'版本';
+
+comment on column PUREST_WF_DEFINITION.IS_LOCKED is
+'是否锁定';
+
+/*==============================================================*/
+/* Table: PUREST_WF_EVENT                                       */
+/*==============================================================*/
+create table PUREST_WF_EVENT 
+(
+   PERSISTENCE_ID       INTEGER              not null,
+   EVENT_ID             VARCHAR2(36)         not null,
+   EVENT_NAME           VARCHAR2(200),
+   EVENT_KEY            VARCHAR2(200),
+   EVENT_DATA           CLOB,
+   EVENT_TIME           DATE                 not null,
+   IS_PROCESSED         SMALLINT             not null,
+   constraint PK_PUREST_WF_EVENT primary key (PERSISTENCE_ID)
+);
+
+comment on table PUREST_WF_EVENT is
+'事件';
+
+/*==============================================================*/
+/* Index: "IX_Event_EventId"                                    */
+/*==============================================================*/
+create unique index "IX_Event_EventId" on PUREST_WF_EVENT (
+   EVENT_ID ASC
+);
+
+/*==============================================================*/
+/* Index: "IX_Event_EventTime"                                  */
+/*==============================================================*/
+create index "IX_Event_EventTime" on PUREST_WF_EVENT (
+   EVENT_TIME ASC
+);
+
+/*==============================================================*/
+/* Index: "IX_Event_IsProcessed"                                */
+/*==============================================================*/
+create index "IX_Event_IsProcessed" on PUREST_WF_EVENT (
+   IS_PROCESSED ASC
+);
+
+/*==============================================================*/
+/* Index: "IX_Event_EventName_EventKey"                         */
+/*==============================================================*/
+create index "IX_Event_EventName_EventKey" on PUREST_WF_EVENT (
+   EVENT_NAME ASC,
+   EVENT_KEY ASC
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_EXECUTION_ATTRIBUTE                         */
+/*==============================================================*/
+create table PUREST_WF_EXECUTION_ATTRIBUTE 
+(
+   PERSISTENCE_ID       INTEGER              not null,
+   ATTRIBUTE_KEY        VARCHAR2(100),
+   ATTRIBUTE_VALUE      CLOB,
+   EXECUTION_POINTER_ID INTEGER              not null,
+   constraint PK_PUREST_WF_EXECUTION_ATTRIBU primary key (PERSISTENCE_ID)
+);
+
+comment on table PUREST_WF_EXECUTION_ATTRIBUTE is
+'自定义属性';
+
+/*==============================================================*/
+/* Index: "IX_ExecutionPointerId"                               */
+/*==============================================================*/
+create index "IX_ExecutionPointerId" on PUREST_WF_EXECUTION_ATTRIBUTE (
+   EXECUTION_POINTER_ID ASC
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_EXECUTION_ERROR                             */
+/*==============================================================*/
+create table PUREST_WF_EXECUTION_ERROR 
+(
+   PERSISTENCE_ID       INTEGER              not null,
+   ERROR_TIME           DATE                 not null,
+   EXECUTION_POINTER_ID VARCHAR2(100),
+   MESSAGE              CLOB,
+   WORKFLOW_ID          VARCHAR2(100),
+   constraint PK_PUREST_WF_EXECUTION_ERROR primary key (PERSISTENCE_ID)
+);
+
+comment on table PUREST_WF_EXECUTION_ERROR is
+'执行异常';
+
+/*==============================================================*/
+/* Table: PUREST_WF_EXECUTION_POINTER                           */
+/*==============================================================*/
+create table PUREST_WF_EXECUTION_POINTER 
+(
+   PERSISTENCE_ID       INTEGER              not null,
+   WORKFLOW_ID          INTEGER              not null,
+   ID                   VARCHAR2(36),
+   START_TIME           DATE,
+   END_TIME             DATE,
+   ACTIVE               SMALLINT             not null,
+   EVENT_KEY            VARCHAR2(100),
+   EVENT_NAME           VARCHAR2(100),
+   EVENT_DATA           CLOB,
+   EVENT_PUBLISHED      SMALLINT             not null,
+   PERSISTENCE_DATA     CLOB,
+   SLEEP_UNTIL          DATE,
+   STEP_ID              INTEGER              not null,
+   STEP_NAME            VARCHAR2(100),
+   CHILDREN             CLOB,
+   CONTEXT_ITEM         CLOB,
+   PREDECESSOR_ID       VARCHAR2(100),
+   OUTCOME              CLOB,
+   SCOPE                CLOB,
+   RETRY_COUNT          INTEGER              not null,
+   STATUS               INTEGER              not null,
+   constraint PK_PUREST_WF_EXECUTION_POINTER primary key (PERSISTENCE_ID)
+);
+
+comment on table PUREST_WF_EXECUTION_POINTER is
+'步骤';
+
+/*==============================================================*/
+/* Index: "IX_ExecutionPointer_WorkflowId"                      */
+/*==============================================================*/
+create index "IX_ExecutionPointer_WorkflowId" on PUREST_WF_EXECUTION_POINTER (
+   WORKFLOW_ID ASC
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_SCHEDULED_COMMAND                           */
+/*==============================================================*/
+create table PUREST_WF_SCHEDULED_COMMAND 
+(
+   PERSISTENCE_ID       INTEGER              not null,
+   COMMAND_NAME         VARCHAR2(200),
+   DATA                 VARCHAR2(500),
+   EXECUTE_TIME         INTEGER              not null,
+   constraint PK_PUREST_WF_SCHEDULED_COMMAND primary key (PERSISTENCE_ID)
+);
+
+comment on table PUREST_WF_SCHEDULED_COMMAND is
+'计划命令';
+
+/*==============================================================*/
+/* Index: "IX_CommandName_Data"                                 */
+/*==============================================================*/
+create unique index "IX_CommandName_Data" on PUREST_WF_SCHEDULED_COMMAND (
+   COMMAND_NAME ASC,
+   DATA ASC
+);
+
+/*==============================================================*/
+/* Index: "IX_ExecuteTime"                                      */
+/*==============================================================*/
+create index "IX_ExecuteTime" on PUREST_WF_SCHEDULED_COMMAND (
+   EXECUTE_TIME ASC
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_SUBSCRIPTION                                */
+/*==============================================================*/
+create table PUREST_WF_SUBSCRIPTION 
+(
+   PERSISTENCE_ID       INTEGER              not null,
+   EVENT_KEY            VARCHAR2(200),
+   EVENT_NAME           VARCHAR2(200),
+   STEP_ID              INTEGER              not null,
+   SUBSCRIPTION_ID      VARCHAR2(36)         not null,
+   WORKFLOW_ID          VARCHAR2(200),
+   SUBSCRIBE_AS_OF      DATE                 not null,
+   SUBSCRIPTION_DATA    CLOB,
+   EXECUTION_POINTER_ID VARCHAR2(200),
+   EXTERNAL_TOKEN       VARCHAR2(200),
+   EXTERNAL_TOKEN_EXPIRY DATE,
+   EXTERNAL_WORKER_ID   VARCHAR2(200),
+   constraint PK_PUREST_WF_SUBSCRIPTION primary key (PERSISTENCE_ID)
+);
+
+comment on table PUREST_WF_SUBSCRIPTION is
+'订阅';
+
+/*==============================================================*/
+/* Index: "IX_Subscription_SubscriptionId"                      */
+/*==============================================================*/
+create unique index "IX_Subscription_SubscriptionId" on PUREST_WF_SUBSCRIPTION (
+   SUBSCRIPTION_ID ASC
+);
+
+/*==============================================================*/
+/* Index: "IX_Subscription_EventKey"                            */
+/*==============================================================*/
+create index "IX_Subscription_EventKey" on PUREST_WF_SUBSCRIPTION (
+   EVENT_KEY ASC
+);
+
+/*==============================================================*/
+/* Index: "IX_Subscription_EventName"                           */
+/*==============================================================*/
+create index "IX_Subscription_EventName" on PUREST_WF_SUBSCRIPTION (
+   EVENT_NAME ASC
+);
+
+/*==============================================================*/
+/* Table: PUREST_WF_WAITING_POINTER                             */
+/*==============================================================*/
+create table PUREST_WF_WAITING_POINTER 
+(
+   ID                   INTEGER              not null,
+   USER_ID              INTEGER              not null,
+   POINTER_ID           VARCHAR2(36)         not null,
+   constraint PK_PUREST_WF_WAITING_POINTER primary key (ID)
+);
+
+comment on table PUREST_WF_WAITING_POINTER is
+'待审核步骤';
+
+comment on column PUREST_WF_WAITING_POINTER.ID is
+'主键Id';
+
+comment on column PUREST_WF_WAITING_POINTER.USER_ID is
+'用户Id';
+
+comment on column PUREST_WF_WAITING_POINTER.POINTER_ID is
+'步骤Id';
+
+/*==============================================================*/
+/* Table: PUREST_WF_WORKFLOW                                    */
+/*==============================================================*/
+create table PUREST_WF_WORKFLOW 
+(
+   PERSISTENCE_ID       INTEGER              not null,
+   COMPLETE_TIME        DATE,
+   CREATE_BY            INTEGER              not null,
+   CREATE_TIME          DATE                 not null,
+   DATA                 CLOB,
+   DESCRIPTION          VARCHAR2(500),
+   INSTANCE_ID          VARCHAR2(36)         not null,
+   NEXT_EXECUTION       INTEGER,
+   STATUS               INTEGER              not null,
+   VERSION              INTEGER              not null,
+   WORKFLOW_DEFINITION_ID VARCHAR2(36)         not null,
+   REFERENCE            VARCHAR2(200),
+   REMARK               VARCHAR2(1000),
+   constraint PK_PUREST_WF_WORKFLOW primary key (PERSISTENCE_ID)
+);
+
+comment on table PUREST_WF_WORKFLOW is
+'工作流程';
+
+/*==============================================================*/
+/* Index: "IX_Workflow_InstanceId"                              */
+/*==============================================================*/
+create index "IX_Workflow_InstanceId" on PUREST_WF_WORKFLOW (
+   INSTANCE_ID ASC
+);
+
+/*==============================================================*/
+/* Index: "IX_Workflow_NextExecution"                           */
+/*==============================================================*/
+create index "IX_Workflow_NextExecution" on PUREST_WF_WORKFLOW (
+   NEXT_EXECUTION ASC
+);
+
+/*==============================================================*/
+/* Table: PUREST_WORKFLOW_INSTANCE                              */
+/*==============================================================*/
+create table PUREST_WORKFLOW_INSTANCE 
+(
+   ID                   INTEGER              not null,
+   CREATE_BY            INTEGER              not null,
+   CREATE_TIME          DATE                 not null,
+   UPDATE_BY            INTEGER,
+   UPDATE_TIME          DATE,
+   REMARK               VARCHAR2(1000),
+   WF_ID                INTEGER              not null,
+   SCHEME_ID            INTEGER              not null,
+   FORM_DATA            CLOB                 not null,
+   CURRENT_NODE         INTEGER,
+   CURRENT_NODE_TYPE    INTEGER              not null,
+   STATUS               INTEGER              not null,
+   constraint PK_PUREST_WORKFLOW_INSTANCE primary key (ID)
+);
+
+comment on table PUREST_WORKFLOW_INSTANCE is
+'流程实例';
+
+comment on column PUREST_WORKFLOW_INSTANCE.ID is
+'主键Id';
+
+comment on column PUREST_WORKFLOW_INSTANCE.CREATE_BY is
+'创建人';
+
+comment on column PUREST_WORKFLOW_INSTANCE.CREATE_TIME is
+'创建时间';
+
+comment on column PUREST_WORKFLOW_INSTANCE.UPDATE_BY is
+'修改人';
+
+comment on column PUREST_WORKFLOW_INSTANCE.UPDATE_TIME is
+'修改时间';
+
+comment on column PUREST_WORKFLOW_INSTANCE.REMARK is
+'备注';
+
+comment on column PUREST_WORKFLOW_INSTANCE.WF_ID is
+'流程ID';
+
+comment on column PUREST_WORKFLOW_INSTANCE.SCHEME_ID is
+'设计ID';
+
+comment on column PUREST_WORKFLOW_INSTANCE.FORM_DATA is
+'表单值';
+
+comment on column PUREST_WORKFLOW_INSTANCE.CURRENT_NODE is
+'当前节点';
+
+comment on column PUREST_WORKFLOW_INSTANCE.CURRENT_NODE_TYPE is
+'当前节点类型';
+
+comment on column PUREST_WORKFLOW_INSTANCE.STATUS is
+'状态';
+
 alter table PUREST_DICT_DATA
    add constraint FK_PUREST_D_REFERENCE_PUREST_D foreign key (CATEGORY_ID)
-      references PUREST_DICT_CATEGORY (ID);
+      references PUREST_DICT_CATEGORY (ID)
+      on delete cascade;
 
 alter table PUREST_FUNCTION_INTERFACE
    add constraint FK_PUREST_F_REFERENCE_PUREST_F foreign key (FUNCTION_ID)
-      references PUREST_FUNCTION (ID);
+      references PUREST_FUNCTION (ID)
+      on delete cascade;
 
 alter table PUREST_FUNCTION_INTERFACE
    add constraint FK_PUREST_F_REFERENCE_PUREST_I foreign key (INTERFACE_ID)
-      references PUREST_INTERFACE (ID);
+      references PUREST_INTERFACE (ID)
+      on delete cascade;
 
 alter table PUREST_INTERFACE
    add constraint FK_PUREST_I_REFERENCE_PUREST_I foreign key (GROUP_ID)
-      references PUREST_INTERFACE_GROUP (ID);
+      references PUREST_INTERFACE_GROUP (ID)
+      on delete cascade;
 
 alter table PUREST_NOTICE_RECORD
    add constraint FK_PUREST_N_REFERENCE_PUREST_N foreign key (NOTICE_ID)
-      references PUREST_NOTICE (ID);
+      references PUREST_NOTICE (ID)
+      on delete cascade;
 
 alter table PUREST_ORGANIZATION
    add constraint FK_PUREST_O_REFERENCE_PUREST_O foreign key (PARENT_ID)
-      references PUREST_ORGANIZATION (ID);
+      references PUREST_ORGANIZATION (ID)
+      on delete cascade;
 
 alter table PUREST_PROFILE_SYSTEM
    add constraint FK_PUREST_P_REFERENCE_PUREST_F foreign key (FILE_ID)
-      references PUREST_FILE_RECORD (ID);
+      references PUREST_FILE_RECORD (ID)
+      on delete cascade;
 
 alter table PUREST_ROLE_FUNCTION
    add constraint FK_PUREST_R_REFERENCE_PUREST_R foreign key (ROLE_ID)
-      references PUREST_ROLE (ID);
+      references PUREST_ROLE (ID)
+      on delete cascade;
 
 alter table PUREST_ROLE_FUNCTION
    add constraint FK_PUREST_R_REFERENCE_PUREST_F foreign key (FUNCTION_ID)
-      references PUREST_FUNCTION (ID);
+      references PUREST_FUNCTION (ID)
+      on delete cascade;
 
 alter table PUREST_USER
    add constraint FK_PUREST_U_REFERENCE_PUREST_O foreign key (ORGANIZATION_ID)
-      references PUREST_ORGANIZATION (ID);
+      references PUREST_ORGANIZATION (ID)
+      on delete cascade;
 
 alter table PUREST_USER_ROLE
    add constraint FK_PUREST_U_REFERENCE_PUREST_R foreign key (ROLE_ID)
-      references PUREST_ROLE (ID);
+      references PUREST_ROLE (ID)
+      on delete cascade;
 
 alter table PUREST_USER_ROLE
    add constraint FK_PUREST_U_REFERENCE_PUREST_U foreign key (USER_ID)
-      references PUREST_USER (ID);
+      references PUREST_USER (ID)
+      on delete cascade;
+
+alter table PUREST_WF_EXECUTION_ATTRIBUTE
+   add constraint "FK_Reference_20" foreign key (EXECUTION_POINTER_ID)
+      references PUREST_WF_EXECUTION_POINTER (PERSISTENCE_ID)
+      on delete cascade;
+
+alter table PUREST_WF_EXECUTION_POINTER
+   add constraint "FK_Reference_19" foreign key (WORKFLOW_ID)
+      references PUREST_WF_WORKFLOW (PERSISTENCE_ID)
+      on delete cascade;
+
+alter table PUREST_WORKFLOW_INSTANCE
+   add constraint "FK_Reference_23" foreign key (WF_ID)
+      references PUREST_WF_WORKFLOW (PERSISTENCE_ID);
+
+alter table PUREST_WORKFLOW_INSTANCE
+   add constraint "FK_Reference_24" foreign key (SCHEME_ID)
+      references PUREST_WF_DEFINITION (ID);
 
