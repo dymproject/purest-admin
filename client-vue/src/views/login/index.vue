@@ -17,7 +17,10 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
+import Github from "@iconify-icons/ri/github-fill";
+import Gitee from "@iconify-icons/ri/github-line";
 import { useUserStoreHook } from "@/store/modules/user";
+import { createConnection } from "@/utils/signalr";
 
 defineOptions({
   name: "Login"
@@ -58,8 +61,6 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       } finally {
         loading.value = false;
       }
-    } else {
-      return fields;
     }
   });
 };
@@ -70,6 +71,11 @@ function onkeypress({ code }: KeyboardEvent) {
     onLogin(ruleFormRef.value);
   }
 }
+
+const authorization = (type: string) => {
+  const connection = createConnection(`/authorization`);
+  connection.invoke("Authorize", type);
+};
 
 onMounted(() => {
   window.document.addEventListener("keypress", onkeypress);
@@ -154,6 +160,24 @@ onBeforeUnmount(() => {
               </el-button>
             </Motion>
           </el-form>
+          <el-divider> 第三方登录 </el-divider>
+          <div class="button-container">
+            <el-button
+              type="primary"
+              color="#626aef"
+              :icon="useRenderIcon(Github)"
+            >
+              GitHub登录
+            </el-button>
+            <el-button
+              type="primary"
+              color="#FF2F00"
+              :icon="useRenderIcon(Gitee)"
+              @click="authorization('gitee')"
+            >
+              Gitee登录
+            </el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -165,6 +189,10 @@ onBeforeUnmount(() => {
 </style>
 
 <style lang="scss" scoped>
+.button-container {
+  display: flex;
+  justify-content: center;
+}
 :deep(.el-input-group__append, .el-input-group__prepend) {
   padding: 0;
 }

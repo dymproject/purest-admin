@@ -2,11 +2,17 @@
 
 using System.Security.Claims;
 
+using Flurl;
+using Flurl.Http;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 
 using PurestAdmin.Application.AuthServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
+using PurestAdmin.Multiplex.AdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 
@@ -15,8 +21,13 @@ namespace PurestAdmin.Application.AuthServices;
 /// 用户授权服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
-public class AuthService(IAdminToken adminToken, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
+public class AuthService(IHubContext<AuthorizationHub, IAuthorizationClient> hubContext, IConfiguration configuration, IAdminToken adminToken, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
 {
+    private readonly IHubContext<AuthorizationHub, IAuthorizationClient> _hubContext = hubContext;
+    /// <summary>
+    /// configuration
+    /// </summary>
+    private readonly IConfiguration _configuration = configuration;
     /// <summary>
     /// IAdminToken
     /// </summary>
@@ -65,6 +76,44 @@ public class AuthService(IAdminToken adminToken, IHttpContextAccessor httpContex
         _httpContextAccessor.HttpContext.Response.Headers["accesstoken"] = accessToken;
 
         return output;
+    }
+
+    /// <summary>
+    /// Auht2.0 回调服务
+    /// </summary>
+    /// <param name="id">类型归属</param>
+    /// <param name="code"></param>
+    /// <param name="state"></param>
+    [AllowAnonymous]
+    public async void GetCallbackAsync(string id, [FromQuery] string code, [FromQuery] string state)
+    {
+        throw BusinessValidateException.Message("未配置认证中心");
+        code = "65b833ff1411b9f391bb9777ca3f3e091507ebab046b967e9c5484d39182ca29";
+        state = "123456";
+        var authorizationCenters = _configuration.GetRequiredSection("AuthorizationCenter").Get<List<AuthorizationCenterModel>>() ?? throw BusinessValidateException.Message("未配置认证中心");
+        var authorizationCenter = authorizationCenters?.FirstOrDefault(x => string.Equals(x.Name, id, StringComparison.OrdinalIgnoreCase))
+            ?? throw BusinessValidateException.Message("未找到当前认证配置");
+        var tokenUri = string.Empty;
+        switch (id)
+        {
+            case "gitee":
+                tokenUri = "https://gitee.com/oauth/token";
+                tokenUri.SetQueryParams(new { grant_type = "authorization_code", code, client_id = authorizationCenter.ClientId, redirect_uri = authorizationCenter.RedirectUri, client_secret = authorizationCenter.ClientSecret });
+                break;
+            default:
+                break;
+        }
+        try
+        {
+            var response = await tokenUri.PostAsync();
+            var token = response.ResponseMessage.Content.ReadAsStringAsync();
+            //通知重定向
+            await _hubContext.Clients.Client(state).NoticeRedirect();
+        }
+        catch (Exception)
+        {
+            throw;
+        }      
     }
 
     /// <summary>
