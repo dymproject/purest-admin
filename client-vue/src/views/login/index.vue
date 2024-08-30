@@ -17,11 +17,13 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
-import Github from "@iconify-icons/ri/github-fill";
-import Gitee from "@iconify-icons/ri/github-line";
+import Github from "@iconify-icons/simple-icons/github";
+import Gitee from "@iconify-icons/simple-icons/gitee";
 import { useUserStoreHook } from "@/store/modules/user";
 import { createConnection } from "@/utils/signalr";
-
+import { HubConnection } from "@microsoft/signalr";
+import Register from "./Register.vue";
+const registerModalRef = ref();
 defineOptions({
   name: "Login"
 });
@@ -72,13 +74,26 @@ function onkeypress({ code }: KeyboardEvent) {
   }
 }
 
-const authorization = (type: string) => {
-  const connection = createConnection(`/authorization`);
-  connection.invoke("Authorize", type);
+const connection = ref<HubConnection>();
+const createAuthorizationConnection = () => {
+  connection.value = createConnection(`/authorization`);
+  connection.value.on("NoticeOpenAuthorizationPage", (url: string) => {
+    window.open(url, "_blank");
+  });
+  connection.value.on("NoticeRegister", () => {
+    registerModalRef.value.showAddModal();
+  });
+};
+
+const toAuthorize = (type: string) => {
+  if (connection.value) {
+    connection.value.invoke("Authorize", type);
+  }
 };
 
 onMounted(() => {
   window.document.addEventListener("keypress", onkeypress);
+  createAuthorizationConnection();
 });
 
 onBeforeUnmount(() => {
@@ -164,23 +179,24 @@ onBeforeUnmount(() => {
           <div class="button-container">
             <el-button
               type="primary"
-              color="#626aef"
+              color="#4F4F4F"
+              plain
               :icon="useRenderIcon(Github)"
-            >
-              GitHub登录
-            </el-button>
+              circle
+            />
             <el-button
               type="primary"
               color="#FF2F00"
+              plain
+              circle
               :icon="useRenderIcon(Gitee)"
-              @click="authorization('gitee')"
-            >
-              Gitee登录
-            </el-button>
+              @click="toAuthorize('gitee')"
+            />
           </div>
         </div>
       </div>
     </div>
+    <Register ref="registerModalRef" />
   </div>
 </template>
 

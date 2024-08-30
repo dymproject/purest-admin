@@ -15,14 +15,22 @@ using PurestAdmin.Core.DataEncryption.Encryptions;
 using PurestAdmin.Multiplex.AdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
+using PurestAdmin.Multiplex.Contracts.IAdminUser.OAuth2;
 
 namespace PurestAdmin.Application.AuthServices;
 /// <summary>
 /// 用户授权服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
-public class AuthService(IHubContext<AuthorizationHub, IAuthorizationClient> hubContext, IConfiguration configuration, IAdminToken adminToken, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
+public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<AuthorizationHub, IAuthorizationClient> hubContext, IConfiguration configuration, IAdminToken adminToken, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
 {
+    /// <summary>
+    /// oAuth2UserManager
+    /// </summary>
+    private readonly IOAuth2UserManager _oAuth2UserManager = oAuth2UserManager;
+    /// <summary>
+    /// hubContext
+    /// </summary>
     private readonly IHubContext<AuthorizationHub, IAuthorizationClient> _hubContext = hubContext;
     /// <summary>
     /// configuration
@@ -82,38 +90,54 @@ public class AuthService(IHubContext<AuthorizationHub, IAuthorizationClient> hub
     /// Auht2.0 回调服务
     /// </summary>
     /// <param name="id">类型归属</param>
-    /// <param name="code"></param>
-    /// <param name="state"></param>
+    /// <param name="input"></param>
     [AllowAnonymous]
-    public async void GetCallbackAsync(string id, [FromQuery] string code, [FromQuery] string state)
+    public async Task GetCallbackAsync(string id, GetCallbackInput input)
     {
-        throw BusinessValidateException.Message("未配置认证中心");
-        code = "65b833ff1411b9f391bb9777ca3f3e091507ebab046b967e9c5484d39182ca29";
-        state = "123456";
-        var authorizationCenters = _configuration.GetRequiredSection("AuthorizationCenter").Get<List<AuthorizationCenterModel>>() ?? throw BusinessValidateException.Message("未配置认证中心");
+        var authorizationCenters = _configuration.GetRequiredSection("OAuth2Options").Get<List<OAuth2Option>>() ?? throw BusinessValidateException.Message("未配置认证中心");
         var authorizationCenter = authorizationCenters?.FirstOrDefault(x => string.Equals(x.Name, id, StringComparison.OrdinalIgnoreCase))
             ?? throw BusinessValidateException.Message("未找到当前认证配置");
-        var tokenUri = string.Empty;
-        switch (id)
-        {
-            case "gitee":
-                tokenUri = "https://gitee.com/oauth/token";
-                tokenUri.SetQueryParams(new { grant_type = "authorization_code", code, client_id = authorizationCenter.ClientId, redirect_uri = authorizationCenter.RedirectUri, client_secret = authorizationCenter.ClientSecret });
-                break;
-            default:
-                break;
-        }
+        OAuth2UserInfo oAuth2UserInfo = new();
         try
         {
-            var response = await tokenUri.PostAsync();
-            var token = response.ResponseMessage.Content.ReadAsStringAsync();
-            //通知重定向
-            await _hubContext.Clients.Client(state).NoticeRedirect();
+            switch (id)
+            {
+                case OAuth2TypeConst.GITEE:
+                    var tokenResult = await "https://gitee.com/oauth/token".SetQueryParams(new { grant_type = "authorization_code", code = input.Code, client_id = authorizationCenter.ClientId, redirect_uri = authorizationCenter.RedirectUri, client_secret = authorizationCenter.ClientSecret }).PostAsync().ReceiveJson<GiteeTokenResult>();
+                    oAuth2UserInfo = await "https://gitee.com/api/v5/user".SetQueryParams(new { access_token = tokenResult.AccessToken }).GetJsonAsync<OAuth2UserInfo>();
+                    oAuth2UserInfo.Type = OAuth2TypeConst.GITEE;
+                    break;
+                default:
+                    break;
+            }
+            var oAuth2User = await _oAuth2UserManager.GetOAuth2UserPersistenceIdAsync(oAuth2UserInfo);
+            if (oAuth2User.UserId.HasValue)
+            {
+                var user = await _db.Queryable<UserEntity>().FirstAsync(x => x.Id == oAuth2User.UserId.Value);
+                var userRole = await _db.Queryable<UserRoleEntity>().FirstAsync(x => x.UserId == user.Id);
+                var claims = new[]
+                {
+                    new Claim(AdminClaimConst.USER_ID,user.Id.ToString()),
+                    new Claim(AdminClaimConst.USER_NAME,user.Name),
+                    new Claim(AdminClaimConst.ORGANIZATION_ID,user.OrganizationId.ToString()),
+                    new Claim(AdminClaimConst.ROLE_ID,userRole.RoleId.ToString()),
+                };
+                var accessToken = _adminToken.GenerateTokenString(claims);
+                var functions = await _db.Queryable<RoleFunctionEntity>()
+                    .LeftJoin<FunctionEntity>((rf, f) => rf.FunctionId == f.Id)
+                    .Where((rf, f) => rf.RoleId == SqlFunc.Subqueryable<UserRoleEntity>().Where(u => u.UserId == user.Id).Select(u => u.RoleId))
+                    .Select((rf, f) => f)
+                    .ToListAsync();
+                await _hubContext.Clients.Client(input.State).NoticeRedirect(accessToken, functions.Select(x => x.Code).ToList());
+            }
+            else
+                await _hubContext.Clients.Client(input.State).NoticeRegister(oAuth2User.PersistenceId);
         }
-        catch (Exception)
+        catch (FlurlHttpException ex)
         {
-            throw;
-        }      
+            //这里基本都是因为访问权限的问题，酌情处理
+            await _hubContext.Clients.Client(input.State).NoticeException(ex.Message);
+        }
     }
 
     /// <summary>

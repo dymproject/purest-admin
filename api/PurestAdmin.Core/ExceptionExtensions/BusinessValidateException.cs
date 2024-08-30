@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Extensions;
 using Volo.Abp;
 
 namespace PurestAdmin.Core.ExceptionExtensions;
-public class BusinessValidateException
+public static class BusinessValidateException
 {
     /// <summary>
     /// 抛出业务异常信息
