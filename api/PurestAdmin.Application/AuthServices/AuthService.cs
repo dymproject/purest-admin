@@ -82,7 +82,6 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
 
         // 返回accesstoken
         _httpContextAccessor.HttpContext.Response.Headers["accesstoken"] = accessToken;
-
         return output;
     }
 
@@ -113,22 +112,24 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
             var oAuth2User = await _oAuth2UserManager.GetOAuth2UserPersistenceIdAsync(oAuth2UserInfo);
             if (oAuth2User.UserId.HasValue)
             {
-                var user = await _db.Queryable<UserEntity>().FirstAsync(x => x.Id == oAuth2User.UserId.Value);
-                var userRole = await _db.Queryable<UserRoleEntity>().FirstAsync(x => x.UserId == user.Id);
-                var claims = new[]
-                {
-                    new Claim(AdminClaimConst.USER_ID,user.Id.ToString()),
-                    new Claim(AdminClaimConst.USER_NAME,user.Name),
-                    new Claim(AdminClaimConst.ORGANIZATION_ID,user.OrganizationId.ToString()),
-                    new Claim(AdminClaimConst.ROLE_ID,userRole.RoleId.ToString()),
-                };
-                var accessToken = _adminToken.GenerateTokenString(claims);
-                var functions = await _db.Queryable<RoleFunctionEntity>()
-                    .LeftJoin<FunctionEntity>((rf, f) => rf.FunctionId == f.Id)
-                    .Where((rf, f) => rf.RoleId == SqlFunc.Subqueryable<UserRoleEntity>().Where(u => u.UserId == user.Id).Select(u => u.RoleId))
-                    .Select((rf, f) => f)
-                    .ToListAsync();
-                await _hubContext.Clients.Client(input.State).NoticeRedirect(accessToken, functions.Select(x => x.Code).ToList());
+                //var user = await _db.Queryable<UserEntity>().FirstAsync(x => x.Id == oAuth2User.UserId.Value);
+                //var userRole = await _db.Queryable<UserRoleEntity>().FirstAsync(x => x.UserId == user.Id);
+                //var claims = new[]
+                //{
+                //    new Claim(AdminClaimConst.USER_ID,user.Id.ToString()),
+                //    new Claim(AdminClaimConst.USER_NAME,user.Name),
+                //    new Claim(AdminClaimConst.ORGANIZATION_ID,user.OrganizationId.ToString()),
+                //    new Claim(AdminClaimConst.ROLE_ID,userRole.RoleId.ToString()),
+                //};
+                //var accessToken = _adminToken.GenerateTokenString(claims);
+                //var functions = await _db.Queryable<RoleFunctionEntity>()
+                //    .LeftJoin<FunctionEntity>((rf, f) => rf.FunctionId == f.Id)
+                //    .Where((rf, f) => rf.RoleId == SqlFunc.Subqueryable<UserRoleEntity>().Where(u => u.UserId == user.Id).Select(u => u.RoleId))
+                //    .Select((rf, f) => f)
+                //    .ToListAsync();
+                //var userInfo = new { user.Name, user.Id, Permissions = functions.Select(x => x.Code).ToList() };
+                var (accessToken, userInfo) = await GetTokenAndUserInfoAsync(oAuth2User.UserId.Value);
+                await _hubContext.Clients.Client(input.State).NoticeRedirect(accessToken, userInfo);
             }
             else
                 await _hubContext.Clients.Client(input.State).NoticeRegister(oAuth2User.PersistenceId);
@@ -137,6 +138,24 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
         {
             //这里基本都是因为访问权限的问题，酌情处理
             await _hubContext.Clients.Client(input.State).NoticeException(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// 绑定用户
+    /// </summary>
+    /// <param name="input">input</param>
+    [AllowAnonymous]
+    public async Task BindUserAsync([Required] BindUserInput input)
+    {
+        var userOutput = await LoginAsync(input);
+        //
+        var oAuth2User = await _db.Queryable<OAuth2UserEntity>().FirstAsync(x => x.Id == input.OAuth2UserId);
+        if (oAuth2User != null)
+        {
+            oAuth2User.UserId = userOutput.Id;
+            await _db.Updateable(oAuth2User).ExecuteCommandAsync();
+            var (accessToken, userInfo) = await GetTokenAndUserInfoAsync(oAuth2User.UserId.Value);
         }
     }
 
@@ -225,4 +244,32 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
             }).ToListAsync();
         return records;
     }
+
+    #region 私有方法
+    /// <summary>
+    /// 获取TokenAndUserInfo
+    /// </summary>
+    /// <param name="oAuth2UserId"></param>
+    /// <returns></returns>
+    private async Task<(string, dynamic)> GetTokenAndUserInfoAsync(long oAuth2UserId)
+    {
+        var user = await _db.Queryable<UserEntity>().FirstAsync(x => x.Id == oAuth2UserId);
+        var userRole = await _db.Queryable<UserRoleEntity>().FirstAsync(x => x.UserId == user.Id);
+        var claims = new[]
+        {
+                    new Claim(AdminClaimConst.USER_ID,user.Id.ToString()),
+                    new Claim(AdminClaimConst.USER_NAME,user.Name),
+                    new Claim(AdminClaimConst.ORGANIZATION_ID,user.OrganizationId.ToString()),
+                    new Claim(AdminClaimConst.ROLE_ID,userRole.RoleId.ToString()),
+                };
+        var accessToken = _adminToken.GenerateTokenString(claims);
+        var functions = await _db.Queryable<RoleFunctionEntity>()
+            .LeftJoin<FunctionEntity>((rf, f) => rf.FunctionId == f.Id)
+            .Where((rf, f) => rf.RoleId == SqlFunc.Subqueryable<UserRoleEntity>().Where(u => u.UserId == user.Id).Select(u => u.RoleId))
+            .Select((rf, f) => f)
+            .ToListAsync();
+        var userInfo = new { user.Name, user.Id, Permissions = functions.Select(x => x.Code).ToList() };
+        return (accessToken, userInfo);
+    }
+    #endregion
 }

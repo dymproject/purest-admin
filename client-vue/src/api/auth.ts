@@ -28,7 +28,18 @@ export const login = async (data?: object) => {
 export const getUserPermissions = async () => {
   return http.request<string[]>("get", "/auth/functions");
 };
-
+/** 绑定用户 */
+export const bindUser = (params: any) => {
+  return http.request("post", "/auth/bind-user", {
+    data: params
+  });
+};
+/** 注册用户 */
+export const registerUser = (params: any) => {
+  return http.request("post", "/auth/register-user", {
+    data: params
+  });
+};
 /** 获取组织机构 */
 export const getOrganizationTreeData = () => {
   return http.request<OrganizationTreeNode[]>("get", "/auth/organization-tree");

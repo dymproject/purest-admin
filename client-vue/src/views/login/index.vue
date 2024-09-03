@@ -23,7 +23,9 @@ import { useUserStoreHook } from "@/store/modules/user";
 import { createConnection } from "@/utils/signalr";
 import { HubConnection } from "@microsoft/signalr";
 import Register from "./Register.vue";
+import Binding from "./Binding.vue";
 const registerModalRef = ref();
+const bindingModalRef = ref();
 defineOptions({
   name: "Login"
 });
@@ -73,22 +75,33 @@ function onkeypress({ code }: KeyboardEvent) {
     onLogin(ruleFormRef.value);
   }
 }
-
+const persistenceId = ref<number>(0);
 const connection = ref<HubConnection>();
 const createAuthorizationConnection = () => {
   connection.value = createConnection(`/authorization`);
   connection.value.on("NoticeOpenAuthorizationPage", (url: string) => {
     window.open(url, "_blank");
   });
-  connection.value.on("NoticeRegister", () => {
+  connection.value.on("NoticeRegister", (oAuth2UserId: number) => {
+    persistenceId.value = oAuth2UserId;
     registerModalRef.value.showAddModal();
+  });
+  connection.value.on("NoticeRedirect", (accessToken, userInfo) => {
+    useUserStoreHook().setToken(accessToken);
+    useUserStoreHook().setCurrentUser(userInfo);
+    usePermissionStoreHook().handleWholeMenus([]);
+    addPathMatch();
+    router.push("/");
+    message("登录成功", { type: "success" });
   });
 };
 
 const toAuthorize = (type: string) => {
-  if (connection.value) {
-    connection.value.invoke("Authorize", type);
-  }
+  registerModalRef.value.showAddModal();
+  // bindingModalRef.value.showAddModal();
+  // if (connection.value) {
+  //   connection.value.invoke("Authorize", type);
+  // }
 };
 
 onMounted(() => {
@@ -196,7 +209,8 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-    <Register ref="registerModalRef" />
+    <Register ref="registerModalRef" :o-auth2-user-id="persistenceId" />
+    <Binding ref="bindingModalRef" :o-auth2-user-id="persistenceId" />
   </div>
 </template>
 

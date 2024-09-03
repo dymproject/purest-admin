@@ -22,5 +22,5 @@ public interface IAuthorizationClient
     /// 通知页面重定向
     /// </summary>
     /// <returns></returns>
-    Task NoticeRedirect(string token, List<string> functions);
+    Task NoticeRedirect(string token, dynamic functions);
 }

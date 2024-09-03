@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, nextTick, reactive } from "vue";
 import { VxeFormPropTypes } from "vxe-pc-ui";
-import { registerUser } from "@/api/auth";
+import { bindUser } from "@/api/auth";
 const props = defineProps<{ oAuth2UserId: number }>();
 const vxeModalRef = ref();
 const modalOptions = reactive<{
@@ -20,36 +20,21 @@ const showModal = (title: string, canSubmit?: boolean): void => {
   modalOptions.canSubmit = canSubmit ?? true;
 };
 
-interface AddUserInput {
-  name: string;
+interface LoginInput {
   account: string;
   password: string;
-  telephone: string;
-  email: string;
   oAuth2UserId: number | null;
 }
 const formRef = ref();
 const defaultFormData = () => {
   return {
-    name: "",
     account: "",
     password: "",
-    telephone: "",
-    email: "",
     oAuth2UserId: props.oAuth2UserId
   };
 };
-const formData = ref<AddUserInput>(defaultFormData());
+const formData = ref<LoginInput>(defaultFormData());
 const formItems = ref<VxeFormPropTypes.Items>([
-  {
-    field: "name",
-    title: "名称",
-    span: 24,
-    itemRender: {
-      name: "$input",
-      props: { placeholder: "请输入用户名称" }
-    }
-  },
   {
     field: "account",
     title: "帐号",
@@ -64,22 +49,9 @@ const formItems = ref<VxeFormPropTypes.Items>([
       name: "$input",
       props: { type: "password", placeholder: "请输入密码" }
     }
-  },
-  {
-    field: "telephone",
-    title: "电话",
-    span: 24,
-    itemRender: { name: "$input", props: { placeholder: "请输入电话" } }
-  },
-  {
-    field: "email",
-    title: "邮箱",
-    span: 24,
-    itemRender: { name: "$input", props: { placeholder: "请输入邮箱" } }
   }
 ]);
 const formRules = ref<VxeFormPropTypes.Rules>({
-  name: [{ required: true, message: "请输入用户名" }],
   account: [
     { required: true, message: "请输入帐号" },
     { min: 3, message: "长度不能低于3个字符" }
@@ -91,7 +63,7 @@ const formRules = ref<VxeFormPropTypes.Rules>({
 });
 
 const showAddModal = () => {
-  showModal(`注册新用户`);
+  showModal(`绑定用户`);
   formData.value = defaultFormData();
   nextTick(() => {
     formRef.value.clearValidate();
@@ -100,7 +72,7 @@ const showAddModal = () => {
 const handleSubmit = async () => {
   const validate = await formRef.value.validate();
   if (!validate) {
-    registerUser(formData.value).then(() => {
+    bindUser(formData.value).then(() => {
       modalOptions.modalValue = false;
     });
   }
@@ -113,7 +85,7 @@ defineExpose({ showAddModal });
     ref="vxeModalRef"
     v-model="modalOptions.modalValue"
     width="600"
-    height="400"
+    height="240"
     showFooter
     :title="modalOptions.modalTitle"
   >
