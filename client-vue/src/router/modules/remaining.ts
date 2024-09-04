@@ -12,6 +12,16 @@ export default [
     }
   },
   {
+    path: "/callback",
+    name: "Callback",
+    component: () => import("@/views/login/Callback.vue"),
+    meta: {
+      title: "OAuth2.0-Callback",
+      showLink: false,
+      rank: 101
+    }
+  },
+  {
     path: "/redirect",
     component: Layout,
     meta: {

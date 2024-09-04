@@ -22,3 +22,20 @@ export const createConnection = (
   }
   return connection;
 };
+
+export const createConnectionAsync = async (
+  url: string,
+  directStart?: boolean | undefined
+): Promise<HubConnection> => {
+  const hubConnectionBuilder = new HubConnectionBuilder();
+  const connection = hubConnectionBuilder
+    .withUrl(`/signalr-hubs${url}`, {
+      accessTokenFactory: () => useUserStoreHook().getToken
+    })
+    .withAutomaticReconnect()
+    .build();
+  if (!directStart) {
+    await connection.start();
+  }
+  return connection;
+};

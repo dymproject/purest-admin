@@ -2,7 +2,7 @@
 import { ref, nextTick, reactive } from "vue";
 import { VxeFormPropTypes } from "vxe-pc-ui";
 import { registerUser } from "@/api/auth";
-const props = defineProps<{ oAuth2UserId: number }>();
+const props = defineProps<{ oAuth2UserId: number; connectionId: string }>();
 const vxeModalRef = ref();
 const modalOptions = reactive<{
   modalValue: boolean;
@@ -27,6 +27,7 @@ interface AddUserInput {
   telephone: string;
   email: string;
   oAuth2UserId: number | null;
+  connectionId: string | null;
 }
 const formRef = ref();
 const defaultFormData = () => {
@@ -36,7 +37,8 @@ const defaultFormData = () => {
     password: "",
     telephone: "",
     email: "",
-    oAuth2UserId: props.oAuth2UserId
+    oAuth2UserId: props.oAuth2UserId,
+    connectionId: props.connectionId
   };
 };
 const formData = ref<AddUserInput>(defaultFormData());

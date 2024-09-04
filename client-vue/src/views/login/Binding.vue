@@ -2,7 +2,7 @@
 import { ref, nextTick, reactive } from "vue";
 import { VxeFormPropTypes } from "vxe-pc-ui";
 import { bindUser } from "@/api/auth";
-const props = defineProps<{ oAuth2UserId: number }>();
+const props = defineProps<{ oAuth2UserId: number; connectionId: string }>();
 const vxeModalRef = ref();
 const modalOptions = reactive<{
   modalValue: boolean;
@@ -30,7 +30,8 @@ const defaultFormData = () => {
   return {
     account: "",
     password: "",
-    oAuth2UserId: props.oAuth2UserId
+    oAuth2UserId: props.oAuth2UserId,
+    connectionId: props.connectionId
   };
 };
 const formData = ref<LoginInput>(defaultFormData());

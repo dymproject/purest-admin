@@ -2,6 +2,7 @@
 import Motion from "./utils/motion";
 import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
+import { ElMessageBox } from "element-plus";
 import { loginRules } from "./utils/rule";
 import { useNav } from "@/layout/hooks/useNav";
 import type { FormInstance } from "element-plus";
@@ -20,7 +21,7 @@ import User from "@iconify-icons/ri/user-3-fill";
 import Github from "@iconify-icons/simple-icons/github";
 import Gitee from "@iconify-icons/simple-icons/gitee";
 import { useUserStoreHook } from "@/store/modules/user";
-import { createConnection } from "@/utils/signalr";
+import { createConnectionAsync } from "@/utils/signalr";
 import { HubConnection } from "@microsoft/signalr";
 import Register from "./Register.vue";
 import Binding from "./Binding.vue";
@@ -76,15 +77,26 @@ function onkeypress({ code }: KeyboardEvent) {
   }
 }
 const persistenceId = ref<number>(0);
+const connectionId = ref<string>("");
 const connection = ref<HubConnection>();
-const createAuthorizationConnection = () => {
-  connection.value = createConnection(`/authorization`);
+const createAuthorizationConnection = async () => {
+  connection.value = await createConnectionAsync(`/authorization`);
+  connectionId.value = connection.value.connectionId;
   connection.value.on("NoticeOpenAuthorizationPage", (url: string) => {
     window.open(url, "_blank");
   });
   connection.value.on("NoticeRegister", (oAuth2UserId: number) => {
     persistenceId.value = oAuth2UserId;
-    registerModalRef.value.showAddModal();
+    ElMessageBox.confirm("未检测到系统内相关联的用户信息！", "温馨提示", {
+      confirmButtonText: "有账号，去绑定",
+      cancelButtonText: "无账号，去注册"
+    })
+      .then(() => {
+        bindingModalRef.value.showAddModal();
+      })
+      .catch(() => {
+        registerModalRef.value.showAddModal();
+      });
   });
   connection.value.on("NoticeRedirect", (accessToken, userInfo) => {
     useUserStoreHook().setToken(accessToken);
@@ -97,11 +109,9 @@ const createAuthorizationConnection = () => {
 };
 
 const toAuthorize = (type: string) => {
-  registerModalRef.value.showAddModal();
-  // bindingModalRef.value.showAddModal();
-  // if (connection.value) {
-  //   connection.value.invoke("Authorize", type);
-  // }
+  if (connection.value) {
+    connection.value.invoke("Authorize", type);
+  }
 };
 
 onMounted(() => {
@@ -194,8 +204,9 @@ onBeforeUnmount(() => {
               type="primary"
               color="#4F4F4F"
               plain
-              :icon="useRenderIcon(Github)"
               circle
+              :icon="useRenderIcon(Github)"
+              @click="toAuthorize('github')"
             />
             <el-button
               type="primary"
@@ -209,8 +220,16 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-    <Register ref="registerModalRef" :o-auth2-user-id="persistenceId" />
-    <Binding ref="bindingModalRef" :o-auth2-user-id="persistenceId" />
+    <Register
+      ref="registerModalRef"
+      :connection-id="connectionId"
+      :o-auth2-user-id="persistenceId"
+    />
+    <Binding
+      ref="bindingModalRef"
+      :connection-id="connectionId"
+      :o-auth2-user-id="persistenceId"
+    />
   </div>
 </template>
 
