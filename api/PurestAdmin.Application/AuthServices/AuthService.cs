@@ -1,6 +1,7 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using System.Security.Claims;
+using System.Text.Json;
 
 using Flurl;
 using Flurl.Http;
@@ -88,18 +89,18 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
     /// <summary>
     /// Auht2.0 回调服务
     /// </summary>
-    /// <param name="id">类型归属</param>
     /// <param name="input"></param>
     [AllowAnonymous]
-    public async Task GetCallbackAsync(string id, GetCallbackInput input)
+    public async Task GetCallbackAsync(GetCallbackInput input)
     {
+        var stateInfo = JsonSerializer.Deserialize<StateInfo>(AESEncryption.Decrypt(input.State, "HFyidPPmf2ea7Jf9L6nIFk4E5Rv9toEN")) ?? throw BusinessValidateException.Message("回调参数State异常");
         var authorizationCenters = _configuration.GetRequiredSection("OAuth2Options").Get<List<OAuth2Option>>() ?? throw BusinessValidateException.Message("未配置认证中心");
-        var authorizationCenter = authorizationCenters?.FirstOrDefault(x => string.Equals(x.Name, id, StringComparison.OrdinalIgnoreCase))
+        var authorizationCenter = authorizationCenters?.FirstOrDefault(x => string.Equals(x.Name, stateInfo.Type, StringComparison.OrdinalIgnoreCase))
             ?? throw BusinessValidateException.Message("未找到当前认证配置");
         OAuth2UserInfo oAuth2UserInfo = new();
         try
         {
-            switch (id)
+            switch (stateInfo.Type)
             {
                 case OAuth2TypeConst.GITEE:
                     var tokenResult = await "https://gitee.com/oauth/token".SetQueryParams(new { grant_type = "authorization_code", code = input.Code, client_id = authorizationCenter.ClientId, redirect_uri = authorizationCenter.RedirectUri, client_secret = authorizationCenter.ClientSecret }).PostAsync().ReceiveJson<GiteeTokenResult>();
@@ -113,15 +114,15 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
             if (oAuth2User.UserId.HasValue)
             {
                 var (accessToken, userInfo) = await GetTokenAndUserInfoAsync(oAuth2User.UserId.Value);
-                await _hubContext.Clients.Client(input.State).NoticeRedirect(accessToken, userInfo);
+                await _hubContext.Clients.Client(stateInfo.ConnectionId).NoticeRedirect(accessToken, userInfo);
             }
             else
-                await _hubContext.Clients.Client(input.State).NoticeRegister(oAuth2User.PersistenceId);
+                await _hubContext.Clients.Client(stateInfo.ConnectionId).NoticeRegister(oAuth2User.PersistenceId);
         }
         catch (FlurlHttpException ex)
         {
             //这里基本都是因为访问权限的问题，酌情处理
-            await _hubContext.Clients.Client(input.State).NoticeException(ex.Message);
+            await _hubContext.Clients.Client(stateInfo.ConnectionId).NoticeException(ex.Message);
         }
     }
 

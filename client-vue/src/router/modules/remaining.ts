@@ -12,7 +12,7 @@ export default [
     }
   },
   {
-    path: "/callback",
+    path: "/oauth-callback",
     name: "Callback",
     component: () => import("@/views/login/Callback.vue"),
     meta: {

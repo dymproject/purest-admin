@@ -2,27 +2,31 @@
 function redirectWithParameter(targetUrl: string) {
   // 获取当前页面的URL
   const currentUrl = new URL(window.location.href);
-
+  // 将相对路径转换为绝对路径
+  const absoluteTargetUrl = new URL(targetUrl, currentUrl.origin).toString();
   // 创建目标URL对象
-  const redirectUrl = new URL(targetUrl);
-
+  const redirectUrl = new URL(absoluteTargetUrl);
   // 将当前URL的所有参数添加到目标URL
   currentUrl.searchParams.forEach((value, key) => {
     redirectUrl.searchParams.set(key, value);
   });
 
   // 重定向到新的URL
-  window.location.href = redirectUrl.toString();
+  fetch(redirectUrl)
+    .then(response => {
+      window.close();
+    })
+    .catch(error => {});
 }
 
 // 示例：在页面加载完成后立即执行重定向
 window.onload = function () {
-  redirectWithParameter("https://example.com/new-target");
+  redirectWithParameter("/api/v1/auth/callback");
 };
 </script>
 
 <template>
-  <div></div>
+  <div>请求登录成功，将在1秒后关闭……</div>
 </template>
 
 <style lang="scss" scoped></style>
