@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/7/18 18:08:06                           */
+/* Created on:     2024/9/10 16:57:11                           */
 /*==============================================================*/
 
 
@@ -23,6 +23,8 @@ drop table if exists PUREST_INTERFACE_GROUP;
 drop table if exists PUREST_NOTICE;
 
 drop table if exists PUREST_NOTICE_RECORD;
+
+drop table if exists PUREST_OAUTH2_USER;
 
 drop table if exists PUREST_ORGANIZATION;
 
@@ -280,6 +282,22 @@ create table PUREST_NOTICE_RECORD
 );
 
 alter table PUREST_NOTICE_RECORD comment '通知公告记录表';
+
+/*==============================================================*/
+/* Table: PUREST_OAUTH2_USER                                    */
+/*==============================================================*/
+create table PUREST_OAUTH2_USER
+(
+   PERSISTENCE_ID       bigint not null comment '主键Id',
+   CREATE_TIME          datetime not null comment '创建时间',
+   ID                   bigint comment 'ID',
+   NAME                 varchar(20) comment '认证中心名',
+   TYPE                 varchar(20) not null comment 'TYPE',
+   USER_ID              bigint comment '用户ID',
+   primary key (PERSISTENCE_ID)
+);
+
+alter table PUREST_OAUTH2_USER comment 'OAUTH2用户';
 
 /*==============================================================*/
 /* Table: PUREST_ORGANIZATION                                   */
@@ -777,6 +795,9 @@ alter table PUREST_INTERFACE add constraint FK_Reference_17 foreign key (GROUP_I
 
 alter table PUREST_NOTICE_RECORD add constraint FK_Reference_13 foreign key (NOTICE_ID)
       references PUREST_NOTICE (ID) on delete cascade on update restrict;
+
+alter table PUREST_OAUTH2_USER add constraint FK_Reference_26 foreign key (USER_ID)
+      references PUREST_USER (ID) on delete cascade on update restrict;
 
 alter table PUREST_ORGANIZATION add constraint FK_Reference_14 foreign key (PARENT_ID)
       references PUREST_ORGANIZATION (ID) on delete cascade on update restrict;

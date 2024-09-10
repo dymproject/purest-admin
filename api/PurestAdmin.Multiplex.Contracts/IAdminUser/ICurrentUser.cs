@@ -15,11 +15,6 @@ public interface ICurrentUser
     long Id { get; }
 
     /// <summary>
-    /// 角色Id
-    /// </summary>
-    long RoleId { get; }
-
-    /// <summary>
     /// 组织机构Id
     /// </summary>
     long OrganizationId { get; }

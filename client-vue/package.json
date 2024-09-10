@@ -89,6 +89,7 @@
     "@faker-js/faker": "^8.4.1",
     "@iconify-icons/ep": "^1.2.12",
     "@iconify-icons/ri": "^1.2.10",
+    "@iconify-icons/simple-icons": "^1.2.74",
     "@iconify/vue": "^4.1.2",
     "@pureadmin/theme": "^3.2.0",
     "@types/gradient-string": "^1.1.6",

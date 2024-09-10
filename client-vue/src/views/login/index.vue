@@ -2,6 +2,7 @@
 import Motion from "./utils/motion";
 import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
+import { ElMessageBox } from "element-plus";
 import { loginRules } from "./utils/rule";
 import { useNav } from "@/layout/hooks/useNav";
 import type { FormInstance } from "element-plus";
@@ -17,8 +18,15 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
+import Github from "@iconify-icons/simple-icons/github";
+import Gitee from "@iconify-icons/simple-icons/gitee";
 import { useUserStoreHook } from "@/store/modules/user";
-
+import { createConnectionAsync } from "@/utils/signalr";
+import { HubConnection, HubConnectionState } from "@microsoft/signalr";
+import Register from "./Register.vue";
+import Binding from "./Binding.vue";
+const registerModalRef = ref();
+const bindingModalRef = ref();
 defineOptions({
   name: "Login"
 });
@@ -58,8 +66,6 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       } finally {
         loading.value = false;
       }
-    } else {
-      return fields;
     }
   });
 };
@@ -70,9 +76,51 @@ function onkeypress({ code }: KeyboardEvent) {
     onLogin(ruleFormRef.value);
   }
 }
+const persistenceId = ref<number>(0);
+const connectionId = ref<string>("");
+const connection = ref<HubConnection>();
+const createAuthorizationConnection = async () => {
+  connection.value = await createConnectionAsync(`/authorization`);
+  connectionId.value = connection.value.connectionId;
+  connection.value.on("NoticeOpenAuthorizationPage", (url: string) => {
+    window.open(url, "_blank");
+  });
+  connection.value.on("NoticeRegister", (oAuth2UserId: number) => {
+    persistenceId.value = oAuth2UserId;
+    ElMessageBox.confirm("未检测到系统内相关联的用户信息！", "温馨提示", {
+      confirmButtonText: "有账号，去绑定",
+      cancelButtonText: "无账号，去注册"
+    })
+      .then(() => {
+        bindingModalRef.value.showAddModal();
+      })
+      .catch(() => {
+        registerModalRef.value.showAddModal();
+      });
+  });
+  connection.value.on("NoticeRedirect", (accessToken, userInfo) => {
+    useUserStoreHook().setToken(accessToken);
+    useUserStoreHook().setCurrentUser(userInfo);
+    usePermissionStoreHook().handleWholeMenus([]);
+    addPathMatch();
+    router.push("/");
+  });
+};
+
+const toAuthorize = (type: string) => {
+  if (
+    connection.value &&
+    connection.value.state === HubConnectionState.Connected
+  ) {
+    connection.value.invoke("Authorize", type);
+  } else {
+    message("连接服务器失败，请刷新后重试");
+  }
+};
 
 onMounted(() => {
   window.document.addEventListener("keypress", onkeypress);
+  createAuthorizationConnection();
 });
 
 onBeforeUnmount(() => {
@@ -154,9 +202,38 @@ onBeforeUnmount(() => {
               </el-button>
             </Motion>
           </el-form>
+          <el-divider> 第三方登录 </el-divider>
+          <div class="button-container">
+            <el-button
+              type="primary"
+              color="#4F4F4F"
+              plain
+              circle
+              :icon="useRenderIcon(Github)"
+              @click="toAuthorize('github')"
+            />
+            <el-button
+              type="primary"
+              color="#FF2F00"
+              plain
+              circle
+              :icon="useRenderIcon(Gitee)"
+              @click="toAuthorize('gitee')"
+            />
+          </div>
         </div>
       </div>
     </div>
+    <Register
+      ref="registerModalRef"
+      :connection-id="connectionId"
+      :o-auth2-user-id="persistenceId"
+    />
+    <Binding
+      ref="bindingModalRef"
+      :connection-id="connectionId"
+      :o-auth2-user-id="persistenceId"
+    />
   </div>
 </template>
 
@@ -165,6 +242,10 @@ onBeforeUnmount(() => {
 </style>
 
 <style lang="scss" scoped>
+.button-container {
+  display: flex;
+  justify-content: center;
+}
 :deep(.el-input-group__append, .el-input-group__prepend) {
   padding: 0;
 }

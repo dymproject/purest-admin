@@ -12,6 +12,16 @@ export default [
     }
   },
   {
+    path: "/oauth-callback",
+    name: "Callback",
+    component: () => import("@/views/login/Callback.vue"),
+    meta: {
+      title: "认证中心回调页面",
+      showLink: false,
+      rank: 101
+    }
+  },
+  {
     path: "/redirect",
     component: Layout,
     meta: {
