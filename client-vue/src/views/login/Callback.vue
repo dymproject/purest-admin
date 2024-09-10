@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
+
 function redirectWithParameter(targetUrl: string) {
   // 获取当前页面的URL
   const currentUrl = new URL(window.location.href);
@@ -10,23 +12,22 @@ function redirectWithParameter(targetUrl: string) {
   currentUrl.searchParams.forEach((value, key) => {
     redirectUrl.searchParams.set(key, value);
   });
-
   // 重定向到新的URL
   fetch(redirectUrl)
-    .then(response => {
+    .then()
+    .finally(() => {
       window.close();
-    })
-    .catch(error => {});
+    });
 }
 
 // 示例：在页面加载完成后立即执行重定向
-window.onload = function () {
+onMounted(() => {
   redirectWithParameter("/api/v1/auth/callback");
-};
+});
 </script>
 
 <template>
-  <div>请求登录成功，将在1秒后关闭……</div>
+  <div>页面回调成功，即将关闭……</div>
 </template>
 
 <style lang="scss" scoped></style>

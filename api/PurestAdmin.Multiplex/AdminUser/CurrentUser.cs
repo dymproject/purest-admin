@@ -34,13 +34,6 @@ public class CurrentUser(ISqlSugarClient db, IHttpContextAccessor httpContextAcc
         get => long.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(AdminClaimConst.USER_ID)?.Value ?? throw PersistdValidateException.Message("令牌超时，请重新登录！"));
     }
     /// <summary>
-    /// 角色Id
-    /// </summary>
-    public long RoleId
-    {
-        get => long.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(AdminClaimConst.ROLE_ID)?.Value ?? throw PersistdValidateException.Message("令牌超时，请重新登录！"));
-    }
-    /// <summary>
     /// 组织机构Id
     /// </summary>
     public long OrganizationId
@@ -52,7 +45,17 @@ public class CurrentUser(ISqlSugarClient db, IHttpContextAccessor httpContextAcc
     /// </summary>
     public UserEntity Self
     {
-        get => _db.Queryable<UserEntity>().First(x => x.Id == Id) ?? throw PersistdValidateException.Message("用户不存在！");
+        get => _db.Queryable<UserEntity>()
+            .LeftJoin<UserRoleEntity>((u, ur) => u.Id == ur.UserId)
+            .LeftJoin<RoleEntity>((u, ur, r) => ur.RoleId == r.Id)
+            .Where((u) => u.Id == Id)
+            .Select((u, ur, r) => new UserEntity
+            {
+                Id = u.Id.SelectAll(),
+                RoleName = r.Name,
+                RoleId = r.Id,
+                OrganizationName = u.OrganizationId.GetConfigValue<OrganizationEntity>()
+            }).First() ?? throw PersistdValidateException.Message("用户不存在！");
     }
 
     /// <summary>
@@ -74,7 +77,7 @@ public class CurrentUser(ISqlSugarClient db, IHttpContextAccessor httpContextAcc
     /// <returns></returns>
     public async Task<List<InterfaceEntity>> GetInterfacesAsync()
     {
-        var interfaces = await _cache.Get(AdminClaimConst.CACHE_ROLESINTERFACE_PREFIX + RoleId, async () =>
+        var interfaces = await _cache.Get(AdminClaimConst.CACHE_ROLESINTERFACE_PREFIX + Self.RoleId, async () =>
         {
             var interfaces = await _db.Queryable<UserRoleEntity>()
             .RightJoin<RoleFunctionEntity>((ur, rf) => ur.RoleId == rf.RoleId)

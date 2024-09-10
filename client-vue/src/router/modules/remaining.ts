@@ -16,7 +16,7 @@ export default [
     name: "Callback",
     component: () => import("@/views/login/Callback.vue"),
     meta: {
-      title: "OAuth2.0-Callback",
+      title: "认证中心回调页面",
       showLink: false,
       rank: 101
     }

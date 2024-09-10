@@ -22,7 +22,7 @@ import Github from "@iconify-icons/simple-icons/github";
 import Gitee from "@iconify-icons/simple-icons/gitee";
 import { useUserStoreHook } from "@/store/modules/user";
 import { createConnectionAsync } from "@/utils/signalr";
-import { HubConnection } from "@microsoft/signalr";
+import { HubConnection, HubConnectionState } from "@microsoft/signalr";
 import Register from "./Register.vue";
 import Binding from "./Binding.vue";
 const registerModalRef = ref();
@@ -104,13 +104,17 @@ const createAuthorizationConnection = async () => {
     usePermissionStoreHook().handleWholeMenus([]);
     addPathMatch();
     router.push("/");
-    message("登录成功", { type: "success" });
   });
 };
 
 const toAuthorize = (type: string) => {
-  if (connection.value) {
+  if (
+    connection.value &&
+    connection.value.state === HubConnectionState.Connected
+  ) {
     connection.value.invoke("Authorize", type);
+  } else {
+    message("连接服务器失败，请刷新后重试");
   }
 };
 

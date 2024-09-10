@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 
 using PurestAdmin.Application.AuthServices.Dtos;
 using PurestAdmin.Core.DataEncryption.Encryptions;
+using PurestAdmin.Core.DataEncryption.Extensions;
 using PurestAdmin.Multiplex.AdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
@@ -76,7 +77,6 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
             new Claim(AdminClaimConst.USER_ID,user.Id.ToString()),
             new Claim(AdminClaimConst.USER_NAME,user.Name),
             new Claim(AdminClaimConst.ORGANIZATION_ID,user.OrganizationId.ToString()),
-            new Claim(AdminClaimConst.ROLE_ID,userRole.RoleId.ToString()),
         };
 
         var accessToken = _adminToken.GenerateTokenString(claims);
@@ -93,7 +93,8 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
     [AllowAnonymous]
     public async Task GetCallbackAsync(GetCallbackInput input)
     {
-        var stateInfo = JsonSerializer.Deserialize<StateInfo>(AESEncryption.Decrypt(input.State, "HFyidPPmf2ea7Jf9L6nIFk4E5Rv9toEN")) ?? throw BusinessValidateException.Message("回调参数State异常");
+        var stateInfoJson = input.State.ToAESDecrypt("BB5F6811B9056BE16F22A793642ED588");
+        var stateInfo = JsonSerializer.Deserialize<StateInfo>(stateInfoJson) ?? throw BusinessValidateException.Message("回调参数State异常");
         var authorizationCenters = _configuration.GetRequiredSection("OAuth2Options").Get<List<OAuth2Option>>() ?? throw BusinessValidateException.Message("未配置认证中心");
         var authorizationCenter = authorizationCenters?.FirstOrDefault(x => string.Equals(x.Name, stateInfo.Type, StringComparison.OrdinalIgnoreCase))
             ?? throw BusinessValidateException.Message("未找到当前认证配置");
@@ -152,8 +153,16 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
     public async Task RegisterUserAsync([Required] RegisterUserInput input)
     {
         var entity = input.Adapt<UserEntity>();
+        //这个地方要实现给用户增加一个默认的组织机构和角色，可根据自己业务进行调整，我们就默认系统第一个吧
+        var organization = await _db.Queryable<OrganizationEntity>().FirstAsync();
+
+        entity.OrganizationId = organization.Id;
         var userId = await _db.Insertable(entity).ExecuteReturnSnowflakeIdAsync();
-        var oAuth2User = await _db.Queryable<OAuth2UserEntity>().FirstAsync(x => x.PersistenceId == input.OAuth2UserId);
+        //给用户绑定角色
+        var role = await _db.Queryable<RoleEntity>().FirstAsync();
+        await _db.Insertable(new UserRoleEntity() { RoleId = role.Id, UserId = userId }).ExecuteReturnSnowflakeIdAsync();
+
+        var oAuth2User = await _db.Queryable<OAuth2UserEntity>().FirstAsync(x => x.PersistenceId == input.OAuth2UserId) ?? throw BusinessValidateException.Message("未找到认证中心的用户数据");
         if (oAuth2User != null)
         {
             oAuth2User.UserId = userId;
@@ -261,11 +270,10 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
         var userRole = await _db.Queryable<UserRoleEntity>().FirstAsync(x => x.UserId == user.Id);
         var claims = new[]
         {
-                    new Claim(AdminClaimConst.USER_ID,user.Id.ToString()),
-                    new Claim(AdminClaimConst.USER_NAME,user.Name),
-                    new Claim(AdminClaimConst.ORGANIZATION_ID,user.OrganizationId.ToString()),
-                    new Claim(AdminClaimConst.ROLE_ID,userRole.RoleId.ToString()),
-                };
+            new Claim(AdminClaimConst.USER_ID,user.Id.ToString()),
+            new Claim(AdminClaimConst.USER_NAME,user.Name),
+            new Claim(AdminClaimConst.ORGANIZATION_ID,user.OrganizationId.ToString()),
+        };
         var accessToken = _adminToken.GenerateTokenString(claims);
         var functions = await _db.Queryable<RoleFunctionEntity>()
             .LeftJoin<FunctionEntity>((rf, f) => rf.FunctionId == f.Id)

@@ -8,7 +8,11 @@ namespace PurestAdmin.Multiplex.AdminUser
     {
         private readonly ISqlSugarClient _db = db;
 
-
+        /// <summary>
+        /// 持久化OAuth认证中心的数据
+        /// </summary>
+        /// <param name="userInfo"></param>
+        /// <returns></returns>
         public async Task<OAuth2UserEntity> GetOAuth2UserPersistenceIdAsync(OAuth2UserInfo userInfo)
         {
             var entity = await _db.Queryable<OAuth2UserEntity>().FirstAsync(x => x.Id == userInfo.Id && x.Type == userInfo.Type);
