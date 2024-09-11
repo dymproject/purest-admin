@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2012                    */
-/* Created on:     2024/8/21 16:07:54                           */
+/* Created on:     2024/9/11 9:36:54                            */
 /*==============================================================*/
 
 
@@ -37,6 +37,13 @@ if exists (select 1
    where r.fkeyid = object_id('PUREST_NOTICE_RECORD') and o.name = 'FK_PUREST_N_REFERENCE_PUREST_N')
 alter table PUREST_NOTICE_RECORD
    drop constraint FK_PUREST_N_REFERENCE_PUREST_N
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('PUREST_OAUTH2_USER') and o.name = 'FK_PUREST_O_REFERENCE_PUREST_U')
+alter table PUREST_OAUTH2_USER
+   drop constraint FK_PUREST_O_REFERENCE_PUREST_U
 go
 
 if exists (select 1
@@ -177,6 +184,13 @@ if exists (select 1
            where  id = object_id('PUREST_NOTICE_RECORD')
             and   type = 'U')
    drop table PUREST_NOTICE_RECORD
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('PUREST_OAUTH2_USER')
+            and   type = 'U')
+   drop table PUREST_OAUTH2_USER
 go
 
 if exists (select 1
@@ -2461,6 +2475,151 @@ select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
    '通知公告Id',
    'user', @CurrentUser, 'table', 'PUREST_NOTICE_RECORD', 'column', 'NOTICE_ID'
+go
+
+/*==============================================================*/
+/* Table: PUREST_OAUTH2_USER                                    */
+/*==============================================================*/
+create table PUREST_OAUTH2_USER (
+   PERSISTENCE_ID       bigint               not null,
+   CREATE_TIME          datetime             not null,
+   ID                   bigint               null,
+   NAME                 varchar(20)          null,
+   TYPE                 varchar(20)          not null,
+   USER_ID              bigint               null,
+   constraint PK_PUREST_OAUTH2_USER primary key nonclustered (PERSISTENCE_ID)
+)
+go
+
+if exists (select 1 from  sys.extended_properties
+           where major_id = object_id('PUREST_OAUTH2_USER') and minor_id = 0)
+begin 
+   declare @CurrentUser sysname 
+select @CurrentUser = user_name() 
+execute sp_dropextendedproperty 'MS_Description',  
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER' 
+ 
+end 
+
+
+select @CurrentUser = user_name() 
+execute sp_addextendedproperty 'MS_Description',  
+   'OAUTH2用户', 
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_OAUTH2_USER')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'PERSISTENCE_ID')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'PERSISTENCE_ID'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '主键Id',
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'PERSISTENCE_ID'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_OAUTH2_USER')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'CREATE_TIME')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'CREATE_TIME'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '创建时间',
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'CREATE_TIME'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_OAUTH2_USER')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'ID')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'ID'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   'ID',
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'ID'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_OAUTH2_USER')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'NAME')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'NAME'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '认证中心名',
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'NAME'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_OAUTH2_USER')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'TYPE')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'TYPE'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   'TYPE',
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'TYPE'
+go
+
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('PUREST_OAUTH2_USER')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'USER_ID')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'USER_ID'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   '用户ID',
+   'user', @CurrentUser, 'table', 'PUREST_OAUTH2_USER', 'column', 'USER_ID'
 go
 
 /*==============================================================*/
@@ -5426,9 +5585,9 @@ alter table PUREST_NOTICE_RECORD
          on delete cascade
 go
 
-alter table PUREST_ORGANIZATION
-   add constraint FK_PUREST_O_REFERENCE_PUREST_O foreign key (PARENT_ID)
-      references PUREST_ORGANIZATION (ID)
+alter table PUREST_OAUTH2_USER
+   add constraint FK_PUREST_O_REFERENCE_PUREST_U foreign key (USER_ID)
+      references PUREST_USER (ID)
          on delete cascade
 go
 
