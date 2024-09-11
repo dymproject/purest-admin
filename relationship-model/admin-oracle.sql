@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 11g                           */
-/* Created on:     2024/8/21 16:15:12                           */
+/* Created on:     2024/9/11 9:36:32                            */
 /*==============================================================*/
 
 
@@ -19,8 +19,8 @@ alter table PUREST_INTERFACE
 alter table PUREST_NOTICE_RECORD
    drop constraint FK_PUREST_N_REFERENCE_PUREST_N;
 
-alter table PUREST_ORGANIZATION
-   drop constraint FK_PUREST_O_REFERENCE_PUREST_O;
+alter table PUREST_OAUTH2_USER
+   drop constraint FK_PUREST_O_REFERENCE_PUREST_U;
 
 alter table PUREST_PROFILE_SYSTEM
    drop constraint FK_PUREST_P_REFERENCE_PUREST_F;
@@ -71,6 +71,8 @@ drop table PUREST_INTERFACE_GROUP cascade constraints;
 drop table PUREST_NOTICE cascade constraints;
 
 drop table PUREST_NOTICE_RECORD cascade constraints;
+
+drop table PUREST_OAUTH2_USER cascade constraints;
 
 drop table PUREST_ORGANIZATION cascade constraints;
 
@@ -605,6 +607,41 @@ comment on column PUREST_NOTICE_RECORD.IS_READ is
 
 comment on column PUREST_NOTICE_RECORD.NOTICE_ID is
 '通知公告Id';
+
+/*==============================================================*/
+/* Table: PUREST_OAUTH2_USER                                    */
+/*==============================================================*/
+create table PUREST_OAUTH2_USER 
+(
+   PERSISTENCE_ID       INTEGER              not null,
+   CREATE_TIME          DATE                 not null,
+   ID                   INTEGER,
+   NAME                 VARCHAR2(20),
+   TYPE                 VARCHAR2(20)         not null,
+   USER_ID              INTEGER,
+   constraint PK_PUREST_OAUTH2_USER primary key (PERSISTENCE_ID)
+);
+
+comment on table PUREST_OAUTH2_USER is
+'OAUTH2用户';
+
+comment on column PUREST_OAUTH2_USER.PERSISTENCE_ID is
+'主键Id';
+
+comment on column PUREST_OAUTH2_USER.CREATE_TIME is
+'创建时间';
+
+comment on column PUREST_OAUTH2_USER.ID is
+'ID';
+
+comment on column PUREST_OAUTH2_USER.NAME is
+'认证中心名';
+
+comment on column PUREST_OAUTH2_USER.TYPE is
+'TYPE';
+
+comment on column PUREST_OAUTH2_USER.USER_ID is
+'用户ID';
 
 /*==============================================================*/
 /* Table: PUREST_ORGANIZATION                                   */
@@ -1461,9 +1498,9 @@ alter table PUREST_NOTICE_RECORD
       references PUREST_NOTICE (ID)
       on delete cascade;
 
-alter table PUREST_ORGANIZATION
-   add constraint FK_PUREST_O_REFERENCE_PUREST_O foreign key (PARENT_ID)
-      references PUREST_ORGANIZATION (ID)
+alter table PUREST_OAUTH2_USER
+   add constraint FK_PUREST_O_REFERENCE_PUREST_U foreign key (USER_ID)
+      references PUREST_USER (ID)
       on delete cascade;
 
 alter table PUREST_PROFILE_SYSTEM
