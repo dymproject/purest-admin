@@ -35,6 +35,9 @@ public class AuthorizationHub(IConfiguration configuration) : AbpHub<IAuthorizat
             case OAuth2TypeConst.GITEE:
                 authorizeUrl = $"https://gitee.com/oauth/authorize?client_id={authorizationCenter.ClientId}&redirect_uri={authorizationCenter.RedirectUri}&response_type=code&state={stateString}";
                 break;
+            case OAuth2TypeConst.GITHUB:
+                authorizeUrl = $"https://github.com/login/oauth/authorize?client_id={authorizationCenter.ClientId}&redirect_uri={authorizationCenter.RedirectUri}&state={stateString}";
+                break;
             default:
                 break;
         }
