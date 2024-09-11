@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/9/10 16:57:11                           */
+/* Created on:     2024/9/11 17:39:26                           */
 /*==============================================================*/
 
 
@@ -798,9 +798,6 @@ alter table PUREST_NOTICE_RECORD add constraint FK_Reference_13 foreign key (NOT
 
 alter table PUREST_OAUTH2_USER add constraint FK_Reference_26 foreign key (USER_ID)
       references PUREST_USER (ID) on delete cascade on update restrict;
-
-alter table PUREST_ORGANIZATION add constraint FK_Reference_14 foreign key (PARENT_ID)
-      references PUREST_ORGANIZATION (ID) on delete cascade on update restrict;
 
 alter table PUREST_PROFILE_SYSTEM add constraint FK_Reference_18 foreign key (FILE_ID)
       references PUREST_FILE_RECORD (ID) on delete cascade on update restrict;

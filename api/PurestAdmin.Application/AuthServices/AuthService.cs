@@ -104,9 +104,27 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
             switch (stateInfo.Type)
             {
                 case OAuth2TypeConst.GITEE:
-                    var tokenResult = await "https://gitee.com/oauth/token".SetQueryParams(new { grant_type = "authorization_code", code = input.Code, client_id = authorizationCenter.ClientId, redirect_uri = authorizationCenter.RedirectUri, client_secret = authorizationCenter.ClientSecret }).PostAsync().ReceiveJson<GiteeTokenResult>();
-                    oAuth2UserInfo = await "https://gitee.com/api/v5/user".SetQueryParams(new { access_token = tokenResult.AccessToken }).GetJsonAsync<OAuth2UserInfo>();
+                    var giteeTokenResult = await "https://gitee.com/oauth/token"
+                        .SetQueryParams(new { grant_type = "authorization_code", code = input.Code, client_id = authorizationCenter.ClientId, redirect_uri = authorizationCenter.RedirectUri, client_secret = authorizationCenter.ClientSecret })
+                        .PostAsync()
+                        .ReceiveJson<GiteeTokenResult>();
+                    oAuth2UserInfo = await "https://gitee.com/api/v5/user"
+                        .WithHeader("User-Agent", "purest-admin")
+                        .SetQueryParams(new { access_token = giteeTokenResult.AccessToken })
+                        .GetJsonAsync<OAuth2UserInfo>();
                     oAuth2UserInfo.Type = OAuth2TypeConst.GITEE;
+                    break;
+                case OAuth2TypeConst.GITHUB:
+                    var githubTokenResult = await "https://github.com/login/oauth/access_token"
+                        .WithHeader("Accept", "application/json")
+                        .SetQueryParams(new { client_id = authorizationCenter.ClientId, client_secret = authorizationCenter.ClientSecret, redirect_uri = authorizationCenter.RedirectUri, code = input.Code, })
+                        .PostAsync()
+                        .ReceiveJson<GithubTokenResult>();
+                    oAuth2UserInfo = await "https://api.github.com/user"
+                        .WithOAuthBearerToken(githubTokenResult.AccessToken)
+                        .WithHeader("User-Agent", "purest-admin")
+                        .GetJsonAsync<OAuth2UserInfo>();
+                    oAuth2UserInfo.Type = OAuth2TypeConst.GITHUB;
                     break;
                 default:
                     break;
