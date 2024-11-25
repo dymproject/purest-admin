@@ -16,6 +16,11 @@ const getLinkProps = (item: menuType) => {
       rel: "noopener"
     };
   }
+  if (item.children?.length == 1) {
+    return {
+      to: item.children[0]
+    };
+  }
   return {
     to: item
   };

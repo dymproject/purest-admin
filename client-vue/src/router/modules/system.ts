@@ -7,7 +7,6 @@ export default {
   path: "/system",
   name: "system",
   component: Layout,
-  redirect: "/welcome",
   meta: {
     icon: useRenderIcon(Setting),
     title: "系统管理",

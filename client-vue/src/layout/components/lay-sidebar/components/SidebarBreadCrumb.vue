@@ -63,30 +63,30 @@ const getBreadcrumb = (): void => {
   );
 };
 
-const handleLink = item => {
-  const { redirect, name, path } = item;
-  if (redirect) {
-    router.push(redirect as any);
-  } else {
-    if (name) {
-      if (item.query) {
-        router.push({
-          name,
-          query: item.query
-        });
-      } else if (item.params) {
-        router.push({
-          name,
-          params: item.params
-        });
-      } else {
-        router.push({ name });
-      }
-    } else {
-      router.push({ path });
-    }
-  }
-};
+// const handleLink = item => {
+//   const { redirect, name, path } = item;
+//   if (redirect) {
+//     router.push(redirect as any);
+//   } else {
+//     if (name) {
+//       if (item.query) {
+//         router.push({
+//           name,
+//           query: item.query
+//         });
+//       } else if (item.params) {
+//         router.push({
+//           name,
+//           params: item.params
+//         });
+//       } else {
+//         router.push({ name });
+//       }
+//     } else {
+//       router.push({ path });
+//     }
+//   }
+// };
 
 onMounted(() => {
   getBreadcrumb();
@@ -111,9 +111,10 @@ watch(
         :key="item.path"
         class="!inline !items-stretch"
       >
-        <a @click.prevent="handleLink(item)">
+        <!-- <a @click.prevent="handleLink(item)">
           {{ item.meta.title }}
-        </a>
+        </a> -->
+        {{ item.meta.title }}
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
