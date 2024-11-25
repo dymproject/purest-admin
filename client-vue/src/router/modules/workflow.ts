@@ -7,7 +7,6 @@ export default {
   path: "/workflow",
   name: "workflow",
   component: Layout,
-  redirect: "/workflow",
   meta: {
     icon: useRenderIcon(Collection),
     title: "工作流程",
