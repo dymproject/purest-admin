@@ -74,7 +74,7 @@ namespace PurestAdmin.Api.Host
             context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
-                    var key = Encoding.UTF8.GetBytes(configuration["JWTSettings:IssuerSigningKey"] ?? "49BA59ABBE56E05749BA59ABBE56E057");
+                    var key = Encoding.UTF8.GetBytes(configuration["JwtOptions:SecretKey"] ?? "49BA59ABBE56E05749BA59ABBE56E057");
                     options.RequireHttpsMetadata = false;
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
