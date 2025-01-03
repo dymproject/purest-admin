@@ -191,6 +191,25 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
     }
 
     /// <summary>
+    /// 获取当前用户信息（vben）
+    /// </summary>
+    /// <returns></returns>
+    public async Task<GetVbenUserInfoOutput> GetVbenUserInfoAsync()
+    {
+        var claimUserId = _currentUser.Id;
+        var user = await _db.Queryable<UserEntity>().FirstAsync(x => x.Id == _currentUser.Id);
+        var codes = await GetFunctionsAsync();
+        return new GetVbenUserInfoOutput()
+        {
+            //Avatar = user.Avatar,
+            RealName = user.Name,
+            Roles = [.. codes],
+            UserId = user.Id.ToString(),
+            UserName = user.Account
+        };
+    }
+
+    /// <summary>
     /// 获取当前用户信息
     /// </summary>
     /// <returns></returns>
