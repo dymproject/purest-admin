@@ -22,7 +22,6 @@
 ### 演示地址
 
 - [http://www.purestadmin.com](http://www.purestadmin.com)
-- 应用服务器在国外，数据库服务器在国内，可能查询数据会有略微延迟。并非项目本身的问题
 - 用户名/密码：admin/123456
 
 ### 文档地址
@@ -37,12 +36,12 @@
 - 3、工作流程（表单设计、流程设计、待办事项等）
 - 4、OAuth2.0登录接入（gitee,gitee）
 
-* wpf版本完成了框架的构造以及登录等基本功能（由于prism也收费啦，所以后续不再进行开发了），如果您有兴趣，请联系我。
+* wpf版本只完成了框架的构造以及登录等基本功能（由于prism后续版本收费，计划使用CommunityToolkit.Mvvm重新设计），如果您有兴趣，请联系我一起吧。
 * 工作流部分只提供了比较简单的入门级示例。请根据需求自行二开。
 
 ### 后续内容
 
-- 持续接入weibo等其他认证平台
+- vben前端项目接入
 
 ### 项目截图
 
@@ -64,7 +63,7 @@
 - 👉 IdGenerator：[https://github.com/yitter/idgenerator](https://github.com/yitter/idgenerator)
 - 👉 Ip2region：[https://github.com/lionsoul2014/ip2region](https://github.com/lionsoul2014/ip2region)
 - 👉 vue-pure-admin：[https://gitee.com/yiming_chang/vue-pure-admin](https://gitee.com/yiming_chang/vue-pure-admin)
-- 👉 Prism：[https://github.com/PrismLibrary/Prism](https://github.com/PrismLibrary/Prism)
+- 👉 vue-vben-admin：[https://github.com/vbenjs/vue-vben-admin)
 - 👉 rubyer-wpf：[https://gitee.com/wuyanxin1028/rubyer-wpf](https://gitee.com/wuyanxin1028/rubyer-wpf)
 - 👉 Flurl：[https://github.com/tmenier/Flurl](https://github.com/tmenier/Flurl)
 - 👉 workflow-core：[https://github.com/danielgerlag/workflow-core](https://github.com/danielgerlag/workflow-core)
