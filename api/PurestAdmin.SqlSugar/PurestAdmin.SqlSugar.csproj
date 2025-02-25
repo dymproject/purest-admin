@@ -12,6 +12,7 @@
     <PackageReference Include="Serilog" Version="4.0.1" />
     <PackageReference Include="SqlSugarCore" Version="5.1.4.166" />
     <PackageReference Include="Volo.Abp" Version="8.2.1" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="8.2.1" />
     <PackageReference Include="Volo.Abp.Timing" Version="8.2.1" />
     <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
   </ItemGroup>
