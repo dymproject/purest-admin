@@ -1,5 +1,7 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using Autofac;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using PurestAdmin.SqlSugar.Entity;
@@ -13,7 +15,10 @@ namespace PurestAdmin.SqlSugar
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            var containerBuilder = context.Services.GetContainerBuilder();
             context.Services.AddSqlSugarService();
+            //解决多租户仓储模式无法自动切换库的问题
+            containerBuilder.RegisterGeneric(typeof(Repository<>)).InstancePerLifetimeScope();
             context.Services.ReplaceSqlSugarSnowflakeIdService();
         }
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
