@@ -1,0 +1,23 @@
+{
+  "add": "新增",
+  "edit": "编辑",
+  "del": "删除",
+  "search": "搜索",
+  "reset": "重置",
+  "submit": "提交",
+  "cancel": "取消",
+  "confirm": "确认",
+  "back": "返回",
+  "save": "保存",
+  "operation": "操作",
+  "export": "导出",
+  "import": "导入",
+  "upload": "上传",
+  "download": "下载",
+  "more": "更多",
+  "view": "查看",
+  "detail": "详情",
+  "enable": "启用",
+  "disable": "禁用",
+  "all": "全部"
+}

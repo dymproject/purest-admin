@@ -10,5 +10,26 @@
     "title": "概览",
     "analytics": "分析页",
     "workspace": "工作台"
+  },
+  "system": {
+    "title": "系统管理",
+    "user": {
+      "title": "用户管理"
+    },
+    "role": {
+      "title": "角色管理"
+    },
+    "function": {
+      "title": "功能管理"
+    },
+    "organization": {
+      "title": "组织管理"
+    },
+    "dict": {
+      "title": "字典管理"
+    },
+    "config": {
+      "title": "系统配置"
+    }
   }
 }

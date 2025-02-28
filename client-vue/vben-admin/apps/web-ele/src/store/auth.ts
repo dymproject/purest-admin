@@ -35,10 +35,6 @@ export const useAuthStore = defineStore('auth', () => {
       const loginResult = await loginApi(params);
       if (loginResult) {
         userInfo = await fetchUserInfo();
-
-        userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes(userInfo.roles || []);
-
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
         } else {

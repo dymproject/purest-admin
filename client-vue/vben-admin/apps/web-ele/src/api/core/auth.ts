@@ -12,6 +12,14 @@ export namespace AuthApi {
     id: number;
     name: string;
   }
+
+  /** 组织架构树节点 */
+  export interface OrganizationTreeNode {
+    id: number;
+    name: string;
+    children?: OrganizationTreeNode[];
+    remark: string;
+  }
 }
 
 /**
@@ -43,4 +51,9 @@ export async function getAccessCodesApi() {
  */
 export const getUserInfoApi = async () => {
   return requestClient.get<UserInfo>('/auth/vben-user-info');
+};
+
+/** 获取组织机构 */
+export const getOrganizationTreeData = () => {
+  return requestClient.get<AuthApi.OrganizationTreeNode[]>('/auth/organization-tree');
 };
