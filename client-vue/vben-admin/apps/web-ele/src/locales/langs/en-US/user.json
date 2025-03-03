@@ -1,0 +1,50 @@
+{
+  "add": "Add User",
+  "edit": "Edit User",
+  "view": "View User",
+  "reset": "Reset Password",
+  "columns": {
+    "name": "Username",
+    "account": "Account",
+    "organization": "Organization",
+    "email": "Email",
+    "phone": "Phone Number",
+    "status": "Status",
+    "role": "Role",
+    "remark": "Remark",
+    "createTime": "Creation Time",
+    "updateTime": "Update Time"
+  },
+  "search": {
+    "name": "Username",
+    "account": "Account",
+    "status": "Status"
+  },
+  "form": {
+    "name": "Username",
+    "account": "Account",
+    "organization": "Organization",
+    "email": "Email",
+    "phone": "Phone Number",
+    "status": "Status",
+    "role": "Role",
+    "remark": "Remark",
+    "placeholder": {
+      "name": "Please enter the username",
+      "account": "Please enter the account",
+      "organization": "Please select the organization",
+      "email": "Please enter the email",
+      "phone": "Please enter the phone number",
+      "status": "Please select the status",
+      "role": "Please select the role",
+      "remark": "Please enter the remark"
+    },
+    "validate": {
+      "name": "Please enter the username",
+      "account": "Please enter the account",
+      "organization": "Please select the organization",
+      "role": "Please select the role",
+      "min": "Length must be at least 3 characters"
+    }
+  }
+}

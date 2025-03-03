@@ -1,0 +1,27 @@
+{
+  "add": "Add",
+  "edit": "Edit",
+  "del": "Delete",
+  "search": "Search",
+  "reset": "Reset",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "back": "Back",
+  "save": "Save",
+  "operation": "Operation",
+  "export": "Export",
+  "import": "Import",
+  "upload": "Upload",
+  "download": "Download",
+  "more": "More",
+  "view": "View",
+  "detail": "Details",
+  "enable": "Enable",
+  "disable": "Disable",
+  "all": "All",
+  "tooltip": {
+    "title": "Tooltip",
+    "delete": "Are you sure you want to delete?"
+  }
+}

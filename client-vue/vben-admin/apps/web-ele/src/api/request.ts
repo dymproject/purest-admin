@@ -1,12 +1,9 @@
 /**
  * 该文件可自行根据业务逻辑进行调整
  */
-import type { AxiosError, HttpResponse } from '@vben/request';
-
 import { useAppConfig } from '@vben/hooks';
 import { preferences } from '@vben/preferences';
 import {
-  authenticateResponseInterceptor,
   errorMessageResponseInterceptor,
   HttpStatusCode,
   RequestClient,
@@ -105,6 +102,11 @@ function createRequestClient(baseURL: string) {
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
+      const { code } = error;
+      if (code == 'ECONNABORTED' || code == 'ERR_NETWORK') {
+        ElMessage.warning(msg);
+        return;
+      }
       const {
         response: { data },
         status,

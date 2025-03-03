@@ -22,7 +22,7 @@
   "editor.suggestSelection": "recentlyUsedByPrefix",
   "editor.acceptSuggestionOnEnter": "smart",
   "editor.suggest.snippetsPreventQuickSuggestions": false,
-  "editor.stickyScroll.enabled": true,
+  "editor.stickyScroll.enabled": false,
   "editor.hover.sticky": true,
   "editor.suggest.insertMode": "replace",
   "editor.bracketPairColorization.enabled": true,

@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
   {
     component: BasicLayout,
     meta: {
-      icon: 'ic:baseline-view-in-ar',
+      icon: 'garden:workflow-26',
       keepAlive: true,
       order: 1000,
       title: $t('demos.title'),

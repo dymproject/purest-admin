@@ -1,0 +1,50 @@
+ {
+  "add": "新增用户",
+  "edit": "编辑用户",
+  "view": "查看用户",
+  "reset": "重置密码",
+  "columns": {
+    "name": "用户名",
+    "account": "账号",
+    "organization": "所属组织",
+    "email": "邮箱",
+    "phone": "电话号码",
+    "status": "状态",
+    "role": "角色",
+    "remark": "备注",
+    "createTime": "创建时间",
+    "updateTime": "更新时间"
+  },
+  "search":{
+    "name": "用户名",
+    "account": "账号",        
+    "status": "状态"
+  },
+  "form":{
+    "name": "用户名",
+    "account": "账号",
+    "organization": "所属组织",
+    "email": "邮箱",
+    "phone": "电话号码",
+    "status": "状态",
+    "role": "角色",
+    "remark": "备注",
+    "placeholder":{
+      "name": "请输入用户名",
+      "account": "请输入账号",
+      "organization": "请选择所属组织",
+      "email": "请输入邮箱",
+      "phone": "请输入电话号码",
+      "status": "请选择状态",
+      "role": "请选择角色",
+      "remark": "请输入备注"
+    },
+    "validate":{
+      "name": "请输入用户名",
+      "account": "请输入账号",
+      "organization": "请选择所属组织",      
+      "role": "请选择角色",
+      "min": "长度不能低于3个字符"
+    }
+  }
+}

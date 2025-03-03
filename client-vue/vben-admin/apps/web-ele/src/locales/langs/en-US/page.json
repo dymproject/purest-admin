@@ -2,13 +2,34 @@
   "auth": {
     "login": "Login",
     "register": "Register",
-    "codeLogin": "Code Login",
-    "qrcodeLogin": "Qr Code Login",
-    "forgetPassword": "Forget Password"
+    "codeLogin": "Verification Code Login",
+    "qrcodeLogin": "QR Code Login",
+    "forgetPassword": "Forgot Password"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "analytics": "Analytics",
+    "title": "Overview",
+    "analytics": "Analytics Page",
     "workspace": "Workspace"
+  },
+  "system": {
+    "title": "System Management",
+    "user": {
+      "title": "User Management"
+    },
+    "role": {
+      "title": "Role Management"
+    },
+    "function": {
+      "title": "Function Management"
+    },
+    "organization": {
+      "title": "Organization Management"
+    },
+    "dict": {
+      "title": "Dictionary Management"
+    },
+    "config": {
+      "title": "System Configuration"
+    }
   }
 }

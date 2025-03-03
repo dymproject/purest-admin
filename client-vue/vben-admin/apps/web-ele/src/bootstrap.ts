@@ -15,6 +15,17 @@ import { initComponentAdapter } from './adapter/component';
 import App from './app.vue';
 import { router } from './router';
 
+// 全局vxe
+import VxeUI from 'vxe-pc-ui';
+import 'vxe-pc-ui/lib/style.css';
+import VxeUITable from 'vxe-table';
+import 'vxe-table/lib/style.css';
+
+// 自定义组件
+import { Page } from '@vben/common-ui';
+import { ReVxeGrid } from './components/grid';
+import { ReModal } from "./components/modal";
+
 async function bootstrap(namespace: string) {
   // 初始化组件适配器
   await initComponentAdapter();
@@ -22,7 +33,15 @@ async function bootstrap(namespace: string) {
 
   // 注册Element Plus提供的v-loading指令
   app.directive('loading', ElLoading.directive);
+  
+  // 注册vxe
+  app.use(VxeUI).use(VxeUITable);
 
+  // 注册自定义的组件
+  app.component('RePage', Page);
+  app.component('ReVxeGrid', ReVxeGrid);
+  app.component('ReModal', ReModal);
+  
   // 国际化 i18n 配置
   await setupI18n(app);
 
