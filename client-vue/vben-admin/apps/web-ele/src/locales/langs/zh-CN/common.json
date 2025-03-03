@@ -19,5 +19,6 @@
   "detail": "详情",
   "enable": "启用",
   "disable": "禁用",
-  "all": "全部"
+  "all": "全部",
+  "tooltip": { "title": "提示", "delete": "您确定要删除吗？" }
 }

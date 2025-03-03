@@ -34,4 +34,9 @@
     "prefix": "com",
     "body": ["computed(() => { $1 })"],
   },
+  "I18n $t": {
+    "prefix": "$t",
+    "body": ["$$t('${1:key}')"],
+    "description": "Insert i18n $t function",
+  },
 }

@@ -2,9 +2,10 @@
 import { reactive, ref, h } from 'vue';
 import { getPageList, deleteData, stop, normal } from '#/api/system/user';
 import CreateModal from './CreateModal.vue';
-import { VxeButton, VxeUI } from 'vxe-pc-ui';
+import { VxeButton } from 'vxe-pc-ui';
 import type { CommonOperationType } from '#/components/grid/src/types';
 import { $t } from '@vben/locales';
+import { deleteConfirm } from '#/components/modal';
 const reVxeGridRef = ref();
 const columns = [
   { type: 'checkbox', title: '', width: 60, align: 'center' },
@@ -36,7 +37,7 @@ const columns = [
   {
     title: $t('user.columns.email'),
     field: 'email',
-    minWidth: 150,  
+    minWidth: 150,
   },
   {
     title: $t('user.columns.status'),
@@ -85,12 +86,18 @@ const formItems = [
   {
     field: 'name',
     title: $t('user.search.name'),
-    itemRender: { name: '$input', props: { placeholder: $t('user.search.name') } },
+    itemRender: {
+      name: '$input',
+      props: { placeholder: $t('user.search.name') },
+    },
   },
   {
     field: 'account',
     title: $t('user.search.account'),
-    itemRender: { name: '$input', props: { placeholder: $t('user.search.account') } },
+    itemRender: {
+      name: '$input',
+      props: { placeholder: $t('user.search.account') },
+    },
   },
   {
     field: 'status',
@@ -106,7 +113,7 @@ const formItems = [
         placeholder: $t('common.all'),
       },
     },
-  }
+  },
 ];
 const formData = reactive<{
   name: string;
@@ -126,8 +133,7 @@ const handleEdit = (record: any) => {
   createModalRef.value.showEditModal(record);
 };
 const handleDelete = async (record: any) => {
-  const type = await VxeUI.modal.confirm('您确定要删除吗？');
-  if (type == 'confirm') {
+  if (await deleteConfirm()) {
     deleteData(record.id).then(() => {
       handleSearch();
     });

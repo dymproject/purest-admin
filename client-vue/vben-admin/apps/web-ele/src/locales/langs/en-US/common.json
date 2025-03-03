@@ -19,5 +19,9 @@
   "detail": "Details",
   "enable": "Enable",
   "disable": "Disable",
-  "all": "All"
+  "all": "All",
+  "tooltip": {
+    "title": "Tooltip",
+    "delete": "Are you sure you want to delete?"
+  }
 }

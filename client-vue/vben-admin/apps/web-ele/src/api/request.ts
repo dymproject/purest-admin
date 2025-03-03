@@ -103,7 +103,7 @@ function createRequestClient(baseURL: string) {
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
       const { code } = error;
-      if (code == 'ECONNABORTED') {
+      if (code == 'ECONNABORTED' || code == 'ERR_NETWORK') {
         ElMessage.warning(msg);
         return;
       }

@@ -1,28 +1,12 @@
 <script lang="ts" setup>
-import { ref, h, onBeforeMount, nextTick, reactive } from 'vue';
+import { ref, h, onBeforeMount, nextTick } from 'vue';
 import { VxeSelect, type VxeFormPropTypes } from 'vxe-pc-ui';
 import { ReOrganizationTreeSelect } from '#/components/organization';
 import { getAllList } from '#/api/system/role';
 import { getSingle, submitData } from '#/api/system/user';
 import { $t } from '#/locales';
 const emits = defineEmits<{ (e: 'reload'): void }>();
-const vxeModalRef = ref();
-const modalOptions = reactive<{
-  modalValue: boolean;
-  modalTitle: string;
-  canSubmit: boolean;
-}>({
-  modalValue: false,
-  modalTitle: '',
-  canSubmit: true,
-});
-
-const showModal = (title: string, canSubmit?: boolean): void => {
-  modalOptions.modalTitle = title;
-  modalOptions.modalValue = true;
-  modalOptions.canSubmit = canSubmit ?? true;
-};
-
+const reModalRef = ref();
 interface AddUserInput {
   name: string;
   account: string;
@@ -62,11 +46,14 @@ const formItems = ref<VxeFormPropTypes.Items>([
     field: 'account',
     title: $t('user.form.account'),
     span: 24,
-    itemRender: { name: '$input', props: { placeholder: $t("user.form.placeholder.account") } },
+    itemRender: {
+      name: '$input',
+      props: { placeholder: $t('user.form.placeholder.account') },
+    },
   },
   {
     field: 'roleId',
-    title: $t("user.form.role"),
+    title: $t('user.form.role'),
     span: 12,
     slots: {
       default: ({ data }) => [
@@ -76,7 +63,7 @@ const formItems = ref<VxeFormPropTypes.Items>([
             value: 'id',
             label: 'name',
           },
-          placeholder: $t("user.form.placeholder.role"),
+          placeholder: $t('user.form.placeholder.role'),
           modelValue: data.roleId,
           onChange(v) {
             data.roleId = v.value;
@@ -87,13 +74,13 @@ const formItems = ref<VxeFormPropTypes.Items>([
   },
   {
     field: 'organizationId',
-    title: $t("user.form.organization"),
+    title: $t('user.form.organization'),
     span: 12,
     slots: {
       default: ({ data }) => [
         h(ReOrganizationTreeSelect, {
           modelValue: data.organizationId,
-          placeholder: $t("user.form.placeholder.organization"),
+          placeholder: $t('user.form.placeholder.organization'),
           onNodeClick(nodeData: any) {
             formData.value.organizationId = nodeData.id;
             formRef.value.validateField('organizationId');
@@ -106,13 +93,19 @@ const formItems = ref<VxeFormPropTypes.Items>([
     field: 'telephone',
     title: $t('user.form.phone'),
     span: 24,
-    itemRender: { name: '$input', props: { placeholder: $t('user.form.placeholder.phone') } },
+    itemRender: {
+      name: '$input',
+      props: { placeholder: $t('user.form.placeholder.phone') },
+    },
   },
   {
     field: 'email',
     title: $t('user.form.email'),
     span: 24,
-    itemRender: { name: '$input', props: { placeholder: $t('user.form.placeholder.email') } },
+    itemRender: {
+      name: '$input',
+      props: { placeholder: $t('user.form.placeholder.email') },
+    },
   },
   {
     field: 'remark',
@@ -131,18 +124,20 @@ const formRules = ref<VxeFormPropTypes.Rules>({
     { min: 3, message: $t('user.form.validate.min') },
   ],
   roleId: [{ required: true, message: $t('user.form.validate.role') }],
-  organizationId: [{ required: true, message: $t('user.form.validate.organization') }],
+  organizationId: [
+    { required: true, message: $t('user.form.validate.organization') },
+  ],
 });
 
 const showAddModal = () => {
-  showModal($t('user.add'));
+  reModalRef.value.show($t('user.add'));
   formData.value = defaultFormData();
   nextTick(() => {
     formRef.value.clearValidate();
   });
 };
 const showEditModal = (record: any) => {
-  showModal(`${$t('user.edit')}->${record.name}`);
+  reModalRef.value.show(`${$t('user.edit')}->${record.name}`);
   nextTick(() => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {
@@ -151,7 +146,7 @@ const showEditModal = (record: any) => {
   });
 };
 const showViewModal = (record: any) => {
-  showModal(`${$t('user.view')}->${record.name}`, false);
+  reModalRef.value.show(`${$t('user.view')}->${record.name}`, true);
   nextTick(() => {
     formRef.value.clearValidate();
     getSingle(record.id).then((data: any) => {
@@ -163,8 +158,8 @@ const handleSubmit = async () => {
   const validate = await formRef.value.validate();
   if (!validate) {
     submitData(formData.value).then(() => {
-      modalOptions.modalValue = false;
       emits('reload');
+      reModalRef.value.close();
     });
   }
 };
@@ -178,33 +173,15 @@ onBeforeMount(() => {
 defineExpose({ showAddModal, showEditModal, showViewModal });
 </script>
 <template>
-  <vxe-modal
-    ref="vxeModalRef"
-    v-model="modalOptions.modalValue"
-    width="800"
-    height="600"
-    showFooter
-    :title="modalOptions.modalTitle"
-  >
-    <template #default>
-      <vxe-form
-        ref="formRef"
-        :data="formData"
-        :items="formItems"
-        :rules="formRules"
-        :titleWidth="100"
-        :titleColon="true"
-        :titleAlign="`right`"
-      />
-    </template>
-    <template #footer>
-      <vxe-button :content="$t(`common.cancel`)" @click="modalOptions.modalValue = false" />
-      <vxe-button
-        v-if="modalOptions.canSubmit"
-        status="primary"
-        :content="$t(`common.save`)"
-        @click="handleSubmit"
-      />
-    </template>
-  </vxe-modal>
+  <re-modal ref="reModalRef" @submit="handleSubmit">
+    <vxe-form
+      ref="formRef"
+      :data="formData"
+      :items="formItems"
+      :rules="formRules"
+      :titleWidth="100"
+      :titleColon="true"
+      :titleAlign="`right`"
+    />
+  </re-modal>
 </template>

@@ -24,6 +24,7 @@ import 'vxe-table/lib/style.css';
 // 自定义组件
 import { Page } from '@vben/common-ui';
 import { ReVxeGrid } from './components/grid';
+import { ReModal } from "./components/modal";
 
 async function bootstrap(namespace: string) {
   // 初始化组件适配器
@@ -39,6 +40,7 @@ async function bootstrap(namespace: string) {
   // 注册自定义的组件
   app.component('RePage', Page);
   app.component('ReVxeGrid', ReVxeGrid);
+  app.component('ReModal', ReModal);
   
   // 国际化 i18n 配置
   await setupI18n(app);
