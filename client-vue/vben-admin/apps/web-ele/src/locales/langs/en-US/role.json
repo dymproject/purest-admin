@@ -1,0 +1,27 @@
+{
+  "add": "Add Role",
+  "edit": "Edit Role",
+  "view": "View Role",
+  "columns": {
+    "name": "Role Name",
+    "description": "Description",
+    "remark": "Remark",
+    "functions": "Functions"
+  },
+  "search": {
+    "name": "Role Name"
+  },
+  "form": {
+    "name": "Role Name",
+    "description": "Description",
+    "remark": "Remark",
+    "placeholder": {
+      "name": "Please enter role name",
+      "description": "Please enter description",
+      "remark": "Please enter remark"
+    },
+    "validate": {
+      "name": "Please enter role name"
+    }
+  }
+}

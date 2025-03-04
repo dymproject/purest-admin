@@ -1,0 +1,27 @@
+{
+  "add": "新增角色",
+  "edit": "编辑角色",
+  "view": "查看角色",
+  "columns": {
+    "name": "角色名",
+    "description": "描述",
+    "remark": "备注",
+    "functions": "功能"
+  },
+  "search": {
+    "name": "角色名"
+  },
+  "form": {
+    "name": "角色名",
+    "description": "描述",
+    "remark": "备注",
+    "placeholder": {
+      "name": "请输入角色名",
+      "description": "请输入描述",
+      "remark": "请输入备注"
+    },
+    "validate": {
+      "name": "请输入角色名"     
+    }
+  }
+}
