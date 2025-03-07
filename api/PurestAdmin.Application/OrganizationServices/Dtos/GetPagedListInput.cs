@@ -7,4 +7,8 @@ namespace PurestAdmin.Application.OrganizationServices.Dtos;
 /// </summary>
 public class GetPagedListInput : PaginationParams
 {
+    /// <summary>
+    /// 组织机构名称
+    /// </summary>
+    public string Name { get; set; }
 }

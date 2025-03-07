@@ -3,7 +3,7 @@ import { reactive, ref, h } from 'vue';
 import { getPageList, deleteData, stop, normal } from '#/api/system/user';
 import CreateModal from './CreateModal.vue';
 import { VxeButton } from 'vxe-pc-ui';
-import type { CommonOperationType } from '#/components/grid/src/types';
+import type { CommonOperationType } from '#/components/grid';
 import { $t } from '@vben/locales';
 import { deleteConfirm } from '#/components/modal';
 const reVxeGridRef = ref();

@@ -20,5 +20,6 @@
   "enable": "启用",
   "disable": "禁用",
   "all": "全部",
+  "ing": "进行中……",
   "tooltip": { "title": "提示", "delete": "您确定要删除吗？" }
 }

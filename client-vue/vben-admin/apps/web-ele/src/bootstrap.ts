@@ -1,7 +1,7 @@
-import { createApp, watchEffect } from 'vue';
+import { createApp, watch, watchEffect } from 'vue';
 
 import { registerAccessDirective } from '@vben/access';
-import { preferences } from '@vben/preferences';
+import { preferences,usePreferences } from '@vben/preferences';
 import { initStores } from '@vben/stores';
 import '@vben/styles';
 import '@vben/styles/ele';
@@ -20,6 +20,8 @@ import VxeUI from 'vxe-pc-ui';
 import 'vxe-pc-ui/lib/style.css';
 import VxeUITable from 'vxe-table';
 import 'vxe-table/lib/style.css';
+import enUS from 'vxe-pc-ui/lib/language/en-US';
+import zhCN from 'vxe-pc-ui/lib/language/zh-CN';
 
 // 自定义组件
 import { Page } from '@vben/common-ui';
@@ -53,6 +55,24 @@ async function bootstrap(namespace: string) {
 
   // 配置路由及路由守卫
   app.use(router);
+
+  const preference = usePreferences();
+  const localMap = {
+    'zh-CN': zhCN,
+    'en-US': enUS,
+  };
+  
+  watch(
+    [() => preference.theme.value, () => preference.locale.value],
+    ([theme, locale]) => {
+      VxeUI.setTheme(theme === 'dark' ? 'dark' : 'light');
+      VxeUI.setI18n(locale, localMap[locale]);
+      VxeUI.setLanguage(locale);
+    },
+    {
+      immediate: true,
+    },
+  );
 
   // 动态更新标题
   watchEffect(() => {

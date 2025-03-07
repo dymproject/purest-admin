@@ -1,71 +1,61 @@
 <script lang="ts" setup>
-import { h, reactive, ref } from 'vue';
-import { getPageList, deleteData } from '#/api/system/role';
-import { VxeButton } from 'vxe-pc-ui';
-import FunModal from './FunctionModal.vue';
+import { reactive, ref } from 'vue';
+import { getPageList, deleteData } from '#/api/system/systemConfig';
 import CreateModal from './CreateModal.vue';
 import { deleteConfirm } from '#/components/modal';
 import { $t } from '@vben/locales';
 import type { CommonOperationType } from '#/components/grid';
 
-const funModalRef = ref();
 const reVxeGridRef = ref();
 const columns = [
   { type: 'checkbox', title: '', width: 60, align: 'center' },
   {
-    title: 'Id',
-    field: 'id',
-    minWidth: 100,
-  },
-  {
-    title: $t('role.columns.name'),
+    title: $t('systemConfig.columns.name'),
     field: 'name',
     minWidth: 100,
   },
   {
-    title: $t('role.columns.description'),
-    field: 'description',
-    minWidth: 150,
+    title: $t('systemConfig.columns.configCode'),
+    field: 'configCode',
+    minWidth: 100,
   },
   {
-    title: $t('role.columns.remark'),
+    title: $t('systemConfig.columns.configValue'),
+    field: 'configValue',
+    minWidth: 200,
+  },
+  {
+    title: $t('systemConfig.columns.remark'),
     field: 'remark',
     minWidth: 150,
   },
-  {
-    title: $t('role.columns.functions'),
-    field: 'functions',
-    align: 'center',
-    width: 100,
-    slots: {
-      default: ({ row }: { row: any }) =>
-        h(VxeButton, {
-          size: 'small',
-          mode: 'text',
-          content: $t('common.view'),
-          status: 'success',
-          onClick() {
-            funModalRef.value.showFunction(row);
-          },
-        }),
-    },
-  },
 ];
+
+const handleInitialFormParams = () => ({
+  name: '',
+  configCode: '',
+});
 const formItems = [
   {
     field: 'name',
-    title: $t('role.search.name'),
-    span: 6,
+    title: $t('systemConfig.search.name'),
     itemRender: {
       name: '$input',
-      props: { placeholder: $t('role.search.name') },
+      props: { placeholder: $t('systemConfig.search.name') },
+    },
+  },
+  {
+    field: 'configCode',
+    title: $t('systemConfig.search.configCode'),
+    itemRender: {
+      name: '$input',
+      props: { placeholder: $t('systemConfig.search.configCode') },
     },
   },
 ];
-const handleInitialFormParams = () => ({
-  name: '',
-});
-const formData = reactive<{ name: string }>(handleInitialFormParams());
+const formData = reactive<{ name: string; configCode: string }>(
+  handleInitialFormParams(),
+);
 
 const handleSearch = () => {
   reVxeGridRef.value.loadData();
@@ -90,19 +80,19 @@ const handleView = (record: any) => {
 };
 const commonOperation: CommonOperationType = {
   add: {
-    permissionCode: 'system.role.add',
+    permissionCode: 'system.systemconfig.add',
     handleClick: handleAdd,
   },
   view: {
-    permissionCode: 'system.role.view',
+    permissionCode: 'system.systemconfig.view',
     handleClick: handleView,
   },
   edit: {
-    permissionCode: 'system.role.edit',
+    permissionCode: 'system.systemconfig.edit',
     handleClick: handleEdit,
   },
   delete: {
-    permissionCode: 'system.role.delete',
+    permissionCode: 'system.systemconfig.delete',
     handleClick: handleDelete,
   },
 };
@@ -119,7 +109,6 @@ const commonOperation: CommonOperationType = {
       @handleSearch="handleSearch"
       @handleReset="handleInitialFormParams"
     />
-    <FunModal ref="funModalRef" />
     <CreateModal ref="createModalRef" @reload="handleSearch" />
   </re-page>
 </template>

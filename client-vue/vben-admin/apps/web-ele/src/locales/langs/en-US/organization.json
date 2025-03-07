@@ -1,0 +1,35 @@
+{
+  "add": "Add Organization",
+  "edit": "Edit Organization",
+  "view": "View Organization",
+  "columns": {
+    "name": "Organization Name",
+    "leader": "Leader",
+    "telephone": "Telephone",
+    "sort": "Sort",
+    "remark": "Remark"
+  },
+  "search": {
+    "name": "Organization Name"    
+  },
+  "form": {
+    "name": "Organization Name",
+    "parentId": "Parent Organization",
+    "leader": "Leader",
+    "telephone": "Telephone",
+    "sort": "Sort",
+    "remark": "Remark",
+    "placeholder": {
+      "name": "Please enter organization name",
+      "parentId": "Please select parent organization",
+      "leader": "Please enter leader",
+      "telephone": "Please enter telephone",
+      "sort": "Please enter sort",
+      "remark": "Please enter remark"
+    },
+    "validate": {
+      "name": "Please enter organization name",
+      "parentId": "Please select organization"
+    }
+  }
+}

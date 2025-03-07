@@ -2,12 +2,13 @@ import type { VxeComponentSizeType } from 'vxe-pc-ui';
 import type { VxeGridPropTypes } from 'vxe-table';
 
 export interface PurestGridProps {
+  height?: number;
   columns: VxeGridPropTypes.Columns<any> | Array<any>;
   customToolbarActions?: VxeGridPropTypes.ToolbarConfig;
   commonOperation?: CommonOperationType | undefined;
   request: (params: any) => Promise<any>;
   rowKey?: string;
-  size?: VxeComponentSizeType | undefined;  
+  size?: VxeComponentSizeType | undefined;
   treeConfig?: any;
   customePager?: {
     total: number;

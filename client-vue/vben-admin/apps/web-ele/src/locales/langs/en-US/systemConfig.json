@@ -1,0 +1,33 @@
+{
+  "add": "Add Configuration",
+  "edit": "Edit Configuration",
+  "view": "View Configuration",
+  "columns": {
+    "name": "Name",
+    "configCode": "Code",
+    "configValue": "Value",
+    "service": "Service",
+    "remark": "Remark"
+  },
+  "search": {
+    "name": "Name",
+    "configCode": "Code"
+  },
+  "form": {
+    "name": "Name",
+    "configCode": "Code",
+    "configValue": "Value",
+    "remark": "Remark",
+    "placeholder": {
+      "name": "Enter configuration name",
+      "configCode": "Enter configuration code",
+      "configValue": "Enter configuration value",
+      "remark": "Enter remarks"
+    },
+    "validate": {
+      "name": "Please enter configuration name",
+      "configCode": "Please enter configuration code",
+      "configValue": "Please enter configuration value"
+    }
+  }
+}

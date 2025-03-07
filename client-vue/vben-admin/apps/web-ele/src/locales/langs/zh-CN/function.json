@@ -1,0 +1,42 @@
+{
+  "add": "新增功能",
+  "edit": "编辑功能",
+  "view": "查看功能",
+  "columns": {
+    "name": "功能名",
+    "code": "功能编码",
+    "service": "接口",
+    "remark": "备注",
+    "functions": "功能"
+  },
+  "interfaceModal": {
+    "boundInterface": "已绑定接口",
+    "list": "接口列表",
+    "remove": "移除",
+    "bound": "已绑定",
+    "unbound": "未绑定",
+    "synchronization": "同步接口",    
+    "name": "接口名",
+    "api": "接口地址",
+    "method": "请求方式"
+  },
+  "search": {
+    "name": "功能名"
+  },
+  "form": {
+    "name": "功能名",
+    "code": "功能编码",
+    "subjection": "隶属",
+    "remark": "备注",
+    "placeholder": {
+      "name": "请输入功能名",
+      "code": "请输入功能编码",
+      "description": "请输入描述",
+      "remark": "请输入备注"
+    },
+    "validate": {
+      "name": "请输入功能名",
+      "code": "请输入功能编码"
+    }
+  }
+}

@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'Function',
         path: '/system/function',
-        component: () => import('#/views/demos/form/basic.vue'),
+        component: () => import('#/views/system/function/index.vue'),
       },
       {
         meta: {
@@ -45,7 +45,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'Organization',
         path: '/system/organization',
-        component: () => import('#/views/demos/form/basic.vue'),
+        component: () => import('#/views/system/organization/index.vue'),
       },
       {
         meta: {
@@ -61,7 +61,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'Config',
         path: '/system/config',
-        component: () => import('#/views/demos/form/basic.vue'),
+        component: () => import('#/views/system/systemConfig/index.vue'),
       },
     ],
   },

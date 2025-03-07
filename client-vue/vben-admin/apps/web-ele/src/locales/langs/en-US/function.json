@@ -1,0 +1,42 @@
+{
+  "add": "Add Function",
+  "edit": "Edit Function",
+  "view": "View Function",
+  "columns": {
+    "name": "Function Name",
+    "code": "Function Code",
+    "service": "Interface",
+    "remark": "Remark",
+    "functions": "Functions"
+  },
+  "interfaceModal": {
+    "boundInterface": "Bound Interfaces",
+    "list": "Interface List",
+    "remove": "Remove",
+    "bound": "Bound",
+    "unbound": "Unbound",
+    "synchronization": "Synchronize Interfaces",    
+    "name": "Interface Name",
+    "api": "Interface Address",
+    "method": "Request Method"
+  },
+  "search": {
+    "name": "Function Name"
+  },
+  "form": {
+    "name": "Function Name",
+    "code": "Function Code",
+    "subjection": "Subjection",
+    "remark": "Remark",
+    "placeholder": {
+      "name": "Enter function name",
+      "code": "Enter function code",
+      "description": "Enter description",
+      "remark": "Enter remark"
+    },
+    "validate": {
+      "name": "Please enter function name",
+      "code": "Please enter function code"
+    }
+  }
+}

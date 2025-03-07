@@ -116,39 +116,39 @@ const operateColumns: VxeGridPropTypes.Columns<any> =
         },
       ];
 const columns = [...props.columns, ...operateColumns];
-const toolbarConfig: VxeGridPropTypes.ToolbarConfig = {
-  slots: {
-    buttons: () => {
-      const buttons: VNode[] = [];
-      if (props.commonOperation) {
-        Object.keys(props.commonOperation).forEach((key) => {
-          const operation =
-            props.commonOperation![key as 'add' | 'export' | 'import'];
-          if (hasAccessByCodes([operation!.permissionCode])) {
-            switch (key) {
-              case 'add':
-                buttons.push(
-                  h(VxeButton, {
-                    icon: 'vxe-icon-add',
-                    status: 'primary',
-                    content: $t('common.add'),
-                    onClick() {
-                      operation!.handleClick();
-                    },
-                  }),
-                );
-                break;
+const toolbarConfig: VxeGridPropTypes.ToolbarConfig =
+  props.customToolbarActions ?? {
+    slots: {
+      buttons: () => {
+        const buttons: VNode[] = [];
+        if (props.commonOperation) {
+          Object.keys(props.commonOperation).forEach((key) => {
+            const operation =
+              props.commonOperation![key as 'add' | 'export' | 'import'];
+            if (hasAccessByCodes([operation!.permissionCode])) {
+              switch (key) {
+                case 'add':
+                  buttons.push(
+                    h(VxeButton, {
+                      icon: 'vxe-icon-add',
+                      status: 'primary',
+                      content: $t('common.add'),
+                      onClick() {
+                        operation!.handleClick();
+                      },
+                    }),
+                  );
+                  break;
+              }
             }
-          }
-        });
-      }
-      return buttons;
+          });
+        }
+        return buttons;
+      },
     },
-  },
-  custom: true,
-};
+    custom: true,
+  };
 const treeOption = props.treeConfig ?? {};
-
 const data = ref<[]>([]);
 const loading = ref(false);
 
@@ -191,6 +191,7 @@ defineExpose({ loadData });
         :round="true"
         :columns="columns"
         :data="data"
+        :height="props.height"
         :loading="loading"
         :max-height="650"
         :size="props.size"

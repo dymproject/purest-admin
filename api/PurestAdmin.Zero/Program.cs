@@ -6,7 +6,10 @@ using PurestAdmin.Zero;
 
 using Volo.Abp;
 
-var app = await AbpApplicationFactory.CreateAsync<AdminZeroModule>();
+var app = await AbpApplicationFactory.CreateAsync<AdminZeroModule>(options =>
+{
+    options.UseAutofac();
+});
 // 初始化应用
 await app.InitializeAsync();
 try

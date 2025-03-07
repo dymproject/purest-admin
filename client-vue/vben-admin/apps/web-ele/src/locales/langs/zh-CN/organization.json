@@ -1,0 +1,35 @@
+{
+  "add": "新增组织机构",
+  "edit": "编辑组织机构",
+  "view": "查看组织机构",
+  "columns": {
+    "name": "组织机构名称",
+    "leader": "负责人",
+    "telephone": "联系电话",
+    "sort": "排序",
+    "remark": "备注"
+  },
+  "search": {
+    "name": "组织机构名"
+  },
+  "form": {
+    "name": "组织机构名称",
+    "parentId": "上级组织机构",
+    "leader": "负责人",
+    "telephone": "联系电话",
+    "sort": "排序",
+    "remark": "备注",
+    "placeholder": {
+      "name": "请输入组织机构名称",
+      "parentId": "请选择上级组织机构",
+      "leader": "请输入负责人",
+      "telephone": "请输入联系电话",
+      "sort": "请输入排序",
+      "remark": "请输入备注"
+    },
+    "validate": {
+      "name": "请输入组织机构名",
+      "parentId": "请选择组织机构"
+    }
+  }
+}

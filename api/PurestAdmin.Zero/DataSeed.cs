@@ -104,6 +104,8 @@ public class DataSeed : ISingletonDependency
                 new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemFunctionId, Name = "功能查看", Code = "system.function.view" },
                 new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemFunctionId, Name = "功能删除", Code = "system.function.delete" },
                 new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemFunctionId, Name = "绑定接口", Code = "system.function.bind" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemFunctionId, Name = "解除绑定", Code = "system.function.unbind" },
+                new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemFunctionId, Name = "同步接口", Code = "system.function.synchronization" },
                 new FunctionEntity() { Id = systemDictionaryId, ParentId = systemId, Name = "字典管理", Code = "system.dictionary" },
                 new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemDictionaryId, Name = "字典新增", Code = "system.dictionary.add" },
                 new FunctionEntity() { Id = YitIdHelper.NextId(), ParentId = systemDictionaryId, Name = "字典编辑", Code = "system.dictionary.edit" },
