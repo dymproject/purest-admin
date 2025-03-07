@@ -1,5 +1,7 @@
 // Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
+using System.Collections.Generic;
+
 using PurestAdmin.Application.OrganizationServices.Dtos;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 
@@ -22,6 +24,26 @@ public class OrganizationService(Repository<OrganizationEntity> organizationRepo
     {
         var organizations = await _currentUser.GetOrganizationTreeAsync();
         var organizationOutputs = organizations.First().Children.Adapt<List<OrganizationOutput>>();
+        if (!input.Name.IsNullOrEmpty())
+        {
+            List<OrganizationOutput> FilterOrganizations(List<OrganizationOutput> all)
+            {
+                List<OrganizationOutput> ls = [];
+                foreach (var item in all)
+                {
+                    if (item.Name.Contains(input.Name))
+                    {
+                        ls.Add(item);
+                    }
+                    if (item.Children?.Count > 0)
+                    {
+                        ls.AddRange(FilterOrganizations(item.Children));
+                    }
+                }
+                return ls;
+            }
+            return FilterOrganizations(organizationOutputs).ToPurestPagedList(input.PageIndex, input.PageSize); ;
+        }
         return organizationOutputs.ToPurestPagedList(input.PageIndex, input.PageSize);
     }
 

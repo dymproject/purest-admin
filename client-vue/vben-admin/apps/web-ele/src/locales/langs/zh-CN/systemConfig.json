@@ -1,0 +1,33 @@
+{
+  "add": "新增配置",
+  "edit": "编辑配置",
+  "view": "查看配置",
+  "columns": {
+    "name": "配置名称",
+    "configCode": "配置编码",
+    "configValue": "配置值",
+    "service": "接口",
+    "remark": "备注"
+  },
+  "search": {
+    "name": "配置名称",
+    "configCode": "配置编码"
+  },
+  "form": {
+    "name": "配置名称",
+    "configCode": "配置编码",
+    "configValue": "配置值",
+    "remark": "备注",
+    "placeholder": {
+      "name": "请输入配置名称",
+      "configCode": "请输入配置编码",
+      "configValue": "请输入配置值",
+      "remark": "请输入备注"
+    },
+    "validate": {
+      "name": "请输入配置名称",
+      "configCode": "请输入配置编码",
+      "configValue": "请输入配置值"
+    }
+  }
+}

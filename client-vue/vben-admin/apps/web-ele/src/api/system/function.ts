@@ -5,11 +5,11 @@ export const getTreeList = () => {
 };
 
 export function getPageList(params: any) {
-  return http.request('/function/paged-list', { method: 'GET', params });
+  return http.get('/function/paged-list', { params });
 }
 
 export const submitData = (params: any) => {
-  return http.post(`/function/${params.id ?? ''}`, {
+  return http.request(`/function/${params.id ?? ''}`, {
     method: params.id ? 'PUT' : 'POST',
     data: params,
   });
@@ -28,10 +28,7 @@ export const getFunInterface = (id: number): any => {
 };
 
 export const assignInterface = (params: any) => {
-  return http.request(`/function/assign-interface`, {
-    method: 'POST',
-    data: params,
-  });
+  return http.post(`/function/assign-interface`, params);
 };
 
 export const removeInterface = (id: number) => {

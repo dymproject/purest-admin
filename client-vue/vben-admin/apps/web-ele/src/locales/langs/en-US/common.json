@@ -20,8 +20,6 @@
   "enable": "Enable",
   "disable": "Disable",
   "all": "All",
-  "tooltip": {
-    "title": "Tooltip",
-    "delete": "Are you sure you want to delete?"
-  }
+  "ing": "Processing...",
+  "tooltip": { "title": "Prompt", "delete": "Are you sure you want to delete?" }
 }

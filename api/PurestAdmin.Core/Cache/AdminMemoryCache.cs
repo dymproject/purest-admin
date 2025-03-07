@@ -19,13 +19,16 @@ public class AdminMemoryCache(IMemoryCache memoryCache) : IAdminCache
     {
         const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
         var coherentState = _memoryCache.GetType().GetField("_coherentState", flags).GetValue(_memoryCache);
-        var entries = coherentState.GetType().GetField("_entries", flags).GetValue(coherentState);
-        var cacheItems = entries as IDictionary;
-        foreach (DictionaryEntry cacheItem in cacheItems)
+        var entries = coherentState.GetType().GetField("_entries", flags)?.GetValue(coherentState);
+        if (entries != null)
         {
-            if (cacheItem.Key != null && cacheItem.Key.ToString().StartsWith(keyPrefix))
+            var cacheItems = entries as IDictionary;
+            foreach (DictionaryEntry cacheItem in cacheItems)
             {
-                _memoryCache.Remove(cacheItem.Key);
+                if (cacheItem.Key != null && cacheItem.Key.ToString().StartsWith(keyPrefix))
+                {
+                    _memoryCache.Remove(cacheItem.Key);
+                }
             }
         }
     }
