@@ -1,0 +1,35 @@
+{
+  "add": "Add Dictionary",
+  "edit": "Edit Dictionary",
+  "view": "View Dictionary",
+  "category": "Dictionary Category",
+  "data": "Dictionary Data",
+  "columns": {
+    "name": "Category Name",
+    "code": "Category Code",
+    "remark": "Remark",
+    "sort": "Sort"
+  },
+  "columns2": {
+    "name": "Item Name",
+    "remark": "Remark",
+    "sort": "Sort"
+  },
+  "search": {
+    "name": "Category Name"
+  },
+  "form": {
+    "itemName": "Item Name",
+    "sort": "Sort",
+    "remark": "Remark",
+    "placeholder": {
+      "itemName": "Please enter dictionary item name"
+    },
+    "validate": {
+      "itemName": "Please enter dictionary item name"
+    }
+  },
+  "tooltip": {
+    "checkCategory": "Check Dictionary Category"
+  }
+}

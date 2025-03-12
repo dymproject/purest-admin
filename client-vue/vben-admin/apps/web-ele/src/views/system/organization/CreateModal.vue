@@ -147,6 +147,6 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
       :titleWidth="130"
       :titleColon="true"
       :titleAlign="`right`"
-    /> </re-modal
-  >>
+    />
+  </re-modal>
 </template>
