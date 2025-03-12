@@ -53,7 +53,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'Dict',
         path: '/system/dict',
-        component: () => import('#/views/demos/form/basic.vue'),
+        component: () => import('#/views/system/dictionary/index.vue'),
       },
       {
         meta: {

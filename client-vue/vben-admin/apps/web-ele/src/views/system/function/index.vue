@@ -47,7 +47,7 @@ const columns = [
   {
     title: $t('function.columns.remark'),
     field: 'remark',
-  }, 
+  },
 ];
 const handleInitialFormParams = () => ({
   name: '',
@@ -56,13 +56,22 @@ const formItems = [
   {
     field: 'name',
     title: $t('function.form.name'),
-    itemRender: { name: '$input', props: { placeholder: $t('function.form.name') } },
+    itemRender: {
+      name: '$input',
+      props: { placeholder: $t('function.form.name') },
+    },
   },
 ];
 const formData = reactive<{ name: string }>(handleInitialFormParams());
 
 const handleSearch = () => {
   reVxeGridRef.value.loadData();
+};
+const searchOptions = {
+  formData,
+  formItems,
+  submit: handleSearch,
+  reset: handleInitialFormParams,
 };
 
 const handleAdd = () => {
@@ -106,11 +115,8 @@ const commonOperation: CommonOperationType = {
       ref="reVxeGridRef"
       :request="getPageList"
       :commonOperation="commonOperation"
-      :formData="formData"
-      :formItems="formItems"
       :columns="columns"
-      @handleSearch="handleSearch"
-      @handleReset="handleInitialFormParams"
+      :searchOptions="searchOptions"
     />
     <CreateModal ref="createModalRef" @reload="handleSearch" />
     <InterfaceModal ref="interfaceModalRef" />

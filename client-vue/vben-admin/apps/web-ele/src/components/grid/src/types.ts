@@ -15,8 +15,12 @@ export interface PurestGridProps {
     pageIndex: number;
     pageSize: number;
   };
-  formData: any;
-  formItems: Array<any>;
+  searchOptions?: {
+    formData: any;
+    formItems: Array<any>;
+    submit: (params?: any) => void;
+    reset: () => void;
+  };
 }
 
 export type CommonOperationType = {

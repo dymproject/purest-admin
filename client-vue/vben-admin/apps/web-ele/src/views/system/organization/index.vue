@@ -49,7 +49,12 @@ const formData = reactive<{ name: string; leader: string }>(
 const handleSearch = () => {
   reVxeGridRef.value.loadData();
 };
-
+const searchOptions = {
+  formData,
+  formItems,
+  submit: handleSearch,
+  reset: handleInitialFormParams,
+};
 const createModalRef = ref();
 const handleAdd = () => {
   createModalRef.value.showAddModal();
@@ -92,11 +97,8 @@ const commonOperation: CommonOperationType = {
       ref="reVxeGridRef"
       :request="getPageList"
       :commonOperation="commonOperation"
-      :formData="formData"
-      :formItems="formItems"
       :columns="columns"
-      @handleSearch="handleSearch"
-      @handleReset="handleInitialFormParams"
+      :searchOptions="searchOptions"
     />
     <CreateModal ref="createModalRef" @reload="handleSearch" />
   </re-page>

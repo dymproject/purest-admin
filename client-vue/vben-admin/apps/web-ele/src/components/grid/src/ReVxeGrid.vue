@@ -9,14 +9,10 @@ import { $t } from '#/locales';
 import './style.css';
 
 const { hasAccessByCodes } = useAccess();
-const emit = defineEmits<{
-  (e: 'handleSearch'): void;
-  (e: 'handleReset'): void;
-}>();
+
 const props = withDefaults(defineProps<PurestGridProps>(), {
   rowKey: `id`,
   size: `small`,
-  formData: {},
   customePager: () => ({
     total: 0,
     pageIndex: 1,
@@ -47,7 +43,7 @@ const formActions = [
     },
   },
 ];
-const items = props.formItems.concat(formActions);
+const items = props.searchOptions?.formItems.concat(formActions);
 const operateColumns: VxeGridPropTypes.Columns<any> =
   props.commonOperation == null || props.commonOperation == undefined
     ? []
@@ -152,13 +148,19 @@ const treeOption = props.treeConfig ?? {};
 const data = ref<[]>([]);
 const loading = ref(false);
 
-const loadData = async () => {
-  props.request({ ...props.customePager, ...props.formData }).then((result) => {
-    const { pageIndex, total, items } = result;
-    data.value = items;
-    props.customePager.total = total;
-    props.customePager.pageIndex = pageIndex;
-  });
+const loadData = async (parmas?: any) => {
+  props
+    .request({
+      ...props.customePager,
+      ...props.searchOptions?.formData,
+      ...parmas,
+    })
+    .then((result) => {
+      const { pageIndex, total, items } = result;
+      data.value = items;
+      props.customePager.total = total;
+      props.customePager.pageIndex = pageIndex;
+    });
 };
 const handlePageChange: VxePagerEvents.PageChange = ({
   currentPage,
@@ -175,14 +177,14 @@ defineExpose({ loadData });
 </script>
 <template>
   <div>
-    <el-card>
+    <el-card v-if="props.searchOptions">
       <vxe-form
         ref="formRef"
         :size="props.size"
-        :data="props.formData"
+        :data="props.searchOptions?.formData"
         :items="items"
-        @submit="emit('handleSearch')"
-        @reset="emit('handleReset')"
+        @submit="props.searchOptions?.submit"
+        @reset="props.searchOptions?.reset"
       />
       <slot name="searchForm"></slot>
     </el-card>
@@ -194,13 +196,14 @@ defineExpose({ loadData });
         :height="props.height"
         :loading="loading"
         :max-height="650"
+        :min-height="300"
         :size="props.size"
         :resizable="true"
         :row-config="{ keyField: rowKey, isHover: true }"
         :toolbar-config="toolbarConfig"
         :tree-config="treeOption"
         :pager-config="{
-          pageSizes: [15, 30, 50, 100],
+          pageSizes: [15, 30, 50, 100, 300],
           size: props.size,
           total: customePager.total,
           pageSize: customePager.pageSize,
