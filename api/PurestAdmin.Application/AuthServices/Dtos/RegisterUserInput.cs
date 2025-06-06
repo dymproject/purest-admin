@@ -1,4 +1,6 @@
-﻿using PurestAdmin.Core.DataEncryption.Encryptions;
+﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
+
+using PurestAdmin.Core.DataEncryption.Encryptions;
 
 namespace PurestAdmin.Application.AuthServices.Dtos
 {

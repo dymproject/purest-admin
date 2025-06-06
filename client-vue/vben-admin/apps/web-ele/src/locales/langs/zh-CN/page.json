@@ -30,6 +30,9 @@
     },
     "config": {
       "title": "系统配置"
+    },
+    "onlineUser": {
+      "title": "在线用户"
     }
   }
 }

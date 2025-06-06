@@ -63,6 +63,14 @@ const routes: RouteRecordRaw[] = [
         path: '/system/config',
         component: () => import('#/views/system/systemConfig/index.vue'),
       },
+      {
+        meta: {
+          title: $t('page.system.onlineUser.title'),
+        },
+        name: 'OnlineUser',
+        path: '/system/online-user',
+        component: () => import('#/views/system/onlineUser/index.vue'),
+      },
     ],
   },
 ];

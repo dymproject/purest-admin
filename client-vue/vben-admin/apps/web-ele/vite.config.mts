@@ -21,7 +21,7 @@ export default defineConfig(async () => {
               //这段代码可以看到代理后的地址
               const proxyURL = options.target + req.url;
               console.log('proxyURL', proxyURL);
-              res.setHeader('x-req-proxyURL', proxyURL); // 设置响应头可以看到
+              // res.setHeader('x-req-proxyURL', proxyURL); // 设置响应头可以看到
             },
             // rewrite: (path) => path.replace(/^\/signalr/, ''),
           },

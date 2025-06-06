@@ -96,7 +96,7 @@ public static class AdminSqlSugarExtensions
             });
 
         services.AddHttpContextAccessor();
-        services.AddSingleton<ISqlSugarClient>(sqlSugar);        
+        services.AddSingleton<ISqlSugarClient>(sqlSugar);
         return services;
     }
 

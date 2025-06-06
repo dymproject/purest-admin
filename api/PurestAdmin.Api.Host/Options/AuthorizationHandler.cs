@@ -26,14 +26,23 @@ public class AuthorizationHandler(IHostEnvironment hostEnvironment, ICurrentUser
                 context.Fail();
                 return;
             }
-            //校验用户是否有接口权限
             if (_hostEnvironment.IsProduction())
             {
+                //校验用户是否有接口权限
                 var endpoint = httpContext.GetEndpoint() as RouteEndpoint;
                 var pattern = endpoint?.RoutePattern;
                 var interfaces = await _currentUser.GetInterfacesAsync();
                 var isAllow = interfaces.Any(x => x.Path == pattern?.RawText && x.RequestMethod.Equals(httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase));
                 if (!isAllow)
+                {
+                    context.Fail();
+                    return;
+                }
+            }
+            else if (_hostEnvironment.IsStaging())
+            {
+                //演示环境下，只允许Get和Post请求
+                if (httpContext.Request.Method != HttpMethods.Get && httpContext.Request.Method != HttpMethods.Post)
                 {
                     context.Fail();
                     return;
