@@ -65,7 +65,8 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
             var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className);
             using StreamWriter writer = new(Path.Combine(dtoPath, $"GetPagedListInput.cs"));
             writer.Write(result);
-        };
+        }
+        ;
         Console.WriteLine($"生成GetPagedListInput");
         //生成AddInput
         using (var reader = new StreamReader(Path.Combine(basePath, "Templates", "AddTemplate.txt")))
@@ -74,7 +75,8 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
             var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className).Replace("@props@", inputProps);
             using StreamWriter writer = new(Path.Combine(dtoPath, $"Add{className}Input.cs"));
             writer.Write(result);
-        };
+        }
+        ;
         Console.WriteLine($"生成Add{className}Input.cs");
         //生成Output
         using (var reader = new StreamReader(Path.Combine(basePath, "Templates", "OutputTemplate.txt")))
@@ -83,7 +85,8 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
             var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className).Replace("@props@", outputProps);
             using StreamWriter writer = new(Path.Combine(dtoPath, $"{className}Output.cs"));
             writer.Write(result);
-        };
+        }
+        ;
         Console.WriteLine($"生成{className}Output.cs");
         //生成PutInput
         using (var reader = new StreamReader(Path.Combine(basePath, "Templates", "PutInputTemplate.txt")))
@@ -92,7 +95,8 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
             var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className);
             using StreamWriter writer = new(Path.Combine(dtoPath, $"Put{className}Input.cs"));
             writer.Write(result);
-        };
+        }
+        ;
         Console.WriteLine($"生成Put{className}Input.cs");
         //生成service
         using (var reader = new StreamReader(Path.Combine(basePath, "Templates", "ServiceTemplate.txt")))
@@ -101,7 +105,8 @@ public class AutoService(ISqlSugarClient db) : ISingletonDependency
             var result = content.Replace("@NameSpace@", nameSpace).Replace("@ClassName@", className);
             using StreamWriter writer = new(Path.Combine(servicePath, $"{className}Service.cs"));
             writer.Write(result);
-        };
+        }
+        ;
         Console.WriteLine($"生成{className}Service.cs");
         Console.WriteLine($"Services生成成功，路径为{servicePath}");
     }

@@ -20,6 +20,6 @@
   "enable": "Enable",
   "disable": "Disable",
   "all": "All",
-  "ing": "Processing...",
-  "tooltip": { "title": "Prompt", "delete": "Are you sure you want to delete?" }
+  "ing": "In progress...",
+  "tooltip": { "title": "Prompt", "delete": "Are you sure you want to delete?", "logout": "You have been forced to log out! You will be redirected to the login page in 3 seconds." }
 }

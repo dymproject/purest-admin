@@ -243,5 +243,12 @@ namespace PurestAdmin.Api.Host
                 options.MapControllers().RequireAuthorization();
             });
         }
+
+        public override void OnPostApplicationInitialization(ApplicationInitializationContext context)
+        {
+            var env = context.GetEnvironment();
+            var logger = context.ServiceProvider.GetRequiredService<Serilog.ILogger>();
+            logger.Information($"项目当前环境为：{env.EnvironmentName}");
+        }
     }
 }

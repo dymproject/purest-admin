@@ -78,14 +78,10 @@ public class OnlineUserHub(IClock clock, ICacheOnlineUser cacheOnlineUser, ISear
 
     public override Task OnDisconnectedAsync(Exception? exception)
     {
-        var httpContext = Context.GetHttpContext();
-        if (httpContext != null && Context.UserIdentifier != null)
-        {
-            var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
-            var newOnlineUser = onlineUsers.Where(x => x.ConnectionId != Context.ConnectionId).ToList();
-            Clients.All.UpdateUser(newOnlineUser);
-            _cacheOnlineUser.SetOnlineUser(newOnlineUser);
-        }
+        var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
+        var newOnlineUser = onlineUsers.Where(x => x.ConnectionId != Context.ConnectionId).ToList();
+        Clients.All.UpdateUser(newOnlineUser);
+        _cacheOnlineUser.SetOnlineUser(newOnlineUser);
         return Task.CompletedTask;
     }
 }

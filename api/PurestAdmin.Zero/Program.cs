@@ -40,7 +40,8 @@ try
             default:
                 Console.WriteLine("未进行任何操作！");
                 break;
-        };
+        }
+        ;
         Thread.Sleep(1000);
     }
 
