@@ -1,0 +1,15 @@
+{
+  "offline": "强制离线",
+  "sendMessage": "发送消息",
+  "search": {
+    "name": "用户"
+  },
+  "columns": {
+    "connectionId": "连接Id",
+    "userName": "用户",
+    "connectedTime": "连接时间",
+    "disconnectedTime": "断开时间",
+    "ip": "IP地址",
+    "ipStr": "IP归属地"
+  }
+}

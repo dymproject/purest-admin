@@ -1,4 +1,6 @@
-﻿using Mapster;
+﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
+
+using Mapster;
 
 using PurestAdmin.Multiplex.Contracts.IAdminUser.OAuth2;
 

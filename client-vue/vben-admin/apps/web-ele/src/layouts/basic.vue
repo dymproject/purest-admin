@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
-
-import { computed, ref, watch } from 'vue';
+import { useOnlineUserStore } from '#/store/onlineUser';
+import { computed, ref, watch, onUnmounted } from 'vue';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
 import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
@@ -20,14 +20,23 @@ import { openWindow } from '@vben/utils';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
+import { ElMessage } from 'element-plus';
 
+const onlineUserStore = useOnlineUserStore();
+const connection = onlineUserStore.createConnection();
+connection.on('logout', () => {
+  ElMessage({ type: 'error', message: $t('common.tooltip.logout') });
+  setTimeout(() => {
+    authStore.logout();
+  }, 3000);
+});
 const notifications = ref<NotificationItem[]>([
   {
     avatar: 'https://avatar.vercel.sh/vercel.svg?text=VB',
     date: '3小时前',
     isRead: true,
     message: '描述信息描述信息描述信息',
-    title: '收到了 14 份新周报',
+    title: '收到了11111份新周报',
   },
   {
     avatar: 'https://avatar.vercel.sh/1',
@@ -120,6 +129,10 @@ watch(
     immediate: true,
   },
 );
+//销毁
+onUnmounted(() => {
+  connection.stop();
+});
 </script>
 
 <template>

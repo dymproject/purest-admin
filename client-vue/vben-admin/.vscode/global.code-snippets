@@ -36,7 +36,7 @@
   },
   "I18n $t": {
     "prefix": "$t",
-    "body": ["$$t('${1:key}')"],
+    "body": ["$$t(${1:})"],
     "description": "Insert i18n $t function",
   },
 }
