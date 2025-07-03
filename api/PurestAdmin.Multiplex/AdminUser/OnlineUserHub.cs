@@ -54,13 +54,12 @@ public class OnlineUserHub(IClock clock, ICacheOnlineUser cacheOnlineUser, ISear
             ArgumentNullException.ThrowIfNull(httpContext);
             ArgumentNullException.ThrowIfNull(Context.UserIdentifier);
 
-            var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
-            if (!onlineUsers.Any(x => x.ConnectionId == Context.ConnectionId))
+            _cacheOnlineUser.TryUpdate(users =>
             {
                 var ip = httpContext.Request.Headers["X-Real-IP"].FirstOrDefault() ?? feature.LocalIpAddress.MapToIPv4().ToString();
                 var ipString = _searcher.Search(ip)?.Replace("0", "").Replace("|", " ") ?? "暂无";
                 var userName = Context.User?.FindFirst("username")?.Value ?? "";
-                onlineUsers.Add(new OnlineUserModel
+                users.Add(new OnlineUserModel
                 {
                     ConnectionId = Context.ConnectionId,
                     Ip = ip,
@@ -69,19 +68,21 @@ public class OnlineUserHub(IClock clock, ICacheOnlineUser cacheOnlineUser, ISear
                     UserName = userName,
                     ConnectedTime = _clock.Now,
                 });
-            }
-            Clients.All.UpdateUser(onlineUsers);
-            _cacheOnlineUser.SetOnlineUser(onlineUsers);
+                Clients.All.UpdateUser(users);
+                return users;
+            });
         }
         return Task.CompletedTask;
     }
 
     public override Task OnDisconnectedAsync(Exception? exception)
     {
-        var onlineUsers = _cacheOnlineUser.GetOnlineUsers();
-        var newOnlineUser = onlineUsers.Where(x => x.ConnectionId != Context.ConnectionId).ToList();
-        Clients.All.UpdateUser(newOnlineUser);
-        _cacheOnlineUser.SetOnlineUser(newOnlineUser);
+        _cacheOnlineUser.TryUpdate(users =>
+        {
+            var newUsers = users.Where(u => u.ConnectionId != Context.ConnectionId).ToList();
+            Clients.All.UpdateUser(newUsers);
+            return newUsers;
+        });
         return Task.CompletedTask;
     }
 }

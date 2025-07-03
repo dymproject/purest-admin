@@ -7,5 +7,7 @@ public interface ICacheOnlineUser
 {
     List<OnlineUserModel> GetOnlineUsers();
 
+    bool TryUpdate(Func<List<OnlineUserModel>, List<OnlineUserModel>> updateFunc);
+
     void SetOnlineUser(List<OnlineUserModel> users);
 }
