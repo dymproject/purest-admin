@@ -9,7 +9,7 @@ namespace PurestAdmin.Multiplex.AdminUser;
 public class CacheOnlineUser(IAdminCache cache) : ICacheOnlineUser, ISingletonDependency
 {
     private readonly IAdminCache _cache = cache;
-
+    private static readonly object _lock = new();
     /// <summary>
     /// 获取在线用户
     /// </summary>
@@ -25,6 +25,22 @@ public class CacheOnlineUser(IAdminCache cache) : ICacheOnlineUser, ISingletonDe
     /// <param name="users"></param>
     public void SetOnlineUser(List<OnlineUserModel> users)
     {
-        _cache.Set(AdminClaimConst.ONLINE_USER, users);
+        lock (_lock)
+        {
+            _cache.Set(AdminClaimConst.ONLINE_USER, users);
+        }
+    }
+    public bool TryUpdate(Func<List<OnlineUserModel>, List<OnlineUserModel>> updateFunc)
+    {
+        lock (_lock)
+        {
+            var current = GetOnlineUsers();
+            var updated = updateFunc(current);
+            if (updated is null)
+                return false;
+
+            SetOnlineUser(updated);
+            return true;
+        }
     }
 }
