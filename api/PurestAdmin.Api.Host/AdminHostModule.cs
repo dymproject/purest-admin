@@ -168,6 +168,7 @@ namespace PurestAdmin.Api.Host
                             .Select(o => o.RemovePostFix("/"))
                             .ToArray() ?? [])
                         .WithAbpExposedHeaders()
+                        .WithExposedHeaders(configuration["App:ExposedHeaders"] ?? "")
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
@@ -234,6 +235,8 @@ namespace PurestAdmin.Api.Host
             app.UseCookiePolicy();
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
