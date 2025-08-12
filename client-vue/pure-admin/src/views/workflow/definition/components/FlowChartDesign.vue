@@ -58,7 +58,7 @@ onMounted(() => {
         showBusinessPanel.value = true;
         const nodeProperties = lf.value
           .getNodeModelById(data.id)
-          .getProperties() satisfies AuditingDataModel;
+          .getProperties() as AuditingDataModel;
         nodeProperties.auditingStepType;
         auditingData.value =
           Object.keys(nodeProperties).length == 0
@@ -200,8 +200,6 @@ const auditingColumns: VxeFormPropTypes.Items = [
 ];
 const setProperties = (type: string) => {
   if (type == "node") {
-    debugger;
-
     let cleanedAuditingData = cleanObject(auditingData.value, [
       "auditorType",
       "auditorName",
