@@ -37,7 +37,8 @@ public class GeneralAuditingJob(ISqlSugarClient db, IWorkflowHost workflowHost) 
         }
         if (stepType == ((int)GeneralAuditingStepTypeEnum.Serial).ToString())
         {
-            var count = await _db.Queryable<WfWaitingPointerEntity>().Where(x => x.PointerId == executionPointer.Id).CountAsync();
+            await _db.Deleteable<WfWaitingPointerEntity>().Where(x => x.PointerId == executionPointer.Id && x.UserId == args.Auditor).ExecuteCommandAsync();
+            var count = await _db.Queryable<WfWaitingPointerEntity>().Where(x => x.PointerId == executionPointer.Id && x.UserId == args.Auditor).CountAsync();
             if (count == 0)
                 await _workflowHost.PublishEvent(executionPointer.EventName, executionPointer.EventKey, args.IsAgree);
         }
