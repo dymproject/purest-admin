@@ -4,11 +4,11 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": false,
-    "noUnusedLocals": true,
+    "strictFunctionTypes": false,
+    "noImplicitThis": true,
     "jsx": "preserve",
     "importHelpers": true,
     "experimentalDecorators": true,
-    "strictFunctionTypes": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "isolatedModules": true,
@@ -35,11 +35,12 @@
       "vite/client",
       "element-plus/global",
       "@pureadmin/table/volar",
+      "unplugin-icons/types/vue",
       "@pureadmin/descriptions/volar"
     ]
   },
   "include": [
-    "mock/*.ts",
+    //"mock/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",

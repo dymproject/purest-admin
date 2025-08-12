@@ -13,8 +13,8 @@ interface IUserStore {
 }
 const CURRENT_USER = "current-user";
 const ACCESS_TOKEN = "access-token";
-export const useUserStore = defineStore({
-  id: "pure-user",
+export const useUserStore = defineStore("pure-user", {
+
   state: (): IUserStore => ({
     currentUser: storageSession().getItem<UserInfoType>(CURRENT_USER),
     accessToken: storageSession().getItem<string>(ACCESS_TOKEN)

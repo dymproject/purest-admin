@@ -17,11 +17,11 @@ import {
   useResizeObserver
 } from "@pureadmin/utils";
 
-import ExitFullscreen from "@iconify-icons/ri/fullscreen-exit-fill";
-import Fullscreen from "@iconify-icons/ri/fullscreen-fill";
-import ArrowDown from "@iconify-icons/ri/arrow-down-s-line";
-import ArrowRightSLine from "@iconify-icons/ri/arrow-right-s-line";
-import ArrowLeftSLine from "@iconify-icons/ri/arrow-left-s-line";
+import ExitFullscreen from "~icons/ri/fullscreen-exit-fill";
+import Fullscreen from "~icons/ri/fullscreen-fill";
+import ArrowDown from "~icons/ri/arrow-down-s-line";
+import ArrowRightSLine from "~icons/ri/arrow-right-s-line";
+import ArrowLeftSLine from "~icons/ri/arrow-left-s-line";
 
 const {
   Close,
@@ -252,7 +252,7 @@ function deleteDynamicTag(obj: any, current: any, tag?: string) {
   if (tag === "other") {
     spliceRoute(1, 1, true);
   } else if (tag === "left") {
-    spliceRoute(fixedTags.length, valueIndex - 1, true);
+    spliceRoute(fixedTags.length, valueIndex - fixedTags.length);
   } else if (tag === "right") {
     spliceRoute(valueIndex + 1, multiTags.value.length);
   } else {
@@ -509,6 +509,7 @@ function tagOnClick(item) {
   } else {
     router.push({ path });
   }
+  emitter.emit("tagOnClick", item);
 }
 
 onClickOutside(contextmenuRef, closeMenu, {
@@ -568,7 +569,7 @@ onBeforeUnmount(() => {
       :class="showModel === 'chrome' && 'chrome-scroll-container'"
       @wheel.prevent="handleWheel"
     >
-      <div ref="tabDom" class="tab select-none" :style="getTabStyle">
+      <div ref="tabDom" class="select-none tab" :style="getTabStyle">
         <div
           v-for="(item, index) in multiTags"
           :ref="'dynamic' + index"
@@ -586,7 +587,7 @@ onBeforeUnmount(() => {
         >
           <template v-if="showModel !== 'chrome'">
             <span
-              class="tag-title dark:!text-text_color_primary dark:hover:!text-primary"
+              class="tag-title dark:text-text_color_primary! dark:hover:text-primary!"
             >
               {{ item.meta.title }}
             </span>
@@ -597,7 +598,7 @@ onBeforeUnmount(() => {
                   : iconIsActive(item, index) ||
                     (index === activeIndex && index !== 0)
               "
-              class="el-icon-close"
+              class="el-icon-close-pure"
               @click.stop="deleteMenu(item)"
             >
               <IconifyIconOffline :icon="Close" />

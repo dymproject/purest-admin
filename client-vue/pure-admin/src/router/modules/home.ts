@@ -1,13 +1,14 @@
 const { VITE_HIDE_HOME } = import.meta.env;
 const Layout = () => import("@/layout/index.vue");
-
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
+import HeartLine from "~icons/ri/heart-2-line";
 export default {
   path: "/",
   name: "Home",
   component: Layout,
   redirect: "/welcome",
   meta: {
-    icon: "ep:chrome-filled",
+    icon: useRenderIcon(HeartLine),
     title: "欢迎使用",
     rank: 0
   },

@@ -1,16 +1,17 @@
 <script lang="tsx" setup>
 import { h, onMounted, reactive, ref } from "vue";
-import { VxeGridPropTypes, VxePagerEvents } from "vxe-table";
-import { VxeButton } from "vxe-pc-ui";
+import { VxeGridPropTypes } from "vxe-table";
+import { VxeButton, VxePagerEvents } from "vxe-pc-ui";
 import { hasAuth } from "@/router/utils";
 const props = defineProps<{
+  height?: number;
   rowKey?: string;
   searchParams?: any;
   request?: (params) => Promise<any>;
   columns: Array<any>;
   operateColumnWidth?: number;
   customTableActions?: VxeGridPropTypes.Columns<any> | any;
-  customToolbarActions?: VxeGridPropTypes.ToolbarConfig;
+  customToolbarActions?: VxeGridPropTypes.ToolbarConfig | any;
   functions?: Record<string, string>;
   treeConfig?: any;
 }>();
@@ -127,15 +128,13 @@ defineExpose({ loadData });
 </script>
 <template>
   <vxe-grid
-    :max-height="650"
-    :min-height="650"
     :columns="gridColumns"
     :tree-config="treeOption"
     :data="data"
     :loading="loading"
     :row-config="{ keyField: props.rowKey ?? 'id', isHover: true }"
     :toolbar-config="toolbarConfig"
-    :resizable="true"
+    :column-config="{ resizable: true }"
   >
     <template #pager>
       <!--使用 pager 插槽-->

@@ -1,5 +1,5 @@
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import Setting from "@iconify-icons/ep/setting";
+import Setting from "~icons/ri/settings-2-line";
 
 const Layout = () => import("@/layout/index.vue");
 
@@ -96,4 +96,4 @@ export default {
       component: () => import("@/views/system/requestLog/index.vue")
     }
   ]
-} as RouteConfigsTable;
+} satisfies RouteConfigsTable;

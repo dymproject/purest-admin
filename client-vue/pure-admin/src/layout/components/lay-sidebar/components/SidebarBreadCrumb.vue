@@ -63,30 +63,30 @@ const getBreadcrumb = (): void => {
   );
 };
 
-// const handleLink = item => {
-//   const { redirect, name, path } = item;
-//   if (redirect) {
-//     router.push(redirect as any);
-//   } else {
-//     if (name) {
-//       if (item.query) {
-//         router.push({
-//           name,
-//           query: item.query
-//         });
-//       } else if (item.params) {
-//         router.push({
-//           name,
-//           params: item.params
-//         });
-//       } else {
-//         router.push({ name });
-//       }
-//     } else {
-//       router.push({ path });
-//     }
-//   }
-// };
+const handleLink = item => {
+  const { redirect, name, path } = item;
+  if (redirect) {
+    router.push(redirect as any);
+  } else {
+    if (name) {
+      if (item.query) {
+        router.push({
+          name,
+          query: item.query
+        });
+      } else if (item.params) {
+        router.push({
+          name,
+          params: item.params
+        });
+      } else {
+        router.push({ name });
+      }
+    } else {
+      router.push({ path });
+    }
+  }
+};
 
 onMounted(() => {
   getBreadcrumb();
@@ -104,17 +104,16 @@ watch(
 </script>
 
 <template>
-  <el-breadcrumb class="!leading-[50px] select-none" separator="/">
+  <el-breadcrumb class="leading-[50px]! select-none" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item
         v-for="item in levelList"
         :key="item.path"
-        class="!inline !items-stretch"
+        class="inline! items-stretch!"
       >
-        <!-- <a @click.prevent="handleLink(item)">
+        <a @click.prevent="handleLink(item)">
           {{ item.meta.title }}
-        </a> -->
-        {{ item.meta.title }}
+        </a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>

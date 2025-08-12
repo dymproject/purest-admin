@@ -1,5 +1,5 @@
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import Collection from "@iconify-icons/ep/collection";
+import FlowChart from "~icons/ri/flow-chart";
 
 const Layout = () => import("@/layout/index.vue");
 
@@ -8,7 +8,7 @@ export default {
   name: "workflow",
   component: Layout,
   meta: {
-    icon: useRenderIcon(Collection),
+    icon: useRenderIcon(FlowChart),
     title: "工作流程",
     permissions: ["workflow"],
     rank: 0
@@ -42,4 +42,4 @@ export default {
       component: () => import("@/views/workflow/instance/Auditing.vue")
     },
   ]
-} as RouteConfigsTable;
+} satisfies RouteConfigsTable;

@@ -2,13 +2,14 @@
 import { ref, computed, onBeforeMount, onUnmounted } from "vue";
 import { ListItem, TabItem } from "./data";
 import NoticeList from "./components/NoticeList.vue";
-import BellIcon from "@iconify-icons/ep/bell";
+import BellIcon from "~icons/ep/bell";
 import { useOnlineUserStore } from "@/store/modules/onlineUser";
 import { message } from "@/utils/message";
 import { useUserStoreHook } from "@/store/modules/user";
 import { ElNotification } from "element-plus";
 import { getDictionaryDataByCode } from "@/api/system/dictionary";
 import { getUnReadNotice } from "@/api/auth";
+import { el } from "element-plus/es/locale/index.mjs";
 const onlineUserStore = useOnlineUserStore();
 const connection = onlineUserStore.createConnection();
 connection.on("Notice", (result: ListItem) => {
@@ -48,8 +49,18 @@ onBeforeMount(async () => {
   let noticeTypes = (await getDictionaryDataByCode(
     "dict_notice_type"
   )) as Array<any>;
+  const statusType = ["primary", "success", "warning", "info", "danger"];
   notices.value = noticeTypes.map(v => {
-    const items = noticeRecords.filter(x => x.type == v.id);
+    const items = noticeRecords
+      .filter(x => x.type == v.id)
+      .map(x => {
+        if (statusType.includes(x.status)) {
+          return x;
+        } else {
+          x.status = "info";
+          return x;
+        }
+      });
     if (items.length > 0) {
       activeKey.value = v.id.toString();
     }

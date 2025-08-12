@@ -4,7 +4,7 @@ import { ref, PropType, nextTick } from "vue";
 import { useNav } from "@/layout/hooks/useNav";
 import { deviceDetection } from "@pureadmin/utils";
 
-const props = defineProps({
+defineProps({
   noticeItem: {
     type: Object as PropType<ListItem>,
     default: () => {}
@@ -49,12 +49,12 @@ function hoverDescription(event, description) {
 
 <template>
   <div
-    class="notice-container border-b-[1px] border-solid border-[#f0f0f0] dark:border-[#303030]"
+    class="notice-container border-0 border-b-[1px] border-solid border-[#f0f0f0] dark:border-[#303030]"
   >
     <el-avatar
-      v-if="props.noticeItem.avatar"
+      v-if="noticeItem.avatar"
       :size="30"
-      :src="props.noticeItem.avatar"
+      :src="noticeItem.avatar"
       class="notice-container-avatar"
     />
     <div class="notice-container-text">
@@ -63,7 +63,7 @@ function hoverDescription(event, description) {
           popper-class="notice-title-popper"
           :effect="tooltipEffect"
           :disabled="!titleTooltip"
-          :content="props.noticeItem.title"
+          :content="noticeItem.title"
           placement="top-start"
           :enterable="!isMobile"
         >
@@ -72,16 +72,16 @@ function hoverDescription(event, description) {
             class="notice-title-content"
             @mouseover="hoverTitle"
           >
-            {{ props.noticeItem.title }}
+            {{ noticeItem.title }}
           </div>
         </el-tooltip>
         <el-tag
-          v-if="props.noticeItem?.extra"
-          :type="props.noticeItem?.status"
+          v-if="noticeItem?.extra"
+          :type="noticeItem?.status"
           size="small"
           class="notice-title-extra"
         >
-          {{ props.noticeItem?.extra }}
+          {{ noticeItem?.extra }}
         </el-tag>
       </div>
 
@@ -89,19 +89,19 @@ function hoverDescription(event, description) {
         popper-class="notice-title-popper"
         :effect="tooltipEffect"
         :disabled="!descriptionTooltip"
-        :content="props.noticeItem.description"
+        :content="noticeItem.description"
         placement="top-start"
       >
         <div
           ref="descriptionRef"
           class="notice-text-description"
-          @mouseover="hoverDescription($event, props.noticeItem.description)"
+          @mouseover="hoverDescription($event, noticeItem.description)"
         >
-          {{ props.noticeItem.description }}
+          {{ noticeItem.description }}
         </div>
       </el-tooltip>
-      <div class="notice-text-datetime text-[#00000073] dark:text-white">
-        {{ props.noticeItem.dateTime }}
+      <div class="notice-text-datTetime text-[#00000073] dark:text-white">
+        {{ noticeItem.dateTime }}
       </div>
     </div>
   </div>
@@ -112,7 +112,7 @@ function hoverDescription(event, description) {
   max-width: 238px;
 }
 </style>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .notice-container {
   display: flex;
   align-items: flex-start;

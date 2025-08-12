@@ -52,7 +52,7 @@ const tableData = ref<OnlineUser[]>();
 const gridOptions = reactive<VxeGridProps<OnlineUser>>({
   border: false,
   round: true,
-  resizable: true,
+  columnConfig: { resizable: true },
   maxHeight: 650,
   minHeight: 650,
   align: null,
