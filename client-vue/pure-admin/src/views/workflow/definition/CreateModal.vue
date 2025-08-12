@@ -3,7 +3,7 @@ import { ref, nextTick, reactive } from "vue";
 import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-pc-ui";
 import { getSingle, submitData } from "@/api/workflow/definition";
 import { Picture, Collection, Edit } from "@element-plus/icons-vue";
-import { VxeFormDesignPropTypes, VxeFormDesignInstance } from "vxe-pc-ui";
+import { VxeFormDesignPropTypes, VxeFormDesignInstance } from "vxe-design";
 import { message } from "@/utils/message";
 import FlowChartDesign from "./components/FlowChartDesign.vue";
 
@@ -18,12 +18,12 @@ const formDesignWidgets = ref<VxeFormDesignPropTypes.Widgets>([
     group: "base",
     children: [
       "VxeNumberInput",
-      "VxeTextarea"
-      // "VxeSelect",
-      // "VxeSwitch",
-      // "VxeRadioGroup",
-      // "VxeCheckboxGroup",
-      //  "VxeInput",
+      "VxeTextarea",
+      "VxeSelect",
+      "VxeSwitch",
+      "VxeRadioGroup",
+      "VxeCheckboxGroup",
+      "VxeInput"
     ]
   }
 ]);

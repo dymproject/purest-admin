@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@logicflow/core':
+        specifier: 2.0.0-beta.2
+        version: 2.0.0-beta.2
+      '@logicflow/extension':
+        specifier: 2.0.0-beta.2
+        version: 2.0.0-beta.2(@logicflow/core@2.0.0-beta.2)
       '@microsoft/signalr':
-        specifier: ^8.0.0
-        version: 8.0.17
+        specifier: 9.0.6
+        version: 9.0.6
       '@pureadmin/descriptions':
         specifier: ^1.2.1
         version: 1.2.1(echarts@5.6.0)(element-plus@2.10.5(vue@3.5.18(typescript@5.9.2)))(typescript@5.9.2)
@@ -83,12 +89,15 @@ importers:
       vue-types:
         specifier: ^6.0.0
         version: 6.0.0(vue@3.5.18(typescript@5.9.2))
+      vxe-design:
+        specifier: 4.0.2
+        version: 4.0.2(vxe-pc-ui@4.8.13(vue@3.5.18(typescript@5.9.2)))(vxe-table@4.15.6(vue@3.5.18(typescript@5.9.2)))
       vxe-pc-ui:
-        specifier: ^4.0.48
-        version: 4.8.12(vue@3.5.18(typescript@5.9.2))
+        specifier: ^4.8.13
+        version: 4.8.13(vue@3.5.18(typescript@5.9.2))
       vxe-table:
-        specifier: ^4.7.44
-        version: 4.15.5(vue@3.5.18(typescript@5.9.2))
+        specifier: ^4.15.6
+        version: 4.15.6(vue@3.5.18(typescript@5.9.2))
       xe-utils:
         specifier: ^3.5.26
         version: 3.7.8
@@ -270,6 +279,9 @@ packages:
 
   '@antfu/utils@8.1.1':
     resolution: {integrity: sha512-Mex9nXf9vR6AhcXmMrlz/HVgYYZpVGJ6YlPgwl7UnaFpnshXs6EK/oa5Gpf3CzENMjkvEx2tQtntGnb7UtSTOQ==}
+
+  '@antv/hierarchy@0.6.14':
+    resolution: {integrity: sha512-V3uknf7bhynOqQDw2sg+9r9DwZ9pc6k/EcqyTFdfXB1+ydr7urisP0MipIuimucvQKN+Qkd+d6w601r1UIroqQ==}
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -938,8 +950,16 @@ packages:
   '@keyv/serialize@1.1.0':
     resolution: {integrity: sha512-RlDgexML7Z63Q8BSaqhXdCYNBy/JQnqYIwxofUrNLGCblOMHp+xux2Q8nLMLlPpgHQPoU0Do8Z6btCpRBEqZ8g==}
 
-  '@microsoft/signalr@8.0.17':
-    resolution: {integrity: sha512-5pM6xPtKZNJLO0Tq5nQasVyPFwi/WBY3QB5uc/v3dIPTpS1JXQbaXAQAPxFoQ5rTBFE094w8bbqkp17F9ReQvA==}
+  '@logicflow/core@2.0.0-beta.2':
+    resolution: {integrity: sha512-B27+hL6Gn4CnLsdHz/Ur3u5DTAB49fZohKa8tmQNy+3npPmO9qikpRJmPkNEKf71Oh/r7irhuSq/zrwn88jhpg==}
+
+  '@logicflow/extension@2.0.0-beta.2':
+    resolution: {integrity: sha512-yehQFYDCxeVg1fKYpkSaQ9Wh+0ejmWc8ok3r9F+tNpmR+LfbQepV1u8nGhd5DV2gbbA7Nm9S9dI80r/HIlh3Vg==}
+    peerDependencies:
+      '@logicflow/core': 2.0.0-beta.2
+
+  '@microsoft/signalr@9.0.6':
+    resolution: {integrity: sha512-DrhgzFWI9JE4RPTsHYRxh4yr+OhnwKz8bnJe7eIi7mLLjqhJpEb62CiUy/YbFvLqLzcGzlzz1QWgVAW0zyipMQ==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1705,6 +1725,9 @@ packages:
   citty@0.1.6:
     resolution: {integrity: sha512-tskPPKEs8D2KPafUypv2gxwJP8h/OaJmC82QQGGDQcHvXX43xF2VDACcJVmZ0EuSxkpO9Kc4MlrA3q0+FG58AQ==}
 
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+
   cli-boxes@3.0.0:
     resolution: {integrity: sha512-/lzGpEWL/8PfI0BmBOPRwp0c/wFNX1RdUML3jK/RcSBA9T8mZDdQpqYBKtCFTOfQbwPqWEOpjqW+Fnayc0969g==}
     engines: {node: '>=10'}
@@ -2410,6 +2433,9 @@ packages:
   hey-listen@1.0.8:
     resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
 
+  hoist-non-react-statics@2.5.5:
+    resolution: {integrity: sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==}
+
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
@@ -2865,6 +2891,23 @@ packages:
 
   mlly@1.7.4:
     resolution: {integrity: sha512-qmdSIPC4bDJXgZTCR7XosJiNKySV7O215tsPtDN9iEO/7q/76b/ijtgRu/+epFXSJhijtTCCGp3DWS549P3xKw==}
+
+  mobx-preact@3.0.0:
+    resolution: {integrity: sha512-ijan/cBs3WmRye87E5+3JmoFBB00KDAwNA3pm7bMwYLPHBAXlN86aC3gdrXw8aKzM5RI8V3a993PphzPv6P4FA==}
+    peerDependencies:
+      mobx: 5.x
+      preact: '>=8'
+
+  mobx-utils@5.6.2:
+    resolution: {integrity: sha512-a/WlXyGkp6F12b01sTarENpxbmlRgPHFyR1Xv2bsSjQBm5dcOtd16ONb40/vOqck8L99NHpI+C9MXQ+SZ8f+yw==}
+    peerDependencies:
+      mobx: ^4.13.1 || ^5.13.1
+
+  mobx@5.15.7:
+    resolution: {integrity: sha512-wyM3FghTkhmC+hQjyPGGFdpehrcX1KOXsDuERhfK2YbJemkUhEB+6wzEN639T21onxlfYBmriA1PFnvxTUhcKw==}
+
+  mousetrap@1.6.5:
+    resolution: {integrity: sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==}
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -3439,6 +3482,9 @@ packages:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
+  preact@10.27.0:
+    resolution: {integrity: sha512-/DTYoB6mwwgPytiqQTh/7SFRL98ZdiD8Sk8zIUVOxtwq4oWcwrcd1uno9fE/zZmUaUrFNYzbH14CPebOz9tZQw==}
+
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -3986,6 +4032,10 @@ packages:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
 
+  uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    hasBin: true
+
   vite-code-inspector-plugin@1.0.4:
     resolution: {integrity: sha512-ALJBG3JpHqdxmeSrzFPzDLYyGjhtM9wI/9+bUif0zO4XDOdQHao9YswOsG59EbnQYMA6e7U53CzajxbKRxTbOg==}
 
@@ -4115,11 +4165,17 @@ packages:
       typescript:
         optional: true
 
-  vxe-pc-ui@4.8.12:
-    resolution: {integrity: sha512-+eMsWmnlktUyir+XOYRjkJCmufPmigBaEXnQXcOoR1kDPgo5bc8boDuotUcnQacy1Zf6LUNTHzb8Zbk2N/6IxA==}
+  vxe-design@4.0.2:
+    resolution: {integrity: sha512-0U0pFmF71LoZ8BdekVwMwVKlRrOGJtVBbWTdPK5ngUPnRbHUk90TyEw5MtxwbFkQDUyAMv+JS7tMY6hVigyhUA==}
+    peerDependencies:
+      vxe-pc-ui: ^4.7.0
+      vxe-table: ^4.14.0
 
-  vxe-table@4.15.5:
-    resolution: {integrity: sha512-r2wIekElJgTaWIITQwEP/0Bn0WfTEL7xHPHVVwjJlGzZNAdUggO0AI4ZsQfwDwV+/5oNRUAHBRQjhE5c7OaoPw==}
+  vxe-pc-ui@4.8.13:
+    resolution: {integrity: sha512-1lAuni9nhpsPIUlT17TGAH6FR0Jws8/CqX4D1ksyfqNP5CV/X530B8mdPbKbRsAVKAYWVGliLXpXhBMWEay/wg==}
+
+  vxe-table@4.15.6:
+    resolution: {integrity: sha512-nukG6ZdjkRy2pVNqXH0FbtS5yPAxfhUuNG1/Q8dJ6+SnvDcUem5lxLrpF9cREhuNvxRQKda6MaCPutgVRpo6zw==}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -4237,6 +4293,8 @@ snapshots:
       tinyexec: 1.0.1
 
   '@antfu/utils@8.1.1': {}
+
+  '@antv/hierarchy@0.6.14': {}
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -4845,7 +4903,23 @@ snapshots:
 
   '@keyv/serialize@1.1.0': {}
 
-  '@microsoft/signalr@8.0.17':
+  '@logicflow/core@2.0.0-beta.2':
+    dependencies:
+      classnames: 2.5.1
+      mobx: 5.15.7
+      mobx-preact: 3.0.0(mobx@5.15.7)(preact@10.27.0)
+      mobx-utils: 5.6.2(mobx@5.15.7)
+      mousetrap: 1.6.5
+      preact: 10.27.0
+      uuid: 9.0.1
+
+  '@logicflow/extension@2.0.0-beta.2(@logicflow/core@2.0.0-beta.2)':
+    dependencies:
+      '@antv/hierarchy': 0.6.14
+      '@logicflow/core': 2.0.0-beta.2
+      preact: 10.27.0
+
+  '@microsoft/signalr@9.0.6':
     dependencies:
       abort-controller: 3.0.0
       eventsource: 2.0.2
@@ -5662,6 +5736,8 @@ snapshots:
     dependencies:
       consola: 3.4.2
     optional: true
+
+  classnames@2.5.1: {}
 
   cli-boxes@3.0.0: {}
 
@@ -6501,6 +6577,8 @@ snapshots:
 
   hey-listen@1.0.8: {}
 
+  hoist-non-react-statics@2.5.5: {}
+
   hookable@5.5.3: {}
 
   hookified@1.11.0: {}
@@ -6870,6 +6948,20 @@ snapshots:
       pathe: 2.0.3
       pkg-types: 1.3.1
       ufo: 1.6.1
+
+  mobx-preact@3.0.0(mobx@5.15.7)(preact@10.27.0):
+    dependencies:
+      hoist-non-react-statics: 2.5.5
+      mobx: 5.15.7
+      preact: 10.27.0
+
+  mobx-utils@5.6.2(mobx@5.15.7):
+    dependencies:
+      mobx: 5.15.7
+
+  mobx@5.15.7: {}
+
+  mousetrap@1.6.5: {}
 
   ms@2.1.3: {}
 
@@ -7384,6 +7476,8 @@ snapshots:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  preact@10.27.0: {}
 
   prelude-ls@1.2.1: {}
 
@@ -7989,6 +8083,8 @@ snapshots:
 
   uuid@8.3.2: {}
 
+  uuid@9.0.1: {}
+
   vite-code-inspector-plugin@1.0.4:
     dependencies:
       code-inspector-core: 1.0.4
@@ -8116,15 +8212,20 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.2
 
-  vxe-pc-ui@4.8.12(vue@3.5.18(typescript@5.9.2)):
+  vxe-design@4.0.2(vxe-pc-ui@4.8.13(vue@3.5.18(typescript@5.9.2)))(vxe-table@4.15.6(vue@3.5.18(typescript@5.9.2))):
+    dependencies:
+      vxe-pc-ui: 4.8.13(vue@3.5.18(typescript@5.9.2))
+      vxe-table: 4.15.6(vue@3.5.18(typescript@5.9.2))
+
+  vxe-pc-ui@4.8.13(vue@3.5.18(typescript@5.9.2)):
     dependencies:
       '@vxe-ui/core': 4.2.9(vue@3.5.18(typescript@5.9.2))
     transitivePeerDependencies:
       - vue
 
-  vxe-table@4.15.5(vue@3.5.18(typescript@5.9.2)):
+  vxe-table@4.15.6(vue@3.5.18(typescript@5.9.2)):
     dependencies:
-      vxe-pc-ui: 4.8.12(vue@3.5.18(typescript@5.9.2))
+      vxe-pc-ui: 4.8.13(vue@3.5.18(typescript@5.9.2))
     transitivePeerDependencies:
       - vue
 

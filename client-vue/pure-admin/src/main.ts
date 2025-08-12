@@ -48,6 +48,9 @@ import { ReVxeGrid } from "./components/ReVxeTable";
 import * as echarts from "echarts";
 
 app.component("Auth", Auth);
+// app.component("Perms", Perms);
+
+// 全局注册vue-tippy
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import VueTippy from "vue-tippy";
@@ -64,7 +67,5 @@ getPlatformConfig(app).then(async config => {
   injectResponsiveStorage(app, config);
   app.use(MotionPlugin).use(useElementPlus).use(Table);
   app.use(useVxeTable);
-  // .use(PureDescriptions)
-  // .use(useEcharts);
   app.mount("#app");
 });

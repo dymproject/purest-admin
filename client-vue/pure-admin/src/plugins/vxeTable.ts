@@ -9,6 +9,11 @@ import VxeUI from 'vxe-pc-ui'
 import 'vxe-pc-ui/lib/style.css'
 // ...
 
+// ...
+import VxeUIDesign from 'vxe-design'
+import 'vxe-design/lib/style.css'
+// ...
+
 export function useVxeTable(app: App) {
-  app.use(VxeUI).use(VxeTable);
+  app.use(VxeUI).use(VxeTable).use(VxeUIDesign);
 }

@@ -6,6 +6,7 @@ import LogicFlow from "@logicflow/core";
 import { DndPanel } from "@logicflow/extension";
 import { VxeFormPropTypes } from "vxe-pc-ui";
 import { ReOrganizationTreeSelect } from "@/components/ReOrganizationTreeSelect";
+import { cleanObject } from "@/utils/workflow";
 import Start from "./customerNodes/Start";
 import End from "./customerNodes/End";
 import GeneralAuditing from "./customerNodes/GeneralAuditing";
@@ -57,7 +58,7 @@ onMounted(() => {
         showBusinessPanel.value = true;
         const nodeProperties = lf.value
           .getNodeModelById(data.id)
-          .getProperties() as AuditingDataModel;
+          .getProperties() satisfies AuditingDataModel;
         nodeProperties.auditingStepType;
         auditingData.value =
           Object.keys(nodeProperties).length == 0
@@ -199,9 +200,18 @@ const auditingColumns: VxeFormPropTypes.Items = [
 ];
 const setProperties = (type: string) => {
   if (type == "node") {
+    debugger;
+
+    let cleanedAuditingData = cleanObject(auditingData.value, [
+      "auditorType",
+      "auditorName",
+      "auditingStepType",
+      "auditor"
+    ]);
     const node = lf.value.getNodeModelById(selectedNodeId.value);
     node.updateText(auditingData.value.auditorName);
-    node.setProperties(auditingData.value);
+    node.setProperties(cleanedAuditingData);
+    console.log("cleanedAuditingData", cleanedAuditingData);
   } else {
     const edge = lf.value.getEdgeModelById(selectedNodeId.value);
     const option = conditionOptions.value.find(
@@ -210,6 +220,7 @@ const setProperties = (type: string) => {
     edge.updateText(
       `${option.title}${judgedData.value.operate}${judgedData.value.value}`
     );
+    console.log("judgedData", judgedData.value);
     edge.setProperties(judgedData.value);
   }
   showBusinessPanel.value = false;

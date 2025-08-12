@@ -49,6 +49,9 @@
     "url": "https://github.com/xiaoxian521"
   },
   "dependencies": {
+    "@logicflow/core": "2.0.0-beta.2",
+    "@logicflow/extension": "2.0.0-beta.2",
+    "@microsoft/signalr": "9.0.6",
     "@pureadmin/descriptions": "^1.2.1",
     "@pureadmin/table": "^3.3.0",
     "@pureadmin/utils": "^2.6.2",
@@ -73,10 +76,10 @@
     "vue-router": "^4.5.1",
     "vue-tippy": "^6.7.1",
     "vue-types": "^6.0.0",
-    "vxe-pc-ui": "^4.0.48",
-    "vxe-table": "^4.7.44",
-    "xe-utils": "^3.5.26",
-    "@microsoft/signalr": "^8.0.0"
+    "vxe-design": "4.0.2",
+    "vxe-pc-ui": "^4.8.13",
+    "vxe-table": "^4.15.6",
+    "xe-utils": "^3.5.26"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

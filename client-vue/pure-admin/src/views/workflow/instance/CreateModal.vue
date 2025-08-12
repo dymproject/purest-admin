@@ -1,11 +1,7 @@
 <script lang="ts" setup>
 import { ref, nextTick, reactive, onBeforeMount, toRaw } from "vue";
-import {
-  VxeFormPropTypes,
-  VxeFormInstance,
-  VxeModalInstance,
-  VxeFormViewInstance
-} from "vxe-pc-ui";
+import { VxeFormPropTypes, VxeFormInstance, VxeModalInstance } from "vxe-pc-ui";
+import { VxeFormViewInstance } from "vxe-design";
 import { getDefinitions } from "@/api/workflow/definition";
 import { startWorkflow } from "@/api/workflow/instance";
 import { Collection, Edit } from "@element-plus/icons-vue";
