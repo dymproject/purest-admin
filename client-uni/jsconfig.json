@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@root/*": ["./*"],
+      "~@assets": ["src/assets/*"],
+      "$uni-router": ["helpers/uni-router/index.js"],
+      "$unocss-preset-shades": ["helpers/unocss-preset-shades/index.js"]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "exclude": ["node_modules", "dist"]
+}
