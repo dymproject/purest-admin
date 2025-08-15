@@ -1,41 +1,45 @@
-import Uni from '@uni-helper/plugin-uni'
-import UniHelperComponents from '@uni-helper/vite-plugin-uni-components'
-import UniHelperLayouts from '@uni-helper/vite-plugin-uni-layouts'
-import UniHelperManifest from '@uni-helper/vite-plugin-uni-manifest'
-import UniHelperPages from '@uni-helper/vite-plugin-uni-pages'
-import UnoCSS from 'unocss/vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import { defineConfig } from 'vite'
-import UniPolyfill from 'vite-plugin-uni-polyfill'
-
+import { defineConfig } from "vite";
+import uni from "@dcloudio/vite-plugin-uni";
+import path from 'path' // 引入 path 模块
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    // https://github.com/uni-helper/vite-plugin-uni-manifest
-    UniHelperManifest(),
-    // https://github.com/uni-helper/vite-plugin-uni-pages
-    UniHelperPages({
-      dts: 'src/uni-pages.d.ts',
-    }),
-    // https://github.com/uni-helper/vite-plugin-uni-layouts
-    UniHelperLayouts(),
-    // https://github.com/uni-helper/vite-plugin-uni-components
-    UniHelperComponents({
-      dts: 'src/components.d.ts',
-      directoryAsNamespace: true,
-    }),
-    // https://github.com/uni-helper/plugin-uni
-    Uni(),
-    UniPolyfill(),
-    // https://github.com/antfu/unplugin-auto-import
-    AutoImport({
-      imports: ['vue', '@vueuse/core', 'uni-app'],
-      dts: 'src/auto-imports.d.ts',
-      dirs: ['src/composables', 'src/stores', 'src/utils'],
-      vueTemplate: true,
-    }),
-    // https://github.com/antfu/unocss
-    // see unocss.config.ts for config
-    UnoCSS(),
-  ],
-})
+  plugins: [uni()],
+  resolve: {
+    alias: {
+      // 设置别名
+      '@': path.resolve(__dirname, 'src'), // 将 @ 指向 src 目录
+    },
+  },
+  // 服务端渲染
+  server: {
+    // 端口号
+    port: 5173,
+    host: "0.0.0.0",
+    // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
+    proxy: {
+      '/signalr-hubs': {
+        target: 'http://localhost:5062', // 替换为你的后端API服务器地址
+        changeOrigin: true,
+        ws: true, // 确保启用WebSocket代理支持
+        bypass(req, res, options: any) {
+          //这段代码可以看到代理后的地址
+          const proxyURL = options.target + req.url;
+          console.log("proxyURL", proxyURL);
+          // res.setHeader("x-req-proxyURL", proxyURL); // 设置响应头可以看到
+        }
+        // rewrite: (path) => path.replace(/^\/signalr/, ''),
+      },
+      "/api": {
+        // 这里填写后端地址
+        target: "http://localhost:5062",
+        changeOrigin: true,
+        bypass(req, res, options: any) {
+          //这段代码可以看到代理后的地址
+          const proxyURL = options.target + req.url;
+          console.log("proxyURL", proxyURL);
+          res.setHeader("x-req-proxyURL", proxyURL); // 设置响应头可以看到
+        }
+      }
+    },
+  }
+});

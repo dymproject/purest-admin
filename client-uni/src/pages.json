@@ -1,24 +1,56 @@
 {
-  "pages": [
-    {
-      "path": "pages/index",
-      "type": "home"
-    },
-    {
-      "path": "pages/hi",
-      "type": "page",
-      "layout": "home"
-    }
-  ],
-  "globalStyle": {
-    "backgroundColor": "@bgColor",
-    "backgroundColorBottom": "@bgColorBottom",
-    "backgroundColorTop": "@bgColorTop",
-    "backgroundTextStyle": "@bgTxtStyle",
-    "navigationBarBackgroundColor": "#000000",
-    "navigationBarTextStyle": "@navTxtStyle",
-    "navigationBarTitleText": "Vitesse-Uni",
-    "navigationStyle": "custom"
-  },
-  "subPackages": []
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+		}
+	},
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "用户"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#000000",
+		"selectedColor": "#1296db",
+		"backgroundColor": "white",
+		"position": "bottom",
+		"fontSize": "26rpx",		
+		"borderStyle": "white",		
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",				
+				"iconPath": "./static/tab/home.png",				
+				"selectedIconPath": "./static/tab/home-selected.png"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"text": "用户",
+				"iconPath": "./static/tab/user.png",
+				"selectedIconPath": "./static/tab/user-selected.png"
+			}
+		]
+	}
 }
