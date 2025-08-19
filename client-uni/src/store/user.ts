@@ -1,28 +1,30 @@
 import { defineStore } from 'pinia'
-import { login } from '@/api/auth'
+import { login, getUserPermissions } from '@/api/auth'
 import { LoginOutput, LoginInput } from '@/dtos/auth'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    token: uni.getStorageSync('token') || '',
+    token: '' as string,
     userInfo: {} as LoginOutput,
-    loading: false
+    loading: false,
+    permissions: [] as string[]
   }),
   persist: true,
   getters: {
-    isLogin: (state): boolean => !!state.token,
-    getToken: (state): string => state.token
+    isLogin: (state): boolean => !!state.token
   },
 
   actions: {
     setToken(token: string) {
       this.token = token
-      uni.setStorageSync('token', token)
     },
 
     setUserInfo(info: LoginOutput) {
       this.userInfo = info
-      uni.setStorageSync('userInfo', info)
+    },
+
+    setPermissions(permissions: string[]) {
+      this.permissions = permissions
     },
 
     async login(formData: LoginInput) {
@@ -31,6 +33,8 @@ export const useUserStore = defineStore('user', {
         const userInfo = await login(formData)
         this.setUserInfo(userInfo)
         uni.showToast({ title: '登录成功' })
+        const permissions = await getUserPermissions()
+        this.setPermissions(permissions)
         uni.switchTab({ url: '/pages/index/index' })
       } catch (error) {
         uni.showToast({ title: '登录失败', icon: 'none' })

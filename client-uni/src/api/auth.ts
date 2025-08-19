@@ -5,10 +5,10 @@ import { http } from "@/utils/http";
 export const login = async (data?: object) => {
 	return http.post<LoginOutput>("/auth/login", data);
 };
-// /** 获取权限 */
-// export const getUserPermissions = async () => {
-// 	return http.request<string[]>("get", "/auth/functions");
-// };
+/** 获取权限 */
+export const getUserPermissions = async () => {
+	return http.get<string[]>("/auth/functions");
+};
 // /** 绑定用户 */
 // export const bindUser = (params : any) => {
 // 	return http.request("post", "/auth/bind-user", {

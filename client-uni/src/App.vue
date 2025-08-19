@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
-import { useUserStore } from "./store/user";
-const userStore = useUserStore();
-onLaunch(() => {
+import { useOnlineUserStore } from '@/store/online-user'
+const onlineUserStore = useOnlineUserStore();
+onLaunch(async () => {
+  const connection = await onlineUserStore.createConnection();
+  console.log(connection)
+  
   console.log("App Launch");
-  if (!userStore.isLogin) {
-    userStore.logout();
-  }
 });
 onShow(() => {
   console.log("App Show");

@@ -7,18 +7,15 @@
           <text class="section-title">产品管理</text>
           <view class="stat-cards">
             <view class="card">
-              <image class="card-img" src="@/static/index/in-warehouse.jpg"
-                mode="aspectFill" />
+              <image class="card-img" src="@/static/index/in-warehouse.jpg" mode="aspectFill" />
               <text class="card-text">入库</text>
             </view>
             <view class="card">
-              <image class="card-img" src="@/static/index/out-warehouse.jpg"
-                mode="aspectFill" />
+              <image class="card-img" src="@/static/index/out-warehouse.jpg" mode="aspectFill" />
               <text class="card-text">出库</text>
             </view>
             <view class="card">
-              <image class="card-img" src="@/static/index/product-warehouse.jpg"
-                mode="aspectFill" />
+              <image class="card-img" src="@/static/index/product-warehouse.jpg" mode="aspectFill" />
               <text class="card-text">产品库</text>
             </view>
           </view>
@@ -97,11 +94,11 @@ import { ref } from 'vue';
 
 <style scoped>
 page {
-    height: 100%;
-    background-color: #f5f6fa;
+  height: 100%;
+  background-color: #f5f6fa;
 }
 
-.container {  
+.container {
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;

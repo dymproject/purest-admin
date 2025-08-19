@@ -1,7 +1,7 @@
 import { useUserStore } from "@/store/user"
-const whitePages = ['/pages/user/user', '/pages/forgot-password/forgot-password']
-export const checkAuthAndRedirect = (url : string) => {
-	if (whitePages.includes(url)) {
+const whitePages = ['/pages/login/login', '/pages/forgot-password/forgot-password']
+export const checkAuthAndRedirect = (url: string) => {
+	if (!whitePages.includes(url)) {
 		const userStore = useUserStore()
 		if (!userStore.isLogin) {
 			uni.showToast({ title: '请先登录', icon: 'none' })
@@ -15,16 +15,13 @@ export const checkAuthAndRedirect = (url : string) => {
 	}
 	return true
 }
-export const setupAuthGuard = () => {
-	uni.addInterceptor('navigateTo', {
-		invoke(e) {
+uni.addInterceptor('navigateTo', {
+	invoke(e) {
 		return checkAuthAndRedirect(e.url);
-
-		}
-	})
-	uni.addInterceptor('switchTab', {
-		invoke(e) {
-			return checkAuthAndRedirect(e.url);
-		}
-	})
-}
+	}
+})
+uni.addInterceptor('switchTab', {
+	invoke(e) {
+		return checkAuthAndRedirect(e.url);
+	}
+})

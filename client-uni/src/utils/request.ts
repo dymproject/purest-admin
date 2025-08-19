@@ -42,14 +42,13 @@ class HttpRequest {
 			// 获取当前环境：development / production
 			const isDev = import.meta.env.DEV; // true 表示开发环境
 			const baseUrl = import.meta.env.VITE_API_BASE_URL;
+			const prefix = import.meta.env.VITE_API_PREFIX;
 
-			if (isDev) {
-				// 开发环境：走本地代理，添加 /api/v1 前缀
-				url = `/api/v1${url}`;
-			} else {
-				// 生产环境：使用配置的完整基础 URL
-				url = `${baseUrl}/api/v1${url}`;
-			}
+			const normalizedBaseUrl = baseUrl?.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+			const normalizedPrefix = prefix?.startsWith('/') ? prefix : `/${prefix}`;
+			const normalizedUrl = url.startsWith('/') ? url.slice(1) : url;
+
+			url = `${normalizedBaseUrl}${normalizedPrefix}/${normalizedUrl}`;
 		}
 
 		// 请求拦截器
