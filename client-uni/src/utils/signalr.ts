@@ -1,5 +1,6 @@
 import { type HubConnection, HubConnectionBuilder } from "uniapp-signalr";
 import { useUserStore } from "@/store/user";
+import { getSignalRUrl } from "@/utils/core";
 /**
  * 返回signalr链接
  * @param url Url地址,开头要带/
@@ -12,13 +13,17 @@ export const createConnection = (
 ): HubConnection => {
     const hubConnectionBuilder = new HubConnectionBuilder();
     const connection = hubConnectionBuilder
-        .withUrl(`/signalr-hubs${url}`, {
+        .withUrl(getSignalRUrl(url), {
             accessTokenFactory: () => useUserStore().token
         })
         .withAutomaticReconnect()
         .build();
     if (!directStart) {
-        connection.start();
+        connection.start()
+            .catch(err => {
+                console.error(err);
+                useUserStore().logout()
+            });
     }
     return connection;
 };
@@ -34,13 +39,13 @@ export const createConnectionAsync = async (
 ): Promise<HubConnection> => {
     const hubConnectionBuilder = new HubConnectionBuilder();
     const connection = hubConnectionBuilder
-        .withUrl(`/signalr-hubs${url}`, {
+        .withUrl(getSignalRUrl(url), {
             accessTokenFactory: () => useUserStore().token
         })
         .withAutomaticReconnect()
         .build();
     if (!directStart) {
         await connection.start();
-    }
+    }    
     return connection;
 };

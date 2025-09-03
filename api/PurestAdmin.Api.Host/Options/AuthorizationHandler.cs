@@ -49,16 +49,19 @@ public class AuthorizationHandler(IHostEnvironment hostEnvironment, ICurrentUser
                 }
             }
             //单token无感刷新
-            var accessToken = httpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
-            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = jwtSecurityTokenHandler.ReadJwtToken(accessToken);
-            var expires = jwtSecurityToken.ValidTo;
-            var refreshMinutes = _adminToken.GetRefreshMinutes();
-            if ((expires - _clock.Now.ToUniversalTime()).TotalMinutes < refreshMinutes)
+            var accessToken = httpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");            
+            if (!accessToken.IsNullOrEmpty())
             {
-                //颁发新的token
-                var token = _adminToken.GenerateTokenString(jwtSecurityToken.Payload.Claims.ToArray());
-                httpContext.Response.Headers["accesstoken"] = token;
+                var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+                var jwtSecurityToken = jwtSecurityTokenHandler.ReadJwtToken(accessToken);
+                var expires = jwtSecurityToken.ValidTo;
+                var refreshMinutes = _adminToken.GetRefreshMinutes();
+                if ((expires - _clock.Now.ToUniversalTime()).TotalMinutes < refreshMinutes)
+                {
+                    //颁发新的token
+                    var token = _adminToken.GenerateTokenString(jwtSecurityToken.Payload.Claims.ToArray());
+                    httpContext.Response.Headers["accesstoken"] = token;
+                }
             }
         }
         await Task.CompletedTask;

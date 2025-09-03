@@ -5,7 +5,12 @@ export const useOnlineUserStore = defineStore("online-user", {
     state: () => ({
         connection: {} as HubConnection
     }),
-    persist: true,
+    persist: {
+        storage: {
+            setItem(key, value) { uni.setStorageSync(key, value) },
+            getItem(key) { return uni.getStorageSync(key) }
+        }
+    },
     actions: {
         async createConnection() {
             const connection = await createConnection(`/online-user`);

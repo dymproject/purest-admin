@@ -9,7 +9,12 @@ export const useUserStore = defineStore('user', {
     loading: false,
     permissions: [] as string[]
   }),
-  persist: true,
+  persist: {
+    storage: {
+      setItem(key, value) { uni.setStorageSync(key, value) },
+      getItem(key) { return uni.getStorageSync(key) }
+    }
+  },
   getters: {
     isLogin: (state): boolean => !!state.token
   },
@@ -37,6 +42,7 @@ export const useUserStore = defineStore('user', {
         this.setPermissions(permissions)
         uni.switchTab({ url: '/pages/index/index' })
       } catch (error) {
+        console.error(error)
         uni.showToast({ title: '登录失败', icon: 'none' })
       } finally {
         this.loading = false

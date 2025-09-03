@@ -2,6 +2,7 @@
 
 using IP2Region.Net.Abstractions;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
@@ -11,6 +12,7 @@ using Volo.Abp.AspNetCore.SignalR;
 using Volo.Abp.Timing;
 
 namespace PurestAdmin.Multiplex.AdminUser;
+[Authorize]
 public class OnlineUserHub(IClock clock, ICacheOnlineUser cacheOnlineUser, ISearcher searcher) : AbpHub<IOnlineUserClient>
 {
     private readonly IClock _clock = clock;
