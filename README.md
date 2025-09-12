@@ -9,9 +9,10 @@
 ### 项目结构
 
 *  **Api** 后端接口项目，使用.Net8开发，在abp框架的设计上进行了精简和改良，只保留了核心功能，重写了部分abp的功能。使用SqlSugar替代了传统的EFCore，效率更高，使用更方便
-*  **client-vue** vue客户端项目，采用了高质量前端项目vue-pure-admin的精简版pure-admin-thin。并额外使用了功能非常强大的vxe-table及其内置的其他组件
-*  **client-wpf** wfp客户端项目，使用wpf界mvvm模式下用户基数非常庞大的框架prism,引入Rubyer-WPF主题和控件包，让界面显示更友好。http请求方面，重新封装了restful格式的Flurl，让请求更方便
-*  **relationship-model** 关系模型，数据库关系模型图，基于Powerdesigner设计的Pdm图形，以及对应的表结构初始化SQL
+*  **client-uni** uniapp客户端项目（开发中）
+*  **client-vue** 这里包含两个vue前端框架，一个是pure-admin，一个是vben-admin，基础功能都已完成。pure-admin没有国际化功能，vben-admin带国际化功能，可自行选用
+*  **client-wpf** wfp客户端项目，prism+rubyerUI+restflul构成，仅完成了项目搭建以及登录
+*  **relationship-model** 关系模型，数据库关系模型图，基于navicat设计的模型图，以及对应的表结构初始化SQL，只存放了Mysql的。如果需要其他库支持，需要自行转换
 *  **screenshot** 项目截图
 
 ### 设计思路
@@ -36,12 +37,13 @@
 - 3、工作流程（表单设计、流程设计、待办事项等）
 - 4、OAuth2.0登录接入（gitee,gitee）
 
-* wpf版本只完成了框架的构造以及登录等基本功能（由于prism后续版本收费，计划使用CommunityToolkit.Mvvm重新设计），如果您有兴趣，请联系我一起吧。
+* wpf版本只完成了框架的构造以及登录等基本功能（暂时不打算继续开发了），如果您有兴趣，请联系我一起吧。
 * 工作流部分只提供了比较简单的入门级示例。请根据需求自行二开。
+
 
 ### 后续内容
 
-- vben前端项目接入
+- uniapp的持续接入
 
 ### 项目截图
 
@@ -67,4 +69,6 @@
 - 👉 rubyer-wpf：[https://gitee.com/wuyanxin1028/rubyer-wpf](https://gitee.com/wuyanxin1028/rubyer-wpf)
 - 👉 Flurl：[https://github.com/tmenier/Flurl](https://github.com/tmenier/Flurl)
 - 👉 workflow-core：[https://github.com/danielgerlag/workflow-core](https://github.com/danielgerlag/workflow-core)
+- 👉 vben: [https://doc.vben.pro](https://doc.vben.pro)
+- 👉 uniapp: [https://www.dcloud.io](https://www.dcloud.io/)
 - 👉 以上排名不分先后，还包括有幸使用、未能一一在此列举的框架以及好朋友们
