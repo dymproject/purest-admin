@@ -157,16 +157,16 @@ public class DataSeed : ISingletonDependency
             Console.WriteLine("初始化字典分类数据");
 
             DictDataEntity[] dictDatas = [
-                new DictDataEntity() { CategoryId = dictSexId, Name = "男" },
-                new DictDataEntity() { CategoryId = dictSexId, Name = "女" },
+                new DictDataEntity() { CategoryId = dictSexId, Name = "男",Code = "male" },
+                new DictDataEntity() { CategoryId = dictSexId, Name = "女",Code = "female" },
 
-                new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "消息" },
-                new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "公告" },
-                new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "待办" },
+                new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "消息", Code = "msg"},
+                new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "公告", Code = "notice"},
+                new DictDataEntity() { CategoryId = dictNoticeTypeId, Name = "待办", Code = "todo"},
 
-                new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "紧急", Remark = "danger" },
-                new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "警告", Remark = "warning" },
-                new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "正常", Remark = "info"  }
+                new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "紧急", Code = "danger" },
+                new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "警告", Code = "warning" },
+                new DictDataEntity() { CategoryId = dictNoticeLevelId, Name = "正常", Code = "info"  }
                 ];
             await _db.Insertable(dictDatas).ExecuteReturnSnowflakeIdListAsync();
             Console.WriteLine("初始化字典明细数据");

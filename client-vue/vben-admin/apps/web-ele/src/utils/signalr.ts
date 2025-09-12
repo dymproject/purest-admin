@@ -17,8 +17,6 @@ export const createConnection = (
     })
     .withAutomaticReconnect()
     .build();
-  // connection.keepAliveIntervalInMilliseconds = 1000 * 60;
-  // connection.serverTimeoutInMilliseconds = 1000 * 60 * 5;
   if (!directStart) {
     connection.start();
   }

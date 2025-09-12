@@ -20,8 +20,13 @@ public class AddDictDataInput
     /// <summary>
     /// 字典名称
     /// </summary>
-    [MaxLength(20, ErrorMessage = "字典名称最大长度为：40")]
+    [MaxLength(20, ErrorMessage = "字典名称最大长度为：20")]
     public string Name { get; set; }
+    /// <summary>
+    /// 字典编码
+    /// </summary>
+    [MaxLength(20, ErrorMessage = "字典编码最大长度为：20")]
+    public string Code { get; set; }
     /// <summary>
     /// 排序
     /// </summary>

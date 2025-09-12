@@ -12,6 +12,7 @@
   },
   "columns2": {
     "name": "项名称",
+    "code": "项编码",
     "remark": "备注",
     "sort": "排序"
   },
@@ -20,15 +21,18 @@
   },
   "form": {
     "itemName": "项名称",
+    "itemCode": "项编码",
     "sort": "排序",
     "remark": "备注",
     "placeholder": {
       "itemName": "请输入字典项名称",
+      "itemCode": "请输入字典项编码",
       "sort": "请输入排序序号",
       "remark": "请输入备注"
     },
     "validate": {
-      "itemName": "请输入字典项名称"
+      "itemName": "请输入字典项名称",
+      "itemCode": "请输入字典项编码"
     }
   },
   "tooltip": {

@@ -69,6 +69,16 @@ const columns2 = [
     minWidth: 100,
   },
   {
+    title: $t('dictionary.columns2.name'),
+    field: 'name',
+    minWidth: 100,
+  },
+  {
+    title: $t('dictionary.columns2.code'),
+    field: 'code',
+    minWidth: 100,
+  },
+  {
     title: $t('dictionary.columns2.sort'),
     field: 'sort',
     minWidth: 100,

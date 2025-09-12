@@ -12,6 +12,7 @@
   },
   "columns2": {
     "name": "Item Name",
+    "code": "Item Code",
     "remark": "Remark",
     "sort": "Sort"
   },
@@ -20,13 +21,16 @@
   },
   "form": {
     "itemName": "Item Name",
+    "itemCode": "Item Code",
     "sort": "Sort",
     "remark": "Remark",
     "placeholder": {
-      "itemName": "Please enter dictionary item name"
+      "itemName": "Please enter dictionary item name",
+      "itemCode": "Please enter dictionary item code"
     },
     "validate": {
-      "itemName": "Please enter dictionary item name"
+      "itemName": "Please enter dictionary item name",
+      "itemCode": "Please enter dictionary item code"
     }
   },
   "tooltip": {

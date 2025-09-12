@@ -33,6 +33,15 @@ const formItems = ref<VxeFormPropTypes.Items>([
     },
   },
   {
+    field: 'code',
+    title: $t('dictionary.form.itemCode'),
+    span: 24,
+    itemRender: {
+      name: '$input',
+      props: { placeholder: $t('dictionary.form.placeholder.itemCode') },
+    },
+  },
+  {
     field: 'sort',
     title: $t('dictionary.form.sort'),
     span: 24,
@@ -57,6 +66,7 @@ const formItems = ref<VxeFormPropTypes.Items>([
 ]);
 const formRules = ref<VxeFormPropTypes.Rules>({
   name: [{ required: true, message: $t('dictionary.form.validate.itemName') }],
+  code: [{ required: true, message: $t('dictionary.form.validate.itemCode') }],
 });
 
 const showAddModal = () => {

@@ -19,6 +19,11 @@ public partial class DictDataEntity : BaseEntity
     [SugarColumn(ColumnName = "NAME")]
     public string Name { get; set; }
     /// <summary>
+    /// 字典编码
+    /// </summary>
+    [SugarColumn(ColumnName = "CODE")]
+    public string Code { get; set; }
+    /// <summary>
     /// 排序
     /// </summary>
     [SugarColumn(ColumnName = "SORT")]

@@ -24,6 +24,10 @@ public class DictDataOutput
     /// </summary>
     public string Name { get; set; }
     /// <summary>
+    /// 字典编码
+    /// </summary>
+    public string Code { get; set; }
+    /// <summary>
     /// 排序
     /// </summary>
     public int Sort { get; set; }

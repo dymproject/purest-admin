@@ -48,6 +48,15 @@ const formItems = ref<VxeFormPropTypes.Items>([
     }
   },
   {
+    field: "code",
+    title: "编码",
+    span: 24,
+    itemRender: {
+      name: "$input",
+      props: { placeholder: "请输入编码" }
+    }
+  },
+  {
     field: "sort",
     title: "排序",
     span: 24,
@@ -67,7 +76,8 @@ const formItems = ref<VxeFormPropTypes.Items>([
   }
 ]);
 const formRules = ref<VxeFormPropTypes.Rules>({
-  name: [{ required: true, message: "请输入功能名称" }]
+  name: [{ required: true, message: "请输入字典名称" }],
+  code: [{ required: true, message: "请输入字典编码" }]
 });
 
 const showAddModal = () => {
@@ -137,4 +147,3 @@ defineExpose({ showAddModal, showEditModal, showViewModal });
     </template>
   </vxe-modal>
 </template>
-@/api/system/dictionary

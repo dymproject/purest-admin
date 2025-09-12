@@ -74,6 +74,11 @@ const columns2 = [
     minWidth: 100
   },
   {
+    title: "编码",
+    field: "code",
+    minWidth: 100
+  },
+  {
     title: "排序",
     field: "sort",
     minWidth: 100
