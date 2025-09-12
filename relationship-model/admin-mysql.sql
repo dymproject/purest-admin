@@ -1,831 +1,592 @@
-/*==============================================================*/
-/* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/9/11 17:39:26                           */
-/*==============================================================*/
-
-
-drop table if exists PUREST_BACKGROUND_JOB_RECORD;
-
-drop table if exists PUREST_DICT_CATEGORY;
-
-drop table if exists PUREST_DICT_DATA;
-
-drop table if exists PUREST_FILE_RECORD;
-
-drop table if exists PUREST_FUNCTION;
-
-drop table if exists PUREST_FUNCTION_INTERFACE;
-
-drop table if exists PUREST_INTERFACE;
-
-drop table if exists PUREST_INTERFACE_GROUP;
-
-drop table if exists PUREST_NOTICE;
-
-drop table if exists PUREST_NOTICE_RECORD;
-
-drop table if exists PUREST_OAUTH2_USER;
-
-drop table if exists PUREST_ORGANIZATION;
-
-drop table if exists PUREST_PROFILE_SYSTEM;
-
-drop table if exists PUREST_REQUEST_LOG;
-
-drop table if exists PUREST_ROLE;
-
-drop table if exists PUREST_ROLE_FUNCTION;
-
-drop table if exists PUREST_SYSTEM_CONFIG;
-
-drop table if exists PUREST_USER;
-
-drop table if exists PUREST_USER_ROLE;
-
-drop table if exists PUREST_WF_AUDITING_RECORD;
-
-drop table if exists PUREST_WF_DEFINITION;
-
-drop index IX_Event_EventName_EventKey on PUREST_WF_EVENT;
-
-drop index IX_Event_IsProcessed on PUREST_WF_EVENT;
-
-drop index IX_Event_EventTime on PUREST_WF_EVENT;
-
-drop index IX_Event_EventId on PUREST_WF_EVENT;
-
-drop table if exists PUREST_WF_EVENT;
-
-drop index IX_ExtensionAttribute_ExecutionPointerId on PUREST_WF_EXECUTION_ATTRIBUTE;
-
-drop table if exists PUREST_WF_EXECUTION_ATTRIBUTE;
-
-drop table if exists PUREST_WF_EXECUTION_ERROR;
-
-drop index IX_ExecutionPointer_WorkflowId on PUREST_WF_EXECUTION_POINTER;
-
-drop table if exists PUREST_WF_EXECUTION_POINTER;
-
-drop index IX_ScheduledCommand_ExecuteTime on PUREST_WF_SCHEDULED_COMMAND;
-
-drop index IX_ScheduledCommand_CommandName_Data on PUREST_WF_SCHEDULED_COMMAND;
-
-drop table if exists PUREST_WF_SCHEDULED_COMMAND;
-
-drop index IX_Subscription_EventName on PUREST_WF_SUBSCRIPTION;
-
-drop index IX_Subscription_EventKey on PUREST_WF_SUBSCRIPTION;
-
-drop index IX_Subscription_SubscriptionId on PUREST_WF_SUBSCRIPTION;
-
-drop table if exists PUREST_WF_SUBSCRIPTION;
-
-drop table if exists PUREST_WF_WAITING_POINTER;
-
-drop index IX_Workflow_NextExecution on PUREST_WF_WORKFLOW;
-
-drop index IX_Workflow_InstanceId on PUREST_WF_WORKFLOW;
-
-drop table if exists PUREST_WF_WORKFLOW;
-
-drop table if exists PUREST_WORKFLOW_INSTANCE;
-
-/*==============================================================*/
-/* Table: PUREST_BACKGROUND_JOB_RECORD                          */
-/*==============================================================*/
-create table PUREST_BACKGROUND_JOB_RECORD
-(
-   ID                   varchar(40) not null comment 'Id',
-   JOB_NAME             varchar(128) not null comment '√˚≥∆',
-   JOB_ARGS             longtext not null comment '≤Œ ˝',
-   TRY_COUNT            numeric comment '÷ÿ ‘¥Œ ˝',
-   CREATION_TIME        datetime comment '¥¥Ω® ±º‰',
-   NEXT_TRY_TIME        datetime comment 'œ¬¥Œ÷¥–– ±º‰',
-   LAST_TRY_TIME        datetime comment '◊Ó∫Û÷¥–– ±º‰',
-   IS_ABANDONED         numeric(1) comment ' «∑Ò≥¨ ±',
-   PRIORITY             numeric comment '”≈œ»º∂',
-   primary key (ID)
-);
-
-alter table PUREST_BACKGROUND_JOB_RECORD comment '∫ÛÃ®◊˜“µº«¬º±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_DICT_CATEGORY                                  */
-/*==============================================================*/
-create table PUREST_DICT_CATEGORY
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(20) not null comment '∑÷¿‡√˚≥∆',
-   CODE                 varchar(40) not null comment '∑÷¿‡±‡¬Î',
-   primary key (ID),
-   unique key UK_PUREST_CATEGORY_CODE (CODE)
-);
-
-alter table PUREST_DICT_CATEGORY comment '◊÷µ‰∑÷¿‡';
-
-/*==============================================================*/
-/* Table: PUREST_DICT_DATA                                      */
-/*==============================================================*/
-create table PUREST_DICT_DATA
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   CATEGORY_ID          bigint not null comment '◊÷µ‰∑÷¿‡ID',
-   NAME                 varchar(20) not null comment '◊÷µ‰√˚≥∆',
-   SORT                 numeric not null comment '≈≈–Ú',
-   primary key (ID)
-);
-
-alter table PUREST_DICT_DATA comment '◊÷µ‰ ˝æ›';
-
-/*==============================================================*/
-/* Table: PUREST_FILE_RECORD                                    */
-/*==============================================================*/
-create table PUREST_FILE_RECORD
-(
-   ID                   bigint not null comment 'Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   FILE_NAME            varchar(100) not null comment 'Œƒº˛√˚',
-   FILE_SIZE            numeric(10) not null comment 'Œƒº˛¥Û–°',
-   FILE_EXT             varchar(10) not null comment 'Œƒº˛¿©’π√˚',
-   primary key (ID)
-);
-
-alter table PUREST_FILE_RECORD comment 'Œƒº˛…œ¥´º«¬º±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_FUNCTION                                       */
-/*==============================================================*/
-create table PUREST_FUNCTION
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(20) not null comment '√˚≥∆',
-   CODE                 varchar(40) not null comment '±‡¬Î',
-   PARENT_ID            bigint comment '¡• Ù”⁄',
-   primary key (ID),
-   unique key UK_PUREST_FUNCTION_CODE (CODE)
-);
-
-alter table PUREST_FUNCTION comment 'π¶ƒ‹±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_FUNCTION_INTERFACE                             */
-/*==============================================================*/
-create table PUREST_FUNCTION_INTERFACE
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   INTERFACE_ID         bigint comment 'Ω”ø⁄ID',
-   FUNCTION_ID          bigint comment 'π¶ƒ‹ID',
-   primary key (ID)
-);
-
-alter table PUREST_FUNCTION_INTERFACE comment '“≥√ÊΩ”ø⁄±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_INTERFACE                                      */
-/*==============================================================*/
-create table PUREST_INTERFACE
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(20) not null comment 'Ω”ø⁄√˚≥∆',
-   PATH                 varchar(200) not null comment 'Ω”ø⁄µÿ÷∑',
-   REQUEST_METHOD       varchar(20) not null comment '«Î«Û∑Ω∑®',
-   GROUP_ID             bigint comment 'Ω”ø⁄∑÷◊ÈID',
-   primary key (ID),
-   unique key UK_INTERFACE_PATHMETHOD (PATH, REQUEST_METHOD)
-);
-
-alter table PUREST_INTERFACE comment 'Ω”ø⁄±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_INTERFACE_GROUP                                */
-/*==============================================================*/
-create table PUREST_INTERFACE_GROUP
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(20) comment '√˚≥∆',
-   CODE                 varchar(40) not null comment '±‡¬Î',
-   primary key (ID),
-   unique key UK_PUREST_IG_CODE (CODE)
-);
-
-alter table PUREST_INTERFACE_GROUP comment 'Ω”ø⁄∑÷◊È±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_NOTICE                                         */
-/*==============================================================*/
-create table PUREST_NOTICE
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   TITLE                varchar(40) not null comment '÷˜Ã‚',
-   CONTENT              longtext comment 'ƒ⁄»›',
-   NOTICE_TYPE          bigint not null comment '¿‡–Õ',
-   LEVEL                bigint comment 'º∂±',
-   primary key (ID)
-);
-
-alter table PUREST_NOTICE comment 'Õ®÷™π´∏Ê±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_NOTICE_RECORD                                  */
-/*==============================================================*/
-create table PUREST_NOTICE_RECORD
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   RECEIVER             bigint not null comment 'Ω” ’»À',
-   IS_READ              numeric(1) not null comment ' «∑Ò“—∂¡',
-   NOTICE_ID            bigint not null comment 'Õ®÷™π´∏ÊId',
-   primary key (ID)
-);
-
-alter table PUREST_NOTICE_RECORD comment 'Õ®÷™π´∏Êº«¬º±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_OAUTH2_USER                                    */
-/*==============================================================*/
-create table PUREST_OAUTH2_USER
-(
-   PERSISTENCE_ID       bigint not null comment '÷˜º¸Id',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   ID                   bigint comment 'ID',
-   NAME                 varchar(20) comment '»œ÷§÷––ƒ√˚',
-   TYPE                 varchar(20) not null comment 'TYPE',
-   USER_ID              bigint comment '”√ªßID',
-   primary key (PERSISTENCE_ID)
-);
-
-alter table PUREST_OAUTH2_USER comment 'OAUTH2”√ªß';
-
-/*==============================================================*/
-/* Table: PUREST_ORGANIZATION                                   */
-/*==============================================================*/
-create table PUREST_ORGANIZATION
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(100) not null comment '√˚≥∆',
-   PARENT_ID            bigint comment '∏∏º∂ID',
-   TELEPHONE            varchar(20) comment '¡™œµµÁª∞',
-   LEADER               varchar(20) comment '∏∫‘»À',
-   SORT                 numeric comment '≈≈–Ú',
-   primary key (ID),
-   unique key UK_PUREST_ORG_NAME_PID (NAME, PARENT_ID)
-);
-
-alter table PUREST_ORGANIZATION comment '◊È÷Øª˙ππ';
-
-/*==============================================================*/
-/* Table: PUREST_PROFILE_SYSTEM                                 */
-/*==============================================================*/
-create table PUREST_PROFILE_SYSTEM
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(20) not null comment '√˚≥∆',
-   CODE                 varchar(40) not null comment '±‡¬Î',
-   FILE_ID              bigint not null comment 'Œƒº˛ID',
-   primary key (ID),
-   unique key UK_PUREST_FILESYSTEM_CODE (CODE)
-);
-
-alter table PUREST_PROFILE_SYSTEM comment 'œµÕ≥Œƒº˛±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_REQUEST_LOG                                    */
-/*==============================================================*/
-create table PUREST_REQUEST_LOG
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   CONTROLLER_NAME      varchar(100) comment 'øÿ÷∆∆˜',
-   ACTION_NAME          varchar(100) comment '∑Ω∑®√˚',
-   REQUEST_METHOD       varchar(10) comment '«Î«Û¿‡–Õ',
-   ENVIRONMENT_NAME     varchar(20) comment '∑˛ŒÒ∆˜ª∑æ≥',
-   ELAPSED_TIME         numeric(16,0) comment '÷¥––∫ƒ ±',
-   CLIENT_IP            varchar(20) comment 'øÕªß∂ÀIP',
-   primary key (ID)
-);
-
-alter table PUREST_REQUEST_LOG comment '«Î«Û»’÷æ±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_ROLE                                           */
-/*==============================================================*/
-create table PUREST_ROLE
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(20) not null comment 'Ω«…´√˚≥∆',
-   DESCRIPTION          varchar(200) comment 'Ω«…´√Ë ˆ',
-   primary key (ID),
-   unique key UK_PUREST_ROLE_NAME (NAME)
-);
-
-alter table PUREST_ROLE comment 'Ω«…´';
-
-/*==============================================================*/
-/* Table: PUREST_ROLE_FUNCTION                                  */
-/*==============================================================*/
-create table PUREST_ROLE_FUNCTION
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   ROLE_ID              bigint comment 'Ω«…´ID',
-   FUNCTION_ID          bigint comment 'π¶ƒ‹ID',
-   primary key (ID)
-);
-
-alter table PUREST_ROLE_FUNCTION comment 'Ω«…´π¶ƒ‹±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_SYSTEM_CONFIG                                  */
-/*==============================================================*/
-create table PUREST_SYSTEM_CONFIG
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(20) comment '√˚≥∆',
-   CONFIG_CODE          varchar(40) not null comment '±‡¬Î',
-   CONFIG_VALUE         varchar(1000) comment '÷µ',
-   primary key (ID),
-   unique key UK_PUREST_CONFIG_CODE (CONFIG_CODE)
-);
-
-alter table PUREST_SYSTEM_CONFIG comment 'œµÕ≥≈‰÷√±Ì';
-
-/*==============================================================*/
-/* Table: PUREST_USER                                           */
-/*==============================================================*/
-create table PUREST_USER
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   ACCOUNT              varchar(36) not null comment '’À∫≈',
-   PASSWORD             varchar(100) not null comment '√‹¬Î',
-   NAME                 varchar(20) not null comment '’Ê µ–’√˚',
-   TELEPHONE            varchar(11) comment 'µÁª∞',
-   EMAIL                varchar(20) comment '” œ‰',
-   AVATAR               longblob comment 'Õ∑œÒ',
-   STATUS               numeric comment '◊¥Ã¨',
-   ORGANIZATION_ID      bigint not null comment '◊È÷Øª˙ππId',
-   primary key (ID),
-   unique key UK_PUREST_USER_ACCOUNT (ACCOUNT)
-);
-
-alter table PUREST_USER comment '”√ªß';
-
-/*==============================================================*/
-/* Table: PUREST_USER_ROLE                                      */
-/*==============================================================*/
-create table PUREST_USER_ROLE
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   ROLE_ID              bigint not null comment 'Ω«…´ID',
-   USER_ID              bigint not null comment '”√ªßID',
-   primary key (ID)
-);
-
-alter table PUREST_USER_ROLE comment '”√ªßΩ«…´';
-
-/*==============================================================*/
-/* Table: PUREST_WF_AUDITING_RECORD                             */
-/*==============================================================*/
-create table PUREST_WF_AUDITING_RECORD
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   EXECUTION_POINTER_ID bigint not null comment '≤Ω÷ËId',
-   AUDITING_TIME        datetime not null comment '…Û≈˙ ±º‰',
-   AUDITOR              bigint not null comment '…Û≈˙»À',
-   AUDITOR_NAME         varchar(40) comment '…Û≈˙»À–’√˚',
-   AUDITING_OPINION     longtext comment '…Û≈˙“‚º˚',
-   IS_AGREE             boolean not null comment ' «∑ÒÕ¨“‚',
-   primary key (ID)
-);
-
-alter table PUREST_WF_AUDITING_RECORD comment '¡˜≥Ã…Û≈˙º«¬º';
-
-/*==============================================================*/
-/* Table: PUREST_WF_DEFINITION                                  */
-/*==============================================================*/
-create table PUREST_WF_DEFINITION
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   NAME                 varchar(20) not null comment '√˚≥∆',
-   DEFINITION_ID        varchar(36) not null comment '∂®“ÂID',
-   WORKFLOW_CONTENT     longtext not null comment '¡˜≥Ãƒ⁄»›',
-   DESIGNS_CONTENT      longtext not null comment '…Ëº∆∆˜ƒ⁄»›',
-   FORM_CONTENT         longtext not null comment '±Ìµ•ƒ⁄»›',
-   VERSION              integer not null comment '∞Ê±æ',
-   IS_LOCKED            boolean not null comment ' «∑ÒÀ¯∂®',
-   primary key (ID),
-   unique key UK_WORKFLOW_CODE (DEFINITION_ID)
-);
-
-alter table PUREST_WF_DEFINITION comment '¡˜≥Ã∂®“Â';
-
-/*==============================================================*/
-/* Table: PUREST_WF_EVENT                                       */
-/*==============================================================*/
-create table PUREST_WF_EVENT
-(
-   PERSISTENCE_ID       bigint not null,
-   EVENT_ID             varchar(36) not null,
-   EVENT_NAME           varchar(200),
-   EVENT_KEY            varchar(200),
-   EVENT_DATA           text,
-   EVENT_TIME           datetime not null,
-   IS_PROCESSED         boolean not null,
-   primary key (PERSISTENCE_ID)
-);
-
-alter table PUREST_WF_EVENT comment ' ¬º˛';
-
-/*==============================================================*/
-/* Index: IX_Event_EventId                                      */
-/*==============================================================*/
-create unique index IX_Event_EventId on PUREST_WF_EVENT
-(
-   EVENT_ID
-);
-
-/*==============================================================*/
-/* Index: IX_Event_EventTime                                    */
-/*==============================================================*/
-create index IX_Event_EventTime on PUREST_WF_EVENT
-(
-   EVENT_TIME
-);
-
-/*==============================================================*/
-/* Index: IX_Event_IsProcessed                                  */
-/*==============================================================*/
-create index IX_Event_IsProcessed on PUREST_WF_EVENT
-(
-   IS_PROCESSED
-);
-
-/*==============================================================*/
-/* Index: IX_Event_EventName_EventKey                           */
-/*==============================================================*/
-create index IX_Event_EventName_EventKey on PUREST_WF_EVENT
-(
-   EVENT_NAME,
-   EVENT_KEY
-);
-
-/*==============================================================*/
-/* Table: PUREST_WF_EXECUTION_ATTRIBUTE                         */
-/*==============================================================*/
-create table PUREST_WF_EXECUTION_ATTRIBUTE
-(
-   PERSISTENCE_ID       bigint not null,
-   ATTRIBUTE_KEY        varchar(100),
-   ATTRIBUTE_VALUE      text,
-   EXECUTION_POINTER_ID bigint not null,
-   primary key (PERSISTENCE_ID)
-);
-
-alter table PUREST_WF_EXECUTION_ATTRIBUTE comment '◊‘∂®“Â Ù–‘';
-
-/*==============================================================*/
-/* Index: IX_ExtensionAttribute_ExecutionPointerId              */
-/*==============================================================*/
-create index IX_ExtensionAttribute_ExecutionPointerId on PUREST_WF_EXECUTION_ATTRIBUTE
-(
-   EXECUTION_POINTER_ID
-);
-
-/*==============================================================*/
-/* Table: PUREST_WF_EXECUTION_ERROR                             */
-/*==============================================================*/
-create table PUREST_WF_EXECUTION_ERROR
-(
-   PERSISTENCE_ID       bigint not null,
-   ERROR_TIME           date not null,
-   EXECUTION_POINTER_ID varchar(100),
-   MESSAGE              text,
-   WORKFLOW_ID          varchar(100),
-   primary key (PERSISTENCE_ID)
-);
-
-alter table PUREST_WF_EXECUTION_ERROR comment '÷¥––“Ï≥£';
-
-/*==============================================================*/
-/* Table: PUREST_WF_EXECUTION_POINTER                           */
-/*==============================================================*/
-create table PUREST_WF_EXECUTION_POINTER
-(
-   PERSISTENCE_ID       bigint not null,
-   WORKFLOW_ID          bigint not null,
-   ID                   varchar(36),
-   START_TIME           datetime,
-   END_TIME             datetime,
-   ACTIVE               boolean not null,
-   EVENT_KEY            varchar(100),
-   EVENT_NAME           varchar(100),
-   EVENT_DATA           text,
-   EVENT_PUBLISHED      boolean not null,
-   PERSISTENCE_DATA     text,
-   SLEEP_UNTIL          datetime,
-   STEP_ID              integer not null,
-   STEP_NAME            varchar(100),
-   CHILDREN             text,
-   CONTEXT_ITEM         text,
-   PREDECESSOR_ID       varchar(100),
-   OUTCOME              text,
-   SCOPE                text,
-   RETRY_COUNT          integer not null,
-   STATUS               integer not null,
-   primary key (PERSISTENCE_ID)
-);
-
-alter table PUREST_WF_EXECUTION_POINTER comment '≤Ω÷Ë';
-
-/*==============================================================*/
-/* Index: IX_ExecutionPointer_WorkflowId                        */
-/*==============================================================*/
-create index IX_ExecutionPointer_WorkflowId on PUREST_WF_EXECUTION_POINTER
-(
-   WORKFLOW_ID
-);
-
-/*==============================================================*/
-/* Table: PUREST_WF_SCHEDULED_COMMAND                           */
-/*==============================================================*/
-create table PUREST_WF_SCHEDULED_COMMAND
-(
-   PERSISTENCE_ID       bigint not null,
-   COMMAND_NAME         varchar(200),
-   DATA                 varchar(500),
-   EXECUTE_TIME         bigint not null,
-   primary key (PERSISTENCE_ID)
-);
-
-alter table PUREST_WF_SCHEDULED_COMMAND comment 'º∆ªÆ√¸¡Ó';
-
-/*==============================================================*/
-/* Index: IX_ScheduledCommand_CommandName_Data                  */
-/*==============================================================*/
-create unique index IX_ScheduledCommand_CommandName_Data on PUREST_WF_SCHEDULED_COMMAND
-(
-   COMMAND_NAME,
-   DATA
-);
-
-/*==============================================================*/
-/* Index: IX_ScheduledCommand_ExecuteTime                       */
-/*==============================================================*/
-create index IX_ScheduledCommand_ExecuteTime on PUREST_WF_SCHEDULED_COMMAND
-(
-   EXECUTE_TIME
-);
-
-/*==============================================================*/
-/* Table: PUREST_WF_SUBSCRIPTION                                */
-/*==============================================================*/
-create table PUREST_WF_SUBSCRIPTION
-(
-   PERSISTENCE_ID       bigint not null,
-   EVENT_KEY            varchar(200),
-   EVENT_NAME           varchar(200),
-   STEP_ID              integer not null,
-   SUBSCRIPTION_ID      varchar(36) not null,
-   WORKFLOW_ID          varchar(200),
-   SUBSCRIBE_AS_OF      datetime not null,
-   SUBSCRIPTION_DATA    text,
-   EXECUTION_POINTER_ID varchar(200),
-   EXTERNAL_TOKEN       varchar(200),
-   EXTERNAL_TOKEN_EXPIRY datetime,
-   EXTERNAL_WORKER_ID   varchar(200),
-   primary key (PERSISTENCE_ID)
-);
-
-alter table PUREST_WF_SUBSCRIPTION comment '∂©‘ƒ';
-
-/*==============================================================*/
-/* Index: IX_Subscription_SubscriptionId                        */
-/*==============================================================*/
-create unique index IX_Subscription_SubscriptionId on PUREST_WF_SUBSCRIPTION
-(
-   SUBSCRIPTION_ID
-);
-
-/*==============================================================*/
-/* Index: IX_Subscription_EventKey                              */
-/*==============================================================*/
-create index IX_Subscription_EventKey on PUREST_WF_SUBSCRIPTION
-(
-   EVENT_KEY
-);
-
-/*==============================================================*/
-/* Index: IX_Subscription_EventName                             */
-/*==============================================================*/
-create index IX_Subscription_EventName on PUREST_WF_SUBSCRIPTION
-(
-   EVENT_NAME
-);
-
-/*==============================================================*/
-/* Table: PUREST_WF_WAITING_POINTER                             */
-/*==============================================================*/
-create table PUREST_WF_WAITING_POINTER
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   USER_ID              bigint not null comment '”√ªßId',
-   POINTER_ID           varchar(36) not null comment '≤Ω÷ËId',
-   primary key (ID)
-);
-
-alter table PUREST_WF_WAITING_POINTER comment '¥˝…Û∫À≤Ω÷Ë';
-
-/*==============================================================*/
-/* Table: PUREST_WF_WORKFLOW                                    */
-/*==============================================================*/
-create table PUREST_WF_WORKFLOW
-(
-   PERSISTENCE_ID       bigint not null,
-   COMPLETE_TIME        datetime,
-   CREATE_BY            bigint not null,
-   CREATE_TIME          datetime not null,
-   DATA                 text,
-   DESCRIPTION          varchar(500),
-   INSTANCE_ID          varchar(36) not null,
-   NEXT_EXECUTION       bigint,
-   STATUS               integer not null,
-   VERSION              integer not null,
-   WORKFLOW_DEFINITION_ID varchar(36) not null,
-   REFERENCE            varchar(200),
-   REMARK               varchar(1000),
-   primary key (PERSISTENCE_ID)
-);
-
-alter table PUREST_WF_WORKFLOW comment 'π§◊˜¡˜≥Ã';
-
-/*==============================================================*/
-/* Index: IX_Workflow_InstanceId                                */
-/*==============================================================*/
-create index IX_Workflow_InstanceId on PUREST_WF_WORKFLOW
-(
-   INSTANCE_ID
-);
-
-/*==============================================================*/
-/* Index: IX_Workflow_NextExecution                             */
-/*==============================================================*/
-create index IX_Workflow_NextExecution on PUREST_WF_WORKFLOW
-(
-   NEXT_EXECUTION
-);
-
-/*==============================================================*/
-/* Table: PUREST_WORKFLOW_INSTANCE                              */
-/*==============================================================*/
-create table PUREST_WORKFLOW_INSTANCE
-(
-   ID                   bigint not null comment '÷˜º¸Id',
-   CREATE_BY            bigint not null comment '¥¥Ω®»À',
-   CREATE_TIME          datetime not null comment '¥¥Ω® ±º‰',
-   UPDATE_BY            bigint comment '–ﬁ∏ƒ»À',
-   UPDATE_TIME          datetime comment '–ﬁ∏ƒ ±º‰',
-   REMARK               varchar(1000) comment '±∏◊¢',
-   WF_ID                bigint not null comment '¡˜≥ÃID',
-   SCHEME_ID            bigint not null comment '…Ëº∆ID',
-   FORM_DATA            longtext not null comment '±Ìµ•÷µ',
-   CURRENT_NODE         bigint comment 'µ±«∞Ω⁄µ„',
-   CURRENT_NODE_TYPE    integer not null comment 'µ±«∞Ω⁄µ„¿‡–Õ',
-   STATUS               integer not null comment '◊¥Ã¨',
-   primary key (ID)
-);
-
-alter table PUREST_WORKFLOW_INSTANCE comment '¡˜≥Ã µ¿˝';
-
-alter table PUREST_DICT_DATA add constraint FK_Reference_5 foreign key (CATEGORY_ID)
-      references PUREST_DICT_CATEGORY (ID) on delete cascade on update restrict;
-
-alter table PUREST_FUNCTION_INTERFACE add constraint FK_Reference_11 foreign key (FUNCTION_ID)
-      references PUREST_FUNCTION (ID) on delete cascade on update restrict;
-
-alter table PUREST_FUNCTION_INTERFACE add constraint FK_Reference_12 foreign key (INTERFACE_ID)
-      references PUREST_INTERFACE (ID) on delete cascade on update restrict;
-
-alter table PUREST_INTERFACE add constraint FK_Reference_17 foreign key (GROUP_ID)
-      references PUREST_INTERFACE_GROUP (ID) on delete cascade on update restrict;
-
-alter table PUREST_NOTICE_RECORD add constraint FK_Reference_13 foreign key (NOTICE_ID)
-      references PUREST_NOTICE (ID) on delete cascade on update restrict;
-
-alter table PUREST_OAUTH2_USER add constraint FK_Reference_26 foreign key (USER_ID)
-      references PUREST_USER (ID) on delete cascade on update restrict;
-
-alter table PUREST_PROFILE_SYSTEM add constraint FK_Reference_18 foreign key (FILE_ID)
-      references PUREST_FILE_RECORD (ID) on delete cascade on update restrict;
-
-alter table PUREST_ROLE_FUNCTION add constraint FK_Reference_15 foreign key (ROLE_ID)
-      references PUREST_ROLE (ID) on delete cascade on update restrict;
-
-alter table PUREST_ROLE_FUNCTION add constraint FK_Reference_16 foreign key (FUNCTION_ID)
-      references PUREST_FUNCTION (ID) on delete cascade on update restrict;
-
-alter table PUREST_USER add constraint FK_Reference_7 foreign key (ORGANIZATION_ID)
-      references PUREST_ORGANIZATION (ID) on delete cascade on update restrict;
-
-alter table PUREST_USER_ROLE add constraint FK_Reference_4 foreign key (ROLE_ID)
-      references PUREST_ROLE (ID) on delete cascade on update restrict;
-
-alter table PUREST_USER_ROLE add constraint FK_Reference_6 foreign key (USER_ID)
-      references PUREST_USER (ID) on delete cascade on update restrict;
-
-alter table PUREST_WF_EXECUTION_ATTRIBUTE add constraint FK_ExtensionAttribute_ExecutionPointer_ExecutionPointerId foreign key (EXECUTION_POINTER_ID)
-      references PUREST_WF_EXECUTION_POINTER (PERSISTENCE_ID) on delete cascade on update restrict;
-
-alter table PUREST_WF_EXECUTION_POINTER add constraint FK_ExecutionPointer_Workflow_WorkflowId foreign key (WORKFLOW_ID)
-      references PUREST_WF_WORKFLOW (PERSISTENCE_ID) on delete cascade on update restrict;
-
-alter table PUREST_WORKFLOW_INSTANCE add constraint FK_Reference_23 foreign key (WF_ID)
-      references PUREST_WF_WORKFLOW (PERSISTENCE_ID) on delete restrict on update restrict;
-
-alter table PUREST_WORKFLOW_INSTANCE add constraint FK_Reference_24 foreign key (SCHEME_ID)
-      references PUREST_WF_DEFINITION (ID) on delete restrict on update restrict;
-
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : mysql-localhost
+ Source Server Type    : MySQL
+ Source Server Version : 80011
+ Source Host           : localhost:3306
+ Source Schema         : purest
+
+ Target Server Type    : MySQL
+ Target Server Version : 80011
+ File Encoding         : 65001
+
+ Date: 12/09/2025 13:08:18
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for purest_background_job_record
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_background_job_record`;
+CREATE TABLE `purest_background_job_record`  (
+  `ID` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Id',
+  `JOB_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂêçÁß∞',
+  `JOB_ARGS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂèÇÊï∞',
+  `TRY_COUNT` decimal(10, 0) NULL DEFAULT NULL COMMENT 'ÈáçËØïÊ¨°Êï∞',
+  `CREATION_TIME` datetime(0) NULL DEFAULT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `NEXT_TRY_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰∏ãÊ¨°ÊâßË°åÊó∂Èó¥',
+  `LAST_TRY_TIME` datetime(0) NULL DEFAULT NULL COMMENT 'ÊúÄÂêéÊâßË°åÊó∂Èó¥',
+  `IS_ABANDONED` decimal(1, 0) NULL DEFAULT NULL COMMENT 'ÊòØÂê¶Ë∂ÖÊó∂',
+  `PRIORITY` decimal(10, 0) NULL DEFAULT NULL COMMENT '‰ºòÂÖàÁ∫ß',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÂêéÂè∞‰Ωú‰∏öËÆ∞ÂΩïË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_dict_category
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_dict_category`;
+CREATE TABLE `purest_dict_category`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂàÜÁ±ªÂêçÁß∞',
+  `CODE` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂàÜÁ±ªÁºñÁ†Å',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_PUREST_CATEGORY_CODE`(`CODE`) USING BTREE,
+  INDEX `ID`(`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Â≠óÂÖ∏ÂàÜÁ±ª' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_dict_data
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_dict_data`;
+CREATE TABLE `purest_dict_data`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `CATEGORY_ID` bigint(20) NOT NULL COMMENT 'Â≠óÂÖ∏ÂàÜÁ±ªID',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Â≠óÂÖ∏ÂêçÁß∞',
+  `CODE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÁºñÁ†Å',
+  `SORT` decimal(10, 0) NOT NULL COMMENT 'ÊéíÂ∫è',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `FK_Reference_5`(`CATEGORY_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_5` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `purest_dict_category` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Â≠óÂÖ∏Êï∞ÊçÆ' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_file_record
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_file_record`;
+CREATE TABLE `purest_file_record`  (
+  `ID` bigint(20) NOT NULL COMMENT 'Id',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `FILE_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Êñá‰ª∂Âêç',
+  `FILE_SIZE` decimal(10, 0) NOT NULL COMMENT 'Êñá‰ª∂Â§ßÂ∞è',
+  `FILE_EXT` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Êñá‰ª∂Êâ©Â±ïÂêç',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Êñá‰ª∂‰∏ä‰º†ËÆ∞ÂΩïË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_function
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_function`;
+CREATE TABLE `purest_function`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂêçÁß∞',
+  `CODE` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÁºñÁ†Å',
+  `PARENT_ID` bigint(20) NULL DEFAULT NULL COMMENT 'Èö∂Â±û‰∫é',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_PUREST_FUNCTION_CODE`(`CODE`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÂäüËÉΩË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_function_interface
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_function_interface`;
+CREATE TABLE `purest_function_interface`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `INTERFACE_ID` bigint(20) NULL DEFAULT NULL COMMENT 'Êé•Âè£ID',
+  `FUNCTION_ID` bigint(20) NULL DEFAULT NULL COMMENT 'ÂäüËÉΩID',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `FK_Reference_11`(`FUNCTION_ID`) USING BTREE,
+  INDEX `FK_Reference_12`(`INTERFACE_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_11` FOREIGN KEY (`FUNCTION_ID`) REFERENCES `purest_function` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `FK_Reference_12` FOREIGN KEY (`INTERFACE_ID`) REFERENCES `purest_interface` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'È°µÈù¢Êé•Âè£Ë°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_interface
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_interface`;
+CREATE TABLE `purest_interface`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Êé•Âè£ÂêçÁß∞',
+  `PATH` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Êé•Âè£Âú∞ÂùÄ',
+  `REQUEST_METHOD` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËØ∑Ê±ÇÊñπÊ≥ï',
+  `GROUP_ID` bigint(20) NULL DEFAULT NULL COMMENT 'Êé•Âè£ÂàÜÁªÑID',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_INTERFACE_PATHMETHOD`(`PATH`, `REQUEST_METHOD`) USING BTREE,
+  INDEX `FK_Reference_17`(`GROUP_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_17` FOREIGN KEY (`GROUP_ID`) REFERENCES `purest_interface_group` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Êé•Âè£Ë°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_interface_group
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_interface_group`;
+CREATE TABLE `purest_interface_group`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÂêçÁß∞',
+  `CODE` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÁºñÁ†Å',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_PUREST_IG_CODE`(`CODE`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Êé•Âè£ÂàÜÁªÑË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_notice
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_notice`;
+CREATE TABLE `purest_notice`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `TITLE` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '‰∏ªÈ¢ò',
+  `CONTENT` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÂÜÖÂÆπ',
+  `NOTICE_TYPE` bigint(20) NOT NULL COMMENT 'Á±ªÂûã',
+  `LEVEL` bigint(20) NULL DEFAULT NULL COMMENT 'Á∫ßÂà´',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÈÄöÁü•ÂÖ¨ÂëäË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_notice_record
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_notice_record`;
+CREATE TABLE `purest_notice_record`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `RECEIVER` bigint(20) NOT NULL COMMENT 'Êé•Êî∂‰∫∫',
+  `IS_READ` decimal(1, 0) NOT NULL COMMENT 'ÊòØÂê¶Â∑≤ËØª',
+  `NOTICE_ID` bigint(20) NOT NULL COMMENT 'ÈÄöÁü•ÂÖ¨ÂëäId',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `FK_Reference_13`(`NOTICE_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_13` FOREIGN KEY (`NOTICE_ID`) REFERENCES `purest_notice` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÈÄöÁü•ÂÖ¨ÂëäËÆ∞ÂΩïË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_oauth2_user
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_oauth2_user`;
+CREATE TABLE `purest_oauth2_user`  (
+  `PERSISTENCE_ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `ID` bigint(20) NULL DEFAULT NULL COMMENT 'ID',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ËÆ§ËØÅ‰∏≠ÂøÉÂêç',
+  `TYPE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'TYPE',
+  `USER_ID` bigint(20) NULL DEFAULT NULL COMMENT 'Áî®Êà∑ID',
+  PRIMARY KEY (`PERSISTENCE_ID`) USING BTREE,
+  INDEX `FK_Reference_26`(`USER_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_26` FOREIGN KEY (`USER_ID`) REFERENCES `purest_user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'OAUTH2Áî®Êà∑' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_organization
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_organization`;
+CREATE TABLE `purest_organization`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂêçÁß∞',
+  `PARENT_ID` bigint(20) NULL DEFAULT NULL COMMENT 'Áà∂Á∫ßID',
+  `TELEPHONE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ËÅîÁ≥ªÁîµËØù',
+  `LEADER` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Ë¥üË¥£‰∫∫',
+  `SORT` decimal(10, 0) NULL DEFAULT NULL COMMENT 'ÊéíÂ∫è',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_PUREST_ORG_NAME_PID`(`NAME`, `PARENT_ID`) USING BTREE,
+  INDEX `FK_Reference_14`(`PARENT_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_14` FOREIGN KEY (`PARENT_ID`) REFERENCES `purest_organization` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÁªÑÁªáÊú∫ÊûÑ' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_profile_system
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_profile_system`;
+CREATE TABLE `purest_profile_system`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂêçÁß∞',
+  `CODE` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÁºñÁ†Å',
+  `FILE_ID` bigint(20) NOT NULL COMMENT 'Êñá‰ª∂ID',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_PUREST_FILESYSTEM_CODE`(`CODE`) USING BTREE,
+  INDEX `FK_Reference_18`(`FILE_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_18` FOREIGN KEY (`FILE_ID`) REFERENCES `purest_file_record` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Á≥ªÁªüÊñá‰ª∂Ë°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_request_log
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_request_log`;
+CREATE TABLE `purest_request_log`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `CONTROLLER_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÊéßÂà∂Âô®',
+  `ACTION_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÊñπÊ≥ïÂêç',
+  `REQUEST_METHOD` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ËØ∑Ê±ÇÁ±ªÂûã',
+  `ENVIRONMENT_NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÊúçÂä°Âô®ÁéØÂ¢É',
+  `ELAPSED_TIME` decimal(16, 0) NULL DEFAULT NULL COMMENT 'ÊâßË°åËÄóÊó∂',
+  `CLIENT_IP` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÂÆ¢Êà∑Á´ØIP',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ËØ∑Ê±ÇÊó•ÂøóË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_role
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_role`;
+CREATE TABLE `purest_role`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËßíËâ≤ÂêçÁß∞',
+  `DESCRIPTION` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ËßíËâ≤ÊèèËø∞',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_PUREST_ROLE_NAME`(`NAME`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ËßíËâ≤' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_role_function
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_role_function`;
+CREATE TABLE `purest_role_function`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `ROLE_ID` bigint(20) NULL DEFAULT NULL COMMENT 'ËßíËâ≤ID',
+  `FUNCTION_ID` bigint(20) NULL DEFAULT NULL COMMENT 'ÂäüËÉΩID',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `FK_Reference_15`(`ROLE_ID`) USING BTREE,
+  INDEX `FK_Reference_16`(`FUNCTION_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_15` FOREIGN KEY (`ROLE_ID`) REFERENCES `purest_role` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `FK_Reference_16` FOREIGN KEY (`FUNCTION_ID`) REFERENCES `purest_function` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ËßíËâ≤ÂäüËÉΩË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_system_config
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_system_config`;
+CREATE TABLE `purest_system_config`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÂêçÁß∞',
+  `CONFIG_CODE` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÁºñÁ†Å',
+  `CONFIG_VALUE` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÂÄº',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_PUREST_CONFIG_CODE`(`CONFIG_CODE`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Á≥ªÁªüÈÖçÁΩÆË°®' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_user
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_user`;
+CREATE TABLE `purest_user`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `ACCOUNT` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Ë¥¶Âè∑',
+  `PASSWORD` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂØÜÁ†Å',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÁúüÂÆûÂßìÂêç',
+  `TELEPHONE` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÁîµËØù',
+  `EMAIL` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÈÇÆÁÆ±',
+  `AVATAR` longblob NULL COMMENT 'Â§¥ÂÉè',
+  `STATUS` decimal(10, 0) NULL DEFAULT NULL COMMENT 'Áä∂ÊÄÅ',
+  `ORGANIZATION_ID` bigint(20) NOT NULL COMMENT 'ÁªÑÁªáÊú∫ÊûÑId',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_PUREST_USER_ACCOUNT`(`ACCOUNT`) USING BTREE,
+  INDEX `FK_Reference_7`(`ORGANIZATION_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_7` FOREIGN KEY (`ORGANIZATION_ID`) REFERENCES `purest_organization` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Áî®Êà∑' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_user_role`;
+CREATE TABLE `purest_user_role`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `ROLE_ID` bigint(20) NOT NULL COMMENT 'ËßíËâ≤ID',
+  `USER_ID` bigint(20) NOT NULL COMMENT 'Áî®Êà∑ID',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `FK_Reference_4`(`ROLE_ID`) USING BTREE,
+  INDEX `FK_Reference_6`(`USER_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_4` FOREIGN KEY (`ROLE_ID`) REFERENCES `purest_role` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `FK_Reference_6` FOREIGN KEY (`USER_ID`) REFERENCES `purest_user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Áî®Êà∑ËßíËâ≤' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_auditing_record
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_auditing_record`;
+CREATE TABLE `purest_wf_auditing_record`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `EXECUTION_POINTER_ID` bigint(20) NOT NULL COMMENT 'Ê≠•È™§Id',
+  `AUDITING_TIME` datetime(0) NOT NULL COMMENT 'ÂÆ°ÊâπÊó∂Èó¥',
+  `AUDITOR` bigint(20) NOT NULL COMMENT 'ÂÆ°Êâπ‰∫∫',
+  `AUDITOR_NAME` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ÂÆ°Êâπ‰∫∫ÂßìÂêç',
+  `AUDITING_OPINION` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÂÆ°ÊâπÊÑèËßÅ',
+  `IS_AGREE` tinyint(1) NOT NULL COMMENT 'ÊòØÂê¶ÂêåÊÑè',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÊµÅÁ®ãÂÆ°ÊâπËÆ∞ÂΩï' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_definition
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_definition`;
+CREATE TABLE `purest_wf_definition`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂêçÁß∞',
+  `DEFINITION_ID` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÂÆö‰πâID',
+  `WORKFLOW_CONTENT` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÊµÅÁ®ãÂÜÖÂÆπ',
+  `DESIGNS_CONTENT` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËÆæËÆ°Âô®ÂÜÖÂÆπ',
+  `FORM_CONTENT` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Ë°®ÂçïÂÜÖÂÆπ',
+  `VERSION` int(11) NOT NULL COMMENT 'ÁâàÊú¨',
+  `IS_LOCKED` tinyint(1) NOT NULL COMMENT 'ÊòØÂê¶ÈîÅÂÆö',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `UK_WORKFLOW_CODE`(`DEFINITION_ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÊµÅÁ®ãÂÆö‰πâ' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_event
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_event`;
+CREATE TABLE `purest_wf_event`  (
+  `PERSISTENCE_ID` bigint(20) NOT NULL,
+  `EVENT_ID` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `EVENT_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EVENT_KEY` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EVENT_DATA` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `EVENT_TIME` datetime(0) NOT NULL,
+  `IS_PROCESSED` tinyint(1) NOT NULL,
+  PRIMARY KEY (`PERSISTENCE_ID`) USING BTREE,
+  UNIQUE INDEX `IX_Event_EventId`(`EVENT_ID`) USING BTREE,
+  INDEX `IX_Event_EventTime`(`EVENT_TIME`) USING BTREE,
+  INDEX `IX_Event_IsProcessed`(`IS_PROCESSED`) USING BTREE,
+  INDEX `IX_Event_EventName_EventKey`(`EVENT_NAME`, `EVENT_KEY`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '‰∫ã‰ª∂' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_execution_attribute
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_execution_attribute`;
+CREATE TABLE `purest_wf_execution_attribute`  (
+  `PERSISTENCE_ID` bigint(20) NOT NULL,
+  `ATTRIBUTE_KEY` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ATTRIBUTE_VALUE` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `EXECUTION_POINTER_ID` bigint(20) NOT NULL,
+  PRIMARY KEY (`PERSISTENCE_ID`) USING BTREE,
+  INDEX `IX_ExtensionAttribute_ExecutionPointerId`(`EXECUTION_POINTER_ID`) USING BTREE,
+  CONSTRAINT `FK_ExtensionAttribute_ExecutionPointer_ExecutionPointerId` FOREIGN KEY (`EXECUTION_POINTER_ID`) REFERENCES `purest_wf_execution_pointer` (`persistence_id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Ëá™ÂÆö‰πâÂ±ûÊÄß' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_execution_error
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_execution_error`;
+CREATE TABLE `purest_wf_execution_error`  (
+  `PERSISTENCE_ID` bigint(20) NOT NULL,
+  `ERROR_TIME` date NOT NULL,
+  `EXECUTION_POINTER_ID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `MESSAGE` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `WORKFLOW_ID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`PERSISTENCE_ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÊâßË°åÂºÇÂ∏∏' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_execution_pointer
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_execution_pointer`;
+CREATE TABLE `purest_wf_execution_pointer`  (
+  `PERSISTENCE_ID` bigint(20) NOT NULL,
+  `WORKFLOW_ID` bigint(20) NOT NULL,
+  `ID` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `START_TIME` datetime(0) NULL DEFAULT NULL,
+  `END_TIME` datetime(0) NULL DEFAULT NULL,
+  `ACTIVE` tinyint(1) NOT NULL,
+  `EVENT_KEY` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EVENT_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EVENT_DATA` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `EVENT_PUBLISHED` tinyint(1) NOT NULL,
+  `PERSISTENCE_DATA` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `SLEEP_UNTIL` datetime(0) NULL DEFAULT NULL,
+  `STEP_ID` int(11) NOT NULL,
+  `STEP_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CHILDREN` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `CONTEXT_ITEM` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `PREDECESSOR_ID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `OUTCOME` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `SCOPE` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `RETRY_COUNT` int(11) NOT NULL,
+  `STATUS` int(11) NOT NULL,
+  PRIMARY KEY (`PERSISTENCE_ID`) USING BTREE,
+  INDEX `IX_ExecutionPointer_WorkflowId`(`WORKFLOW_ID`) USING BTREE,
+  CONSTRAINT `FK_ExecutionPointer_Workflow_WorkflowId` FOREIGN KEY (`WORKFLOW_ID`) REFERENCES `purest_wf_workflow` (`persistence_id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Ê≠•È™§' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_scheduled_command
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_scheduled_command`;
+CREATE TABLE `purest_wf_scheduled_command`  (
+  `PERSISTENCE_ID` bigint(20) NOT NULL,
+  `COMMAND_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DATA` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EXECUTE_TIME` bigint(20) NOT NULL,
+  PRIMARY KEY (`PERSISTENCE_ID`) USING BTREE,
+  UNIQUE INDEX `IX_ScheduledCommand_CommandName_Data`(`COMMAND_NAME`, `DATA`) USING BTREE,
+  INDEX `IX_ScheduledCommand_ExecuteTime`(`EXECUTE_TIME`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ËÆ°ÂàíÂëΩ‰ª§' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_subscription
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_subscription`;
+CREATE TABLE `purest_wf_subscription`  (
+  `PERSISTENCE_ID` bigint(20) NOT NULL,
+  `EVENT_KEY` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EVENT_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `STEP_ID` int(11) NOT NULL,
+  `SUBSCRIPTION_ID` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `WORKFLOW_ID` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SUBSCRIBE_AS_OF` datetime(0) NOT NULL,
+  `SUBSCRIPTION_DATA` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `EXECUTION_POINTER_ID` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EXTERNAL_TOKEN` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EXTERNAL_TOKEN_EXPIRY` datetime(0) NULL DEFAULT NULL,
+  `EXTERNAL_WORKER_ID` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`PERSISTENCE_ID`) USING BTREE,
+  UNIQUE INDEX `IX_Subscription_SubscriptionId`(`SUBSCRIPTION_ID`) USING BTREE,
+  INDEX `IX_Subscription_EventKey`(`EVENT_KEY`) USING BTREE,
+  INDEX `IX_Subscription_EventName`(`EVENT_NAME`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ËÆ¢ÈòÖ' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_waiting_pointer
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_waiting_pointer`;
+CREATE TABLE `purest_wf_waiting_pointer`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `USER_ID` bigint(20) NOT NULL COMMENT 'Áî®Êà∑Id',
+  `POINTER_ID` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Ê≠•È™§Id',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÂæÖÂÆ°Ê†∏Ê≠•È™§' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_wf_workflow
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_wf_workflow`;
+CREATE TABLE `purest_wf_workflow`  (
+  `PERSISTENCE_ID` bigint(20) NOT NULL,
+  `COMPLETE_TIME` datetime(0) NULL DEFAULT NULL,
+  `CREATE_BY` bigint(20) NOT NULL,
+  `CREATE_TIME` datetime(0) NOT NULL,
+  `DATA` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `DESCRIPTION` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `INSTANCE_ID` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NEXT_EXECUTION` bigint(20) NULL DEFAULT NULL,
+  `STATUS` int(11) NOT NULL,
+  `VERSION` int(11) NOT NULL,
+  `WORKFLOW_DEFINITION_ID` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REFERENCE` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`PERSISTENCE_ID`) USING BTREE,
+  INDEX `IX_Workflow_InstanceId`(`INSTANCE_ID`) USING BTREE,
+  INDEX `IX_Workflow_NextExecution`(`NEXT_EXECUTION`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Â∑•‰ΩúÊµÅÁ®ã' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for purest_workflow_instance
+-- ----------------------------
+DROP TABLE IF EXISTS `purest_workflow_instance`;
+CREATE TABLE `purest_workflow_instance`  (
+  `ID` bigint(20) NOT NULL COMMENT '‰∏ªÈîÆId',
+  `CREATE_BY` bigint(20) NOT NULL COMMENT 'ÂàõÂª∫‰∫∫',
+  `CREATE_TIME` datetime(0) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `UPDATE_BY` bigint(20) NULL DEFAULT NULL COMMENT '‰øÆÊîπ‰∫∫',
+  `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '‰øÆÊîπÊó∂Èó¥',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Â§áÊ≥®',
+  `WF_ID` bigint(20) NOT NULL COMMENT 'ÊµÅÁ®ãID',
+  `SCHEME_ID` bigint(20) NOT NULL COMMENT 'ËÆæËÆ°ID',
+  `FORM_DATA` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Ë°®ÂçïÂÄº',
+  `CURRENT_NODE` bigint(20) NULL DEFAULT NULL COMMENT 'ÂΩìÂâçËäÇÁÇπ',
+  `CURRENT_NODE_TYPE` int(11) NOT NULL COMMENT 'ÂΩìÂâçËäÇÁÇπÁ±ªÂûã',
+  `STATUS` int(11) NOT NULL COMMENT 'Áä∂ÊÄÅ',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `FK_Reference_23`(`WF_ID`) USING BTREE,
+  INDEX `FK_Reference_24`(`SCHEME_ID`) USING BTREE,
+  CONSTRAINT `FK_Reference_23` FOREIGN KEY (`WF_ID`) REFERENCES `purest_wf_workflow` (`persistence_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_Reference_24` FOREIGN KEY (`SCHEME_ID`) REFERENCES `purest_wf_definition` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'ÊµÅÁ®ãÂÆû‰æã' ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
