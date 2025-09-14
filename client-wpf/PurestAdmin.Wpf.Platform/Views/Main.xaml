@@ -13,7 +13,9 @@
     <UserControl.Resources>
         <rubyer:BooleanToObjectConverter x:Key="BoolToSearchConverter">
             <rubyer:BooleanToObjectConverter.TrueValue>
-                <TextBox x:Name="search" Margin="5">
+                <TextBox x:Name="search"
+                         Margin="5"
+                         Text="{Binding SearchContent, UpdateSourceTrigger=PropertyChanged}">
                     <rubyer:InputBoxHelper.PreContent>
                         <rubyer:Icon Type="SearchLine" />
                     </rubyer:InputBoxHelper.PreContent>
@@ -50,7 +52,7 @@
                               ExpandedWidth="170"
                               Foreground="{DynamicResource WhiteForeground}"
                               IsExpanded="{Binding MenuStatus}"
-                              ItemsSource="{Binding Items}"
+                              ItemsSource="{Binding FilteredItems}"
                               MenuIcon="{Binding IsExpanded, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToMenuIconConverter}}"
                               PaneBackground="{Binding TitleBackground, RelativeSource={RelativeSource AncestorType=rubyer:RubyerWindow}}"
                               PaneBorderCornerRadius="0"
