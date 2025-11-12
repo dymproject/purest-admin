@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PurestAdmin.Core.File;
+namespace PurestAdmin.Multiplex.File;
 public static class FileStroageExtensions
 {
     public static IServiceCollection AddFileStorage(this IServiceCollection services)

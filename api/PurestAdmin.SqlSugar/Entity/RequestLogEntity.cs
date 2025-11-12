@@ -32,7 +32,7 @@ public partial class RequestLogEntity : BaseEntity
     /// 执行耗时
     /// </summary>
     [SugarColumn(ColumnName = "ELAPSED_TIME")]
-    public long ElapsedTime { get; set; }
+    public int ElapsedTime { get; set; }
     /// <summary>
     /// 客户端IP
     /// </summary>

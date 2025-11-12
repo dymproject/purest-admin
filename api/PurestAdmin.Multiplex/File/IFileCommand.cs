@@ -1,8 +1,6 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using Microsoft.AspNetCore.Http;
-
-namespace PurestAdmin.Core.File;
+namespace PurestAdmin.Multiplex.File;
 public interface IFileCommand<T> where T : class
 {
     Task<long> SaveAsync(IFormFile file);

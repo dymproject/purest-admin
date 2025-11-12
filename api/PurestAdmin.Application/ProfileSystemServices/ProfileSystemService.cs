@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 
 using PurestAdmin.Application.ProfileSystemServices.Dtos;
-using PurestAdmin.Core.File;
-using PurestAdmin.Core.File.Containers;
+using PurestAdmin.Multiplex.File;
+using PurestAdmin.Multiplex.File.Containers;
 
 using Volo.Abp.Validation;
 

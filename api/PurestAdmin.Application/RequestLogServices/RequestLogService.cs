@@ -1,7 +1,7 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using PurestAdmin.Application.RequestLogServices.Dtos;
-using PurestAdmin.Core.Echarts;
+using PurestAdmin.Multiplex.Contracts.Echarts;
 
 namespace PurestAdmin.Application.RequestLogServices;
 /// <summary>

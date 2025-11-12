@@ -2,7 +2,7 @@
 
 using Volo.Abp.BlobStoring;
 
-namespace PurestAdmin.Core.File.Containers;
+namespace PurestAdmin.Multiplex.File.Containers;
 [BlobContainerName("profile-system")]
 public class ProfileSystemContainer
 {

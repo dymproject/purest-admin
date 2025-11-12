@@ -6,11 +6,12 @@ using Volo.Abp.DependencyInjection;
 namespace PurestAdmin.BackgroundService.Jobs;
 public class EmailSendingJob : BackgroundJob<EmailSendingArgs>, ITransientDependency
 {
-    //private readonly IEmailSender _emailSender;
-
+    //private readonly IEmailSender _emailSender;   
     public EmailSendingJob(/*IEmailSender emailSender*/)
     {
         //_emailSender = emailSender;
+        // var i = scope.ServiceProvider.GetRequiredService<IBackgroundJobManager>();
+        //await i.EnqueueAsync(new EmailSendingArgs());
     }
 
     public override void Execute(EmailSendingArgs args)
@@ -24,6 +25,7 @@ public class EmailSendingJob : BackgroundJob<EmailSendingArgs>, ITransientDepend
     }
 
 }
+[BackgroundJobName("测试")]
 public class EmailSendingArgs
 {
     public string EmailAddress { get; set; }

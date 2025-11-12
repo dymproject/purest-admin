@@ -49,7 +49,7 @@ public class AuthorizationHandler(IHostEnvironment hostEnvironment, ICurrentUser
                 }
             }
             //单token无感刷新
-            var accessToken = httpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");            
+            var accessToken = httpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
             if (!accessToken.IsNullOrEmpty())
             {
                 var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();

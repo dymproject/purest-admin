@@ -2,11 +2,10 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PurestAdmin.Core.File;
+namespace PurestAdmin.Multiplex.File;
 public class FileValidationAttribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)

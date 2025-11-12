@@ -1,16 +1,10 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using Microsoft.AspNetCore.Http;
-
-using PurestAdmin.SqlSugar.Entity;
-
-using SqlSugar;
-
 using Volo.Abp.BlobStoring;
 
 using Yitter.IdGenerator;
 
-namespace PurestAdmin.Core.File;
+namespace PurestAdmin.Multiplex.File;
 public class FileCommand<T>(ISqlSugarClient db, IBlobContainer<T> blobContainer) : IFileCommand<T> where T : class
 {
     private readonly ISqlSugarClient _db = db;

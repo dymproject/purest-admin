@@ -4,8 +4,6 @@ using Autofac;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using PurestAdmin.SqlSugar.Entity;
-
 using Volo.Abp;
 using Volo.Abp.Modularity;
 

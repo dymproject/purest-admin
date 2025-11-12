@@ -13,6 +13,13 @@ public class BackgroundJobRecordEntity
     ///</summary>
     [SugarColumn(ColumnName = "ID", IsPrimaryKey = true)]
     public Guid Id { get; set; }
+
+    /// <summary>
+    /// Application name that scheduled this job.
+    /// </summary>
+    [SugarColumn(ColumnName = "APPLICATION_NAME")]
+    public string ApplicationName { get; set; }
+
     /// <summary>
     /// Type of the job.
     /// It's AssemblyQualifiedName of job type.

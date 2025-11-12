@@ -25,9 +25,10 @@ public class BackgroundJobStore(IClock clock, Repository<BackgroundJobRecordEnti
         return entity.Adapt<BackgroundJobInfo>();
     }
 
-    public async Task<List<BackgroundJobInfo>> GetWaitingJobsAsync(int maxResultCount)
+    public async Task<List<BackgroundJobInfo>> GetWaitingJobsAsync(string? applicationName, int maxResultCount)
     {
         var pagedList = await _repository.AsQueryable()
+            .WhereIF(!applicationName.IsNullOrEmpty(), t => t.ApplicationName == applicationName)
             .Where(t => !t.IsAbandoned && t.NextTryTime <= _clock.Now)
             .OrderByDescending(t => t.Priority)
             .OrderBy(t => t.TryCount)
