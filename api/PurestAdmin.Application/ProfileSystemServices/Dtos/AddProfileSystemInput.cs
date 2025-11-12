@@ -2,6 +2,8 @@
 
 using Microsoft.AspNetCore.Http;
 
+using PurestAdmin.Multiplex.File;
+
 namespace PurestAdmin.Application.ProfileSystemServices.Dtos;
 
 /// <summary>
