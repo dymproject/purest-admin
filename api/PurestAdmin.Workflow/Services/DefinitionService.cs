@@ -150,15 +150,15 @@ public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionL
                     case 0:
                         throw BusinessValidateException.Message("有节点未连接");
                     case 1:
-                        step.SelectNextStep.Add(edges.First().TargetNodeId, $"int.Parse(data[\"GeneralAuditingDataResultEnum\"].ToString()) == {(int)GeneralAuditingDataResultEnum.Proceed}");
+                        step.SelectNextStep.Add(edges.First().TargetNodeId, $"Convert.ToInt32(data[\"GeneralAuditingDataResultEnum\"]) == {(int)GeneralAuditingDataResultEnum.Proceed}");
                         break;
                     case > 1:
                         foreach (var edge in edges)
                         {
                             if (decimal.TryParse(edge.Properties?.Value, out var value))
                             {
-                                step.SelectNextStep.Add(edge.TargetNodeId, $"decimal.Parse(data[\"{edge.Properties.Field}\"].ToString()) {edge.Properties.Operate} {value} " +
-                                    $"&& int.Parse(data[\"GeneralAuditingDataResultEnum\"].ToString()) == {(int)GeneralAuditingDataResultEnum.Proceed}");
+                                step.SelectNextStep.Add(edge.TargetNodeId, $"Convert.ToInt32(data[\"{edge.Properties.Field}\"]) {edge.Properties.Operate} {value} " +
+                                    $"&& Convert.ToInt32(data[\"GeneralAuditingDataResultEnum\"]) == {(int)GeneralAuditingDataResultEnum.Proceed}");
                             }
                             else
                             {
@@ -170,11 +170,11 @@ public class DefinitionService(ISqlSugarClient db, IDefinitionLoader definitionL
                 var exist = step.SelectNextStep.Any(x => x.Key == endNode.Id);
                 if (exist)
                 {
-                    step.SelectNextStep[endNode.Id] += $" || int.Parse(data[\"GeneralAuditingDataResultEnum\"].ToString()) == {(int)GeneralAuditingDataResultEnum.Discontinue}";
+                    step.SelectNextStep[endNode.Id] += $" || Convert.ToInt32(data[\"GeneralAuditingDataResultEnum\"]) == {(int)GeneralAuditingDataResultEnum.Discontinue}";
                 }
                 else
                 {
-                    step.SelectNextStep.Add(endNode.Id, $"int.Parse(data[\"GeneralAuditingDataResultEnum\"].ToString()) == {(int)GeneralAuditingDataResultEnum.Discontinue}");
+                    step.SelectNextStep.Add(endNode.Id, $"Convert.ToInt32(data[\"GeneralAuditingDataResultEnum\"]) == {(int)GeneralAuditingDataResultEnum.Discontinue}");
                 }
             }
             else
