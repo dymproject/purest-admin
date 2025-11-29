@@ -6,7 +6,7 @@ Purest Admin 是一套真正意义上前后端分离、深度适配企业RBAC权
 
 ### 项目结构
 
-*  **Api** 后端接口项目，使用.Net8开发，在abp框架的设计上进行了精简和改良，只保留了核心功能，重写了部分abp的功能。使用SqlSugar替代了传统的EFCore，效率更高，使用更方便
+*  **Api** 后端接口项目，使用.NET 10 开发，在ABP框架的设计上进行了精简和改良，只保留了核心功能，重写了部分功能。使用SqlSugar替代了传统的EFCore，效率更高，使用更方便
 *  **client-uni** uniapp客户端项目（开发中）
 *  **client-vue** 这里包含两个vue前端框架，一个是pure-admin，一个是vben-admin，基础功能都已完成。pure-admin没有国际化功能，vben-admin带国际化功能，可自行选用
 *  **client-wpf** wfp客户端项目，prism+rubyerUI+restflul构成，仅完成了项目搭建以及登录
