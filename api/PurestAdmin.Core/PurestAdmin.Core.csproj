@@ -17,27 +17,27 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
 
     <PackageReference Include="Flurl.Http" Version="4.0.2" />
-    <PackageReference Include="IP2Region.Net" Version="2.0.2" />
+    <PackageReference Include="IP2Region.Net" Version="3.0.0" />
     <PackageReference Include="Mapster" Version="7.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="10.0.1" />
     <PackageReference Include="Namotion.Reflection" Version="3.4.3" />
     <PackageReference Include="Serilog" Version="4.3.0" />
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="SqlSugarCore" Version="5.1.4.207" />
-    <PackageReference Include="Volo.Abp" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.AspNetCore.SignalR" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.Autofac" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.BackgroundJobs" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.BackgroundWorkers" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.Swashbuckle" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.Timing" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.Validation" Version="9.3.6" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.210" />
+    <PackageReference Include="Volo.Abp" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.SignalR" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.BackgroundJobs" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.BackgroundWorkers" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.Timing" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.Validation" Version="10.0.1" />
     <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
   </ItemGroup>
 
