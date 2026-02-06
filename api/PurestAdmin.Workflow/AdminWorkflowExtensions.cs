@@ -1,6 +1,9 @@
-﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
+
+
+// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
 using System.Reflection;
+using System.Text.Json;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,14 +14,60 @@ using Volo.Abp.Timing;
 namespace PurestAdmin.Workflow;
 internal static class ExtensionMethods
 {
-    private static readonly JsonSerializerSettings SerializerSettings = new() { TypeNameHandling = TypeNameHandling.All };
+    // 使用 Objects 而不是 All，这样数组会序列化为 [...] 而不是 {"$type":"...", "$values":[...]}
+    private static readonly JsonSerializerSettings SerializerSettings = new() { TypeNameHandling = TypeNameHandling.Objects };
+
+    /// <summary>
+    /// 将 System.Text.Json 的 JsonElement 转换为普通 .NET 对象
+    /// </summary>
+    private static object ConvertJsonElement(object value)
+    {
+        if (value is JsonElement element)
+        {
+            return element.ValueKind switch
+            {
+                JsonValueKind.Array => element.EnumerateArray().Select(e => ConvertJsonElement(e)).ToList(),
+                JsonValueKind.Object => element.EnumerateObject().ToDictionary(p => p.Name, p => ConvertJsonElement(p.Value)),
+                JsonValueKind.String => element.GetString(),
+                JsonValueKind.Number => element.TryGetInt64(out var l) ? l : element.GetDouble(),
+                JsonValueKind.True => true,
+                JsonValueKind.False => false,
+                JsonValueKind.Null => null,
+                JsonValueKind.Undefined => null,
+                _ => null
+            };
+        }
+        return value;
+    }
+
+    /// <summary>
+    /// 原地转换字典中的 JsonElement，保持原字典类型不变
+    /// </summary>
+    private static void ConvertJsonElementsInPlace(IDictionary<string, object> dict)
+    {
+        var keys = dict.Keys.ToList();
+        foreach (var key in keys)
+        {
+            var value = dict[key];
+            if (value is JsonElement)
+            {
+                dict[key] = ConvertJsonElement(value);
+            }
+        }
+    }
 
     internal static WfWorkflowEntity ToPersistable(this WorkflowInstance instance, WfWorkflowEntity? persistable = null)
     {
         if (persistable == null)
             persistable = new WfWorkflowEntity();
 
-        persistable.Data = JsonConvert.SerializeObject(instance.Data, SerializerSettings);
+        // 原地转换 JsonElement，保持 GeneralAuditingDefinition 类型不变
+        if (instance.Data is IDictionary<string, object> dataDict)
+        {
+            ConvertJsonElementsInPlace(dataDict);
+        }
+
+        persistable.Data = JsonConvert.SerializeObject(instance.Data, SerializerSettings);  //解决了前端表单数据转化成json出现的问题，问题表现为表单中的复选框数据无法正常显示。望作者采纳
         persistable.Description = instance.Description;
         persistable.Reference = instance.Reference;
         persistable.InstanceId = instance.Id;
