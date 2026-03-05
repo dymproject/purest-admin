@@ -121,6 +121,7 @@ namespace PurestAdmin.Api.Host
                 options.CustomSchemaIds(type => type.FullName);
                 options.HideAbpEndpoints();
                 options.SchemaFilter<HideAbpSchemaFilter>();
+                options.DocumentFilter<SwaggerTagOrderFilter>();
                 options.MapType<DateTime>(() => new OpenApiSchema { Type = "string" });
                 //swagger授权方案定义
                 options.AddSecurityDefinition("Bearer",  //定义授权方案的名称
