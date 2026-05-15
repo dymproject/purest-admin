@@ -4,6 +4,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using PurestAdmin.Multiplex.AI;
 using PurestAdmin.Multiplex.File;
 using PurestAdmin.Multiplex.File.Containers;
 using PurestAdmin.SqlSugar;
@@ -21,15 +22,13 @@ namespace PurestAdmin.Multiplex
         {
             var configuration = context.Services.GetConfiguration();
 
+            context.Services.AddAIService(configuration);
+
             context.Services.AddFileStorage();
 
             ConfigFileStorage(configuration);
         }
 
-        public override void OnApplicationInitialization(ApplicationInitializationContext context)
-        {
-
-        }
         private void ConfigFileStorage(IConfiguration configuration)
         {
             Configure<AbpBlobStoringOptions>(options =>

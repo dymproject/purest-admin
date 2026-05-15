@@ -9,12 +9,17 @@ using Flurl.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
 
 using PurestAdmin.Application.AuthServices.Dtos;
+using PurestAdmin.Core.Cache;
 using PurestAdmin.Core.DataEncryption.Encryptions;
 using PurestAdmin.Core.DataEncryption.Extensions;
 using PurestAdmin.Multiplex.AdminUser;
+using PurestAdmin.Multiplex.AI;
 using PurestAdmin.Multiplex.Contracts.IAdminUser;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.Models;
 using PurestAdmin.Multiplex.Contracts.IAdminUser.OAuth2;
@@ -24,8 +29,16 @@ namespace PurestAdmin.Application.AuthServices;
 /// 用户授权服务
 /// </summary>
 [ApiExplorerSettings(GroupName = ApiExplorerGroupConst.SYSTEM)]
-public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<AuthorizationHub, IAuthorizationClient> hubContext, IConfiguration configuration, IAdminToken adminToken, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
+public class AuthService(IAdminCache cache, Kernel kernel, IOAuth2UserManager oAuth2UserManager, IHubContext<AuthorizationHub, IAuthorizationClient> hubContext, IConfiguration configuration, IAdminToken adminToken, IHttpContextAccessor httpContextAccessor, ISqlSugarClient db, ICurrentUser currentUser) : ApplicationService
 {
+    /// <summary>
+    /// cache
+    /// </summary>
+    private readonly IAdminCache _cache = cache;
+    /// <summary>
+    /// kernel
+    /// </summary>
+    private readonly Kernel _kernel = kernel;
     /// <summary>
     /// oAuth2UserManager
     /// </summary>
@@ -59,6 +72,7 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
     /// 用户登录
     /// </summary>
     /// <param name="input"></param>
+    /// 
     /// <returns></returns>
     [AllowAnonymous]
     public async Task<LoginOutput> LoginAsync([Required] LoginInput input)
@@ -85,6 +99,24 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
         // 返回accesstoken
         _httpContextAccessor.HttpContext.Response.Headers["accesstoken"] = accessToken;
         return output;
+    }
+
+    /// <summary>
+    /// AI对话
+    /// </summary>
+    /// <param name="userQuestion"></param>
+    /// <returns></returns>
+    public async Task<string> ChatAsync(string userQuestion)
+    {
+        string cacheKey = $"chat_history_{_currentUser.Id}";
+
+        var history = _cache.Get<ChatHistory>(cacheKey) ?? [];
+
+        var result = await _kernel.ChatWithPurestFunctionsAsync(userQuestion, history: history);
+
+        _cache.Set(cacheKey, history, TimeSpan.FromMinutes(30));
+
+        return result;
     }
 
     /// <summary>
@@ -263,7 +295,7 @@ public class AuthService(IOAuth2UserManager oAuth2UserManager, IHubContext<Autho
     /// </summary>
     /// <returns></returns>
     public async Task<List<GetOrganizationTreeOutput>> GetOrganizationTreeAsync()
-    {        
+    {
         var result = await _currentUser.GetOrganizationTreeAsync();
         return result.Adapt<List<GetOrganizationTreeOutput>>();
     }
