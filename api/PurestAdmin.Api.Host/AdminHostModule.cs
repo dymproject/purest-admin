@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 using PurestAdmin.Api.Host.Options;
 using PurestAdmin.Application;
@@ -122,7 +122,7 @@ namespace PurestAdmin.Api.Host
                 options.HideAbpEndpoints();
                 options.SchemaFilter<HideAbpSchemaFilter>();
                 options.DocumentFilter<SortTagsAlphabeticallyFilter>();
-                options.MapType<DateTime>(() => new OpenApiSchema { Type = "string" });
+                options.MapType<DateTime>(() => new OpenApiSchema { Type = JsonSchemaType.String });
                 //swagger授权方案定义
                 options.AddSecurityDefinition("Bearer",  //定义授权方案的名称
                     new OpenApiSecurityScheme()
@@ -133,23 +133,9 @@ namespace PurestAdmin.Api.Host
                         Name = "Authorization",  //参数名--与标题头的参名相同
                         In = ParameterLocation.Header,  //参数放在Header中
                         Type = SecuritySchemeType.Http,  //类型是apikey
-
                     });
                 //加载授权方案
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                    {
-                        {
-                            new OpenApiSecurityScheme
-                            {
-                                Reference=new OpenApiReference
-                                {
-                                    Id="Bearer",
-                                    Type= ReferenceType.SecurityScheme
-                                }
-                            },
-                            Array.Empty<string>()
-                        }
-                    });
+                options.AddSecurityRequirement(document => new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("Bearer", document)] = [] });
             });
             Configure<AbpRemoteServiceApiDescriptionProviderOptions>((options) =>
             {

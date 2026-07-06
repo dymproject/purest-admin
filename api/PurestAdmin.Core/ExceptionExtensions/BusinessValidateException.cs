@@ -2,7 +2,7 @@
 
 using System.ComponentModel;
 
-using Microsoft.OpenApi.Extensions;
+using Microsoft.OpenApi;
 
 using Volo.Abp;
 

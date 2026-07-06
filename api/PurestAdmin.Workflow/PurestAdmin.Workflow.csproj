@@ -15,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="WorkflowCore" Version="3.17.0" />
-    <PackageReference Include="WorkflowCore.DSL" Version="3.17.0" />
-    <PackageReference Include="WorkflowCore.Persistence.MySQL" Version="3.17.0" />
+    <PackageReference Include="WorkflowCore" Version="3.18.0" />
+    <PackageReference Include="WorkflowCore.DSL" Version="3.18.0" />
+    <PackageReference Include="WorkflowCore.Persistence.MySQL" Version="3.18.0" />
   </ItemGroup>
 
   <ItemGroup>

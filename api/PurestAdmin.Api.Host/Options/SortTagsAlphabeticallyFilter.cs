@@ -1,6 +1,6 @@
 ﻿// Copyright © 2023-present https://github.com/dymproject/purest-admin作者以及贡献者
 
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -12,7 +12,7 @@ public class SortTagsAlphabeticallyFilter : IDocumentFilter
     {
         if (swaggerDoc.Tags != null)
         {
-            swaggerDoc.Tags = [.. swaggerDoc.Tags.OrderBy(t => t.Name)];
+            swaggerDoc.Tags = new HashSet<OpenApiTag>(swaggerDoc.Tags.OrderBy(t => t.Name));
         }
     }
 }
