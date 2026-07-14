@@ -45,17 +45,17 @@ const columns = [
     title: $t('function.interfaceModal.name'),
     field: 'name',
     treeNode: true,
-    minWidth: 100,
+    minWidth: '20%',
   },
   {
     title: $t('function.interfaceModal.api'),
     field: 'path',
-    minWidth: 200,
+    minWidth: '40%',
   },
   {
     title: $t('function.interfaceModal.method'),
     field: 'requestMethod',
-    minWidth: 60,
+    minWidth: '10%',
   },
   {
     title: '#',
@@ -70,7 +70,7 @@ const columns = [
           .includes(row.id)
           ? true
           : false;
-        return !row.interfaces &&
+        return row.path &&
           hasAccessByCodes(['system.function.bind']) &&
           hasAccessByCodes(['system.function.unbind'])
           ? h(VxeSwitch, {
@@ -102,6 +102,7 @@ const customToolbarActions: VxeGridPropTypes.ToolbarConfig = {
           h(VxeButton, {
             icon: 'vxe-icon-refresh',
             status: 'success',
+            size: 'mini',
             content: $t('function.interfaceModal.synchronization'),
             onClick: handleAsyncApi,
           }),
@@ -156,45 +157,49 @@ onMounted(() => {});
 defineExpose({ showInterface });
 </script>
 <template>
-  <re-modal :height="800" :width="1400" ref="reModalRef">
+  <re-modal :height="800" :width="1600" ref="reModalRef">
     <div style="display: flex; width: 100%">
       <el-card
         :header="$t('function.interfaceModal.boundInterface')"
         style="width: 40%"
       >
-        <vxe-table round size="mini" height="510" :data="myInterfaceData">
-          <vxe-column
-            field="name"
-            width="180"
-            :title="$t('function.interfaceModal.name')"
-          />
-          <vxe-column
-            field="path"
-            width="180"
-            :title="$t('function.interfaceModal.api')"
-          />
-          <vxe-column
-            field="remove"
-            header-align="center"
-            align="center"
-            title="#"
-          >
-            <template #default="{ row }">
-              <vxe-button
-                v-if="hasAccessByCodes(['system.function.unbind'])"
-                status="error"
-                @click="handleRemoveInterface(row)"
-              >
-                {{ $t('function.interfaceModal.remove') }}
-              </vxe-button>
-            </template>
-          </vxe-column>
-        </vxe-table>
+        <el-card>
+          <vxe-table round size="mini" height="570" :data="myInterfaceData">
+            <vxe-column
+              field="name"
+              width="25%"
+              :title="$t('function.interfaceModal.name')"
+            />
+            <vxe-column
+              field="path"
+              width="60%"
+              :title="$t('function.interfaceModal.api')"
+            />
+            <vxe-column
+              field="remove"
+              header-align="center"
+              align="center"
+              title="#"
+            >
+              <template #default="{ row }">
+                <vxe-button
+                  v-if="hasAccessByCodes(['system.function.unbind'])"
+                  status="warning"
+                  size="mini"
+                  @click="handleRemoveInterface(row)"
+                >
+                  {{ $t('function.interfaceModal.remove') }}
+                </vxe-button>
+              </template>
+            </vxe-column>
+          </vxe-table>
+        </el-card>
       </el-card>
       <el-card :header="$t('function.interfaceModal.list')" style="width: 60%">
         <re-vxe-grid
+          style="margin-top: -5px"
           ref="reVxeGridRef"
-          :height="430"
+          :height="570"
           :customToolbarActions="customToolbarActions"
           :treeConfig="{ rowField: 'id', childrenField: 'interfaces' }"
           :request="getPageList"
