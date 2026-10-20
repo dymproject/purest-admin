@@ -38,13 +38,13 @@ namespace PurestAdmin.Api.Host
             var configuration = context.Services.GetConfiguration();
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-            CoinfigureControllers(context, hostingEnvironment);
+            ConfigureControllers(context, hostingEnvironment);
             ConfigureAuthorizationServices(context, configuration);
             ConfigureSwaggerServices(context);
             ConfigureCors(context, configuration);
         }
 
-        private void CoinfigureControllers(ServiceConfigurationContext context, IWebHostEnvironment hostEnvironment)
+        private void ConfigureControllers(ServiceConfigurationContext context, IWebHostEnvironment hostEnvironment)
         {
             //HTTP状态代码映射（配合PersistdValidateException返回400）
             context.Services.AddSingleton<IHttpExceptionStatusCodeFinder, AdminHttpExceptionStatusCodeFinder>();
@@ -69,8 +69,18 @@ namespace PurestAdmin.Api.Host
         }
         private void ConfigureAuthorizationServices(ServiceConfigurationContext context, IConfiguration configuration)
         {
-            context.Services.AddSingleton<IAuthorizationHandler, AuthorizationHandler>();
-            context.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
+            var secretKey = configuration["JwtOptions:SecretKey"];
+            if (string.IsNullOrEmpty(secretKey))
+            {
+                throw new InvalidOperationException("JWT SecretKey 未配置。请在 appsettings.Production.json 或环境变量中设置 JwtOptions:SecretKey。生产环境密钥应至少为 256 位（32 字符）的随机字符串。");
+            }
+            var key = Encoding.UTF8.GetBytes(secretKey);
+
+            var issuer = configuration["JwtOptions:Issuer"] ?? "purest-admin";
+            var audience = configuration["JwtOptions:Audience"] ?? "purest-admin-client";
+
+            context.Services.AddScoped<IAuthorizationHandler, AuthorizationHandler>();
+            context.Services.AddScoped<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
             context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
@@ -79,8 +89,10 @@ namespace PurestAdmin.Api.Host
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
+                        ValidateIssuer = true,
+                        ValidIssuer = issuer,
+                        ValidateAudience = true,
+                        ValidAudience = audience,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ClockSkew = TimeSpan.FromSeconds(10),
